@@ -1,185 +1,233 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>xJRx98 Software</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #0f172a;
-      color: #e5e7eb;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xJRx98 Software</title>
 
-    header {
-      background: #020617;
-      padding: 40px 20px;
-      text-align: center;
-    }
+<style>
 
-    header h1 {
-      margin: 0;
-      font-size: 40px;
-      color: #38bdf8;
-    }
+body{
+font-family: Arial, sans-serif;
+margin:0;
+background:#0f172a;
+color:#e5e7eb;
+}
 
-    header p {
-      margin-top: 10px;
-      color: #94a3b8;
-    }
+header{
+background:#020617;
+padding:50px 20px;
+text-align:center;
+}
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px;
-    }
+header h1{
+margin:0;
+font-size:42px;
+color:#38bdf8;
+letter-spacing:1px;
+}
 
-    h2 {
-      margin-top: 0;
-    }
+header p{
+margin-top:10px;
+color:#94a3b8;
+}
 
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-    }
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px 20px;
+}
 
-    .card {
-      background: #020617;
-      padding: 25px;
-      border-radius: 12px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+.projects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+margin-top:20px;
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    }
+.card{
+background:#020617;
+padding:25px;
+border-radius:12px;
+transition:0.25s;
+border:1px solid #1e293b;
+}
 
-    .card h3 {
-      margin-top: 0;
-      color: #38bdf8;
-    }
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 35px rgba(0,0,0,0.45);
+}
 
-    .card p {
-      color: #cbd5f5;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+.card h3{
+margin-top:0;
+color:#38bdf8;
+}
 
-    .card a {
-      display: inline-block;
-      margin-top: 10px;
-      text-decoration: none;
-      color: white;
-      background: #38bdf8;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+.card p{
+color:#cbd5f5;
+font-size:14px;
+line-height:1.5;
+}
 
-    .contact {
-      margin-top: 60px;
-      background: #020617;
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 600px;
-    }
+.card a{
+display:inline-block;
+margin-top:12px;
+text-decoration:none;
+color:white;
+background:#38bdf8;
+padding:9px 16px;
+border-radius:6px;
+font-size:14px;
+transition:0.2s;
+}
 
-    form {
-      display: grid;
-      gap: 15px;
-      margin-top: 15px;
-    }
+.card a:hover{
+background:#0ea5e9;
+}
 
-    input, textarea {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-family: inherit;
-    }
+.contact{
+margin-top:60px;
+background:#020617;
+padding:30px;
+border-radius:12px;
+max-width:600px;
+border:1px solid #1e293b;
+}
 
-    button {
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
-      background: #38bdf8;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-    }
+form{
+display:grid;
+gap:15px;
+margin-top:15px;
+}
 
-    button:hover {
-      opacity: 0.9;
-    }
+input,textarea{
+padding:12px;
+border-radius:6px;
+border:none;
+background:#0f172a;
+color:white;
+}
 
-    footer {
-      text-align: center;
-      padding: 25px;
-      border-top: 1px solid #1e293b;
-      color: #64748b;
-      font-size: 14px;
-      margin-top: 60px;
-    }
-  </style>
+button{
+padding:12px;
+border:none;
+border-radius:6px;
+background:#38bdf8;
+color:white;
+font-size:14px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+background:#0ea5e9;
+}
+
+.success{
+display:none;
+margin-top:15px;
+padding:10px;
+border-radius:6px;
+background:#16a34a;
+color:white;
+font-size:14px;
+}
+
+footer{
+text-align:center;
+padding:25px;
+border-top:1px solid #1e293b;
+color:#64748b;
+font-size:14px;
+margin-top:60px;
+}
+
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>xJRx98 Software</h1>
-  <p>Softwareprojekte & Tools</p>
+<h1>xJRx98 Software</h1>
+<p>Softwareprojekte & Tools</p>
 </header>
 
 <div class="container">
 
-  <h2>Meine Projekte</h2>
+<h2>Meine Projekte</h2>
 
-  <div class="projects">
+<div class="projects">
 
-    <div class="card">
-      <h3>C&P App</h3>
-      <p>App zur Unterstützung rund um Aquaristik und Pflanzenpflege.</p>
-      <a href="https://www.cp-aquaplants.de/i/c-und-p-app-download" target="_blank">Projekt ansehen</a>
-    </div>
+<div class="card">
+<h3>C&P App</h3>
+<p>App zur Unterstützung rund um Aquaristik und Pflanzenpflege.</p>
+<a href="https://www.cp-aquaplants.de/i/c-und-p-app-download" target="_blank">Projekt ansehen</a>
+</div>
 
-    <div class="card">
-      <h3>Wasserpantscher Tool</h3>
-      <p>Softwarelösung für Aquaristik-Berechnungen und Wasserwerte.</p>
-      <a href="https://www.wasserpantscher.at/shop_content.php?coID=3300015" target="_blank">Projekt ansehen</a>
-    </div>
+<div class="card">
+<h3>Wasserpantscher Tool</h3>
+<p>Softwarelösung für Aquaristik-Berechnungen und Wasserwerte.</p>
+<a href="https://www.wasserpantscher.at/shop_content.php?coID=3300015" target="_blank">Projekt ansehen</a>
+</div>
 
-    <div class="card">
-      <h3>Patientenaufruf System</h3>
-      <p>Programm zum Aufrufen von Patienten im Wartezimmer für Arztpraxen.</p>
-      <a href="#">Mehr Informationen</a>
-    </div>
+<div class="card">
+<h3>Patientenaufruf System</h3>
+<p>Programm zum Aufrufen von Patienten im Wartezimmer für Arztpraxen.</p>
+<a href="#">Mehr Informationen</a>
+</div>
 
-  </div>
+</div>
 
-  <div class="contact">
-    <h2>Kontakt</h2>
-    <p>Für Fragen zu meinen Programmen oder Projekten kannst du mir eine Nachricht senden.</p>
+<div class="contact">
 
-    <form action="https://formspree.io/f/xjgarnbj" method="POST">
+<h2>Kontakt</h2>
+<p>Für Fragen zu meinen Programmen oder Projekten kannst du mir eine Nachricht senden.</p>
 
-      <input type="text" name="name" placeholder="Dein Name" required>
+<form id="contactForm" action="https://formspree.io/f/xjgarnbj" method="POST">
 
-      <input type="email" name="email" placeholder="Deine E-Mail" required>
+<input type="text" name="name" placeholder="Dein Name" required>
 
-      <textarea name="message" placeholder="Deine Nachricht" rows="5" required></textarea>
+<input type="email" name="email" placeholder="Deine E-Mail" required>
 
-      <button type="submit">Nachricht senden</button>
+<textarea name="message" placeholder="Deine Nachricht" rows="5" required></textarea>
 
-    </form>
+<button type="submit">Nachricht senden</button>
 
-  </div>
+<div class="success" id="successMessage">
+Nachricht wurde erfolgreich gesendet 👍
+</div>
+
+</form>
+
+</div>
 
 </div>
 
 <footer>
-  © 2026 xJRx98 Software
+© 2026 xJRx98 Software
 </footer>
+
+<script>
+
+const form = document.getElementById("contactForm");
+const success = document.getElementById("successMessage");
+
+form.addEventListener("submit", function(){
+
+setTimeout(function(){
+
+form.reset();
+success.style.display = "block";
+
+setTimeout(()=>{
+success.style.display="none";
+},5000);
+
+},500);
+
+});
+
+</script>
 
 </body>
 </html>
