@@ -3,54 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>xJRx98 Software</title>
 
 <style>
 
+html{
+scroll-behavior:smooth;
+}
+
 body{
-font-family: Arial, sans-serif;
+font-family:Arial, sans-serif;
 margin:0;
 background:#0f172a;
 color:#e5e7eb;
 }
 
-header{
+/* Navigation */
+
+nav{
 background:#020617;
-padding:50px 20px;
-text-align:center;
+padding:15px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #1e293b;
+position:sticky;
+top:0;
+z-index:1000;
 }
 
-header h1{
+nav h2{
 margin:0;
-font-size:42px;
 color:#38bdf8;
-letter-spacing:1px;
+font-size:20px;
 }
 
-header p{
+nav a{
+color:#cbd5f5;
+text-decoration:none;
+margin-left:20px;
+font-size:14px;
+}
+
+nav a:hover{
+color:#38bdf8;
+}
+
+/* Hero */
+
+.hero{
+text-align:center;
+padding:80px 20px;
+background:#020617;
+}
+
+.hero h1{
+font-size:48px;
+margin:0;
+color:#38bdf8;
+}
+
+.hero p{
 margin-top:10px;
 color:#94a3b8;
 }
 
+.hero button{
+margin-top:25px;
+padding:12px 22px;
+background:#38bdf8;
+border:none;
+border-radius:6px;
+color:white;
+font-size:15px;
+cursor:pointer;
+}
+
+.hero button:hover{
+background:#0ea5e9;
+}
+
+/* Container */
+
 .container{
 max-width:1000px;
 margin:auto;
-padding:40px 20px;
+padding:60px 20px;
 }
+
+/* Projekte */
 
 .projects{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:25px;
-margin-top:20px;
+margin-top:25px;
 }
 
 .card{
 background:#020617;
 padding:25px;
 border-radius:12px;
-transition:0.25s;
 border:1px solid #1e293b;
+transition:0.3s;
+opacity:0;
+transform:translateY(40px);
+}
+
+.card.show{
+opacity:1;
+transform:translateY(0);
 }
 
 .card:hover{
@@ -64,29 +127,28 @@ color:#38bdf8;
 }
 
 .card p{
-color:#cbd5f5;
 font-size:14px;
-line-height:1.5;
+color:#cbd5f5;
 }
 
 .card a{
 display:inline-block;
 margin-top:12px;
-text-decoration:none;
-color:white;
-background:#38bdf8;
 padding:9px 16px;
+background:#38bdf8;
+color:white;
+text-decoration:none;
 border-radius:6px;
 font-size:14px;
-transition:0.2s;
 }
 
 .card a:hover{
 background:#0ea5e9;
 }
 
+/* Kontakt */
+
 .contact{
-margin-top:60px;
 background:#020617;
 padding:30px;
 border-radius:12px;
@@ -114,9 +176,7 @@ border:none;
 border-radius:6px;
 background:#38bdf8;
 color:white;
-font-size:14px;
 cursor:pointer;
-transition:0.2s;
 }
 
 button:hover{
@@ -125,17 +185,17 @@ background:#0ea5e9;
 
 .success{
 display:none;
-margin-top:15px;
+background:#16a34a;
 padding:10px;
 border-radius:6px;
-background:#16a34a;
-color:white;
-font-size:14px;
+margin-top:10px;
 }
+
+/* Footer */
 
 footer{
 text-align:center;
-padding:25px;
+padding:30px;
 border-top:1px solid #1e293b;
 color:#64748b;
 font-size:14px;
@@ -147,12 +207,31 @@ margin-top:60px;
 
 <body>
 
-<header>
-<h1>xJRx98 Software</h1>
-<p>Softwareprojekte & Tools</p>
-</header>
+<nav>
 
-<div class="container">
+<h2>xJRx98</h2>
+
+<div>
+<a href="#start">Start</a>
+<a href="#projekte">Projekte</a>
+<a href="#kontakt">Kontakt</a>
+</div>
+
+</nav>
+
+
+<section class="hero" id="start">
+
+<h1>xJRx98 Software</h1>
+
+<p>Softwareprojekte, Tools und Anwendungen</p>
+
+<button onclick="document.getElementById('projekte').scrollIntoView()">Projekte ansehen</button>
+
+</section>
+
+
+<div class="container" id="projekte">
 
 <h2>Meine Projekte</h2>
 
@@ -178,10 +257,16 @@ margin-top:60px;
 
 </div>
 
+</div>
+
+
+<div class="container" id="kontakt">
+
 <div class="contact">
 
 <h2>Kontakt</h2>
-<p>Für Fragen zu meinen Programmen oder Projekten kannst du mir eine Nachricht senden.</p>
+
+<p>Fragen zu meinen Programmen oder Projekten? Schreib mir eine Nachricht.</p>
 
 <form id="contactForm" action="https://formspree.io/f/xjgarnbj" method="POST">
 
@@ -189,7 +274,7 @@ margin-top:60px;
 
 <input type="email" name="email" placeholder="Deine E-Mail" required>
 
-<textarea name="message" placeholder="Deine Nachricht" rows="5" required></textarea>
+<textarea name="message" rows="5" placeholder="Deine Nachricht" required></textarea>
 
 <button type="submit">Nachricht senden</button>
 
@@ -204,20 +289,25 @@ Nachricht wurde erfolgreich gesendet 👍
 </div>
 
 <footer>
+
 © 2026 xJRx98 Software
+
 </footer>
+
 
 <script>
 
-const form = document.getElementById("contactForm");
-const success = document.getElementById("successMessage");
+/* Formular */
 
-form.addEventListener("submit", function(){
+const form=document.getElementById("contactForm");
+const success=document.getElementById("successMessage");
+
+form.addEventListener("submit",function(){
 
 setTimeout(function(){
 
 form.reset();
-success.style.display = "block";
+success.style.display="block";
 
 setTimeout(()=>{
 success.style.display="none";
@@ -225,6 +315,22 @@ success.style.display="none";
 
 },500);
 
+});
+
+/* Scroll Animation */
+
+const cards=document.querySelectorAll(".card");
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+});
+
+cards.forEach(card=>{
+observer.observe(card);
 });
 
 </script>
