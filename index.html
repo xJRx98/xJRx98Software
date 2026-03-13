@@ -35,6 +35,10 @@
       padding: 40px 20px;
     }
 
+    h2 {
+      margin-top: 0;
+    }
+
     .projects {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -75,12 +79,48 @@
       font-size: 14px;
     }
 
+    .contact {
+      margin-top: 60px;
+      background: #020617;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+    }
+
+    form {
+      display: grid;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    input, textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-family: inherit;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #38bdf8;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
     footer {
       text-align: center;
       padding: 25px;
       border-top: 1px solid #1e293b;
       color: #64748b;
       font-size: 14px;
+      margin-top: 60px;
     }
   </style>
 </head>
@@ -92,6 +132,7 @@
 </header>
 
 <div class="container">
+
   <h2>Meine Projekte</h2>
 
   <div class="projects">
@@ -104,7 +145,7 @@
 
     <div class="card">
       <h3>Wasserpantscher Tool</h3>
-      <p>Softwarelösung für Aquaristik‑Berechnungen und Wasserwerte.</p>
+      <p>Softwarelösung für Aquaristik-Berechnungen und Wasserwerte.</p>
       <a href="https://www.wasserpantscher.at/shop_content.php?coID=3300015" target="_blank">Projekt ansehen</a>
     </div>
 
@@ -115,19 +156,26 @@
     </div>
 
   </div>
-</div>
 
-  <section style="margin-top:60px;">
+  <div class="contact">
     <h2>Kontakt</h2>
-    <p>Für Fragen zu meinen Programmen oder Projekten kannst du mir hier eine Nachricht senden.</p>
+    <p>Für Fragen zu meinen Programmen oder Projekten kannst du mir eine Nachricht senden.</p>
 
-    <form action="mailto:j.ruhland98@gmx.de" method="post" enctype="text/plain" style="display:grid;gap:15px;max-width:500px;">
-      <input type="text" name="name" placeholder="Dein Name" required style="padding:10px;border-radius:6px;border:none;">
-      <input type="email" name="email" placeholder="Deine E-Mail" required style="padding:10px;border-radius:6px;border:none;">
-      <textarea name="message" placeholder="Deine Nachricht" rows="5" required style="padding:10px;border-radius:6px;border:none;"></textarea>
-      <button type="submit" style="padding:10px;border:none;border-radius:6px;background:#38bdf8;color:white;font-size:14px;cursor:pointer;">Nachricht senden</button>
+    <form action="https://formspree.io/f/xjgarnbj" method="POST">
+
+      <input type="text" name="name" placeholder="Dein Name" required>
+
+      <input type="email" name="email" placeholder="Deine E-Mail" required>
+
+      <textarea name="message" placeholder="Deine Nachricht" rows="5" required></textarea>
+
+      <button type="submit">Nachricht senden</button>
+
     </form>
-  </section>
+
+  </div>
+
+</div>
 
 <footer>
   © 2026 xJRx98 Software
