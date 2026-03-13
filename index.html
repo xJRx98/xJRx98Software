@@ -13,17 +13,18 @@ scroll-behavior:smooth;
 }
 
 body{
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 margin:0;
 background:#0f172a;
 color:#e5e7eb;
+line-height:1.6;
 }
 
 /* Navigation */
 
 nav{
 background:#020617;
-padding:15px 30px;
+padding:18px 40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -36,13 +37,12 @@ z-index:1000;
 nav h2{
 margin:0;
 color:#38bdf8;
-font-size:20px;
 }
 
 nav a{
 color:#cbd5f5;
 text-decoration:none;
-margin-left:20px;
+margin-left:25px;
 font-size:14px;
 }
 
@@ -53,30 +53,34 @@ color:#38bdf8;
 /* Hero */
 
 .hero{
+padding:120px 20px;
 text-align:center;
-padding:80px 20px;
-background:#020617;
+background:linear-gradient(180deg,#020617,#0f172a);
 }
 
 .hero h1{
-font-size:48px;
+font-size:56px;
 margin:0;
 color:#38bdf8;
 }
 
 .hero p{
-margin-top:10px;
+margin-top:20px;
+font-size:18px;
 color:#94a3b8;
+max-width:700px;
+margin-left:auto;
+margin-right:auto;
 }
 
 .hero button{
-margin-top:25px;
-padding:12px 22px;
+margin-top:35px;
+padding:14px 26px;
 background:#38bdf8;
 border:none;
-border-radius:6px;
+border-radius:8px;
 color:white;
-font-size:15px;
+font-size:16px;
 cursor:pointer;
 }
 
@@ -87,9 +91,30 @@ background:#0ea5e9;
 /* Container */
 
 .container{
-max-width:1000px;
+max-width:1100px;
 margin:auto;
-padding:60px 20px;
+padding:80px 20px;
+}
+
+/* Services */
+
+.services{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+.service{
+background:#020617;
+padding:25px;
+border-radius:12px;
+border:1px solid #1e293b;
+}
+
+.service h3{
+margin-top:0;
+color:#38bdf8;
 }
 
 /* Projekte */
@@ -98,7 +123,7 @@ padding:60px 20px;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:25px;
-margin-top:25px;
+margin-top:30px;
 }
 
 .card{
@@ -107,13 +132,6 @@ padding:25px;
 border-radius:12px;
 border:1px solid #1e293b;
 transition:0.3s;
-opacity:0;
-transform:translateY(40px);
-}
-
-.card.show{
-opacity:1;
-transform:translateY(0);
 }
 
 .card:hover{
@@ -144,6 +162,30 @@ font-size:14px;
 
 .card a:hover{
 background:#0ea5e9;
+}
+
+/* CTA */
+
+.cta{
+text-align:center;
+background:#020617;
+padding:80px 20px;
+border-top:1px solid #1e293b;
+border-bottom:1px solid #1e293b;
+}
+
+.cta h2{
+margin-top:0;
+}
+
+.cta button{
+margin-top:20px;
+padding:14px 26px;
+background:#38bdf8;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
 }
 
 /* Kontakt */
@@ -179,10 +221,6 @@ color:white;
 cursor:pointer;
 }
 
-button:hover{
-background:#0ea5e9;
-}
-
 .success{
 display:none;
 background:#16a34a;
@@ -199,7 +237,6 @@ padding:30px;
 border-top:1px solid #1e293b;
 color:#64748b;
 font-size:14px;
-margin-top:60px;
 }
 
 </style>
@@ -213,6 +250,7 @@ margin-top:60px;
 
 <div>
 <a href="#start">Start</a>
+<a href="#services">Services</a>
 <a href="#projekte">Projekte</a>
 <a href="#kontakt">Kontakt</a>
 </div>
@@ -222,18 +260,49 @@ margin-top:60px;
 
 <section class="hero" id="start">
 
-<h1>xJRx98 Software</h1>
+<h1>Custom Software Development</h1>
 
-<p>Softwareprojekte, Tools und Anwendungen</p>
+<p>
+Ich entwickle individuelle Softwarelösungen, Tools und Anwendungen
+für kleine Projekte, Webseiten und Unternehmen.
+</p>
 
-<button onclick="document.getElementById('projekte').scrollIntoView()">Projekte ansehen</button>
+<button onclick="document.getElementById('kontakt').scrollIntoView()">
+Projekt starten
+</button>
 
 </section>
 
 
+<div class="container" id="services">
+
+<h2>Services</h2>
+
+<div class="services">
+
+<div class="service">
+<h3>Softwareentwicklung</h3>
+<p>Entwicklung individueller Programme und Tools.</p>
+</div>
+
+<div class="service">
+<h3>Webentwicklung</h3>
+<p>Moderne Webseiten und Web-Apps.</p>
+</div>
+
+<div class="service">
+<h3>Automatisierung</h3>
+<p>Tools zur Automatisierung von Arbeitsprozessen.</p>
+</div>
+
+</div>
+
+</div>
+
+
 <div class="container" id="projekte">
 
-<h2>Meine Projekte</h2>
+<h2>Projekte</h2>
 
 <div class="projects">
 
@@ -260,13 +329,24 @@ margin-top:60px;
 </div>
 
 
+<section class="cta">
+
+<h2>Hast du ein Softwareprojekt?</h2>
+
+<p>Kontaktiere mich und wir entwickeln gemeinsam eine Lösung.</p>
+
+<button onclick="document.getElementById('kontakt').scrollIntoView()">
+Kontakt aufnehmen
+</button>
+
+</section>
+
+
 <div class="container" id="kontakt">
 
 <div class="contact">
 
 <h2>Kontakt</h2>
-
-<p>Fragen zu meinen Programmen oder Projekten? Schreib mir eine Nachricht.</p>
 
 <form id="contactForm" action="https://formspree.io/f/xjgarnbj" method="POST">
 
@@ -293,47 +373,6 @@ Nachricht wurde erfolgreich gesendet 👍
 © 2026 xJRx98 Software
 
 </footer>
-
-
-<script>
-
-/* Formular */
-
-const form=document.getElementById("contactForm");
-const success=document.getElementById("successMessage");
-
-form.addEventListener("submit",function(){
-
-setTimeout(function(){
-
-form.reset();
-success.style.display="block";
-
-setTimeout(()=>{
-success.style.display="none";
-},5000);
-
-},500);
-
-});
-
-/* Scroll Animation */
-
-const cards=document.querySelectorAll(".card");
-
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
-}
-});
-});
-
-cards.forEach(card=>{
-observer.observe(card);
-});
-
-</script>
 
 </body>
 </html>
