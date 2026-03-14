@@ -3,14 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>xJRx98 Software</title>
 
 <style>
 
-html{
-scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth;}
 
 body{
 font-family:Arial,sans-serif;
@@ -20,7 +17,7 @@ color:#e5e7eb;
 line-height:1.6;
 }
 
-/* Navigation */
+/* NAV */
 
 nav{
 background:#020617;
@@ -31,13 +28,9 @@ align-items:center;
 border-bottom:1px solid #1e293b;
 position:sticky;
 top:0;
-z-index:1000;
 }
 
-nav h2{
-margin:0;
-color:#38bdf8;
-}
+nav h2{color:#38bdf8;margin:0;}
 
 nav a{
 color:#cbd5f5;
@@ -46,15 +39,13 @@ margin-left:25px;
 font-size:14px;
 }
 
-nav a:hover{
-color:#38bdf8;
-}
+nav a:hover{color:#38bdf8;}
 
-/* Hero */
+/* HERO */
 
 .hero{
-padding:120px 20px;
 text-align:center;
+padding:140px 20px;
 background:linear-gradient(180deg,#020617,#0f172a);
 }
 
@@ -75,20 +66,18 @@ margin-right:auto;
 
 .hero button{
 margin-top:35px;
-padding:14px 26px;
+padding:14px 30px;
+font-size:16px;
 background:#38bdf8;
 border:none;
 border-radius:8px;
 color:white;
-font-size:16px;
 cursor:pointer;
 }
 
-.hero button:hover{
-background:#0ea5e9;
-}
+.hero button:hover{background:#0ea5e9;}
 
-/* Container */
+/* CONTAINER */
 
 .container{
 max-width:1100px;
@@ -96,7 +85,7 @@ margin:auto;
 padding:80px 20px;
 }
 
-/* Services */
+/* SERVICES */
 
 .services{
 display:grid;
@@ -112,18 +101,31 @@ border-radius:12px;
 border:1px solid #1e293b;
 }
 
-.service h3{
-margin-top:0;
-color:#38bdf8;
+.service h3{color:#38bdf8;margin-top:0;}
+
+/* TECH STACK */
+
+.tech{
+display:flex;
+flex-wrap:wrap;
+gap:15px;
+margin-top:30px;
 }
 
-/* Projekte */
+.tech span{
+background:#020617;
+padding:10px 16px;
+border-radius:6px;
+border:1px solid #1e293b;
+}
+
+/* PROJECTS */
 
 .projects{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:25px;
-margin-top:30px;
+margin-top:40px;
 }
 
 .card{
@@ -139,48 +141,31 @@ transform:translateY(-6px);
 box-shadow:0 15px 35px rgba(0,0,0,0.45);
 }
 
-.card h3{
-margin-top:0;
-color:#38bdf8;
-}
-
-.card p{
-font-size:14px;
-color:#cbd5f5;
-}
+.card h3{color:#38bdf8;margin-top:0;}
 
 .card a{
 display:inline-block;
 margin-top:12px;
-padding:9px 16px;
+padding:10px 18px;
 background:#38bdf8;
 color:white;
 text-decoration:none;
 border-radius:6px;
-font-size:14px;
-}
-
-.card a:hover{
-background:#0ea5e9;
 }
 
 /* CTA */
 
 .cta{
 text-align:center;
-background:#020617;
 padding:80px 20px;
+background:#020617;
 border-top:1px solid #1e293b;
 border-bottom:1px solid #1e293b;
 }
 
-.cta h2{
-margin-top:0;
-}
-
 .cta button{
 margin-top:20px;
-padding:14px 26px;
+padding:14px 28px;
 background:#38bdf8;
 border:none;
 border-radius:6px;
@@ -188,7 +173,7 @@ color:white;
 cursor:pointer;
 }
 
-/* Kontakt */
+/* CONTACT */
 
 .contact{
 background:#020617;
@@ -221,22 +206,13 @@ color:white;
 cursor:pointer;
 }
 
-.success{
-display:none;
-background:#16a34a;
-padding:10px;
-border-radius:6px;
-margin-top:10px;
-}
-
-/* Footer */
+/* FOOTER */
 
 footer{
 text-align:center;
 padding:30px;
 border-top:1px solid #1e293b;
 color:#64748b;
-font-size:14px;
 }
 
 </style>
@@ -245,16 +221,15 @@ font-size:14px;
 <body>
 
 <nav>
-
 <h2>xJRx98</h2>
 
 <div>
 <a href="#start">Start</a>
 <a href="#services">Services</a>
+<a href="#tech">Technologien</a>
 <a href="#projekte">Projekte</a>
 <a href="#kontakt">Kontakt</a>
 </div>
-
 </nav>
 
 
@@ -263,8 +238,8 @@ font-size:14px;
 <h1>Custom Software Development</h1>
 
 <p>
-Ich entwickle individuelle Softwarelösungen, Tools und Anwendungen
-für kleine Projekte, Webseiten und Unternehmen.
+Individuelle Softwarelösungen, Tools und Anwendungen
+für Webseiten, Unternehmen und Automatisierung.
 </p>
 
 <button onclick="document.getElementById('kontakt').scrollIntoView()">
@@ -282,7 +257,7 @@ Projekt starten
 
 <div class="service">
 <h3>Softwareentwicklung</h3>
-<p>Entwicklung individueller Programme und Tools.</p>
+<p>Individuelle Programme und Tools für verschiedene Anwendungen.</p>
 </div>
 
 <div class="service">
@@ -292,8 +267,27 @@ Projekt starten
 
 <div class="service">
 <h3>Automatisierung</h3>
-<p>Tools zur Automatisierung von Arbeitsprozessen.</p>
+<p>Automatisierung von Arbeitsprozessen und Datenauswertung.</p>
 </div>
+
+</div>
+
+</div>
+
+
+<div class="container" id="tech">
+
+<h2>Technologien</h2>
+
+<div class="tech">
+
+<span>C#</span>
+<span>.NET</span>
+<span>Python</span>
+<span>JavaScript</span>
+<span>HTML</span>
+<span>CSS</span>
+<span>SQL</span>
 
 </div>
 
@@ -320,7 +314,7 @@ Projekt starten
 
 <div class="card">
 <h3>Patientenaufruf System</h3>
-<p>Programm zum Aufrufen von Patienten im Wartezimmer für Arztpraxen.</p>
+<p>Programm zum Aufrufen von Patienten im Wartezimmer.</p>
 <a href="#">Mehr Informationen</a>
 </div>
 
@@ -348,7 +342,7 @@ Kontakt aufnehmen
 
 <h2>Kontakt</h2>
 
-<form id="contactForm" action="https://formspree.io/f/xjgarnbj" method="POST">
+<form action="https://formspree.io/f/xjgarnbj" method="POST">
 
 <input type="text" name="name" placeholder="Dein Name" required>
 
@@ -358,10 +352,6 @@ Kontakt aufnehmen
 
 <button type="submit">Nachricht senden</button>
 
-<div class="success" id="successMessage">
-Nachricht wurde erfolgreich gesendet 👍
-</div>
-
 </form>
 
 </div>
@@ -369,9 +359,7 @@ Nachricht wurde erfolgreich gesendet 👍
 </div>
 
 <footer>
-
 © 2026 xJRx98 Software
-
 </footer>
 
 </body>
