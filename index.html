@@ -1256,34 +1256,59 @@ footer p {
 
 <!-- ═══════════════════ PROJECT: C&P APP ═══════════════════ -->
 <div id="page-cp-app" class="page project-detail-page">
+
+  <!-- DOWNLOAD MODAL -->
+  <div id="download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+    <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
+      <button onclick="document.getElementById('download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">×</button>
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
+      <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <a href="https://play.google.com/store/apps/details?id=com.xjrx98.cp_aquaplants&pli=1" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M3.18 23.76a1.52 1.52 0 001.53-.06l10.8-6.24-2.84-2.84zM1.5 1.5A1.5 1.5 0 000 3v18a1.5 1.5 0 001.5 1.5l.12-.01 10.13-10.14L1.62 2.22A1.5 1.5 0 001.5 1.5zm20.34 8.94L18.9 8.46l-3.17 3.18 3.17 3.17 2.97-1.71a1.5 1.5 0 000-2.66zM4.71.3 15.52 6.54l-2.84 2.84z"/></svg>
+          <div><div style="font-weight:600">Android</div><div style="font-size:12px;color:var(--muted2);margin-top:1px">Google Play Store</div></div>
+        </a>
+        <a href="https://apps.apple.com/de/app/c-p-aquaplants/id6751054001" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <div><div style="font-weight:600">iOS</div><div style="font-size:12px;color:var(--muted2);margin-top:1px">Apple App Store</div></div>
+        </a>
+        <a href="https://my.hidrive.com/lnk/ESXVUt194#file" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M0 12.402l11.113-.003L11.11 24H0zm11.11-12.402L0 .003V11.11l11.11.003zM12 0l-.003 11.113L24 11.11V0zm0 24l12-.003V12.89L12 12.887z"/></svg>
+          <div><div style="font-weight:600">Windows</div><div style="font-size:12px;color:var(--muted2);margin-top:1px">via C&P Aquaplants Website</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div class="project-detail-hero">
     <button class="back-btn" onclick="showPage('home'); scrollToSection('projekte')">
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Zurück zu Projekten
     </button>
     <p class="project-num">// 01 — Aquaristik</p>
-    <h1>C&P App</h1>
-    <p class="tagline">Eine umfassende App für Aquaristik-Enthusiasten — mit praktischen Tools, Pflegeplänen und nützlichen Funktionen rund um Pflanzen und Fische.</p>
+    <h1>C&P Aquaplants App</h1>
+    <p class="tagline">Die offizielle App von C&P Aquaplants — ein digitaler Düngerechner und Photometer-Auswertungstool für Aquaristen, verfügbar auf Android, iOS und Windows.</p>
   </div>
 
   <div class="project-detail-content">
     <div class="project-detail-main">
       <h2>Über das Projekt</h2>
-      <p>Die C&P App wurde in enger Zusammenarbeit mit dem Team von CP Aquaplants entwickelt und richtet sich an Aquaristik-Hobbyisten sowie Profis. Das Ziel war es, einen digitalen Begleiter zu schaffen, der den Alltag rund um Aquarien und Wasserpflanzen deutlich vereinfacht.</p>
-      <p>Von der Pflanzenpflege bis hin zur Verwaltung des eigenen Aquariums bietet die App eine intuitive Oberfläche und zuverlässige Funktionen, die speziell auf die Bedürfnisse der Aquaristik-Community zugeschnitten sind.</p>
+      <p>Die C&P Aquaplants App wurde in enger Zusammenarbeit mit dem Team von C&P Aquaplants entwickelt — einem deutschen Hersteller von hochwertigen Aquarium-Düngern und Wassertests. Ziel war es, die komplexe Welt der Aquaristik-Berechnungen direkt auf das Smartphone zu bringen.</p>
+      <p>Die App richtet sich an Hobbyisten und Profis, die das C&P Düngesystem nutzen oder ihre Wasserwerte mit dem C&P Photometer messen. Sie ersetzt mühsame manuelle Berechnungen durch ein intuitives, mobiles Werkzeug.</p>
 
       <h2>Funktionen</h2>
       <ul>
-        <li>Pflanzendatenbank mit Pflegehinweisen und Wachstumsinfos</li>
-        <li>Wasserparameter-Tracking und -Protokollierung</li>
-        <li>Erinnerungsfunktionen für Wasserwechsel und Düngung</li>
-        <li>Kompatibilitäts-Check für Fische und Pflanzen</li>
-        <li>Persönliches Aquarium-Tagebuch</li>
-        <li>Offline-Nutzung der wichtigsten Funktionen</li>
+        <li>Düngerechner speziell für das C&P Aquaplants Düngesystem</li>
+        <li>Photometer-Auswertung: Messwerte direkt in der App ablesen und auswerten</li>
+        <li>Dosierungsempfehlungen für alle C&P Produkte</li>
+        <li>Unterstützung für Leitungswasser- und Osmosewasser-Systeme</li>
+        <li>Übersichtliche Darstellung aller relevanten Wasserparameter</li>
+        <li>Verfügbar für Android, iOS und Windows</li>
       </ul>
 
-      <h2>Technologie & Umsetzung</h2>
-      <p>Die Applikation wurde als plattformübergreifende Desktop-Anwendung entwickelt und ist direkt über die CP Aquaplants Website verfügbar. Besonderer Wert wurde auf eine schnelle Ladezeit, eine übersichtliche Benutzeroberfläche und stabile Performance auch bei großen Datensätzen gelegt.</p>
+      <h2>Hintergrund</h2>
+      <p>C&P Aquaplants hat sich mit über 500 betreuten Becken und einem wissenschaftlich fundierten Düngesystem in der deutschsprachigen Aquaristik-Community einen Namen gemacht. Die App ist das digitale Pendant dazu — und ermöglicht es Nutzern, ihr Becken noch präziser und einfacher zu pflegen.</p>
+      <p>Die App ist kostenlos im Google Play Store und Apple App Store erhältlich. Die Windows-Version steht direkt über die C&P Aquaplants Website zum Download bereit.</p>
     </div>
 
     <div class="project-detail-sidebar">
@@ -1295,11 +1320,11 @@ footer p {
         </div>
         <div class="info-row">
           <span class="label">Typ</span>
-          <span class="value">Desktop App</span>
+          <span class="value">Mobile & Desktop App</span>
         </div>
         <div class="info-row">
           <span class="label">Plattform</span>
-          <span class="value">Windows / macOS</span>
+          <span class="value">Android / iOS / Windows</span>
         </div>
         <div class="info-row">
           <span class="label">Status</span>
@@ -1307,18 +1332,8 @@ footer p {
         </div>
       </div>
 
-      <div class="info-card">
-        <h4>// Technologien</h4>
-        <div class="tag-list">
-          <span class="tag">Desktop</span>
-          <span class="tag">Datenbank</span>
-          <span class="tag">UI/UX</span>
-          <span class="tag">Offline</span>
-        </div>
-      </div>
-
       <div class="project-detail-cta">
-        <a href="https://www.cp-aquaplants.de/i/c-und-p-app-download" target="_blank" class="cta-primary-btn">App herunterladen ↗</a>
+        <button class="cta-primary-btn" onclick="document.getElementById('download-modal').style.display='flex'">App herunterladen ↓</button>
         <button class="cta-secondary-btn" onclick="showPage('home'); scrollToSection('kontakt')">Ähnliches Projekt anfragen</button>
       </div>
     </div>
@@ -1326,7 +1341,7 @@ footer p {
 
   <footer>
     <span onclick="showPage('home')" class="footer-logo-link">
-      <img src="data:image/jpeg;base64,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" alt="xJRx98 Software" class="footer-logo-img">
+      <!-- logo img hier wie gehabt -->
     </span>
     <div class="footer-right">
       <p>© 2026 xJRx98 Software</p>
@@ -1334,8 +1349,6 @@ footer p {
     </div>
   </footer>
 </div>
-
-
 <!-- ═══════════════════ PROJECT: WASSERPANTSCHER ═══════════════════ -->
 <div id="page-wasserpantscher" class="page project-detail-page">
   <div class="project-detail-hero">
