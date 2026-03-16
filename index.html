@@ -1654,14 +1654,17 @@ footer p {
 
 
 <script>
-// ─── PAGE NAVIGATION ───
-function showPage(pageId) {
+// ─── HISTORY / BACK BUTTON SUPPORT ───
+function showPage(pageId, pushState = true) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const target = document.getElementById('page-' + pageId);
   if (target) {
     target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     initReveal();
+    if (pushState) {
+      history.pushState({ page: pageId }, '', '#' + pageId);
+    }
   }
 }
 
@@ -1675,6 +1678,22 @@ function scrollToSection(sectionId) {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }, 100);
 }
+
+// Browser Zurück/Vor-Taste
+window.addEventListener('popstate', (e) => {
+  const pageId = e.state?.page || 'home';
+  showPage(pageId, false);
+});
+
+// Beim ersten Laden: State setzen
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = location.hash.replace('#', '');
+  const validPages = ['home', 'cp-app', 'wasserpantscher', 'patientenaufruf', 'impressum'];
+  const startPage = validPages.includes(hash) ? hash : 'home';
+  history.replaceState({ page: startPage }, '', startPage === 'home' ? location.pathname : '#' + startPage);
+  showPage(startPage, false);
+  initReveal();
+});
 
 // ─── REVEAL ANIMATIONS ───
 function initReveal() {
@@ -1697,9 +1716,6 @@ function initReveal() {
     observer.observe(el);
   });
 }
-
-// Init on load
-initReveal();
 </script>
 </body>
 </html>
