@@ -1627,6 +1627,138 @@ footer p {
 @media (max-width: 768px) {
   #scroll-top { bottom: 80px; right: 16px; }
 }
+
+/* --- UEBER MICH --- */
+#ueber-mich { background: var(--bg); }
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 56px;
+}
+
+.about-text p {
+  font-size: 15px;
+  color: var(--muted2);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.about-text p:last-child { margin-bottom: 0; }
+
+.about-text strong { color: var(--text); font-weight: 600; }
+
+.about-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(61,189,177,.06);
+  border: 1px solid rgba(61,189,177,.2);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: .04em;
+  margin-bottom: 24px;
+}
+
+.tech-stack { margin-top: 0; }
+
+.tech-stack h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.tech-category { margin-bottom: 28px; }
+
+.tech-category-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted2);
+  letter-spacing: .03em;
+  transition: border-color .2s, color .2s;
+}
+
+.tech-tag:hover {
+  border-color: var(--border-hi);
+  color: var(--text);
+}
+
+.tech-tag.primary {
+  background: rgba(61,189,177,.06);
+  border-color: rgba(61,189,177,.2);
+  color: var(--accent);
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+.about-stat {
+  background: var(--surface);
+  padding: 24px;
+  text-align: center;
+}
+
+.about-stat-value {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+  letter-spacing: -.02em;
+}
+
+.about-stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .about-layout { grid-template-columns: 1fr; gap: 48px; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
@@ -1663,7 +1795,7 @@ footer p {
     <div class="hero-orb hero-orb-2"></div>
     <div class="hero-badge">Verfügbar für neue Projekte</div>
     <h1>Custom Software<br><em>Development.</em></h1>
-    <p class="hero-sub">Individuelle Softwarelösungen, Tools und Anwendungen für Webseiten, Unternehmen und Automatisierung - präzise gebaut, termingerecht geliefert.</p>
+    <p class="hero-sub">Individuelle Softwarelösungen, Tools und Anwendungen für Webseiten, Unternehmen und Automatisierung - präzise gebaut, termingerecht geliefert. Ideal für kleine bis mittelgroße Ideen und Projekte - privat wie geschäftlich.</p>
     <div class="hero-actions">
       <a onclick="showPage('home'); scrollToSection('kontakt')" class="btn-primary">Projekt besprechen</a>
       <a onclick="showPage('home'); scrollToSection('projekte')" class="btn-ghost">Referenzen ansehen</a>
@@ -1672,6 +1804,8 @@ footer p {
   </section>
 
   <hr class="divider">
+
+
 
   <section id="services">
     <div class="wrap">
@@ -1720,19 +1854,40 @@ footer p {
           <p class="project-num">01 / Aquaristik</p>
           <h3>C&amp;P Aquaplants App</h3>
           <p>App zur Unterstützung rund um Aquaristik und Pflanzenpflege. Praktische Tools und nützliche Funktionen für Hobbyisten und Profis.</p>
-          <button class="project-link">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+          </div>
+          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
         </div>
         <div class="project-card reveal" onclick="showProject('wasserpantscher')">
           <p class="project-num">02 / Aquaristik</p>
           <h3>Wasserpantscher App</h3>
           <p>Softwarelösung für präzise Aquaristik-Berechnungen und Wasserwerteanalyse - zuverlässig und einfach bedienbar.</p>
-          <button class="project-link">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+          </div>
+          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
         </div>
         <div class="project-card reveal" onclick="showPage('patientenaufruf-produkt')">
           <p class="project-num">03 / Medizin</p>
           <h3>Patientenaufruf System</h3>
           <p>Digitales System zum strukturierten Aufrufen von Patienten im Wartezimmer - übersichtlich, effizient und zuverlässig.</p>
-          <button class="project-link">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">WebSocket</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">macOS</span>
+          </div>
+          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
         </div>
       </div>
     </div>
@@ -1766,6 +1921,7 @@ footer p {
             <div class="form-group"><label>E-Mail</label><input type="email" id="cf-email" placeholder="max@beispiel.de" required></div>
             <div class="form-group"><label>Nachricht</label><textarea id="cf-message" placeholder="Beschreib dein Projekt..." required></textarea></div>
             <button type="submit" class="form-submit" id="cf-btn">Nachricht senden -></button>
+            <p style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;font-family:var(--mono);">Mit dem Absenden stimmst du der Verarbeitung deiner Daten zur Bearbeitung deiner Anfrage zu. Weitere Infos in der <button onclick="showPage('datenschutz')" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:11px;font-family:var(--mono);text-decoration:underline;">Datenschutzerklärung</button>.</p>
             <p id="cf-status" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
           </form>
         </div>
@@ -1779,7 +1935,9 @@ footer p {
     </span>
     <div class="footer-right">
       <p>(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
+      <button class="footer-impressum-link" onclick="showPage('ueber-mich')">Über mich</button>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
+      <button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button>
     </div>
   </footer>
 </div><!-- end home page -->
@@ -1842,7 +2000,7 @@ footer p {
     </div>
   </div>
   <footer>
-    <span onclick="showPage('home')" class="footer-logo-link" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98</span>
+    <span onclick="showPage('home')" class="footer-logo-link" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
     <div class="footer-right">
       <p>(c) 2026 xJRx98 Software</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
@@ -1907,7 +2065,7 @@ footer p {
     </div>
   </div>
   <footer>
-    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98</span>
+    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
     <div class="footer-right">
       <p>(c) 2026 xJRx98 Software</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
@@ -2254,10 +2412,165 @@ footer p {
   </div>
 
   <footer>
-    <span onclick="showPage('home')" style="cursor:pointer;font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;">xJRx98</span>
+    <span onclick="showPage('home')" style="cursor:pointer;font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;">xJRx98 Software</span>
     <div class="footer-right">
       <p>(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
+    </div>
+  </footer>
+</div>
+
+<!-- =================== UEBER MICH PAGE =================== -->
+<div id="page-ueber-mich" class="page impressum-page">
+  <div class="impressum-content" style="max-width:860px;">
+    <button class="back-btn" onclick="showPage('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zur&uuml;ck zur Startseite</button>
+    <p class="section-label">// Wer steckt dahinter</p>
+    <h1>&Uuml;ber mich</h1>
+
+    <div class="impressum-block">
+      <h2>Zur Person</h2>
+      <p>Ich bin <strong style="color:var(--text);">Jonas Ruhland</strong> aus M&uuml;nchen &mdash; Versicherungsmathematiker im Hauptberuf und seit Kurzem zus&auml;tzlich selbst&auml;ndig als Softwareentwickler.</p>
+      <p style="margin-top:12px;">Ich habe <strong style="color:var(--text);">Mathematik mit software-lastigem Schwerpunkt</strong> im Bachelor und Master studiert. Diese Kombination aus analytischem Denken und technischem Know-how flie&szlig;t direkt in meine Projekte ein: pr&auml;zise Planung, sauberer Code, nachvollziehbare L&ouml;sungen.</p>
+      <p style="margin-top:12px;">Nebenberuflich entwickle ich individuelle Apps, Tools und Automatisierungsl&ouml;sungen &mdash; von der Idee bis zur Ver&ouml;ffentlichung im Store. Kein Overhead, keine Agentur &mdash; direkte Zusammenarbeit mit dem Entwickler.</p>
+    </div>
+
+    <div class="impressum-block">
+      <h2>Ausbildung</h2>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;">
+          <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Master of Science</p>
+          <p style="font-size:15px;color:var(--text);font-weight:500;margin-bottom:4px;">Mathematik &mdash; Schwerpunkt Technik, Optimierung und Simulation</p>
+          <p style="font-size:13px;color:var(--muted2);">Abgeschlossen</p>
+        </div>
+        <div style="padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;">
+          <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Bachelor of Science</p>
+          <p style="font-size:15px;color:var(--text);font-weight:500;margin-bottom:4px;">Mathematik &mdash; Schwerpunkt Technik, Optimierung und Simulation</p>
+          <p style="font-size:13px;color:var(--muted2);">Abgeschlossen</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="impressum-block">
+      <h2>Tech Stack</h2>
+      <div style="display:flex;flex-direction:column;gap:24px;">
+
+        <div>
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">Mobile &amp; Desktop</p>
+          <div class="tech-tags">
+            <span class="tech-tag primary">Flutter</span>
+            <span class="tech-tag primary">Dart</span>
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">C#</span>
+            <span class="tech-tag">C</span>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">Web &amp; Scripting</p>
+          <div class="tech-tags">
+            <span class="tech-tag primary">HTML</span>
+            <span class="tech-tag primary">CSS</span>
+            <span class="tech-tag primary">Python</span>
+            <span class="tech-tag">XML</span>
+            <span class="tech-tag">VBA</span>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">Daten &amp; Analyse</p>
+          <div class="tech-tags">
+            <span class="tech-tag primary">SQL</span>
+            <span class="tech-tag primary">R</span>
+            <span class="tech-tag primary">MATLAB</span>
+            <span class="tech-tag">LaTeX</span>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">Publishing</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Google Play Store</span>
+            <span class="tech-tag">Apple App Store</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="impressum-block" style="border-bottom:none;padding-bottom:0;">
+      <h2>Kurz &amp; Knapp</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+        <div style="background:var(--surface);padding:20px 24px;">
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Hauptberuf</p>
+          <p style="font-size:14px;color:var(--text);">Versicherungsmathematiker</p>
+        </div>
+        <div style="background:var(--surface);padding:20px 24px;">
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Selbst&auml;ndig seit</p>
+          <p style="font-size:14px;color:var(--text);">2025</p>
+        </div>
+        <div style="background:var(--surface);padding:20px 24px;">
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Spezialisierung</p>
+          <p style="font-size:14px;color:var(--text);">Flutter / Cross-Platform Apps</p>
+        </div>
+        <div style="background:var(--surface);padding:20px 24px;">
+          <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Standort</p>
+          <p style="font-size:14px;color:var(--text);">M&uuml;nchen, Deutschland</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
+    <div class="footer-right">
+      <p style="font-family:var(--mono);font-size:11px;color:var(--muted);">(c) 2026 xJRx98 Software</p>
+      <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
+      <button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button>
+    </div>
+  </footer>
+</div>
+
+<!-- =================== DATENSCHUTZ PAGE =================== -->
+<div id="page-datenschutz" class="page impressum-page">
+  <div class="impressum-content">
+    <button class="back-btn" onclick="showPage('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zur Startseite</button>
+    <p class="section-label">// Rechtliches</p>
+    <h1>Datenschutzerkl&auml;rung</h1>
+    <div class="impressum-block">
+      <h2>1. Verantwortlicher</h2>
+      <p>Jonas Ruhland, xJRx98 Software, Rauschbergstra&szlig;e 6, 81825 M&uuml;nchen<br>E-Mail: <a href="/cdn-cgi/l/email-protection#4a32203832737239252c3e3d2b382f0a2d2732642e2f"><span class="__cf_email__" data-cfemail="0971637b7130317a666f7d7e687b6c496e6471276d6c">[email&#160;protected]</span></a></p>
+    </div>
+    <div class="impressum-block">
+      <h2>2. Erhebung personenbezogener Daten</h2>
+      <p>Personenbezogene Daten werden auf dieser Website nur im technisch notwendigen Umfang erhoben. In keinem Fall werden die erhobenen Daten verkauft oder an Dritte weitergegeben.</p>
+    </div>
+    <div class="impressum-block">
+      <h2>3. Kontaktformular</h2>
+      <p>Wenn Sie das Kontaktformular nutzen, werden Name, E-Mail-Adresse und Nachricht zur Bearbeitung Ihrer Anfrage verarbeitet. Die Daten werden &uuml;ber Google Apps Script (Google LLC, USA) &uuml;bermittelt und per E-Mail weitergeleitet. Es erfolgt keine dauerhafte Speicherung auf externen Servern. Rechtsgrundlage: Art. 6 Abs. 1 lit. b und f DSGVO.</p>
+    </div>
+    <div class="impressum-block">
+      <h2>4. Google Fonts</h2>
+      <p>Diese Website verwendet Google Fonts (Google LLC, USA). Beim Laden der Seite wird eine Verbindung zu Google-Servern hergestellt, wodurch Ihre IP-Adresse &uuml;bermittelt werden kann. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Sie k&ouml;nnen die Nutzung &uuml;ber den Cookie-Hinweis ablehnen.</p>
+    </div>
+    <div class="impressum-block">
+      <h2>5. Lokale Speicherung</h2>
+      <p>Der localStorage Ihres Browsers wird ausschlie&szlig;lich zur Speicherung Ihrer Cookie-Einwilligung verwendet. Es werden keine Tracking- oder Marketingdaten gespeichert.</p>
+    </div>
+    <div class="impressum-block">
+      <h2>6. Ihre Rechte</h2>
+      <p>Sie haben das Recht auf Auskunft, Berichtigung, L&ouml;schung und Einschr&auml;nkung der Verarbeitung Ihrer Daten. Kontakt: <a href="/cdn-cgi/l/email-protection#354d5f474d0c0d465a5341425447507552584d1b5150"><span class="__cf_email__" data-cfemail="d9a1b3aba1e0e1aab6bfadaeb8abbc99beb4a1f7bdbc">[email&#160;protected]</span></a></p>
+    </div>
+    <div class="impressum-block">
+      <h2>7. Stand</h2>
+      <p>M&auml;rz 2026</p>
+    </div>
+  </div>
+  <footer>
+    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
+    <div class="footer-right">
+      <p style="font-family:var(--mono);font-size:11px;color:var(--muted);">(c) 2026 xJRx98 Software</p>
+      <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
+      <button class="footer-impressum-link" onclick="showPage('datenschutz')" style="color:var(--accent)">Datenschutz</button>
     </div>
   </footer>
 </div>
@@ -2299,13 +2612,13 @@ footer p {
     </div>
   </div>
   <footer>
-    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98</span>
+    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
     <div class="footer-right">
       <p style="font-family:var(--mono);font-size:11px;color:var(--muted);">(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')" style="color:var(--accent)">Impressum</button>
     </div>
   </footer>
-</div><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+</div><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function tryHistoryState(fn) {
   try { fn(); } catch(e) { /* history API not available in this context */ }
 }
@@ -2338,7 +2651,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let start = 'home';
   try {
     const hash = location.hash.replace('#', '');
-    const valid = ['home', 'cp-app', 'wasserpantscher', 'patientenaufruf-produkt', 'impressum'];
+    const valid = ['home', 'cp-app', 'wasserpantscher', 'patientenaufruf-produkt', 'impressum', 'datenschutz', 'ueber-mich'];
     if (valid.includes(hash)) start = hash;
     tryHistoryState(() => history.replaceState({ page: start }, '', start === 'home' ? location.pathname : '#' + start));
   } catch(e) {}
