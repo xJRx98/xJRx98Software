@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>xJRx98 Software – Custom Development</title>
+<title>xJRx98 Software - Custom Development</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -48,7 +48,7 @@ body::before {
   z-index: 0;
 }
 
-/* ─── NAV ─── */
+/* --- NAV --- */
 nav {
   position: sticky;
   top: 0;
@@ -128,11 +128,11 @@ nav {
   border-color: var(--accent);
 }
 
-/* ─── PAGE SYSTEM ─── */
+/* --- PAGE SYSTEM --- */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ─── HERO ─── */
+/* --- HERO --- */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -322,7 +322,7 @@ nav {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* ─── SECTION WRAPPER ─── */
+/* --- SECTION WRAPPER --- */
 section { position: relative; z-index: 1; }
 
 .wrap {
@@ -364,7 +364,7 @@ section { position: relative; z-index: 1; }
   margin: 0;
 }
 
-/* ─── SERVICES ─── */
+/* --- SERVICES --- */
 #services { background: var(--bg); }
 
 .services-grid {
@@ -418,7 +418,7 @@ section { position: relative; z-index: 1; }
   line-height: 1.65;
 }
 
-/* ─── PROJECTS ─── */
+/* --- PROJECTS --- */
 #projekte { background: var(--bg); }
 
 .projects-grid {
@@ -510,7 +510,7 @@ section { position: relative; z-index: 1; }
 .project-link:hover { gap: 12px; }
 .project-link svg { width: 14px; height: 14px; }
 
-/* ─── CTA ─── */
+/* --- CTA --- */
 .cta-section {
   background: var(--bg2);
   border-top: 1px solid var(--border);
@@ -552,7 +552,7 @@ section { position: relative; z-index: 1; }
   margin-bottom: 40px;
 }
 
-/* ─── CONTACT ─── */
+/* --- CONTACT --- */
 #kontakt { background: var(--bg); }
 
 .contact-layout {
@@ -669,7 +669,7 @@ section { position: relative; z-index: 1; }
   box-shadow: 0 6px 32px rgba(61,189,177,.25);
 }
 
-/* ─── PROJECT DETAIL PAGE ─── */
+/* --- PROJECT DETAIL PAGE --- */
 .project-detail-page {
   min-height: 100vh;
   background: var(--bg);
@@ -775,7 +775,7 @@ section { position: relative; z-index: 1; }
 }
 
 .project-detail-main ul li::before {
-  content: '—';
+  content: '--';
   position: absolute;
   left: 0;
   color: var(--accent);
@@ -894,7 +894,7 @@ section { position: relative; z-index: 1; }
   border-color: var(--accent);
 }
 
-/* ─── IMPRESSUM PAGE ─── */
+/* --- IMPRESSUM PAGE --- */
 .impressum-page { min-height: 100vh; background: var(--bg); }
 .impressum-content { max-width: 720px; margin: 0 auto; padding: 80px 40px; }
 .impressum-content .back-btn {
@@ -922,7 +922,7 @@ section { position: relative; z-index: 1; }
 .impressum-block a { color: var(--accent); text-decoration: none; }
 .impressum-block a:hover { text-decoration: underline; }
 
-/* ─── FOOTER ─── */
+/* --- FOOTER --- */
 footer {
   border-top: 1px solid var(--border);
   padding: 32px 48px;
@@ -953,7 +953,7 @@ footer p {
 }
 .footer-impressum-link:hover { color: var(--accent); }
 
-/* ─── ANIMATIONS ─── */
+/* --- ANIMATIONS --- */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -965,7 +965,7 @@ footer p {
 }
 .reveal.visible { opacity: 1; transform: none; }
 
-/* ─── RESPONSIVE ─── */
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
   nav { padding: 0 20px; }
   .nav-links { display: none; }
@@ -978,9 +978,9 @@ footer p {
   .project-detail-hero, .project-detail-content, .impressum-content { padding-left: 20px; padding-right: 20px; }
 }
 
-/* ══════════════════════════════════════════
+/* ==========================================
    PATIENTENAUFRUF PRODUKTSEITE
-   ══════════════════════════════════════════ */
+   ========================================== */
 
 #page-patientenaufruf-produkt .hero {
   min-height: 100vh;
@@ -1081,7 +1081,7 @@ footer p {
   border-color: var(--muted2); color: var(--text);
 }
 
-/* ── Stats ── */
+/* -- Stats -- */
 #page-patientenaufruf-produkt .stats-bar {
   background: var(--surface);
   border-top: 1px solid var(--border);
@@ -1113,7 +1113,7 @@ footer p {
   text-transform: uppercase; margin-top: 4px;
 }
 
-/* ── Section base ── */
+/* -- Section base -- */
 #page-patientenaufruf-produkt section { padding: 100px 48px; }
 #page-patientenaufruf-produkt .section-inner { max-width: 1100px; margin: 0 auto; }
 
@@ -1135,7 +1135,7 @@ footer p {
   max-width: 560px; line-height: 1.75;
 }
 
-/* ── Problem/Solution ── */
+/* -- Problem/Solution -- */
 #page-patientenaufruf-produkt .problem-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
   background: var(--border);
@@ -1165,14 +1165,14 @@ footer p {
 }
 
 #page-patientenaufruf-produkt .problem-list li::before {
-  content: '—'; font-family: var(--mono);
+  content: '--'; font-family: var(--mono);
   flex-shrink: 0; margin-top: 1px;
 }
 
 #page-patientenaufruf-produkt .problem-card.red  .problem-list li::before { color: #c94b6d; }
 #page-patientenaufruf-produkt .problem-card.green .problem-list li::before { color: var(--accent); }
 
-/* ── Features ── */
+/* -- Features -- */
 #page-patientenaufruf-produkt .features-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 1px; background: var(--border);
@@ -1206,7 +1206,7 @@ footer p {
   font-size: 13px; color: var(--muted2); line-height: 1.65;
 }
 
-/* ── How it works ── */
+/* -- How it works -- */
 #page-patientenaufruf-produkt .how-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 0; margin-top: 56px; position: relative;
@@ -1236,7 +1236,7 @@ footer p {
   font-size: 12px; color: var(--muted2); line-height: 1.6;
 }
 
-/* ── Platforms ── */
+/* -- Platforms -- */
 #page-patientenaufruf-produkt .platforms-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
   gap: 1px; background: var(--border); border: 1px solid var(--border);
@@ -1274,7 +1274,7 @@ footer p {
   letter-spacing: 0.04em; border-radius: 2px;
 }
 
-/* ── Pricing ── */
+/* -- Pricing -- */
 #page-patientenaufruf-produkt .pricing-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
   gap: 1px; background: var(--border); border: 1px solid var(--border);
@@ -1326,7 +1326,7 @@ footer p {
 }
 
 #page-patientenaufruf-produkt .pricing-features li::before {
-  content: '✓'; font-family: var(--mono); font-size: 11px;
+  content: '\2713'; font-family: var(--mono); font-size: 11px;
   color: var(--accent); flex-shrink: 0;
 }
 
@@ -1352,7 +1352,7 @@ footer p {
 
 #page-patientenaufruf-produkt .pricing-cta.filled:hover { background: var(--accent2); }
 
-/* ── CTA Section (Patientenaufruf) ── */
+/* -- CTA Section (Patientenaufruf) -- */
 #page-patientenaufruf-produkt .cta-section {
   background: var(--surface);
   border-top: 1px solid var(--border);
@@ -1379,7 +1379,7 @@ footer p {
 #page-patientenaufruf-produkt .cta-inner p { font-size: 14px; color: var(--muted2); margin-bottom: 0; }
 #page-patientenaufruf-produkt .cta-actions { display: flex; gap: 12px; flex-shrink: 0; }
 
-/* ── Reveal (Patientenaufruf) ── */
+/* -- Reveal (Patientenaufruf) -- */
 #page-patientenaufruf-produkt .reveal {
   opacity: 0; transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -1389,7 +1389,7 @@ footer p {
   opacity: 1; transform: translateY(0);
 }
 
-/* ── Responsive (Patientenaufruf) ── */
+/* -- Responsive (Patientenaufruf) -- */
 @media (max-width: 900px) {
   #page-patientenaufruf-produkt section { padding: 72px 24px; }
   #page-patientenaufruf-produkt .hero { padding: 120px 24px 72px; }
@@ -1427,10 +1427,10 @@ footer p {
     <a onclick="showPage('home'); scrollToSection('projekte')">Projekte</a>
     <a onclick="showPage('home'); scrollToSection('kontakt')">Kontakt</a>
   </div>
-  <a onclick="showPage('home'); scrollToSection('kontakt')" class="nav-cta">Projekt starten →</a>
+  <a onclick="showPage('home'); scrollToSection('kontakt')" class="nav-cta">Projekt starten -></a>
 </nav>
 
-<!-- ═══════════════════ HOME PAGE ═══════════════════ -->
+<!-- =================== HOME PAGE =================== -->
 <div id="page-home" class="page active">
 
   <section class="hero" id="start">
@@ -1438,7 +1438,7 @@ footer p {
     <div class="hero-orb hero-orb-2"></div>
     <div class="hero-badge">Verfügbar für neue Projekte</div>
     <h1>Custom Software<br><em>Development.</em></h1>
-    <p class="hero-sub">Individuelle Softwarelösungen, Tools und Anwendungen für Webseiten, Unternehmen und Automatisierung — präzise gebaut, termingerecht geliefert.</p>
+    <p class="hero-sub">Individuelle Softwarelösungen, Tools und Anwendungen für Webseiten, Unternehmen und Automatisierung - präzise gebaut, termingerecht geliefert.</p>
     <div class="hero-actions">
       <a onclick="showPage('home'); scrollToSection('kontakt')" class="btn-primary">Projekt besprechen</a>
       <a onclick="showPage('home'); scrollToSection('projekte')" class="btn-ghost">Referenzen ansehen</a>
@@ -1452,12 +1452,12 @@ footer p {
     <div class="wrap">
       <p class="section-label reveal">// Was ich mache</p>
       <h2 class="section-title reveal">Leistungen</h2>
-      <p class="section-desc reveal">Von der Idee bis zur fertigen Anwendung — maßgeschneidert für deine Anforderungen.</p>
+      <p class="section-desc reveal">Von der Idee bis zur fertigen Anwendung - maßgeschneidert für deine Anforderungen.</p>
       <div class="services-grid">
         <div class="service-item reveal">
           <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/></svg>
           <h3>Softwareentwicklung</h3>
-          <p>Desktop-Applikationen, Automatisierungstools und datengestützte Lösungen — präzise auf deine Anforderungen zugeschnitten.</p>
+          <p>Desktop-Applikationen, Automatisierungstools und datengestützte Lösungen - präzise auf deine Anforderungen zugeschnitten.</p>
         </div>
         <div class="service-item reveal">
           <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -1472,12 +1472,12 @@ footer p {
         <div class="service-item reveal">
           <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M12 18.5A6.5 6.5 0 1112 5.5a6.5 6.5 0 010 13zm0 0v3m0-16v-3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1.5 12h3m15 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
           <h3>Store-Publishing &amp; Verwaltung</h3>
-          <p>Ich veröffentliche deine App unter meinem Developer-Account im Google Play Store und Apple App Store — inklusive Store-Einträge, Screenshots, Beschreibungen und laufender Pflege der Listings.</p>
+          <p>Ich veröffentliche deine App unter meinem Developer-Account im Google Play Store und Apple App Store - inklusive Store-Einträge, Screenshots, Beschreibungen und laufender Pflege der Listings.</p>
         </div>
         <div class="service-item reveal">
           <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           <h3>Wartung &amp; Erweiterungen</h3>
-          <p>Laufende Betreuung deiner App oder Software — Bugfixes, OS-Updates, neue Features und Anpassungen, damit dein Produkt langfristig zuverlässig läuft und wächst.</p>
+          <p>Laufende Betreuung deiner App oder Software - Bugfixes, OS-Updates, neue Features und Anpassungen, damit dein Produkt langfristig zuverlässig läuft und wächst.</p>
         </div>
       </div>
     </div>
@@ -1489,7 +1489,7 @@ footer p {
     <div class="wrap">
       <p class="section-label reveal">// Referenzen</p>
       <h2 class="section-title reveal">Projekte</h2>
-      <p class="section-desc reveal">Ausgewählte Arbeiten — Software, die echten Mehrwert liefert.</p>
+      <p class="section-desc reveal">Ausgewählte Arbeiten - Software, die echten Mehrwert liefert.</p>
       <div class="projects-grid">
         <div class="project-card reveal" onclick="showProject('cp-app')">
           <p class="project-num">01 / Aquaristik</p>
@@ -1500,13 +1500,13 @@ footer p {
         <div class="project-card reveal" onclick="showProject('wasserpantscher')">
           <p class="project-num">02 / Aquaristik</p>
           <h3>Wasserpantscher App</h3>
-          <p>Softwarelösung für präzise Aquaristik-Berechnungen und Wasserwerteanalyse — zuverlässig und einfach bedienbar.</p>
+          <p>Softwarelösung für präzise Aquaristik-Berechnungen und Wasserwerteanalyse - zuverlässig und einfach bedienbar.</p>
           <button class="project-link">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
         </div>
         <div class="project-card reveal" onclick="showPage('patientenaufruf-produkt')">
           <p class="project-num">03 / Medizin</p>
           <h3>Patientenaufruf System</h3>
-          <p>Digitales System zum strukturierten Aufrufen von Patienten im Wartezimmer — übersichtlich, effizient und zuverlässig.</p>
+          <p>Digitales System zum strukturierten Aufrufen von Patienten im Wartezimmer - übersichtlich, effizient und zuverlässig.</p>
           <button class="project-link">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
         </div>
       </div>
@@ -1516,7 +1516,7 @@ footer p {
   <section class="cta-section">
     <div class="cta-inner">
       <h2 class="reveal">Hast du ein Softwareprojekt?</h2>
-      <p class="reveal">Kontaktiere mich und wir entwickeln gemeinsam eine Lösung — von der ersten Idee bis zum fertigen Produkt.</p>
+      <p class="reveal">Kontaktiere mich und wir entwickeln gemeinsam eine Lösung - von der ersten Idee bis zum fertigen Produkt.</p>
       <a onclick="showPage('home'); scrollToSection('kontakt')" class="btn-primary reveal">Kontakt aufnehmen</a>
     </div>
   </section>
@@ -1528,7 +1528,7 @@ footer p {
       <div class="contact-layout">
         <div class="contact-info reveal">
           <h3>Lass uns reden.</h3>
-          <p>Du hast eine Idee, ein Problem oder ein konkretes Projekt? Beschreib mir kurz, worum es geht — ich melde mich schnellstmöglich zurück.</p>
+          <p>Du hast eine Idee, ein Problem oder ein konkretes Projekt? Beschreib mir kurz, worum es geht - ich melde mich schnellstmöglich zurück.</p>
           <div class="contact-note">
             <div class="contact-note-dot"></div>
             <p><strong>Aktuell verfügbar</strong> für neue Projekte und Anfragen.</p>
@@ -1539,7 +1539,7 @@ footer p {
             <div class="form-group"><label>Name</label><input type="text" id="cf-name" placeholder="Max Mustermann" required></div>
             <div class="form-group"><label>E-Mail</label><input type="email" id="cf-email" placeholder="max@beispiel.de" required></div>
             <div class="form-group"><label>Nachricht</label><textarea id="cf-message" placeholder="Beschreib dein Projekt..." required></textarea></div>
-            <button type="submit" class="form-submit" id="cf-btn">Nachricht senden →</button>
+            <button type="submit" class="form-submit" id="cf-btn">Nachricht senden -></button>
             <p id="cf-status" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
           </form>
         </div>
@@ -1552,17 +1552,17 @@ footer p {
       <img src="logo.png" alt="xJRx98 Software" class="footer-logo-img">
     </span>
     <div class="footer-right">
-      <p>© 2026 xJRx98 Software — Alle Rechte vorbehalten</p>
+      <p>(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
     </div>
   </footer>
 </div><!-- end home page -->
 
-<!-- ═══════════════════ PROJECT: C&P APP ═══════════════════ -->
+<!-- =================== PROJECT: C&P APP =================== -->
 <div id="page-cp-app" class="page project-detail-page">
   <div id="download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
     <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
-      <button onclick="document.getElementById('download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">×</button>
+      <button onclick="document.getElementById('download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
       <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
       <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
       <div style="display:flex;flex-direction:column;gap:12px;">
@@ -1583,14 +1583,14 @@ footer p {
   </div>
   <div class="project-detail-hero">
     <button class="back-btn" onclick="showPage('home'); scrollToSection('projekte')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zu Projekten</button>
-    <p class="project-num">// 01 — Aquaristik</p>
+    <p class="project-num">// 01 - Aquaristik</p>
     <h1>C&amp;P Aquaplants App</h1>
-    <p class="tagline">Die offizielle App von C&amp;P Aquaplants — ein digitaler Düngerechner und Photometer-Auswertungstool für Aquaristen, verfügbar auf Android, iOS und Windows.</p>
+    <p class="tagline">Die offizielle App von C&amp;P Aquaplants - ein digitaler Düngerechner und Photometer-Auswertungstool für Aquaristen, verfügbar auf Android, iOS und Windows.</p>
   </div>
   <div class="project-detail-content">
     <div class="project-detail-main">
       <h2>Über das Projekt</h2>
-      <p>Die C&amp;P Aquaplants App wurde in enger Zusammenarbeit mit dem Team von C&amp;P Aquaplants entwickelt — einem deutschen Hersteller von hochwertigen Aquarium-Düngern und Wassertests.</p>
+      <p>Die C&amp;P Aquaplants App wurde in enger Zusammenarbeit mit dem Team von C&amp;P Aquaplants entwickelt - einem deutschen Hersteller von hochwertigen Aquarium-Düngern und Wassertests.</p>
       <h2>Funktionen</h2>
       <ul>
         <li>Düngerechner speziell für das C&amp;P Aquaplants Düngesystem</li>
@@ -1610,7 +1610,7 @@ footer p {
         <div class="info-row"><span class="label">Status</span><span class="value" style="color:#22c55e">Live</span></div>
       </div>
       <div class="project-detail-cta">
-        <button class="cta-primary-btn" onclick="document.getElementById('download-modal').style.display='flex'">App herunterladen ↓</button>
+        <button class="cta-primary-btn" onclick="document.getElementById('download-modal').style.display='flex'">App herunterladen v</button>
         <button class="cta-secondary-btn" onclick="showPage('home'); scrollToSection('kontakt')">Ähnliches Projekt anfragen</button>
       </div>
     </div>
@@ -1618,17 +1618,17 @@ footer p {
   <footer>
     <span onclick="showPage('home')" class="footer-logo-link" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98</span>
     <div class="footer-right">
-      <p>© 2026 xJRx98 Software</p>
+      <p>(c) 2026 xJRx98 Software</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
     </div>
   </footer>
 </div>
 
-<!-- ═══════════════════ PROJECT: WASSERPANTSCHER ═══════════════════ -->
+<!-- =================== PROJECT: WASSERPANTSCHER =================== -->
 <div id="page-wasserpantscher" class="page project-detail-page">
   <div id="download-modal-wp" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
     <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
-      <button onclick="document.getElementById('download-modal-wp').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">×</button>
+      <button onclick="document.getElementById('download-modal-wp').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
       <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
       <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
       <div style="display:flex;flex-direction:column;gap:12px;">
@@ -1649,9 +1649,9 @@ footer p {
   </div>
   <div class="project-detail-hero">
     <button class="back-btn" onclick="showPage('home'); scrollToSection('projekte')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zu Projekten</button>
-    <p class="project-num">// 02 — Aquaristik</p>
+    <p class="project-num">// 02 - Aquaristik</p>
     <h1>Wasserpantscher App</h1>
-    <p class="tagline">Die offizielle App von wasserpantscher.at — Millivolt-Messwerte des Fotometers direkt eingeben, mg/l ablesen, ohne Kurven oder Tabellen.</p>
+    <p class="tagline">Die offizielle App von wasserpantscher.at - Millivolt-Messwerte des Fotometers direkt eingeben, mg/l ablesen, ohne Kurven oder Tabellen.</p>
   </div>
   <div class="project-detail-content">
     <div class="project-detail-main">
@@ -1659,7 +1659,7 @@ footer p {
       <p>Die Wasserpantscher App wurde als digitales Companion-Tool für den österreichischen Aquaristik-Shop wasserpantscher.at entwickelt.</p>
       <h2>Funktionen</h2>
       <ul>
-        <li>Millivolt-Werte des Fotometers direkt eingeben — mg/l wird sofort berechnet</li>
+        <li>Millivolt-Werte des Fotometers direkt eingeben - mg/l wird sofort berechnet</li>
         <li>Unterstützung aller gängigen Wasserpantscher-Tests (NO3, PO4, Fe, K, Mg, Ca u.v.m.)</li>
         <li>Kein Ablesen von Kurven oder Tabellen mehr nötig</li>
         <li>Geeignet für Süßwasser- und Salzwasseraquarien sowie Teich und Leitungswasser</li>
@@ -1675,7 +1675,7 @@ footer p {
         <div class="info-row"><span class="label">Status</span><span class="value" style="color:#22c55e">Live</span></div>
       </div>
       <div class="project-detail-cta">
-        <button class="cta-primary-btn" onclick="document.getElementById('download-modal-wp').style.display='flex'">App herunterladen ↓</button>
+        <button class="cta-primary-btn" onclick="document.getElementById('download-modal-wp').style.display='flex'">App herunterladen v</button>
         <button class="cta-secondary-btn" onclick="showPage('home'); scrollToSection('kontakt')">Ähnliches Projekt anfragen</button>
       </div>
     </div>
@@ -1683,13 +1683,13 @@ footer p {
   <footer>
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98</span>
     <div class="footer-right">
-      <p>© 2026 xJRx98 Software</p>
+      <p>(c) 2026 xJRx98 Software</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
     </div>
   </footer>
 </div>
 
-<!-- ═══════════════════ PATIENTENAUFRUF PRODUKTSEITE ═══════════════════ -->
+<!-- =================== PATIENTENAUFRUF PRODUKTSEITE =================== -->
 <div id="page-patientenaufruf-produkt" class="page">
 
   <!-- Zurück-Button oben -->
@@ -1704,9 +1704,9 @@ footer p {
   <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 48px 28px;">
     <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;">
       <div>
-        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 03 — Medizin</p>
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 03 - Medizin</p>
         <h1 style="font-family:var(--mono);font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">Patientenaufruf System</h1>
-        <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Ein digitales System zum strukturierten und diskreten Aufrufen von Patienten im Wartezimmer — übersichtlich, DSGVO-konform und sofort einsatzbereit auf Windows, macOS, Android und iOS.</p>
+        <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Ein digitales System zum strukturierten und diskreten Aufrufen von Patienten im Wartezimmer - übersichtlich, DSGVO-konform und sofort einsatzbereit auf Windows, macOS, Android und iOS.</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;min-width:200px;">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
@@ -1731,15 +1731,15 @@ footer p {
     <div class="hero-grid"></div>
     <div class="hero-glow"></div>
     <div class="hero-inner">
-      <div class="hero-badge">Verfügbar · Windows · macOS · Android · iOS</div>
+      <div class="hero-badge">Verfügbar . Windows . macOS . Android . iOS</div>
       <h1>Das digitale<br>Wartezimmer<br><em>neu gedacht.</em></h1>
       <p class="hero-sub">
-        Strukturierter, diskreter Patientenaufruf für Arztpraxen —
+        Strukturierter, diskreter Patientenaufruf für Arztpraxen -
         ohne lautes Ausrufen, ohne Zettel, ohne Cloud.
         Komplett lokal, DSGVO-konform, sofort einsatzbereit.
       </p>
       <div class="hero-actions">
-        <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Demo anfragen →</a>
+        <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Demo anfragen -></a>
         <a href="#pa-funktionen" class="btn-secondary">Funktionen ansehen</a>
       </div>
     </div>
@@ -1753,7 +1753,7 @@ footer p {
         <span class="stat-label">Cloud-Abhängigkeit</span>
       </div>
       <div class="stat">
-        <span class="stat-value">∞</span>
+        <span class="stat-value">oo</span>
         <span class="stat-label">Clients gleichzeitig</span>
       </div>
       <div class="stat">
@@ -1773,7 +1773,7 @@ footer p {
       <p class="section-label reveal">// Das Problem</p>
       <h2 class="section-title reveal">Wartezimmer-Chaos<br><em>hat System.</em></h2>
       <p class="section-body reveal">
-        In vielen Praxen wird heute noch der Name des nächsten Patienten laut ausgerufen —
+        In vielen Praxen wird heute noch der Name des nächsten Patienten laut ausgerufen -
         unpersönlich, fehleranfällig und aus Datenschutzsicht problematisch.
         Das geht besser.
       </p>
@@ -1796,7 +1796,7 @@ footer p {
             <li>Sofortige Anzeige auf dem Wartezimmer-Display</li>
             <li>Verlauf der letzten Aufrufe immer sichtbar</li>
             <li>Mehrere Behandlungszimmer gleichzeitig verwaltbar</li>
-            <li>Keine Namen im Netz — alles lokal in der Praxis</li>
+            <li>Keine Namen im Netz - alles lokal in der Praxis</li>
             <li>Akustische Benachrichtigung am Display</li>
           </ul>
         </div>
@@ -1811,47 +1811,47 @@ footer p {
       <h2 class="section-title reveal">Alles was eine<br><em>Praxis braucht.</em></h2>
       <div class="features-grid reveal">
         <div class="feature-card">
-          <span class="feature-icon">🖥️</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Wartezimmer-Display</div>
-          <p class="feature-desc">Vollbild-Anzeige auf einem zweiten Bildschirm. Aktueller Aufruf groß, Verlauf darunter — mit Einblendanimation und Ton.</p>
+          <p class="feature-desc">Vollbild-Anzeige auf einem zweiten Bildschirm. Aktueller Aufruf groß, Verlauf darunter - mit Einblendanimation und Ton.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">📡</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Netzwerk-basiert</div>
-          <p class="feature-desc">WebSocket über TLS — alle Geräte in der Praxis sind verbunden. Mehrere Eingabe-Clients gleichzeitig möglich.</p>
+          <p class="feature-desc">WebSocket über TLS - alle Geräte in der Praxis sind verbunden. Mehrere Eingabe-Clients gleichzeitig möglich.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">📱</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Mobiler Client</div>
-          <p class="feature-desc">Aufrufe direkt vom Smartphone oder Tablet senden — für Ärzte, die sich nicht am Empfang befinden.</p>
+          <p class="feature-desc">Aufrufe direkt vom Smartphone oder Tablet senden - für Ärzte, die sich nicht am Empfang befinden.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">🎨</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Anpassbares Design</div>
-          <p class="feature-desc">Schriftfarben, Schriftgrößen und Hintergrundbild des Displays lassen sich zentral konfigurieren — live und ohne Neustart.</p>
+          <p class="feature-desc">Schriftfarben, Schriftgrößen und Hintergrundbild des Displays lassen sich zentral konfigurieren - live und ohne Neustart.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">🔒</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Lokal &amp; DSGVO-konform</div>
           <p class="feature-desc">Alle Daten bleiben im internen Netzwerk der Praxis. Keine Cloud, kein externer Server, keine dauerhaften Patientendaten.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">🏥</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Mehrere Zimmer</div>
-          <p class="feature-desc">Zimmer frei konfigurierbar — Behandlungsraum 1, Labor, OP, oder beliebige eigene Bezeichnungen.</p>
+          <p class="feature-desc">Zimmer frei konfigurierbar - Behandlungsraum 1, Labor, OP, oder beliebige eigene Bezeichnungen.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">🔄</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Automatischer Reconnect</div>
-          <p class="feature-desc">Verbindung verloren? Der Client verbindet sich automatisch wieder — kein manueller Eingriff nötig.</p>
+          <p class="feature-desc">Verbindung verloren? Der Client verbindet sich automatisch wieder - kein manueller Eingriff nötig.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">📋</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Aufruf-Verlauf</div>
-          <p class="feature-desc">Die letzten 5 Aufrufe werden im Client-Fenster angezeigt — mit Uhrzeit, Name und Zimmer. Für alle verbundenen Geräte synchron.</p>
+          <p class="feature-desc">Die letzten 5 Aufrufe werden im Client-Fenster angezeigt - mit Uhrzeit, Name und Zimmer. Für alle verbundenen Geräte synchron.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">⚡</span>
+          <span class="feature-icon"></span>
           <div class="feature-title">Sofort einsatzbereit</div>
           <p class="feature-desc">Kein Server-Setup, keine IT-Abteilung nötig. IP-Adresse eingeben, verbinden, loslegen. Setup in unter 5 Minuten.</p>
         </div>
@@ -1873,7 +1873,7 @@ footer p {
         <div class="how-step">
           <div class="step-num">02</div>
           <div class="step-title">Clients verbinden</div>
-          <p class="step-desc">Empfangs-PCs und Mobilgeräte öffnen die Client-App, geben die IP ein — und sind sofort verbunden.</p>
+          <p class="step-desc">Empfangs-PCs und Mobilgeräte öffnen die Client-App, geben die IP ein - und sind sofort verbunden.</p>
         </div>
         <div class="how-step">
           <div class="step-num">03</div>
@@ -1883,7 +1883,7 @@ footer p {
         <div class="how-step">
           <div class="step-num">04</div>
           <div class="step-title">Fertig.</div>
-          <p class="step-desc">Das war's. Kein Ausrufen mehr, kein Chaos — strukturierter, diskreter Patientenfluss ab Tag 1.</p>
+          <p class="step-desc">Das war's. Kein Ausrufen mehr, kein Chaos - strukturierter, diskreter Patientenfluss ab Tag 1.</p>
         </div>
       </div>
     </div>
@@ -1908,10 +1908,10 @@ footer p {
           </div>
         </div>
         <div class="platform-card">
-          <div class="platform-icon-wrap mac">🍎</div>
+          <div class="platform-icon-wrap mac"></div>
           <div>
             <h3>macOS</h3>
-            <p>Vollständige Unterstützung für macOS. Server und Client als native .app-Bundle — keine Installation, einfach öffnen und starten.</p>
+            <p>Vollständige Unterstützung für macOS. Server und Client als native .app-Bundle - keine Installation, einfach öffnen und starten.</p>
             <div class="platform-tags">
               <span class="ptag">Server</span>
               <span class="ptag">Client</span>
@@ -1920,10 +1920,10 @@ footer p {
           </div>
         </div>
         <div class="platform-card">
-          <div class="platform-icon-wrap mob">🤖</div>
+          <div class="platform-icon-wrap mob"></div>
           <div>
             <h3>Android</h3>
-            <p>Client-App für Android-Smartphones und -Tablets. Aufrufe direkt vom Handy senden — ideal für Ärzte, die sich bewegen.</p>
+            <p>Client-App für Android-Smartphones und -Tablets. Aufrufe direkt vom Handy senden - ideal für Ärzte, die sich bewegen.</p>
             <div class="platform-tags">
               <span class="ptag">Client</span>
               <span class="ptag">Android 8+</span>
@@ -1933,10 +1933,10 @@ footer p {
           </div>
         </div>
         <div class="platform-card">
-          <div class="platform-icon-wrap mob" style="background:#2d1b4e;">📱</div>
+          <div class="platform-icon-wrap mob" style="background:#2d1b4e;"></div>
           <div>
             <h3>iOS</h3>
-            <p>Client-App für iPhone und iPad. Gleicher Funktionsumfang wie Android — für Praxen die auf Apple-Geräte setzen.</p>
+            <p>Client-App für iPhone und iPad. Gleicher Funktionsumfang wie Android - für Praxen die auf Apple-Geräte setzen.</p>
             <div class="platform-tags">
               <span class="ptag">Client</span>
               <span class="ptag">iOS 15+</span>
@@ -1960,7 +1960,7 @@ footer p {
           <div class="pricing-tier">// Standard</div>
           <h3>Standard</h3>
           <p class="sub">Einstieg für kleine Praxen mit einem festen Empfangsplatz.</p>
-          <div class="price">Auf Anfrage · 1 Jahr Lizenz</div>
+          <div class="price">Auf Anfrage . 1 Jahr Lizenz</div>
           <ul class="pricing-features">
             <li>1 Ausgabe-Display (Server)</li>
             <li>3 Eingabe-Clients</li>
@@ -1968,13 +1968,13 @@ footer p {
             <li>1 Jahr Lizenz</li>
             <li>E-Mail Support</li>
           </ul>
-          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen →</a>
+          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
         </div>
         <div class="pricing-card">
           <div class="pricing-tier">// Mobile</div>
           <h3>Mobile</h3>
           <p class="sub">Für Praxen die flexibel per Smartphone aufrufen möchten.</p>
-          <div class="price">Auf Anfrage · 1 Jahr Lizenz</div>
+          <div class="price">Auf Anfrage . 1 Jahr Lizenz</div>
           <ul class="pricing-features">
             <li>1 Ausgabe-Display (Server)</li>
             <li>Beliebig viele Mobilgeräte</li>
@@ -1982,14 +1982,14 @@ footer p {
             <li>1 Jahr Lizenz</li>
             <li>E-Mail Support</li>
           </ul>
-          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen →</a>
+          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
         </div>
         <div class="pricing-card featured">
           <div class="pricing-badge">Empfohlen</div>
           <div class="pricing-tier">// Premium</div>
           <h3>Premium</h3>
           <p class="sub">Die Komplettlösung für Desktop und Mobile mit 5 Jahren Laufzeit.</p>
-          <div class="price">Auf Anfrage · 5 Jahre Lizenz</div>
+          <div class="price">Auf Anfrage . 5 Jahre Lizenz</div>
           <ul class="pricing-features">
             <li>1 Ausgabe-Display (Server)</li>
             <li>10 Eingabe-Clients (Win &amp; Mac)</li>
@@ -1998,13 +1998,13 @@ footer p {
             <li>5 Jahre Lizenz</li>
             <li>E-Mail Support</li>
           </ul>
-          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta filled">Jetzt anfragen →</a>
+          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta filled">Jetzt anfragen -></a>
         </div>
         <div class="pricing-card">
           <div class="pricing-tier">// Unlimited</div>
           <h3>Unlimited</h3>
           <p class="sub">Maximale Flexibilität ohne zeitliche Einschränkung.</p>
-          <div class="price">Auf Anfrage · Unbegrenzte Lizenz</div>
+          <div class="price">Auf Anfrage . Unbegrenzte Lizenz</div>
           <ul class="pricing-features">
             <li>1 Ausgabe-Display (Server)</li>
             <li>Beliebig viele Eingabe-Clients</li>
@@ -2014,7 +2014,7 @@ footer p {
             <li>Zeitlich unbegrenzte Lizenz</li>
             <li>E-Mail Support</li>
           </ul>
-          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen →</a>
+          <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
         </div>
       </div>
     </div>
@@ -2025,10 +2025,10 @@ footer p {
     <div class="cta-inner">
       <div>
         <h2>Bereit für ein <em>ruhigeres Wartezimmer?</em></h2>
-        <p>Ich richte das System kostenlos in einer Demo vor — unverbindlich und ohne Vertrag.</p>
+        <p>Ich richte das System kostenlos in einer Demo vor - unverbindlich und ohne Vertrag.</p>
       </div>
       <div class="cta-actions">
-        <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Demo anfragen →</a>
+        <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Demo anfragen -></a>
         <a href="/cdn-cgi/l/email-protection#e881868e87a890829a90d1d0c68c8d" class="btn-secondary">E-Mail schreiben</a>
       </div>
     </div>
@@ -2037,13 +2037,13 @@ footer p {
   <footer>
     <span onclick="showPage('home')" style="cursor:pointer;font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;">xJRx98</span>
     <div class="footer-right">
-      <p>© 2026 xJRx98 Software — Alle Rechte vorbehalten</p>
+      <p>(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
     </div>
   </footer>
 </div>
 
-<!-- ═══════════════════ IMPRESSUM PAGE ═══════════════════ -->
+<!-- =================== IMPRESSUM PAGE =================== -->
 <div id="page-impressum" class="page impressum-page">
   <div class="impressum-content">
     <button class="back-btn" onclick="showPage('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zur Startseite</button>
@@ -2082,7 +2082,7 @@ footer p {
   <footer>
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98</span>
     <div class="footer-right">
-      <p style="font-family:var(--mono);font-size:11px;color:var(--muted);">© 2026 xJRx98 Software — Alle Rechte vorbehalten</p>
+      <p style="font-family:var(--mono);font-size:11px;color:var(--muted);">(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')" style="color:var(--accent)">Impressum</button>
     </div>
   </footer>
@@ -2135,7 +2135,7 @@ function initReveal() {
         const el = entry.target;
         const siblings = [...el.parentElement.querySelectorAll('.reveal')];
         el.style.transitionDelay = (siblings.indexOf(el) * 0.07) + 's';
-        le');
+        el.classList.add('visible');
         observer.unobserve(el);
       }
     });
@@ -2150,9 +2150,9 @@ function initReveal() {
 </script>
 
 <script>
-// ─── GOOGLE APPS SCRIPT CONTACT FORM ───
+// === GOOGLE APPS SCRIPT CONTACT FORM ===
 // Ersetze diese URL mit deiner eigenen Web App URL nach dem Deployment
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxpfHG8Z8NuViT_oFmPioMxNmLiZ907zMB4eoqdGntwshkuzF1IoMC-G2IXsElEC709dg/exec';
+const GAS_URL = 'DEINE_GOOGLE_APPS_SCRIPT_URL_HIER';
 
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -2173,10 +2173,10 @@ document.getElementById('contact-form').addEventListener('submit', async functio
     });
     const data = await res.json();
     if (data.status === 'ok') {
-      status.textContent = 'Nachricht gesendet! Du bekommst gleich eine Bestätigung per E-Mail.';
+      status.textContent = 'Nachricht gesendet! Du bekommst gleich eine Best\u00E4tigung per E-Mail.';
       status.style.color = 'var(--accent)';
       status.style.display = 'block';
-      btn.textContent = 'Gesendet ✓';
+      btn.textContent = 'Gesendet \u2713';
       document.getElementById('cf-name').value = '';
       document.getElementById('cf-email').value = '';
       document.getElementById('cf-message').value = '';
@@ -2184,10 +2184,10 @@ document.getElementById('contact-form').addEventListener('submit', async functio
       throw new Error('Fehler');
     }
   } catch(err) {
-    status.textContent = 'Fehler beim Senden — bitte versuche es erneut oder schreib direkt eine E-Mail.';
+    status.textContent = 'Fehler beim Senden &#x2014; bitte versuche es erneut oder schreib direkt eine E-Mail.';
     status.style.color = '#c94b6d';
     status.style.display = 'block';
-    btn.textContent = 'Nachricht senden →';
+    btn.textContent = 'Nachricht senden \u2192';
     btn.disabled = false;
   }
 });
