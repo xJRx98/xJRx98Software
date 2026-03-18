@@ -1499,6 +1499,134 @@ footer p {
   .cookie-actions { width: 100%; }
   .cookie-btn-accept, .cookie-btn-decline { flex: 1; text-align: center; }
 }
+
+/* --- HAMBURGER MENU --- */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 8px;
+  transition: border-color .2s;
+}
+.nav-hamburger:hover { border-color: var(--border-hi); }
+.nav-hamburger span {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--muted2);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease, background .2s;
+  transform-origin: center;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); background: var(--accent); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background: var(--accent); }
+
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 64px;
+  left: 0; right: 0;
+  background: rgba(8,12,20,.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 99;
+  padding: 0;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .35s ease, padding .35s ease;
+}
+.nav-mobile-menu.open {
+  max-height: 300px;
+  padding: 16px 0 20px;
+}
+.nav-mobile-menu a {
+  display: block;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted2);
+  text-decoration: none;
+  letter-spacing: .03em;
+  transition: color .2s, background .2s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--sans);
+}
+.nav-mobile-menu a:hover { color: var(--accent); background: rgba(61,189,177,.04); }
+.nav-mobile-menu .nav-mobile-cta {
+  margin: 12px 24px 4px;
+  padding: 12px 20px;
+  display: block;
+  text-align: center;
+  background: transparent;
+  border: 1px solid var(--border-hi);
+  border-radius: 6px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--sans);
+  letter-spacing: .03em;
+  cursor: pointer;
+  transition: background .2s;
+  text-decoration: none;
+}
+.nav-mobile-menu .nav-mobile-cta:hover { background: rgba(61,189,177,.08); }
+
+@media (max-width: 768px) {
+  .nav-hamburger { display: flex; }
+  .nav-links { display: none !important; }
+  .nav-cta { display: none; }
+  .nav-mobile-menu { display: block; }
+}
+
+/* --- SCROLL TO TOP --- */
+#scroll-top {
+  position: fixed;
+  bottom: 32px;
+  right: 28px;
+  width: 42px;
+  height: 42px;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .3s, transform .3s, background .2s, border-color .2s;
+  pointer-events: none;
+}
+#scroll-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+#scroll-top:hover {
+  background: rgba(61,189,177,.1);
+  border-color: var(--accent);
+}
+#scroll-top svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+@media (max-width: 768px) {
+  #scroll-top { bottom: 80px; right: 16px; }
+}
 </style>
 </head>
 <body>
@@ -1506,7 +1634,7 @@ footer p {
 <!-- NAV -->
 <nav>
   <a onclick="showPage('home')" class="nav-logo" style="cursor:pointer">
-    <img src="logo.png" alt="xJRx98 Software" class="nav-logo-img">
+    <img src="logo.png" alt="xJRx98 Software" class="nav-logo-img" loading="lazy">
   </a>
   <div class="nav-links">
     <a onclick="showPage('home'); scrollToSection('services')">Services</a>
@@ -1514,7 +1642,18 @@ footer p {
     <a onclick="showPage('home'); scrollToSection('kontakt')">Kontakt</a>
   </div>
   <a onclick="showPage('home'); scrollToSection('kontakt')" class="nav-cta">Projekt starten -></a>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu öffnen" aria-expanded="false" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile Navigation -->
+<div class="nav-mobile-menu" id="nav-mobile-menu" role="navigation" aria-label="Mobile Navigation">
+  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('services')">Services</a>
+  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('projekte')">Projekte</a>
+  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('kontakt')">Kontakt</a>
+  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('kontakt')" class="nav-mobile-cta">Projekt starten -></a>
+</div>
 
 <!-- =================== HOME PAGE =================== -->
 <div id="page-home" class="page active">
@@ -1636,7 +1775,7 @@ footer p {
 
   <footer>
     <span onclick="showPage('home')" class="footer-logo-link">
-      <img src="logo.png" alt="xJRx98 Software" class="footer-logo-img">
+      <img src="logo.png" alt="xJRx98 Software" class="footer-logo-img" loading="lazy">
     </span>
     <div class="footer-right">
       <p>(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
@@ -2109,7 +2248,7 @@ footer p {
       </div>
       <div class="cta-actions">
         <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Demo anfragen -></a>
-        <a href="mailto:xjrx98software@gmx.de" class="btn-secondary">E-Mail schreiben</a>
+        <a href="/cdn-cgi/l/email-protection#8bf3e1f9f3b2b3f8e4edfffceaf9eecbece6f3a5efee" class="btn-secondary">E-Mail schreiben</a>
       </div>
     </div>
   </div>
@@ -2135,7 +2274,7 @@ footer p {
     </div>
     <div class="impressum-block">
       <h2>Kontakt</h2>
-      <p>E-Mail: <a href="mailto:xjrx98software@gmx.de">xjrx98software@gmx.de</a></p>
+      <p>E-Mail: <a href="/cdn-cgi/l/email-protection#f78f9d858fcecf8498918380968592b7909a8fd99392"><span class="__cf_email__" data-cfemail="9ae2f0e8e2a3a2e9f5fceeedfbe8ffdafdf7e2b4feff">[email&#160;protected]</span></a></p>
     </div>
     <div class="impressum-block">
       <h2>Umsatzsteuer-ID</h2>
@@ -2166,7 +2305,7 @@ footer p {
       <button class="footer-impressum-link" onclick="showPage('impressum')" style="color:var(--accent)">Impressum</button>
     </div>
   </footer>
-</div><script>
+</div><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function tryHistoryState(fn) {
   try { fn(); } catch(e) { /* history API not available in this context */ }
 }
@@ -2233,7 +2372,7 @@ let lastSubmit = 0;
 const SUBMIT_COOLDOWN = 30000; // 30 Sekunden zwischen Anfragen
 // Ersetze diese URL mit deiner eigenen Web App URL nach dem Deployment
 const GAS_URL   = 'https://script.google.com/macros/s/AKfycbzqpMgEVAsQLdsxnXgY-9uJpJxDD2r6ohYX8avR2ju_2K40nxzVD56PFKB8xu_QDXp2/exec';
-const GAS_TOKEN = 'Sd45o%&sd%&sgQ§$dzt%SG34%&df'; // muss mit SECRET_TOKEN in ContactForm.gs übereinstimmen
+const GAS_TOKEN = 'DSd45o%&sd%&sgQ§$dzt%SG34%&df'; // muss mit SECRET_TOKEN in ContactForm.gs übereinstimmen
 
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -2285,6 +2424,49 @@ document.getElementById('contact-form').addEventListener('submit', async functio
 });
 </script>
 
+<!-- SCROLL TO TOP -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Nach oben scrollen">
+  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+// --- HAMBURGER MENU ---
+function toggleMobileMenu() {
+  var btn = document.getElementById('nav-hamburger');
+  var menu = document.getElementById('nav-mobile-menu');
+  var isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  btn.setAttribute('aria-expanded', !isOpen);
+}
+function closeMobileMenu() {
+  document.getElementById('nav-hamburger').classList.remove('open');
+  document.getElementById('nav-hamburger').setAttribute('aria-expanded', 'false');
+  document.getElementById('nav-mobile-menu').classList.remove('open');
+}
+// Menü schließen bei Klick außerhalb
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('nav-mobile-menu');
+  var btn  = document.getElementById('nav-hamburger');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+    closeMobileMenu();
+  }
+});
+// Menü schließen beim Seitenwechsel
+var _origShowPage = showPage;
+
+// --- SCROLL TO TOP ---
+window.addEventListener('scroll', function() {
+  var btn = document.getElementById('scroll-top');
+  if (!btn) return;
+  if (window.scrollY > 300) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+}, { passive: true });
+</script>
+
 <!-- COOKIE / DSGVO BANNER -->
 <div id="cookie-banner" role="dialog" aria-label="Cookie-Hinweis" style="display:none;">
   <p>
@@ -2313,7 +2495,6 @@ function cookieAccept() {
 function cookieDecline() {
   localStorage.setItem('cookie-consent', 'declined');
   document.getElementById('cookie-banner').style.display = 'none';
-  // Remove Google Fonts if declined
   document.querySelectorAll('link[href*="fonts.googleapis.com"], link[href*="fonts.gstatic.com"]').forEach(function(el) { el.remove(); });
 }
 </script>
