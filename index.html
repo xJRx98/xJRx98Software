@@ -2116,7 +2116,7 @@ footer p {
       </div>
       <div class="cta-actions">
         <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Demo anfragen -></a>
-        <a href="mailto:xjrx98software@gmail.com" class="btn-secondary">E-Mail schreiben</a>
+        <a href="mailto:xjrx98software@gmx.de" class="btn-secondary">E-Mail schreiben</a>
       </div>
     </div>
   </div>
@@ -2142,7 +2142,7 @@ footer p {
     </div>
     <div class="impressum-block">
       <h2>Kontakt</h2>
-      <p>E-Mail: <a href="mailto:xjrx98software@gmail.com">xjrx98software@gmail.com</a></p>
+      <p>E-Mail: <a href="mailto:xjrx98software@gmx.de">xjrx98software@gmx.de</a></p>
     </div>
     <div class="impressum-block">
       <h2>Umsatzsteuer-ID</h2>
@@ -2239,7 +2239,8 @@ function initReveal() {
 let lastSubmit = 0;
 const SUBMIT_COOLDOWN = 30000; // 30 Sekunden zwischen Anfragen
 // Ersetze diese URL mit deiner eigenen Web App URL nach dem Deployment
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzqpMgEVAsQLdsxnXgY-9uJpJxDD2r6ohYX8avR2ju_2K40nxzVD56PFKB8xu_QDXp2/exec';
+const GAS_URL   = 'https://script.google.com/macros/s/AKfycbzqpMgEVAsQLdsxnXgY-9uJpJxDD2r6ohYX8avR2ju_2K40nxzVD56PFKB8xu_QDXp2/exec';
+const GAS_TOKEN = 'Sd45o%&sd%&sgQ§$dzt%SG34%&df'; // muss mit SECRET_TOKEN in ContactForm.gs übereinstimmen
 
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -2266,7 +2267,7 @@ document.getElementById('contact-form').addEventListener('submit', async functio
   try {
     const res = await fetch(GAS_URL, {
       method: 'POST',
-      body: JSON.stringify({ name, email, message }),
+      body: JSON.stringify({ name, email, message, token: GAS_TOKEN, honeypot: document.getElementById('cf-honeypot').value }),
     });
     const data = await res.json();
     if (data.status === 'ok') {
