@@ -990,6 +990,173 @@ footer p {
   .project-detail-hero, .project-detail-content, .impressum-content { padding-left: 20px; padding-right: 20px; }
 }
 
+
+/* --- SHARED PRODUCT PAGE STYLES (hero-grid, stats, features etc.) --- */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.4;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-glow {
+  position: absolute; top: 20%; left: 10%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(61,189,177,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1100px; margin: 0 auto; width: 100%;
+  position: relative; z-index: 1;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent);
+  border: 1px solid rgba(61,189,177,0.25);
+  padding: 6px 14px; border-radius: 2px;
+  margin-bottom: 36px;
+  animation: fadeUp 0.6s ease both;
+}
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s infinite;
+}
+.stats-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stats-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 48px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.stat {
+  padding: 36px 40px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat:first-child { padding-left: 0; text-align: left; }
+.stat:last-child { border-right: none; }
+.stat-value {
+  font-family: var(--mono); font-size: 32px; font-weight: 700;
+  color: var(--accent); letter-spacing: -0.02em; display: block;
+}
+.stat-label {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted2); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-top: 4px;
+}
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-body {
+  font-size: 15px; color: var(--muted2);
+  max-width: 560px; line-height: 1.75;
+}
+.problem-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border); border: 1px solid var(--border); margin-top: 56px;
+}
+.problem-card { background: var(--surface); padding: 40px; }
+.problem-card h3 {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.problem-card.red h3 { color: #c94b6d; }
+.problem-card.green h3 { color: var(--accent); }
+.problem-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.problem-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; color: var(--muted2); line-height: 1.5;
+}
+.problem-list li::before { content: '--'; font-family: var(--mono); flex-shrink: 0; margin-top: 1px; }
+.problem-card.red .problem-list li::before { color: #c94b6d; }
+.problem-card.green .problem-list li::before { color: var(--accent); }
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 56px;
+}
+.feature-card {
+  background: var(--surface); padding: 36px;
+  transition: background 0.2s; position: relative; overflow: hidden;
+}
+.feature-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.feature-card:hover { background: var(--bg2); }
+.feature-card:hover::before { opacity: 1; }
+.feature-icon { font-size: 24px; margin-bottom: 20px; display: block; }
+.feature-title { font-size: 15px; font-weight: 500; margin-bottom: 10px; color: var(--text); }
+.feature-desc { font-size: 13px; color: var(--muted2); line-height: 1.65; }
+.how-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; margin-top: 56px; position: relative;
+}
+.how-grid::before {
+  content: ''; position: absolute; top: 28px; left: 12.5%; right: 12.5%;
+  height: 1px; background: rgba(61,189,177,.25);
+}
+.how-step { padding: 0 24px; text-align: center; }
+.step-num {
+  width: 56px; height: 56px; border-radius: 2px;
+  background: var(--surface); border: 1px solid rgba(61,189,177,.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 18px; font-weight: 700;
+  color: var(--accent); margin: 0 auto 24px; position: relative; z-index: 1;
+}
+.step-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text); }
+.step-desc { font-size: 12px; color: var(--muted2); line-height: 1.6; }
+.platforms-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 56px;
+}
+.platform-card {
+  background: var(--surface); padding: 40px;
+  display: flex; align-items: flex-start; gap: 24px;
+}
+.platform-icon-wrap {
+  width: 52px; height: 52px; border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.platform-icon-wrap.win { background: #1e3a5f; }
+.platform-icon-wrap.mac { background: #1e1e1e; border: 1px solid rgba(61,189,177,.25); }
+.platform-icon-wrap.mob { background: #14532d; }
+.platform-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+.platform-card p { font-size: 13px; color: var(--muted2); line-height: 1.6; margin-bottom: 12px; }
+.platform-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.ptag {
+  font-family: var(--mono); font-size: 9px; padding: 3px 8px;
+  border: 1px solid rgba(61,189,177,.25); color: var(--muted2);
+  letter-spacing: 0.04em; border-radius: 2px;
+}
+.cta-actions { display: flex; gap: 12px; flex-shrink: 0; }
+
+/* Shared product page section padding */
+#page-cp-app section,
+#page-wasserpantscher section { padding: 100px 48px; }
+
+/* Responsive shared */
+@media (max-width: 900px) {
+  .stats-inner { grid-template-columns: repeat(2,1fr); }
+  .stat { padding: 28px; }
+  .stat:first-child { padding-left: 28px; text-align: center; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .how-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .how-grid::before { display: none; }
+  .platforms-grid { grid-template-columns: 1fr; }
+  .problem-grid { grid-template-columns: 1fr; }
+  #page-cp-app section, #page-wasserpantscher section { padding: 72px 24px; }
+}
+@media (max-width: 600px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+}
+
 /* ==========================================
    PATIENTENAUFRUF PRODUKTSEITE
    ========================================== */
@@ -1006,27 +1173,11 @@ footer p {
   overflow: hidden;
 }
 
-#page-patientenaufruf-produkt .hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.4;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-}
 
-#page-patientenaufruf-produkt .hero-glow {
-  position: absolute; top: 20%; left: 10%;
-  width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(61,189,177,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
 
-#page-patientenaufruf-produkt .hero-inner {
-  max-width: 1100px; margin: 0 auto; width: 100%;
-  position: relative; z-index: 1;
-}
+
+
+
 
 #page-patientenaufruf-produkt .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1094,40 +1245,22 @@ footer p {
 }
 
 /* -- Stats -- */
-#page-patientenaufruf-produkt .stats-bar {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
 
-#page-patientenaufruf-produkt .stats-inner {
-  max-width: 1100px; margin: 0 auto; padding: 0 48px;
-  display: grid; grid-template-columns: repeat(4, 1fr);
-}
 
-#page-patientenaufruf-produkt .stat {
-  padding: 36px 40px;
-  border-right: 1px solid var(--border);
-  text-align: center;
-}
+
+
+
 
 #page-patientenaufruf-produkt .stat:first-child { padding-left: 0; text-align: left; }
 #page-patientenaufruf-produkt .stat:last-child { border-right: none; }
 
-#page-patientenaufruf-produkt .stat-value {
-  font-family: var(--mono); font-size: 32px; font-weight: 700;
-  color: var(--accent); letter-spacing: -0.02em; display: block;
-}
 
-#page-patientenaufruf-produkt .stat-label {
-  font-family: var(--mono); font-size: 10px;
-  color: var(--muted2); letter-spacing: 0.08em;
-  text-transform: uppercase; margin-top: 4px;
-}
+
+
 
 /* -- Section base -- */
 #page-patientenaufruf-produkt section { padding: 100px 48px; }
-#page-patientenaufruf-produkt .section-inner { max-width: 1100px; margin: 0 auto; }
+
 
 #page-patientenaufruf-produkt .section-label {
   font-family: var(--mono); font-size: 10px; color: var(--accent);
@@ -1142,22 +1275,12 @@ footer p {
 
 #page-patientenaufruf-produkt .section-title em { font-style: italic; color: var(--accent); }
 
-#page-patientenaufruf-produkt .section-body {
-  font-size: 15px; color: var(--muted2);
-  max-width: 560px; line-height: 1.75;
-}
+
 
 /* -- Problem/Solution -- */
-#page-patientenaufruf-produkt .problem-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin-top: 56px;
-}
 
-#page-patientenaufruf-produkt .problem-card {
-  background: var(--surface); padding: 40px;
-}
+
+
 
 #page-patientenaufruf-produkt .problem-card h3 {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
@@ -1167,124 +1290,62 @@ footer p {
 #page-patientenaufruf-produkt .problem-card.red h3 { color: #c94b6d; }
 #page-patientenaufruf-produkt .problem-card.green h3 { color: var(--accent); }
 
-#page-patientenaufruf-produkt .problem-list {
-  list-style: none; display: flex; flex-direction: column; gap: 12px;
-}
 
-#page-patientenaufruf-produkt .problem-list li {
-  display: flex; align-items: flex-start; gap: 12px;
-  font-size: 14px; color: var(--muted2); line-height: 1.5;
-}
 
-#page-patientenaufruf-produkt .problem-list li::before {
-  content: '--'; font-family: var(--mono);
-  flex-shrink: 0; margin-top: 1px;
-}
+
+
+
 
 #page-patientenaufruf-produkt .problem-card.red  .problem-list li::before { color: #c94b6d; }
 #page-patientenaufruf-produkt .problem-card.green .problem-list li::before { color: var(--accent); }
 
 /* -- Features -- */
-#page-patientenaufruf-produkt .features-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; background: var(--border);
-  border: 1px solid var(--border); margin-top: 56px;
-}
 
-#page-patientenaufruf-produkt .feature-card {
-  background: var(--surface); padding: 36px;
-  transition: background 0.2s; position: relative; overflow: hidden;
-}
 
-#page-patientenaufruf-produkt .feature-card::before {
-  content: ''; position: absolute;
-  bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0; transition: opacity 0.3s;
-}
+
+
+
 
 #page-patientenaufruf-produkt .feature-card:hover { background: var(--bg2); }
 #page-patientenaufruf-produkt .feature-card:hover::before { opacity: 1; }
 
-#page-patientenaufruf-produkt .feature-icon {
-  font-size: 24px; margin-bottom: 20px; display: block;
-}
 
-#page-patientenaufruf-produkt .feature-title {
-  font-size: 15px; font-weight: 500; margin-bottom: 10px; color: var(--text);
-}
 
-#page-patientenaufruf-produkt .feature-desc {
-  font-size: 13px; color: var(--muted2); line-height: 1.65;
-}
+
+
+
 
 /* -- How it works -- */
-#page-patientenaufruf-produkt .how-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 0; margin-top: 56px; position: relative;
-}
 
-#page-patientenaufruf-produkt .how-grid::before {
-  content: '';
-  position: absolute; top: 28px; left: 12.5%; right: 12.5%;
-  height: 1px; background: rgba(61,189,177,.25);
-}
 
-#page-patientenaufruf-produkt .how-step { padding: 0 24px; text-align: center; }
 
-#page-patientenaufruf-produkt .step-num {
-  width: 56px; height: 56px; border-radius: 2px;
-  background: var(--surface); border: 1px solid rgba(61,189,177,.25);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-size: 18px; font-weight: 700;
-  color: var(--accent); margin: 0 auto 24px; position: relative; z-index: 1;
-}
 
-#page-patientenaufruf-produkt .step-title {
-  font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text);
-}
 
-#page-patientenaufruf-produkt .step-desc {
-  font-size: 12px; color: var(--muted2); line-height: 1.6;
-}
+
+
+
+
+
+
 
 /* -- Platforms -- */
-#page-patientenaufruf-produkt .platforms-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 1px; background: var(--border); border: 1px solid var(--border);
-  margin-top: 56px;
-}
 
-#page-patientenaufruf-produkt .platform-card {
-  background: var(--surface); padding: 40px;
-  display: flex; align-items: flex-start; gap: 24px;
-}
 
-#page-patientenaufruf-produkt .platform-icon-wrap {
-  width: 52px; height: 52px; border-radius: 2px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px; flex-shrink: 0;
-}
+
+
+
 
 #page-patientenaufruf-produkt .platform-icon-wrap.win { background: #1e3a5f; }
 #page-patientenaufruf-produkt .platform-icon-wrap.mac { background: #1e1e1e; border: 1px solid rgba(61,189,177,.25); }
 #page-patientenaufruf-produkt .platform-icon-wrap.mob { background: #14532d; }
 
-#page-patientenaufruf-produkt .platform-card h3 {
-  font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--text);
-}
 
-#page-patientenaufruf-produkt .platform-card p {
-  font-size: 13px; color: var(--muted2); line-height: 1.6; margin-bottom: 12px;
-}
 
-#page-patientenaufruf-produkt .platform-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 
-#page-patientenaufruf-produkt .ptag {
-  font-family: var(--mono); font-size: 9px; padding: 3px 8px;
-  border: 1px solid rgba(61,189,177,.25); color: var(--muted2);
-  letter-spacing: 0.04em; border-radius: 2px;
-}
+
+
+
+
 
 /* -- Pricing -- */
 #page-patientenaufruf-produkt .pricing-grid {
@@ -1405,24 +1466,24 @@ footer p {
 @media (max-width: 900px) {
   #page-patientenaufruf-produkt section { padding: 72px 24px; }
   #page-patientenaufruf-produkt .hero { padding: 120px 24px 72px; }
-  #page-patientenaufruf-produkt .stats-inner { grid-template-columns: repeat(2,1fr); }
-  #page-patientenaufruf-produkt .stat { padding: 28px; }
+  
+  
   #page-patientenaufruf-produkt .stat:first-child { padding-left: 28px; text-align: center; }
   .pa-banner-grid { grid-template-columns: 1fr !important; }
   .pa-banner-sidebar { max-width: 100% !important; min-width: unset !important; }
-  #page-patientenaufruf-produkt .features-grid { grid-template-columns: 1fr 1fr; }
-  #page-patientenaufruf-produkt .how-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-  #page-patientenaufruf-produkt .how-grid::before { display: none; }
-  #page-patientenaufruf-produkt .platforms-grid { grid-template-columns: 1fr; }
+  
+  
+  
+  
   #page-patientenaufruf-produkt .pricing-grid { grid-template-columns: 1fr; }
-  #page-patientenaufruf-produkt .problem-grid { grid-template-columns: 1fr; }
+  
   #page-patientenaufruf-produkt .cta-inner { flex-direction: column; align-items: flex-start; }
   #page-patientenaufruf-produkt footer { flex-direction: column; gap: 12px; text-align: center; }
 }
 
 @media (max-width: 600px) {
-  #page-patientenaufruf-produkt .features-grid { grid-template-columns: 1fr; }
-  #page-patientenaufruf-produkt .stats-inner { grid-template-columns: 1fr 1fr; }
+  
+  
   #page-patientenaufruf-produkt .hero-actions { flex-direction: column; }
   #page-patientenaufruf-produkt .btn-primary,
   #page-patientenaufruf-produkt .btn-secondary { text-align: center; }
@@ -1943,76 +2004,518 @@ footer p {
 </div><!-- end home page -->
 
 <!-- =================== PROJECT: C&P APP =================== -->
-<div id="page-cp-app" class="page project-detail-page">
-  <div id="download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
-    <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
-      <button onclick="document.getElementById('download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
-      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
-      <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <a href="https://play.google.com/store/apps/details?id=com.xjrx98.cp_aquaplants&pli=1" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M3.18 23.76a1.52 1.52 0 001.53-.06l10.8-6.24-2.84-2.84zM1.5 1.5A1.5 1.5 0 000 3v18a1.5 1.5 0 001.5 1.5l.12-.01 10.13-10.14L1.62 2.22A1.5 1.5 0 001.5 1.5zm20.34 8.94L18.9 8.46l-3.17 3.18 3.17 3.17 2.97-1.71a1.5 1.5 0 000-2.66zM4.71.3 15.52 6.54l-2.84 2.84z"/></svg>
-          <div><div style="font-weight:600">Android</div><div style="font-size:12px;color:var(--muted2);margin-top:1px">Google Play Store</div></div>
-        </a>
-        <a href="https://apps.apple.com/de/app/c-p-aquaplants/id6751054001" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          <div><div style="font-weight:600">iOS</div><div style="font-size:12px;color:var(--muted2);margin-top:1px">Apple App Store</div></div>
-        </a>
-        <a href="https://my.hidrive.com/lnk/ESXVUt194#file" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M0 12.402l11.113-.003L11.11 24H0zm11.11-12.402L0 .003V11.11l11.11.003zM12 0l-.003 11.113L24 11.11V0zm0 24l12-.003V12.89L12 12.887z"/></svg>
-          <div><div style="font-weight:600">Windows</div><div style="font-size:12px;color:var(--muted2);margin-top:1px">via C&amp;P Aquaplants Website</div></div>
-        </a>
+<div id="page-cp-app" class="page">
+
+  <!-- Zurück-Button -->
+  <div style="position:sticky;top:64px;z-index:50;padding:12px 24px;background:rgba(13,17,23,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
+    <button onclick="showPage('home'); scrollToSection('projekte')" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);background:none;border:none;cursor:pointer;padding:0;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Zurück zu Projekten
+    </button>
+  </div>
+
+  <!-- Info-Banner -->
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 24px 28px;">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;" class="pa-banner-grid">
+      <div>
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 01 - Aquaristik</p>
+        <h1 style="font-family:var(--mono);font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">C&amp;P Aquaplants App</h1>
+        <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Die offizielle App von C&amp;P Aquaplants - digitaler Düngerechner und Photometer-Auswertungstool für Aquaristen, verfügbar auf Android, iOS und Windows.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:180px;" class="pa-banner-sidebar">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">// Details</div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Typ</span><span style="color:var(--text);">Mobile &amp; Desktop</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Plattform</span><span style="color:var(--text);">Android / iOS / Windows</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Bereich</span><span style="color:var(--text);">Aquaristik</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Status</span><span style="color:#22c55e;font-weight:600;">Live</span></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Flutter</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Dart</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Android</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">iOS</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Windows</span>
+        </div>
       </div>
     </div>
   </div>
-  <div class="project-detail-hero">
-    <button class="back-btn" onclick="showPage('home'); scrollToSection('projekte')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zu Projekten</button>
-    <p class="project-num">// 01 - Aquaristik</p>
-    <h1>C&amp;P Aquaplants App</h1>
-    <p class="tagline">Die offizielle App von C&amp;P Aquaplants - ein digitaler Düngerechner und Photometer-Auswertungstool für Aquaristen, verfügbar auf Android, iOS und Windows.</p>
-  </div>
-  <div class="project-detail-content">
-    <div class="project-detail-main">
-      <h2>Über das Projekt</h2>
-      <p>Die C&amp;P Aquaplants App wurde in enger Zusammenarbeit mit dem Team von C&amp;P Aquaplants entwickelt - einem deutschen Hersteller von hochwertigen Aquarium-Düngern und Wassertests.</p>
-      <h2>Funktionen</h2>
-      <ul>
-        <li>Düngerechner speziell für das C&amp;P Aquaplants Düngesystem</li>
-        <li>Photometer-Auswertung: Messwerte direkt in der App ablesen und auswerten</li>
-        <li>Dosierungsempfehlungen für alle C&amp;P Produkte</li>
-        <li>Unterstützung für Leitungswasser- und Osmosewasser-Systeme</li>
-        <li>Übersichtliche Darstellung aller relevanten Wasserparameter</li>
-        <li>Verfügbar für Android, iOS und Windows</li>
-      </ul>
-    </div>
-    <div class="project-detail-sidebar">
-      <div class="info-card">
-        <h4>// Projektdetails</h4>
-        <div class="info-row"><span class="label">Bereich</span><span class="value">Aquaristik</span></div>
-        <div class="info-row"><span class="label">Typ</span><span class="value">Mobile &amp; Desktop App</span></div>
-        <div class="info-row"><span class="label">Plattform</span><span class="value">Android / iOS / Windows</span></div>
-        <div class="info-row"><span class="label">Status</span><span class="value" style="color:#22c55e">Live</span></div>
-      </div>
-      <div class="project-detail-cta">
-        <button class="cta-primary-btn" onclick="document.getElementById('download-modal').style.display='flex'">App herunterladen v</button>
-        <button class="cta-secondary-btn" onclick="showPage('home'); scrollToSection('kontakt')">Ähnliches Projekt anfragen</button>
+
+  <!-- Hero -->
+  <section class="hero" style="min-height:70vh;">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">Verfügbar . Android . iOS . Windows</div>
+      <h1>Aquaristik-Tools<br>immer dabei.<br><em>Immer präzise.</em></h1>
+      <p class="hero-sub">
+        Der offizielle digitale Begleiter für C&amp;P Aquaplants Produkte -
+        Düngerechner, Photometer-Auswertung und Dosierungsempfehlungen
+        direkt auf deinem Gerät.
+      </p>
+      <div class="hero-actions">
+        <a onclick="document.getElementById('cp-download-modal').style.display='flex'" href="#" class="btn-primary">App herunterladen</a>
+        <a href="#cp-funktionen" class="btn-secondary">Funktionen ansehen</a>
       </div>
     </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat">
+        <span class="stat-value">3</span>
+        <span class="stat-label">Plattformen</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">Kostenlos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">1</span>
+        <span class="stat-label">Codebasis</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">Live</span>
+        <span class="stat-label">Im Store verfügbar</span>
+      </div>
+    </div>
   </div>
+
+  <!-- Problem / Lösung -->
+  <section>
+    <div class="section-inner">
+      <p class="section-label reveal">// Das Problem</p>
+      <h2 class="section-title reveal">Düngen ohne<br><em>Rätselraten.</em></h2>
+      <p class="section-body reveal">Wer C&amp;P Aquaplants Dünger oder Photometer verwendet, weiß: die richtigen Mengen und Messwerte korrekt zu berechnen kostet Zeit und Nerven. Die App macht Schluss damit.</p>
+      <div class="problem-grid reveal">
+        <div class="problem-card red">
+          <h3>// Bisher</h3>
+          <ul class="problem-list">
+            <li>Dosierung manuell aus Tabellen ablesen</li>
+            <li>Photometer-Kurven per Hand auswerten</li>
+            <li>Fehleranfällige Berechnungen im Kopf</li>
+            <li>Keine einheitliche Übersicht der Parameter</li>
+          </ul>
+        </div>
+        <div class="problem-card green">
+          <h3>// Mit der App</h3>
+          <ul class="problem-list">
+            <li>Düngemenge per Knopfdruck berechnen</li>
+            <li>Photometer-Messwerte direkt auswerten</li>
+            <li>Dosierungsempfehlungen für alle C&amp;P Produkte</li>
+            <li>Alle relevanten Wasserparameter auf einen Blick</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Funktionen -->
+  <section id="cp-funktionen" style="padding-top:0;">
+    <div class="section-inner">
+      <p class="section-label reveal">// Funktionen</p>
+      <h2 class="section-title reveal">Alles was dein<br><em>Aquarium braucht.</em></h2>
+      <div class="features-grid reveal">
+        <div class="feature-card">
+          <span class="feature-icon">🧪</span>
+          <div class="feature-title">Düngerechner</div>
+          <p class="feature-desc">Berechnet die exakte Düngermenge für das C&amp;P Aquaplants System - abgestimmt auf dein Beckenvolumen und deine Wasserparameter.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <div class="feature-title">Photometer-Auswertung</div>
+          <p class="feature-desc">Millivolt-Werte direkt eingeben, mg/l ablesen - ohne Kurven, ohne Tabellen. Schnell und fehlerfrei.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">💧</span>
+          <div class="feature-title">Leitungs- &amp; Osmosewasser</div>
+          <p class="feature-desc">Unterstützt beide Wassersysteme mit separaten Berechnungspfaden für optimale Düngerergebnisse.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📋</span>
+          <div class="feature-title">Alle C&amp;P Produkte</div>
+          <p class="feature-desc">Dosierungsempfehlungen für das gesamte C&amp;P Aquaplants Produktsortiment - stets aktuell.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🖥️</span>
+          <div class="feature-title">Cross-Platform</div>
+          <p class="feature-desc">Eine App - drei Plattformen. Läuft nativ auf Android, iOS und Windows aus einer einzigen Codebasis.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <div class="feature-title">Kostenlos</div>
+          <p class="feature-desc">Die App ist vollständig kostenlos - kein Abo, kein Kauf, keine versteckten Kosten. Einfach herunterladen und loslegen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- So funktioniert es -->
+  <section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section-inner">
+      <p class="section-label reveal">// So funktioniert es</p>
+      <h2 class="section-title reveal">In drei Schritten<br><em>zum Ergebnis.</em></h2>
+      <div class="how-grid reveal" style="grid-template-columns:repeat(3,1fr);">
+        <div class="how-step">
+          <div class="step-num">01</div>
+          <div class="step-title">App herunterladen</div>
+          <p class="step-desc">Kostenlos im Google Play Store, Apple App Store oder direkt als Windows-Version herunterladen.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-num">02</div>
+          <div class="step-title">Parameter eingeben</div>
+          <p class="step-desc">Beckenvolumen, Wassertyp und Messwerte eingeben - die App übernimmt alle Berechnungen automatisch.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-num">03</div>
+          <div class="step-title">Ergebnis ablesen</div>
+          <p class="step-desc">Exakte Dosierungsmengen und ausgewertete Messwerte auf einen Blick - präzise und ohne Rechenaufwand.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plattformen -->
+  <section>
+    <div class="section-inner">
+      <p class="section-label reveal">// Plattformen</p>
+      <h2 class="section-title reveal">Auf jedem Gerät<br><em>zu Hause.</em></h2>
+      <div class="platforms-grid reveal">
+        <div class="platform-card">
+          <div class="platform-icon-wrap mob">🤖</div>
+          <div>
+            <h3>Android</h3>
+            <p>Kostenlos im Google Play Store erhältlich. Optimiert für Smartphones und Tablets.</p>
+            <div class="platform-tags">
+              <span class="ptag">Google Play Store</span>
+              <span class="ptag">Android 8+</span>
+              <span class="ptag">Kostenlos</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon-wrap mob" style="background:#2d1b4e;">📱</div>
+          <div>
+            <h3>iOS</h3>
+            <p>Kostenlos im Apple App Store. Für iPhone und iPad optimiert.</p>
+            <div class="platform-tags">
+              <span class="ptag">Apple App Store</span>
+              <span class="ptag">iOS 15+</span>
+              <span class="ptag">Kostenlos</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon-wrap win">🪟</div>
+          <div>
+            <h3>Windows</h3>
+            <p>Als Desktop-Anwendung direkt über die C&amp;P Aquaplants Website verfügbar.</p>
+            <div class="platform-tags">
+              <span class="ptag">Direkt-Download</span>
+              <span class="ptag">Windows 10/11</span>
+              <span class="ptag">Kostenlos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-inner">
+      <div>
+        <h2>Bereit für <em>präzisere Aquaristik?</em></h2>
+        <p>Jetzt kostenlos herunterladen - für Android, iOS und Windows.</p>
+      </div>
+      <div class="cta-actions">
+        <a onclick="document.getElementById('cp-download-modal').style.display='flex'" href="#" class="btn-primary">App herunterladen</a>
+        <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-secondary">Ähnliches anfragen</a>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <span onclick="showPage('home')" class="footer-logo-link" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
+    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
     <div class="footer-right">
       <p>(c) 2026 xJRx98 Software</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
+      <button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button>
     </div>
   </footer>
+
+  <!-- Download Modal -->
+  <div id="cp-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+    <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
+      <button onclick="document.getElementById('cp-download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
+      <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <a href="https://play.google.com/store/apps/details?id=com.xjrx98.cp_aquaplants&pli=1" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M3.18 23.76a1.52 1.52 0 001.53-.06l10.8-6.24-2.84-2.84zM1.5 1.5A1.5 1.5 0 000 3v18a1.5 1.5 0 001.5 1.5l.12-.01 10.13-10.14L1.62 2.22A1.5 1.5 0 001.5 1.5zm20.34 8.94L18.9 8.46l-3.17 3.18 3.17 3.17 2.97-1.71a1.5 1.5 0 000-2.66zM4.71.3 15.52 6.54l-2.84 2.84z"/></svg>
+          <div><div style="font-weight:600">Android</div><div style="font-size:12px;color:var(--muted2);">Google Play Store</div></div>
+        </a>
+        <a href="https://apps.apple.com/de/app/c-p-aquaplants/id6751054001" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <div><div style="font-weight:600">iOS</div><div style="font-size:12px;color:var(--muted2);">Apple App Store</div></div>
+        </a>
+        <a href="https://my.hidrive.com/lnk/ESXVUt194#file" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0"><path d="M0 12.402l11.113-.003L11.11 24H0zm11.11-12.402L0 .003V11.11l11.11.003zM12 0l-.003 11.113L24 11.11V0zm0 24l12-.003V12.89L12 12.887z"/></svg>
+          <div><div style="font-weight:600">Windows</div><div style="font-size:12px;color:var(--muted2);">via C&amp;P Aquaplants Website</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 
+
 <!-- =================== PROJECT: WASSERPANTSCHER =================== -->
-<div id="page-wasserpantscher" class="page project-detail-page">
-  <div id="download-modal-wp" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+<div id="page-wasserpantscher" class="page">
+
+  <!-- Zurück-Button -->
+  <div style="position:sticky;top:64px;z-index:50;padding:12px 24px;background:rgba(13,17,23,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
+    <button onclick="showPage('home'); scrollToSection('projekte')" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);background:none;border:none;cursor:pointer;padding:0;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Zurück zu Projekten
+    </button>
+  </div>
+
+  <!-- Info-Banner -->
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 24px 28px;">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;" class="pa-banner-grid">
+      <div>
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 02 - Aquaristik</p>
+        <h1 style="font-family:var(--mono);font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">Wasserpantscher App</h1>
+        <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Die offizielle App von wasserpantscher.at - Millivolt-Messwerte des Fotometers direkt eingeben, mg/l ablesen, ohne Kurven oder Tabellen. Verfügbar auf Android, iOS und Windows.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:180px;" class="pa-banner-sidebar">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">// Details</div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Typ</span><span style="color:var(--text);">Mobile &amp; Desktop</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Plattform</span><span style="color:var(--text);">Android / iOS / Windows</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Bereich</span><span style="color:var(--text);">Aquaristik</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Status</span><span style="color:#22c55e;font-weight:600;">Live</span></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Flutter</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Dart</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Android</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">iOS</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:rgba(61,189,177,.08);border:1px solid rgba(61,189,177,.2);border-radius:100px;color:var(--accent);">Windows</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" style="min-height:70vh;">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">Verfügbar . Android . iOS . Windows</div>
+      <h1>Fotometer-Werte<br>in Sekunden<br><em>ausgewertet.</em></h1>
+      <p class="hero-sub">
+        Millivolt-Wert eingeben, mg/l ablesen - fertig.
+        Kein Ablesen von Kurven, keine Tabellen, keine Fehler.
+        Die offizielle App von wasserpantscher.at.
+      </p>
+      <div class="hero-actions">
+        <a onclick="document.getElementById('wp-download-modal').style.display='flex'" href="#" class="btn-primary">App herunterladen</a>
+        <a href="#wp-funktionen" class="btn-secondary">Funktionen ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat">
+        <span class="stat-value">3</span>
+        <span class="stat-label">Plattformen</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">Kostenlos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">0</span>
+        <span class="stat-label">Kurven ablesen</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">Live</span>
+        <span class="stat-label">Im Store verfügbar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem / Lösung -->
+  <section>
+    <div class="section-inner">
+      <p class="section-label reveal">// Das Problem</p>
+      <h2 class="section-title reveal">Fotometer ohne<br><em>Kurven-Chaos.</em></h2>
+      <p class="section-body reveal">Wer ein Fotometer zur Wasseranalyse nutzt, kennt das Problem: Millivolt-Werte ablesen, Kurven suchen, Werte interpolieren. Die App macht das automatisch.</p>
+      <div class="problem-grid reveal">
+        <div class="problem-card red">
+          <h3>// Bisher</h3>
+          <ul class="problem-list">
+            <li>Millivolt-Werte manuell in Kurven ablesen</li>
+            <li>Tabellen wälzen und Werte interpolieren</li>
+            <li>Fehleranfällig bei handschriftlicher Auswertung</li>
+            <li>Zeitaufwand für jede einzelne Messung</li>
+          </ul>
+        </div>
+        <div class="problem-card green">
+          <h3>// Mit der App</h3>
+          <ul class="problem-list">
+            <li>Millivolt-Wert eingeben - mg/l sofort berechnet</li>
+            <li>Alle gängigen Wasserpantscher-Tests unterstützt</li>
+            <li>Geeignet für Süß-, Salzwasser, Teich &amp; Leitungswasser</li>
+            <li>Schnell, präzise, fehlerfrei</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Funktionen -->
+  <section id="wp-funktionen" style="padding-top:0;">
+    <div class="section-inner">
+      <p class="section-label reveal">// Funktionen</p>
+      <h2 class="section-title reveal">Einfach. Schnell.<br><em>Präzise.</em></h2>
+      <div class="features-grid reveal">
+        <div class="feature-card">
+          <span class="feature-icon">📡</span>
+          <div class="feature-title">Automatische Auswertung</div>
+          <p class="feature-desc">Millivolt-Wert eingeben und mg/l sofort ablesen - die Umrechnung erfolgt vollautomatisch auf Basis hinterlegter Kalibrierkurven.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🧪</span>
+          <div class="feature-title">Alle Tests unterstützt</div>
+          <p class="feature-desc">NO3, PO4, Fe, K, Mg, Ca und viele weitere Wasserpantscher-Tests sind vollständig integriert.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌊</span>
+          <div class="feature-title">Alle Wassertypen</div>
+          <p class="feature-desc">Geeignet für Süßwasser- und Salzwasseraquarien, Gartenteich und Leitungswasseranalyse.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🖥️</span>
+          <div class="feature-title">Cross-Platform</div>
+          <p class="feature-desc">Eine App für Android, iOS und Windows - aus einer einzigen Codebasis entwickelt.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <div class="feature-title">Sofort startklar</div>
+          <p class="feature-desc">Keine Einrichtung, keine Konfiguration. App öffnen, Wert eingeben, Ergebnis ablesen.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🎯</span>
+          <div class="feature-title">Kostenlos</div>
+          <p class="feature-desc">Vollständig kostenlos - kein Abo, keine In-App-Käufe, keine versteckten Gebühren.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- So funktioniert es -->
+  <section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section-inner">
+      <p class="section-label reveal">// So funktioniert es</p>
+      <h2 class="section-title reveal">In drei Schritten<br><em>zum Ergebnis.</em></h2>
+      <div class="how-grid reveal" style="grid-template-columns:repeat(3,1fr);">
+        <div class="how-step">
+          <div class="step-num">01</div>
+          <div class="step-title">Test auswählen</div>
+          <p class="step-desc">Den gewünschten Wasserpantscher-Test aus der Liste wählen - NO3, PO4, Fe und viele weitere.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-num">02</div>
+          <div class="step-title">Millivolt eingeben</div>
+          <p class="step-desc">Den Millivolt-Wert vom Fotometer-Display direkt in die App eingeben.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-num">03</div>
+          <div class="step-title">mg/l ablesen</div>
+          <p class="step-desc">Das Ergebnis in mg/l erscheint sofort - präzise, ohne Kurven, ohne Tabellen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plattformen -->
+  <section>
+    <div class="section-inner">
+      <p class="section-label reveal">// Plattformen</p>
+      <h2 class="section-title reveal">Auf jedem Gerät<br><em>zu Hause.</em></h2>
+      <div class="platforms-grid reveal">
+        <div class="platform-card">
+          <div class="platform-icon-wrap mob">🤖</div>
+          <div>
+            <h3>Android</h3>
+            <p>Kostenlos im Google Play Store. Für Smartphones und Tablets optimiert.</p>
+            <div class="platform-tags">
+              <span class="ptag">Google Play Store</span>
+              <span class="ptag">Android 8+</span>
+              <span class="ptag">Kostenlos</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon-wrap mob" style="background:#2d1b4e;">📱</div>
+          <div>
+            <h3>iOS</h3>
+            <p>Kostenlos im Apple App Store. Für iPhone und iPad.</p>
+            <div class="platform-tags">
+              <span class="ptag">Apple App Store</span>
+              <span class="ptag">iOS 15+</span>
+              <span class="ptag">Kostenlos</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon-wrap win">🪟</div>
+          <div>
+            <h3>Windows</h3>
+            <p>Als Desktop-Anwendung direkt über wasserpantscher.at als ZIP-Download verfügbar.</p>
+            <div class="platform-tags">
+              <span class="ptag">Direkt-Download (.zip)</span>
+              <span class="ptag">Windows 10/11</span>
+              <span class="ptag">Kostenlos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-inner">
+      <div>
+        <h2>Schluss mit<br><em>Kurven-Raten.</em></h2>
+        <p>Jetzt kostenlos herunterladen - für Android, iOS und Windows.</p>
+      </div>
+      <div class="cta-actions">
+        <a onclick="document.getElementById('wp-download-modal').style.display='flex'" href="#" class="btn-primary">App herunterladen</a>
+        <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-secondary">Ähnliches anfragen</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
+    <div class="footer-right">
+      <p>(c) 2026 xJRx98 Software</p>
+      <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
+      <button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button>
+    </div>
+  </footer>
+
+  <!-- Download Modal -->
+  <div id="wp-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
     <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
-      <button onclick="document.getElementById('download-modal-wp').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
+      <button onclick="document.getElementById('wp-download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
       <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
       <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
       <div style="display:flex;flex-direction:column;gap:12px;">
@@ -2031,47 +2534,8 @@ footer p {
       </div>
     </div>
   </div>
-  <div class="project-detail-hero">
-    <button class="back-btn" onclick="showPage('home'); scrollToSection('projekte')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zu Projekten</button>
-    <p class="project-num">// 02 - Aquaristik</p>
-    <h1>Wasserpantscher App</h1>
-    <p class="tagline">Die offizielle App von wasserpantscher.at - Millivolt-Messwerte des Fotometers direkt eingeben, mg/l ablesen, ohne Kurven oder Tabellen.</p>
-  </div>
-  <div class="project-detail-content">
-    <div class="project-detail-main">
-      <h2>Über das Projekt</h2>
-      <p>Die Wasserpantscher App wurde als digitales Companion-Tool für den österreichischen Aquaristik-Shop wasserpantscher.at entwickelt.</p>
-      <h2>Funktionen</h2>
-      <ul>
-        <li>Millivolt-Werte des Fotometers direkt eingeben - mg/l wird sofort berechnet</li>
-        <li>Unterstützung aller gängigen Wasserpantscher-Tests (NO3, PO4, Fe, K, Mg, Ca u.v.m.)</li>
-        <li>Kein Ablesen von Kurven oder Tabellen mehr nötig</li>
-        <li>Geeignet für Süßwasser- und Salzwasseraquarien sowie Teich und Leitungswasser</li>
-        <li>Verfügbar für Android, iOS und Windows</li>
-      </ul>
-    </div>
-    <div class="project-detail-sidebar">
-      <div class="info-card">
-        <h4>// Projektdetails</h4>
-        <div class="info-row"><span class="label">Bereich</span><span class="value">Aquaristik</span></div>
-        <div class="info-row"><span class="label">Typ</span><span class="value">Mobile &amp; Desktop App</span></div>
-        <div class="info-row"><span class="label">Plattform</span><span class="value">Android / iOS / Windows</span></div>
-        <div class="info-row"><span class="label">Status</span><span class="value" style="color:#22c55e">Live</span></div>
-      </div>
-      <div class="project-detail-cta">
-        <button class="cta-primary-btn" onclick="document.getElementById('download-modal-wp').style.display='flex'">App herunterladen v</button>
-        <button class="cta-secondary-btn" onclick="showPage('home'); scrollToSection('kontakt')">Ähnliches Projekt anfragen</button>
-      </div>
-    </div>
-  </div>
-  <footer>
-    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
-    <div class="footer-right">
-      <p>(c) 2026 xJRx98 Software</p>
-      <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
-    </div>
-  </footer>
 </div>
+
 
 <!-- =================== PATIENTENAUFRUF PRODUKTSEITE =================== -->
 <div id="page-patientenaufruf-produkt" class="page">
