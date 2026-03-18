@@ -1535,11 +1535,12 @@ footer p {
           </div>
         </div>
         <div class="contact-form reveal">
-          <form action="https://formspree.io/f/xjgarnbj" method="POST">
-            <div class="form-group"><label>Name</label><input type="text" name="name" placeholder="Max Mustermann" required></div>
-            <div class="form-group"><label>E-Mail</label><input type="email" name="email" placeholder="max@beispiel.de" required></div>
-            <div class="form-group"><label>Nachricht</label><textarea name="message" placeholder="Beschreib dein Projekt..." required></textarea></div>
-            <button type="submit" class="form-submit">Nachricht senden →</button>
+          <form id="contact-form">
+            <div class="form-group"><label>Name</label><input type="text" id="cf-name" placeholder="Max Mustermann" required></div>
+            <div class="form-group"><label>E-Mail</label><input type="email" id="cf-email" placeholder="max@beispiel.de" required></div>
+            <div class="form-group"><label>Nachricht</label><textarea id="cf-message" placeholder="Beschreib dein Projekt..." required></textarea></div>
+            <button type="submit" class="form-submit" id="cf-btn">Nachricht senden →</button>
+            <p id="cf-status" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
           </form>
         </div>
       </div>
@@ -2028,7 +2029,7 @@ footer p {
       </div>
       <div class="cta-actions">
         <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Demo anfragen →</a>
-        <a href="mailto:info@xjrx98.de" class="btn-secondary">E-Mail schreiben</a>
+        <a href="/cdn-cgi/l/email-protection#e881868e87a890829a90d1d0c68c8d" class="btn-secondary">E-Mail schreiben</a>
       </div>
     </div>
   </div>
@@ -2054,7 +2055,7 @@ footer p {
     </div>
     <div class="impressum-block">
       <h2>Kontakt</h2>
-      <p>E-Mail: <a href="mailto:info@xjrx98.de">info@xjrx98.de</a></p>
+      <p>E-Mail: <a href="/cdn-cgi/l/email-protection#620b0c040d221a08101a5b5a4c0607"><span class="__cf_email__" data-cfemail="e38a8d858ca39b89919bdadbcd8786">[email&#160;protected]</span></a></p>
     </div>
     <div class="impressum-block">
       <h2>Umsatzsteuer-ID</h2>
@@ -2087,7 +2088,7 @@ footer p {
   </footer>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function tryHistoryState(fn) {
   try { fn(); } catch(e) { /* history API not available in this context */ }
 }
@@ -2134,7 +2135,7 @@ function initReveal() {
         const el = entry.target;
         const siblings = [...el.parentElement.querySelectorAll('.reveal')];
         el.style.transitionDelay = (siblings.indexOf(el) * 0.07) + 's';
-        el.classList.add('visible');
+        le');
         observer.unobserve(el);
       }
     });
@@ -2146,6 +2147,50 @@ function initReveal() {
     observer.observe(el);
   });
 }
+</script>
+
+<script>
+// ─── GOOGLE APPS SCRIPT CONTACT FORM ───
+// Ersetze diese URL mit deiner eigenen Web App URL nach dem Deployment
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxpfHG8Z8NuViT_oFmPioMxNmLiZ907zMB4eoqdGntwshkuzF1IoMC-G2IXsElEC709dg/exec';
+
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('cf-btn');
+  const status = document.getElementById('cf-status');
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+
+  btn.textContent = 'Wird gesendet...';
+  btn.disabled = true;
+  status.style.display = 'none';
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ name, email, message }),
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      status.textContent = 'Nachricht gesendet! Du bekommst gleich eine Bestätigung per E-Mail.';
+      status.style.color = 'var(--accent)';
+      status.style.display = 'block';
+      btn.textContent = 'Gesendet ✓';
+      document.getElementById('cf-name').value = '';
+      document.getElementById('cf-email').value = '';
+      document.getElementById('cf-message').value = '';
+    } else {
+      throw new Error('Fehler');
+    }
+  } catch(err) {
+    status.textContent = 'Fehler beim Senden — bitte versuche es erneut oder schreib direkt eine E-Mail.';
+    status.style.color = '#c94b6d';
+    status.style.display = 'block';
+    btn.textContent = 'Nachricht senden →';
+    btn.disabled = false;
+  }
+});
 </script>
 </body>
 </html>
