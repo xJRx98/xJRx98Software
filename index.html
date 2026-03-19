@@ -1398,7 +1398,7 @@ footer p {
   #page-patientenaufruf-produkt .hero { padding: 120px 24px 72px; }
   .pa-banner-grid { grid-template-columns: 1fr !important; }
   .pa-banner-sidebar { max-width: 100% !important; min-width: unset !important; }
-  #page-patientenaufruf-produkt .pricing-grid { grid-template-columns: 1fr; }
+  #page-patientenaufruf-produkt .pricing-grid { grid-template-columns: 1fr; } /* MOBILE FIX */
   #page-patientenaufruf-produkt .cta-inner { flex-direction: column; align-items: flex-start; }
   #page-patientenaufruf-produkt footer { flex-direction: column; gap: 12px; text-align: center; }
 }
@@ -1915,8 +1915,6 @@ footer p {
     <div><h2>Schluss mit<br><em>Kurven-Raten.</em></h2><p>Jetzt kostenlos herunterladen - für Android, iOS und Windows.</p></div>
     <a onclick="document.getElementById('wp-download-modal').style.display='flex'" href="#" class="btn-primary" style="padding:14px 56px;margin-top:8px;">App herunterladen</a>
   </div></div>
-    </div>
-  </div></div>
   <footer>
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
     <div class="footer-right"><p>(c) 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button></div>
@@ -2047,7 +2045,6 @@ footer p {
     </div>
   </div></section>
 
-  <!-- =================== PRICING - UPDATED =================== -->
   <section id="pa-lizenz" style="padding-top:0;"><div class="section-inner">
     <p class="section-label reveal">// Lizenzmodell</p>
     <h2 class="section-title reveal">Transparent.<br><em>Fair. Flexibel.</em></h2>
@@ -2149,7 +2146,7 @@ footer p {
     </div>
     <div class="cta-actions">
       <a onclick="document.getElementById('pa-download-modal').style.display='flex'" href="#" class="btn-primary">Jetzt testen -></a>
-      <a href="/cdn-cgi/l/email-protection#cca5a2aaa38cb4a6beb4f5f4e2a8a9" class="btn-secondary">E-Mail schreiben</a>
+      <a href="mailto:info@xjrx98software.de" class="btn-secondary">E-Mail schreiben</a>
     </div>
   </div></div>
 
@@ -2165,14 +2162,14 @@ footer p {
 <!-- =================== UEBER MICH PAGE =================== -->
 <div id="page-ueber-mich" class="page impressum-page">
   <div class="impressum-content" style="max-width:860px;">
-    <button class="back-btn" onclick="showPage('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zur&uuml;ck zur Startseite</button>
+    <button class="back-btn" onclick="showPage('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zur Startseite</button>
     <p class="section-label">// Wer steckt dahinter</p>
-    <h1>&Uuml;ber mich</h1>
+    <h1>Über mich</h1>
     <div class="impressum-block">
       <h2>Zur Person</h2>
-      <p>Ich bin <strong style="color:var(--text);">Jonas Ruhland</strong> aus M&uuml;nchen &mdash; Versicherungsmathematiker im Hauptberuf und seit Kurzem zus&auml;tzlich selbst&auml;ndig als Softwareentwickler.</p>
-      <p style="margin-top:12px;">Ich habe <strong style="color:var(--text);">Mathematik mit software-lastigem Schwerpunkt</strong> im Bachelor und Master studiert. Diese Kombination aus analytischem Denken und technischem Know-how flie&szlig;t direkt in meine Projekte ein: pr&auml;zise Planung, sauberer Code, nachvollziehbare L&ouml;sungen.</p>
-      <p style="margin-top:12px;">Nebenberuflich entwickle ich individuelle Apps, Tools und Automatisierungsl&ouml;sungen &mdash; von der Idee bis zur Ver&ouml;ffentlichung im Store. Kein Overhead, keine Agentur &mdash; direkte Zusammenarbeit mit dem Entwickler.</p>
+      <p>Ich bin <strong style="color:var(--text);">Jonas Ruhland</strong> aus München &mdash; Versicherungsmathematiker im Hauptberuf und seit Kurzem zusätzlich selbständig als Softwareentwickler.</p>
+      <p style="margin-top:12px;">Ich habe <strong style="color:var(--text);">Mathematik mit software-lastigem Schwerpunkt</strong> im Bachelor und Master studiert. Diese Kombination aus analytischem Denken und technischem Know-how fließt direkt in meine Projekte ein: präzise Planung, sauberer Code, nachvollziehbare Lösungen.</p>
+      <p style="margin-top:12px;">Nebenberuflich entwickle ich individuelle Apps, Tools und Automatisierungslösungen &mdash; von der Idee bis zur Veröffentlichung im Store. Kein Overhead, keine Agentur &mdash; direkte Zusammenarbeit mit dem Entwickler.</p>
     </div>
     <div class="impressum-block">
       <h2>Ausbildung</h2>
@@ -2202,9 +2199,9 @@ footer p {
       <h2>Kurz &amp; Knapp</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
         <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Hauptberuf</p><p style="font-size:14px;color:var(--text);">Versicherungsmathematiker</p></div>
-        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Selbst&auml;ndig seit</p><p style="font-size:14px;color:var(--text);">2025</p></div>
+        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Selbständig seit</p><p style="font-size:14px;color:var(--text);">2025</p></div>
         <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Spezialisierung</p><p style="font-size:14px;color:var(--text);">Flutter / Cross-Platform Apps</p></div>
-        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Standort</p><p style="font-size:14px;color:var(--text);">M&uuml;nchen, Deutschland</p></div>
+        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Standort</p><p style="font-size:14px;color:var(--text);">München, Deutschland</p></div>
       </div>
     </div>
   </div>
@@ -2219,14 +2216,14 @@ footer p {
   <div class="impressum-content">
     <button class="back-btn" onclick="showPage('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zur Startseite</button>
     <p class="section-label">// Rechtliches</p>
-    <h1>Datenschutzerkl&auml;rung</h1>
-    <div class="impressum-block"><h2>1. Verantwortlicher</h2><p>Jonas Ruhland, xJRx98 Software, Rauschbergstra&szlig;e 6, 81825 M&uuml;nchen<br>E-Mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046d6a626b447c6e767c3d3c2a6061">[email&#160;protected]</a></p></div>
+    <h1>Datenschutzerklärung</h1>
+    <div class="impressum-block"><h2>1. Verantwortlicher</h2><p>Jonas Ruhland, xJRx98 Software, Rauschbergstraße 6, 81825 München<br>E-Mail: info@xjrx98software.de</p></div>
     <div class="impressum-block"><h2>2. Erhebung personenbezogener Daten</h2><p>Personenbezogene Daten werden auf dieser Website nur im technisch notwendigen Umfang erhoben. In keinem Fall werden die erhobenen Daten verkauft oder an Dritte weitergegeben.</p></div>
-    <div class="impressum-block"><h2>3. Kontaktformular</h2><p>Wenn Sie das Kontaktformular nutzen, werden Name, E-Mail-Adresse und Nachricht zur Bearbeitung Ihrer Anfrage verarbeitet. Die Daten werden &uuml;ber Google Apps Script (Google LLC, USA) &uuml;bermittelt und per E-Mail weitergeleitet. Es erfolgt keine dauerhafte Speicherung auf externen Servern. Rechtsgrundlage: Art. 6 Abs. 1 lit. b und f DSGVO.</p></div>
-    <div class="impressum-block"><h2>4. Google Fonts</h2><p>Diese Website verwendet Google Fonts (Google LLC, USA). Beim Laden der Seite wird eine Verbindung zu Google-Servern hergestellt, wodurch Ihre IP-Adresse &uuml;bermittelt werden kann. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Sie k&ouml;nnen die Nutzung &uuml;ber den Cookie-Hinweis ablehnen.</p></div>
-    <div class="impressum-block"><h2>5. Lokale Speicherung</h2><p>Der localStorage Ihres Browsers wird ausschlie&szlig;lich zur Speicherung Ihrer Cookie-Einwilligung verwendet. Es werden keine Tracking- oder Marketingdaten gespeichert.</p></div>
-    <div class="impressum-block"><h2>6. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, L&ouml;schung und Einschr&auml;nkung der Verarbeitung Ihrer Daten. Kontakt: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="92fbfcf4fdd2eaf8e0eaabaabcf6f7">[email&#160;protected]</a></p></div>
-    <div class="impressum-block"><h2>7. Stand</h2><p>M&auml;rz 2026</p></div>
+    <div class="impressum-block"><h2>3. Kontaktformular</h2><p>Wenn Sie das Kontaktformular nutzen, werden Name, E-Mail-Adresse und Nachricht zur Bearbeitung Ihrer Anfrage verarbeitet. Die Daten werden über Google Apps Script (Google LLC, USA) übermittelt und per E-Mail weitergeleitet. Es erfolgt keine dauerhafte Speicherung auf externen Servern. Rechtsgrundlage: Art. 6 Abs. 1 lit. b und f DSGVO.</p></div>
+    <div class="impressum-block"><h2>4. Google Fonts</h2><p>Diese Website verwendet Google Fonts (Google LLC, USA). Beim Laden der Seite wird eine Verbindung zu Google-Servern hergestellt, wodurch Ihre IP-Adresse übermittelt werden kann. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Sie können die Nutzung über den Cookie-Hinweis ablehnen.</p></div>
+    <div class="impressum-block"><h2>5. Lokale Speicherung</h2><p>Der localStorage Ihres Browsers wird ausschließlich zur Speicherung Ihrer Cookie-Einwilligung verwendet. Es werden keine Tracking- oder Marketingdaten gespeichert.</p></div>
+    <div class="impressum-block"><h2>6. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontakt: info@xjrx98software.de</p></div>
+    <div class="impressum-block"><h2>7. Stand</h2><p>März 2026</p></div>
   </div>
   <footer>
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
@@ -2241,7 +2238,7 @@ footer p {
     <p class="section-label">// Rechtliches</p>
     <h1>Impressum</h1>
     <div class="impressum-block"><h2>Angaben gemäß § 5 TMG</h2><address>Jonas Ruhland<br>xJRx98 Software<br>Rauschbergstraße 6<br>81825 München<br>Deutschland</address></div>
-    <div class="impressum-block"><h2>Kontakt</h2><p>E-Mail: <a href="/cdn-cgi/l/email-protection#8be2e5ede4cbf3e1f9f3b2b3a5efee"><span class="__cf_email__" data-cfemail="d6bfb8b0b996aebca4aeefeef8b2b3">[email&#160;protected]</span></a></p></div>
+    <div class="impressum-block"><h2>Kontakt</h2><p>E-Mail: info@xjrx98software.de</p></div>
     <div class="impressum-block"><h2>Umsatzsteuer-ID</h2><p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>DE456789385</p></div>
     <div class="impressum-block"><h2>Verantwortlich für den Inhalt</h2><p>Jonas Ruhland<br>Rauschbergstraße 6<br>81825 München</p></div>
     <div class="impressum-block"><h2>Streitschlichtung</h2><p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank">https://ec.europa.eu/consumers/odr/</a></p><p style="margin-top:12px">Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p></div>
@@ -2254,7 +2251,7 @@ footer p {
   </footer>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function tryHistoryState(fn) {
   try { fn(); } catch(e) {}
 }
@@ -2467,4 +2464,21 @@ window.addEventListener('scroll', function() {
 <script>
 (function() {
   var consent = localStorage.getItem('cookie-consent');
-  if (!consent) { document.getElementById('cookie-ban
+  if (!consent) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+})();
+
+function cookieAccept() {
+  localStorage.setItem('cookie-consent', 'accepted');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+
+function cookieDecline() {
+  localStorage.setItem('cookie-consent', 'declined');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
