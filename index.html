@@ -87,8 +87,8 @@ nav {
   height: 36px;
   width: auto;
   display: block;
-  filter: brightness(0) invert(1);
-  opacity: .92;
+  filter: none; mix-blend-mode: multiply;
+  opacity: 1;
   transition: opacity .2s;
 }
 .nav-logo:hover .nav-logo-img { opacity: 1; }
@@ -955,7 +955,7 @@ footer {
 .footer-logo-link { display: inline-block; cursor: pointer; }
 .footer-logo-img {
   height: 28px; width: auto; display: block;
-  filter: brightness(0) invert(1); opacity: .6; transition: opacity .2s;
+  ix-blend-mode: multiply; opacity: 1; transition: opacity .2s;
 }
 .footer-logo-link:hover .footer-logo-img { opacity: .85; }
 
