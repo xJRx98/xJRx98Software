@@ -1723,53 +1723,57 @@ footer p {
   <hr class="divider">
 
   <section id="projekte">
-    <div class="wrap">
-      <p class="section-label reveal">// Referenzen</p>
-      <h2 class="section-title reveal">Projekte</h2>
-      <p class="section-desc reveal">Ausgewählte Arbeiten - Software, die echten Mehrwert liefert.</p>
-      <div class="projects-grid">
-        <div class="project-card reveal" onclick="showProject('cp-app')">
-          <p class="project-num">01 / Aquaristik</p>
-          <h3>C&amp;P Aquaplants App</h3>
-          <p>App zur Unterstützung rund um Aquaristik und Pflanzenpflege. Praktische Tools und nützliche Funktionen für Hobbyisten und Profis.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
-          </div>
-          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+  <div class="wrap">
+    <p class="section-label reveal">// Referenzen</p>
+    <h2 class="section-title reveal">Projekte</h2>
+    <p class="section-desc reveal">Ausgewählte Arbeiten - Software, die echten Mehrwert liefert.</p>
+    <div class="projects-grid">
+
+      <div class="project-card reveal" onclick="showProject('cp-app')" style="display:grid;grid-template-rows:auto auto 1fr auto auto;">
+        <p class="project-num">01 / Aquaristik</p>
+        <h3>C&amp;P Aquaplants App</h3>
+        <p>App zur Unterstützung rund um Aquaristik und Pflanzenpflege. Praktische Tools und nützliche Funktionen für Hobbyisten und Profis.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
         </div>
-        <div class="project-card reveal" onclick="showProject('wasserpantscher')">
-          <p class="project-num">02 / Aquaristik</p>
-          <h3>Wasserpantscher App</h3>
-          <p>Softwarelösung für präzise Aquaristik-Berechnungen und Wasserwerteanalyse - zuverlässig und einfach bedienbar.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
-          </div>
-          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-        </div>
-        <div class="project-card reveal" onclick="showPage('patientenaufruf-produkt')">
-          <p class="project-num">03 / Medizin</p>
-          <h3>Patientenaufruf System</h3>
-          <p>Digitales System zum strukturierten Aufrufen von Patienten im Wartezimmer - übersichtlich, effizient und zuverlässig.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Python</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">WebSocket</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">macOS</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(232,168,74,.08);border:1px solid rgba(232,168,74,.3);border-radius:100px;color:#e8a84a;">In Arbeit</span>
-          </div>
-          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-        </div>
+        <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
       </div>
+
+      <div class="project-card reveal" onclick="showProject('wasserpantscher')" style="display:grid;grid-template-rows:auto auto 1fr auto auto;">
+        <p class="project-num">02 / Aquaristik</p>
+        <h3>Wasserpantscher App</h3>
+        <p>Softwarelösung für präzise Aquaristik-Berechnungen und Wasserwerteanalyse - zuverlässig und einfach bedienbar.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+        </div>
+        <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+
+      <div class="project-card reveal" onclick="showPage('patientenaufruf-produkt')" style="display:grid;grid-template-rows:auto auto 1fr auto auto;">
+        <p class="project-num">03 / Medizin</p>
+        <h3>Patientenaufruf System</h3>
+        <p>Digitales System zum strukturierten Aufrufen von Patienten im Wartezimmer - übersichtlich, effizient und zuverlässig.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Python</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">WebSocket</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">macOS</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(232,168,74,.08);border:1px solid rgba(232,168,74,.3);border-radius:100px;color:#e8a84a;">In Arbeit</span>
+        </div>
+        <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
   <section class="cta-section">
     <div class="cta-inner">
