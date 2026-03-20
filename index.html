@@ -220,7 +220,7 @@ nav {
 
 .hero h1 {
   font-family: var(--mono);
-  font-size: clamp(40px, 7vw, 76px);
+  font-size: clamp(32px, 7vw, 76px);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -.02em;
@@ -238,7 +238,7 @@ nav {
 
 .hero-sub {
   margin-top: 24px;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 300;
   color: var(--muted2);
   max-width: 580px;
@@ -255,6 +255,8 @@ nav {
   position: relative;
   z-index: 1;
   animation: fadeUp .6s .3s ease both;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .btn-primary {
@@ -272,6 +274,7 @@ nav {
   letter-spacing: .02em;
   box-shadow: 0 0 30px rgba(61,189,177,.2);
   display: inline-block;
+  text-align: center;
 }
 
 .btn-primary:hover {
@@ -294,6 +297,7 @@ nav {
   text-decoration: none;
   letter-spacing: .02em;
   display: inline-block;
+  text-align: center;
 }
 
 .btn-ghost:hover {
@@ -340,7 +344,7 @@ section { position: relative; z-index: 1; }
 .wrap {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 100px 40px;
+  padding: 80px 40px;
 }
 
 .section-label {
@@ -354,7 +358,7 @@ section { position: relative; z-index: 1; }
 
 .section-title {
   font-family: var(--mono);
-  font-size: clamp(26px, 3vw, 38px);
+  font-size: clamp(22px, 3vw, 38px);
   font-weight: 700;
   color: var(--text);
   letter-spacing: -.02em;
@@ -381,7 +385,7 @@ section { position: relative; z-index: 1; }
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1px;
   margin-top: 56px;
   border: 1px solid var(--border);
@@ -391,7 +395,7 @@ section { position: relative; z-index: 1; }
 
 .service-item {
   background: var(--surface);
-  padding: 36px 32px;
+  padding: 32px 28px;
   transition: background .25s;
   position: relative;
 }
@@ -435,7 +439,7 @@ section { position: relative; z-index: 1; }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   margin-top: 56px;
 }
@@ -444,7 +448,7 @@ section { position: relative; z-index: 1; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 32px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   transition: border-color .25s, transform .25s, box-shadow .25s;
@@ -544,7 +548,7 @@ section { position: relative; z-index: 1; }
 .cta-inner {
   max-width: 700px;
   margin: 0 auto;
-  padding: 100px 40px;
+  padding: 80px 24px;
   text-align: center;
   position: relative;
   z-index: 1;
@@ -552,7 +556,7 @@ section { position: relative; z-index: 1; }
 
 .cta-inner h2 {
   font-family: var(--mono);
-  font-size: clamp(28px, 3.5vw, 44px);
+  font-size: clamp(24px, 3.5vw, 44px);
   font-weight: 700;
   letter-spacing: -.02em;
   margin-bottom: 16px;
@@ -620,7 +624,7 @@ section { position: relative; z-index: 1; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 36px;
+  padding: 32px;
 }
 
 .form-group { margin-bottom: 16px; }
@@ -648,6 +652,8 @@ section { position: relative; z-index: 1; }
   transition: border-color .2s, box-shadow .2s;
   outline: none;
   resize: vertical;
+  /* iOS fix: prevent zoom on focus */
+  font-size: max(16px, 14px);
 }
 
 .form-group input:focus,
@@ -673,6 +679,7 @@ section { position: relative; z-index: 1; }
   margin-top: 8px;
   box-shadow: 0 0 24px rgba(14,165,233,.2);
   letter-spacing: .02em;
+  -webkit-appearance: none;
 }
 
 .form-submit:hover {
@@ -726,7 +733,7 @@ section { position: relative; z-index: 1; }
 
 .project-detail-hero h1 {
   font-family: var(--mono);
-  font-size: clamp(32px, 5vw, 56px);
+  font-size: clamp(28px, 5vw, 56px);
   font-weight: 700;
   letter-spacing: -.02em;
   color: var(--text);
@@ -735,7 +742,7 @@ section { position: relative; z-index: 1; }
 }
 
 .project-detail-hero .tagline {
-  font-size: 18px;
+  font-size: 17px;
   color: var(--muted2);
   line-height: 1.7;
   font-weight: 300;
@@ -919,7 +926,7 @@ section { position: relative; z-index: 1; }
 .impressum-content .back-btn svg { width: 14px; height: 14px; }
 .impressum-content .section-label { margin-bottom: 8px; }
 .impressum-content h1 {
-  font-family: var(--mono); font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+  font-family: var(--mono); font-size: clamp(24px, 4vw, 44px); font-weight: 700;
   letter-spacing: -.02em; color: var(--text); margin-bottom: 48px; line-height: 1.1;
 }
 .impressum-block { margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
@@ -937,7 +944,7 @@ section { position: relative; z-index: 1; }
 /* --- FOOTER --- */
 footer {
   border-top: 1px solid var(--border);
-  padding: 32px 48px;
+  padding: 28px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -952,7 +959,7 @@ footer {
 }
 .footer-logo-link:hover .footer-logo-img { opacity: .85; }
 
-.footer-right { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.footer-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 
 footer p {
   font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .04em;
@@ -977,21 +984,10 @@ footer p {
 }
 .reveal.visible { opacity: 1; transform: none; }
 
-/* --- RESPONSIVE --- */
-@media (max-width: 768px) {
-  nav { padding: 0 20px; }
-  .nav-links { display: none; }
-  .wrap { padding: 72px 20px; }
-  .contact-layout { grid-template-columns: 1fr; }
-  .hero-actions { flex-direction: column; align-items: stretch; }
-  footer { flex-direction: column; align-items: center; text-align: center; }
-  .project-detail-content { grid-template-columns: 1fr; }
-  .project-detail-sidebar { position: static; }
-  .project-detail-hero, .project-detail-content, .impressum-content { padding-left: 20px; padding-right: 20px; }
-}
+/* ==========================================
+   SHARED PRODUCT PAGE STYLES
+   ========================================== */
 
-
-/* --- SHARED PRODUCT PAGE STYLES --- */
 .hero-grid {
   position: absolute; inset: 0;
   background-image:
@@ -1011,38 +1007,28 @@ footer p {
   max-width: 1100px; margin: 0 auto; width: 100%;
   position: relative; z-index: 1;
 }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--accent);
-  border: 1px solid rgba(61,189,177,0.25);
-  padding: 6px 14px; border-radius: 2px;
-  margin-bottom: 36px;
-  animation: fadeUp 0.6s ease both;
-}
-.hero-badge::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 8px var(--accent);
-  animation: pulse 2s infinite;
-}
+
 .stats-bar {
   background: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .stats-inner {
-  max-width: 1100px; margin: 0 auto; padding: 0 48px;
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
   display: grid; grid-template-columns: repeat(4, 1fr);
+  min-width: 480px; /* prevent collapse below 4 cols */
 }
 .stat {
-  padding: 36px 40px;
+  padding: 28px 20px;
   border-right: 1px solid var(--border);
   text-align: center;
 }
-.stat:first-child { padding-left: 0; text-align: left; }
+.stat:first-child { text-align: center; }
 .stat:last-child { border-right: none; }
 .stat-value {
-  font-family: var(--mono); font-size: 32px; font-weight: 700;
+  font-family: var(--mono); font-size: 28px; font-weight: 700;
   color: var(--accent); letter-spacing: -0.02em; display: block;
 }
 .stat-label {
@@ -1059,7 +1045,7 @@ footer p {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
   background: var(--border); border: 1px solid var(--border); margin-top: 56px;
 }
-.problem-card { background: var(--surface); padding: 40px; }
+.problem-card { background: var(--surface); padding: 32px; }
 .problem-card h3 {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
   text-transform: uppercase; margin-bottom: 20px;
@@ -1079,7 +1065,7 @@ footer p {
   gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 56px;
 }
 .feature-card {
-  background: var(--surface); padding: 36px;
+  background: var(--surface); padding: 32px;
   transition: background 0.2s; position: relative; overflow: hidden;
 }
 .feature-card::before {
@@ -1100,7 +1086,7 @@ footer p {
   content: ''; position: absolute; top: 28px; left: 12.5%; right: 12.5%;
   height: 1px; background: rgba(61,189,177,.25);
 }
-.how-step { padding: 0 24px; text-align: center; }
+.how-step { padding: 0 20px; text-align: center; }
 .step-num {
   width: 56px; height: 56px; border-radius: 2px;
   background: var(--surface); border: 1px solid rgba(61,189,177,.25);
@@ -1115,8 +1101,8 @@ footer p {
   gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 56px;
 }
 .platform-card {
-  background: var(--surface); padding: 40px;
-  display: flex; align-items: flex-start; gap: 24px;
+  background: var(--surface); padding: 32px;
+  display: flex; align-items: flex-start; gap: 20px;
 }
 .platform-icon-wrap {
   width: 52px; height: 52px; border-radius: 2px;
@@ -1134,26 +1120,10 @@ footer p {
   border: 1px solid rgba(61,189,177,.25); color: var(--muted2);
   letter-spacing: 0.04em; border-radius: 2px;
 }
-.cta-actions { display: flex; gap: 12px; flex-shrink: 0; }
+.cta-actions { display: flex; gap: 12px; flex-shrink: 0; flex-wrap: wrap; }
 
 #page-cp-app section,
-#page-wasserpantscher section { padding: 100px 48px; }
-
-@media (max-width: 900px) {
-  .stats-inner { grid-template-columns: repeat(2,1fr); }
-  .stat { padding: 28px; }
-  .stat:first-child { padding-left: 28px; text-align: center; }
-  .features-grid { grid-template-columns: 1fr 1fr; }
-  .how-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .how-grid::before { display: none; }
-  .platforms-grid { grid-template-columns: 1fr; }
-  .problem-grid { grid-template-columns: 1fr; }
-  #page-cp-app section, #page-wasserpantscher section { padding: 72px 24px; }
-}
-@media (max-width: 600px) {
-  .features-grid { grid-template-columns: 1fr; }
-  .stats-inner { grid-template-columns: 1fr 1fr; }
-}
+#page-wasserpantscher section { padding: 80px 40px; }
 
 /* ==========================================
    PATIENTENAUFRUF PRODUKTSEITE
@@ -1166,7 +1136,7 @@ footer p {
   justify-content: center;
   align-items: flex-start;
   text-align: left;
-  padding: 140px 48px 80px;
+  padding: 120px 40px 80px;
   position: relative;
   overflow: hidden;
 }
@@ -1189,7 +1159,7 @@ footer p {
 
 #page-patientenaufruf-produkt .hero h1 {
   font-family: var(--sans);
-  font-size: clamp(40px, 6vw, 76px);
+  font-size: clamp(36px, 6vw, 76px);
   font-weight: 300; line-height: 1.05;
   letter-spacing: -0.03em; margin-bottom: 28px;
   animation: fadeUp 0.6s 0.1s ease both;
@@ -1198,7 +1168,7 @@ footer p {
 #page-patientenaufruf-produkt .hero h1 em { font-style: italic; color: var(--accent); }
 
 #page-patientenaufruf-produkt .hero-sub {
-  font-size: 17px; color: var(--muted2);
+  font-size: 16px; color: var(--muted2);
   max-width: 560px; line-height: 1.7; margin-bottom: 48px;
   animation: fadeUp 0.6s 0.2s ease both;
 }
@@ -1236,7 +1206,7 @@ footer p {
   border-color: var(--muted2); color: var(--text);
 }
 
-#page-patientenaufruf-produkt section { padding: 100px 48px; }
+#page-patientenaufruf-produkt section { padding: 80px 40px; }
 
 #page-patientenaufruf-produkt .section-label {
   font-family: var(--mono); font-size: 10px; color: var(--accent);
@@ -1245,7 +1215,7 @@ footer p {
 
 #page-patientenaufruf-produkt .section-title {
   font-family: var(--sans);
-  font-size: clamp(28px, 3.5vw, 44px); font-weight: 300;
+  font-size: clamp(24px, 3.5vw, 44px); font-weight: 300;
   letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px;
 }
 
@@ -1261,13 +1231,6 @@ footer p {
 #page-patientenaufruf-produkt .problem-card.red  .problem-list li::before { color: #c94b6d; }
 #page-patientenaufruf-produkt .problem-card.green .problem-list li::before { color: var(--accent); }
 
-#page-patientenaufruf-produkt .feature-card:hover { background: var(--bg2); }
-#page-patientenaufruf-produkt .feature-card:hover::before { opacity: 1; }
-
-#page-patientenaufruf-produkt .platform-icon-wrap.win { background: #1e3a5f; }
-#page-patientenaufruf-produkt .platform-icon-wrap.mac { background: #1e1e1e; border: 1px solid rgba(61,189,177,.25); }
-#page-patientenaufruf-produkt .platform-icon-wrap.mob { background: #14532d; }
-
 /* -- Pricing -- */
 #page-patientenaufruf-produkt .pricing-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
@@ -1276,7 +1239,7 @@ footer p {
 }
 
 #page-patientenaufruf-produkt .pricing-card {
-  background: var(--surface); padding: 40px; position: relative;
+  background: var(--surface); padding: 36px; position: relative;
   transition: border-color .25s, transform .25s, box-shadow .25s;
 }
 
@@ -1362,7 +1325,7 @@ footer p {
   background: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 80px 48px;
+  padding: 64px 40px;
   position: relative;
 }
 
@@ -1376,7 +1339,7 @@ footer p {
 
 #page-patientenaufruf-produkt .cta-inner h2 {
   font-family: var(--sans);
-  font-size: clamp(24px, 3vw, 36px); font-weight: 300;
+  font-size: clamp(20px, 3vw, 36px); font-weight: 300;
   letter-spacing: -0.02em; margin-bottom: 8px;
 }
 
@@ -1393,26 +1356,10 @@ footer p {
   opacity: 1; transform: translateY(0);
 }
 
-@media (max-width: 900px) {
-  #page-patientenaufruf-produkt section { padding: 72px 24px; }
-  #page-patientenaufruf-produkt .hero { padding: 120px 24px 72px; }
-  .pa-banner-grid { grid-template-columns: 1fr !important; }
-  .pa-banner-sidebar { max-width: 100% !important; min-width: unset !important; }
-  #page-patientenaufruf-produkt .pricing-grid { grid-template-columns: 1fr; } /* MOBILE FIX */
-  #page-patientenaufruf-produkt .cta-inner { flex-direction: column; align-items: flex-start; }
-  #page-patientenaufruf-produkt footer { flex-direction: column; gap: 12px; text-align: center; }
-}
-
-@media (max-width: 600px) {
-  #page-patientenaufruf-produkt .hero-actions { flex-direction: column; }
-  #page-patientenaufruf-produkt .btn-primary,
-  #page-patientenaufruf-produkt .btn-secondary { text-align: center; }
-}
-
 /* --- COOKIE BANNER --- */
 #cookie-banner {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  z-index: 999; width: calc(100% - 48px); max-width: 680px;
+  z-index: 999; width: calc(100% - 32px); max-width: 680px;
   background: var(--surface); border: 1px solid var(--border-hi); border-radius: 14px;
   padding: 20px 24px; display: flex; align-items: center; gap: 20px;
   box-shadow: 0 16px 48px rgba(0,0,0,.6); animation: fadeUp .4s ease both; flex-wrap: wrap;
@@ -1457,7 +1404,7 @@ footer p {
 }
 .nav-mobile-menu.open { max-height: 300px; padding: 16px 0 20px; }
 .nav-mobile-menu a {
-  display: block; padding: 14px 24px; font-size: 14px; font-weight: 500;
+  display: block; padding: 14px 24px; font-size: 15px; font-weight: 500;
   color: var(--muted2); text-decoration: none; letter-spacing: .03em;
   transition: color .2s, background .2s; cursor: pointer; border: none;
   background: none; width: 100%; text-align: left; font-family: var(--sans);
@@ -1470,13 +1417,6 @@ footer p {
   letter-spacing: .03em; cursor: pointer; transition: background .2s; text-decoration: none;
 }
 .nav-mobile-menu .nav-mobile-cta:hover { background: rgba(61,189,177,.08); }
-
-@media (max-width: 768px) {
-  .nav-hamburger { display: flex; }
-  .nav-links { display: none !important; }
-  .nav-cta { display: none; }
-  .nav-mobile-menu { display: block; }
-}
 
 /* --- SCROLL TO TOP --- */
 #scroll-top {
@@ -1520,7 +1460,186 @@ footer p {
 .about-stat { background: var(--surface); padding: 24px; text-align: center; }
 .about-stat-value { font-family: var(--mono); font-size: 28px; font-weight: 700; color: var(--accent); display: block; letter-spacing: -.02em; }
 .about-stat-label { font-family: var(--mono); font-size: 10px; color: var(--muted2); letter-spacing: .06em; text-transform: uppercase; margin-top: 4px; display: block; }
-@media (max-width: 768px) { .about-layout { grid-template-columns: 1fr; gap: 48px; } .about-stats { grid-template-columns: 1fr 1fr; } }
+
+/* ==========================================
+   PA BANNER GRID - inline override helper
+   ========================================== */
+.pa-banner-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+.pa-banner-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+/* ==========================================
+   RESPONSIVE BREAKPOINTS
+   ========================================== */
+
+/* --- 1024px and below --- */
+@media (max-width: 1024px) {
+  nav { padding: 0 32px; }
+  .wrap { padding: 72px 32px; }
+  footer { padding: 24px 32px; }
+  #page-cp-app section,
+  #page-wasserpantscher section { padding: 72px 32px; }
+  #page-patientenaufruf-produkt section { padding: 72px 32px; }
+  #page-patientenaufruf-produkt .hero { padding: 100px 32px 72px; }
+  #page-patientenaufruf-produkt .cta-section { padding: 56px 32px; }
+  .stats-inner { padding: 0 32px; }
+}
+
+/* --- 900px and below --- */
+@media (max-width: 900px) {
+  /* Stats bar: 2x2 grid */
+  .stats-inner {
+    grid-template-columns: repeat(2, 1fr);
+    min-width: unset;
+  }
+  .stat { padding: 24px 20px; }
+  .stat:first-child { text-align: center; }
+  .stat:nth-child(2) { border-right: none; }
+  .stat-value { font-size: 24px; }
+
+  /* Features: 2 columns */
+  .features-grid { grid-template-columns: 1fr 1fr; }
+
+  /* How-steps: 2x2 */
+  .how-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .how-grid::before { display: none; }
+
+  /* Platforms: single column */
+  .platforms-grid { grid-template-columns: 1fr; }
+
+  /* Problem grid: single column */
+  .problem-grid { grid-template-columns: 1fr; }
+
+  /* Pricing: single column */
+  #page-patientenaufruf-produkt .pricing-grid { grid-template-columns: 1fr; }
+
+  /* CTA inner: stack */
+  #page-patientenaufruf-produkt .cta-inner { flex-direction: column; align-items: flex-start; }
+  #page-patientenaufruf-produkt .cta-actions { flex-wrap: wrap; }
+
+  /* Banner grid: single column */
+  .pa-banner-grid { grid-template-columns: 1fr; }
+  .pa-banner-sidebar { max-width: 100%; min-width: unset; }
+
+  /* About layout */
+  .about-layout { grid-template-columns: 1fr; gap: 48px; }
+}
+
+/* --- 768px and below --- */
+@media (max-width: 768px) {
+  /* Nav */
+  nav { padding: 0 16px; }
+  .nav-links { display: none !important; }
+  .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-mobile-menu { display: block; }
+
+  /* Sections */
+  .wrap { padding: 56px 16px; }
+  footer { flex-direction: column; align-items: center; text-align: center; padding: 24px 16px; }
+  .footer-right { justify-content: center; }
+
+  /* Hero */
+  .hero { padding: 100px 16px 80px; }
+  .hero-actions { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; }
+  .btn-primary, .btn-ghost { text-align: center; }
+  .hero-orb-1 { width: 300px; height: 300px; }
+  .hero-orb-2 { display: none; }
+
+  /* Project detail */
+  .project-detail-content { grid-template-columns: 1fr; gap: 40px; }
+  .project-detail-sidebar { position: static; }
+  .project-detail-hero,
+  .project-detail-content { padding-left: 16px; padding-right: 16px; }
+  .impressum-content { padding: 56px 16px; }
+
+  /* Contact layout: single column */
+  .contact-layout { grid-template-columns: 1fr; gap: 36px; }
+  .contact-form { padding: 24px; }
+
+  /* Product pages */
+  #page-cp-app section,
+  #page-wasserpantscher section { padding: 56px 16px; }
+  #page-patientenaufruf-produkt section { padding: 56px 16px; }
+  #page-patientenaufruf-produkt .hero { padding: 100px 16px 64px; text-align: left; }
+  #page-patientenaufruf-produkt .hero-actions { flex-direction: column; align-items: flex-start; }
+  #page-patientenaufruf-produkt .btn-primary,
+  #page-patientenaufruf-produkt .btn-secondary { text-align: center; }
+  #page-patientenaufruf-produkt .cta-section { padding: 48px 16px; }
+
+  /* Stats: still 2 col, more compact */
+  .stats-inner { padding: 0 16px; }
+  .stat { padding: 20px 12px; }
+  .stat-value { font-size: 22px; }
+  .stat-label { font-size: 9px; }
+
+  /* Features: single column */
+  .features-grid { grid-template-columns: 1fr; }
+  .feature-card { padding: 24px; }
+
+  /* Problem cards */
+  .problem-card { padding: 24px; }
+
+  /* How steps: single column */
+  .how-grid { grid-template-columns: 1fr !important; gap: 32px; }
+  .how-step { padding: 0; }
+
+  /* Platform cards */
+  .platform-card { padding: 24px; gap: 16px; }
+
+  /* Pricing cards */
+  #page-patientenaufruf-produkt .pricing-card { padding: 28px 20px; }
+
+  /* CTA section */
+  .cta-inner { padding: 64px 16px; }
+
+  /* About stats */
+  .about-stats { grid-template-columns: 1fr 1fr; }
+
+  /* Scroll to top: avoid overlap with cookie banner */
+  #scroll-top { bottom: 80px; right: 16px; }
+
+  /* Projects grid: single column on small */
+  .projects-grid { grid-template-columns: 1fr; }
+
+  /* Cookie banner */
+  #cookie-banner { padding: 16px; gap: 12px; }
+  .cookie-actions { width: 100%; }
+  .cookie-btn-accept, .cookie-btn-decline { flex: 1; text-align: center; }
+}
+
+/* --- 480px and below --- */
+@media (max-width: 480px) {
+  .hero h1 { font-size: clamp(28px, 10vw, 48px); }
+  .section-title { font-size: clamp(20px, 6vw, 28px); }
+
+  /* Banner detail row: stack on very small screens */
+  .pa-banner-grid > div:last-child { display: none; }
+
+  /* Footer links: wrap nicely */
+  .footer-right { gap: 12px; }
+
+  /* Pricing value: a bit smaller */
+  #page-patientenaufruf-produkt .price span[style*="32px"] {
+    font-size: 26px !important;
+  }
+
+  /* Nav logo: ensure it fits */
+  .nav-logo-img { height: 28px; }
+
+  /* Project cards */
+  .project-card { padding: 20px; }
+  .project-card h3 { font-size: 16px; }
+}
 </style>
 </head>
 <body>
@@ -1710,14 +1829,14 @@ footer p {
       Zurück zu Projekten
     </button>
   </div>
-  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 24px 28px;">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;" class="pa-banner-grid">
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:28px 24px;">
+    <div class="pa-banner-grid" style="max-width:1100px;margin:0 auto;">
       <div>
         <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 01 - Aquaristik</p>
-        <h1 style="font-family:var(--mono);font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">C&amp;P Aquaplants App</h1>
+        <h1 style="font-family:var(--mono);font-size:clamp(22px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">C&amp;P Aquaplants App</h1>
         <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Die offizielle App von C&amp;P Aquaplants - digitaler Düngerechner und Photometer-Auswertungstool für Aquaristen, verfügbar auf Android, iOS und Windows.</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:8px;min-width:180px;" class="pa-banner-sidebar">
+      <div class="pa-banner-sidebar">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
           <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">// Details</div>
           <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Typ</span><span style="color:var(--text);">Mobile &amp; Desktop</span></div>
@@ -1793,14 +1912,14 @@ footer p {
   </div></section>
   <div class="cta-section"><div class="cta-inner" style="flex-direction:column;align-items:center;text-align:center;">
     <div><h2>Bereit für <em>präzisere Aquaristik?</em></h2><p>Jetzt kostenlos herunterladen - für Android, iOS und Windows.</p></div>
-    <a onclick="document.getElementById('cp-download-modal').style.display='flex'" href="#" class="btn-primary" style="padding:14px 56px;margin-top:8px;">App herunterladen</a>
+    <a onclick="document.getElementById('cp-download-modal').style.display='flex'" href="#" class="btn-primary" style="padding:14px 40px;margin-top:8px;">App herunterladen</a>
   </div></div>
   <footer>
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
     <div class="footer-right"><p>(c) 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button></div>
   </footer>
-  <div id="cp-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
-    <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
+  <div id="cp-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
+    <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:32px 24px;max-width:380px;width:100%;position:relative;">
       <button onclick="document.getElementById('cp-download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
       <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
       <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
@@ -1830,14 +1949,14 @@ footer p {
       Zurück zu Projekten
     </button>
   </div>
-  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 24px 28px;">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;" class="pa-banner-grid">
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:28px 24px;">
+    <div class="pa-banner-grid" style="max-width:1100px;margin:0 auto;">
       <div>
         <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 02 - Aquaristik</p>
-        <h1 style="font-family:var(--mono);font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">Wasserpantscher App</h1>
+        <h1 style="font-family:var(--mono);font-size:clamp(22px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">Wasserpantscher App</h1>
         <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Die offizielle App von wasserpantscher.at - Millivolt-Messwerte des Fotometers direkt eingeben, mg/l ablesen, ohne Kurven oder Tabellen. Verfügbar auf Android, iOS und Windows.</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:8px;min-width:180px;" class="pa-banner-sidebar">
+      <div class="pa-banner-sidebar">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
           <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">// Details</div>
           <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Typ</span><span style="color:var(--text);">Mobile &amp; Desktop</span></div>
@@ -1913,14 +2032,14 @@ footer p {
   </div></section>
   <div class="cta-section"><div class="cta-inner" style="flex-direction:column;align-items:center;text-align:center;">
     <div><h2>Schluss mit<br><em>Kurven-Raten.</em></h2><p>Jetzt kostenlos herunterladen - für Android, iOS und Windows.</p></div>
-    <a onclick="document.getElementById('wp-download-modal').style.display='flex'" href="#" class="btn-primary" style="padding:14px 56px;margin-top:8px;">App herunterladen</a>
+    <a onclick="document.getElementById('wp-download-modal').style.display='flex'" href="#" class="btn-primary" style="padding:14px 40px;margin-top:8px;">App herunterladen</a>
   </div></div>
   <footer>
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
     <div class="footer-right"><p>(c) 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button></div>
   </footer>
-  <div id="wp-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
-    <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:380px;width:90%;position:relative;">
+  <div id="wp-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
+    <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:32px 24px;max-width:380px;width:100%;position:relative;">
       <button onclick="document.getElementById('wp-download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
       <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
       <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:24px;">Plattform wählen</h3>
@@ -1952,14 +2071,14 @@ footer p {
     </button>
   </div>
 
-  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 24px 28px;">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;" class="pa-banner-grid">
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:28px 24px;">
+    <div class="pa-banner-grid" style="max-width:1100px;margin:0 auto;">
       <div>
         <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 03 - Medizin</p>
-        <h1 style="font-family:var(--mono);font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">Patientenaufruf System</h1>
+        <h1 style="font-family:var(--mono);font-size:clamp(22px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">Patientenaufruf System</h1>
         <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Ein digitales System zum strukturierten und diskreten Aufrufen von Patienten im Wartezimmer - übersichtlich, DSGVO-konform und sofort einsatzbereit auf Windows, macOS, Android und iOS.</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:8px;min-width:180px;" class="pa-banner-sidebar">
+      <div class="pa-banner-sidebar">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
           <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">// Details</div>
           <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Typ</span><span style="color:var(--text);">Desktop + Mobile</span></div>
@@ -1992,7 +2111,7 @@ footer p {
 
   <div class="stats-bar"><div class="stats-inner">
     <div class="stat"><span class="stat-value">0</span><span class="stat-label">Cloud-Abhängigkeit</span></div>
-    <div class="stat"><span class="stat-value" style="font-size:20px;letter-spacing:0;">unbegrenzt viele</span><span class="stat-label">Clients gleichzeitig</span></div>
+    <div class="stat"><span class="stat-value" style="font-size:16px;letter-spacing:0;padding-top:4px;">unbegrenzt</span><span class="stat-label">Clients gleichzeitig</span></div>
     <div class="stat"><span class="stat-value">4</span><span class="stat-label">Plattformen</span></div>
     <div class="stat"><span class="stat-value">100%</span><span class="stat-label">DSGVO-konform</span></div>
   </div></div>
@@ -2050,9 +2169,7 @@ footer p {
     <h2 class="section-title reveal">Transparent.<br><em>Fair. Flexibel.</em></h2>
     <p class="section-body reveal">Keine versteckten Kosten, keine Überraschungen. Wähle zwischen einer einmaligen Jahreslizenz oder bequemer monatlicher Ratenzahlung — ganz wie es zu deiner Praxis passt. Kein Abo, keine Kündigung: Die Lizenz läuft nach dem gewählten Zeitraum automatisch aus — eine Verlängerung erfolgt nur, wenn du aktiv eine neue Lizenz erwirbst.</p>
 
-    <div class="pricing-grid reveal" style="grid-template-columns: repeat(2, 1fr);">
-
-      <!-- Standard -->
+    <div class="pricing-grid reveal">
       <div class="pricing-card">
         <div class="pricing-tier">// Standard</div>
         <h3>Standard</h3>
@@ -2072,7 +2189,6 @@ footer p {
         <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
       </div>
 
-      <!-- Mobile -->
       <div class="pricing-card">
         <div class="pricing-tier">// Mobile</div>
         <h3>Mobile</h3>
@@ -2092,7 +2208,6 @@ footer p {
         <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
       </div>
 
-      <!-- Premium -->
       <div class="pricing-card featured">
         <div class="pricing-badge">Empfohlen</div>
         <div class="pricing-tier">// Premium</div>
@@ -2114,7 +2229,6 @@ footer p {
         <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta filled">Jetzt anfragen -></a>
       </div>
 
-      <!-- Unlimited -->
       <div class="pricing-card">
         <div class="pricing-tier">// Unlimited</div>
         <h3>Unlimited</h3>
@@ -2135,7 +2249,6 @@ footer p {
         </ul>
         <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
       </div>
-
     </div>
   </div></section>
 
@@ -2302,7 +2415,7 @@ function initReveal() {
         observer.unobserve(el);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.1 });
 
   document.querySelectorAll('.reveal').forEach(el => {
     el.classList.remove('visible');
@@ -2410,52 +2523,38 @@ window.addEventListener('scroll', function() {
 </div>
 
 <!-- PATIENTENAUFRUF DOWNLOAD MODAL -->
-<div id="pa-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
-  <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 32px;max-width:480px;width:90%;position:relative;">
+<div id="pa-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;overflow-y:auto;">
+  <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:32px 24px;max-width:480px;width:100%;position:relative;margin:auto;">
     <button onclick="document.getElementById('pa-download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
     <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
     <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">30 Tage kostenlos testen</h3>
     <p style="font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;">Lade Server (Anzeige) und Client (Aufruf) für dein Betriebssystem herunter.</p>
 
-    <!-- Windows -->
     <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Windows</p>
     <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
-      <a href="Anzeige.exe" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+      <a href="Anzeige.exe" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0;"><path d="M0 12.402l11.113-.003L11.11 24H0zm11.11-12.402L0 .003V11.11l11.11.003zM12 0l-.003 11.113L24 11.11V0zm0 24l12-.003V12.89L12 12.887z"/></svg>
-        <div>
-          <div style="font-weight:600;">Anzeige.exe</div>
-          <div style="font-size:12px;color:var(--muted2);">Server · Wartezimmer-Display</div>
-        </div>
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <div><div style="font-weight:600;">Anzeige.exe</div><div style="font-size:12px;color:var(--muted2);">Server · Wartezimmer-Display</div></div>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;flex-shrink:0;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </a>
-      <a href="Aufruf.exe" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+      <a href="Aufruf.exe" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0;"><path d="M0 12.402l11.113-.003L11.11 24H0zm11.11-12.402L0 .003V11.11l11.11.003zM12 0l-.003 11.113L24 11.11V0zm0 24l12-.003V12.89L12 12.887z"/></svg>
-        <div>
-          <div style="font-weight:600;">Aufruf.exe</div>
-          <div style="font-size:12px;color:var(--muted2);">Client · Empfang &amp; Eingabe</div>
-        </div>
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <div><div style="font-weight:600;">Aufruf.exe</div><div style="font-size:12px;color:var(--muted2);">Client · Empfang &amp; Eingabe</div></div>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;flex-shrink:0;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </a>
     </div>
 
-    <!-- macOS -->
     <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">macOS</p>
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <a href="Anzeige.app" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+      <a href="Anzeige.app" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0;"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <div>
-          <div style="font-weight:600;">Anzeige.app</div>
-          <div style="font-size:12px;color:var(--muted2);">Server · Wartezimmer-Display</div>
-        </div>
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <div><div style="font-weight:600;">Anzeige.app</div><div style="font-size:12px;color:var(--muted2);">Server · Wartezimmer-Display</div></div>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;flex-shrink:0;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </a>
-      <a href="Aufruf.app" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
+      <a href="Aufruf.app" download style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0;"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <div>
-          <div style="font-weight:600;">Aufruf.app</div>
-          <div style="font-size:12px;color:var(--muted2);">Client · Empfang &amp; Eingabe</div>
-        </div>
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <div><div style="font-weight:600;">Aufruf.app</div><div style="font-size:12px;color:var(--muted2);">Client · Empfang &amp; Eingabe</div></div>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;flex-shrink:0;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </a>
     </div>
   </div>
