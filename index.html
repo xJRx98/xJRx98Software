@@ -1798,16 +1798,29 @@ footer p {
           </div>
         </div>
         <div class="contact-form reveal">
-          <form id="contact-form">
-            <div style="display:none" aria-hidden="true"><label>Nicht ausfuellen</label><input type="text" id="cf-honeypot" name="honeypot" tabindex="-1" autocomplete="off"></div>
-            <div class="form-group"><label>Name</label><input type="text" id="cf-name" placeholder="Max Mustermann" required></div>
-            <div class="form-group"><label>E-Mail</label><input type="email" id="cf-email" placeholder="max@beispiel.de" required></div>
-            <div class="form-group"><label>Nachricht</label><textarea id="cf-message" placeholder="Beschreib dein Projekt..." required></textarea></div>
-            <button type="submit" class="form-submit" id="cf-btn">Nachricht senden -></button>
-            <p style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;font-family:var(--mono);">Mit dem Absenden stimmst du der Verarbeitung deiner Daten zur Bearbeitung deiner Anfrage zu. Weitere Infos in der <button onclick="showPage('datenschutz')" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:11px;font-family:var(--mono);text-decoration:underline;">Datenschutzerklärung</button>.</p>
-            <p id="cf-status" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
-          </form>
-        </div>
+  <form id="contact-form">
+    <div style="display:none" aria-hidden="true"><label>Nicht ausfuellen</label><input type="text" id="cf-honeypot" name="honeypot" tabindex="-1" autocomplete="off"></div>
+    <div class="form-group"><label>Name</label><input type="text" id="cf-name" placeholder="Max Mustermann" required></div>
+    <div class="form-group"><label>E-Mail</label><input type="email" id="cf-email" placeholder="max@beispiel.de" required></div>
+    <div class="form-group"><label>Nachricht</label><textarea id="cf-message" placeholder="Beschreib dein Projekt..." required></textarea></div>
+
+    <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-top:8px;">
+      <input
+        type="checkbox"
+        id="cf-privacy"
+        name="privacy"
+        required
+        style="margin-top:2px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer;"
+      >
+      <label for="cf-privacy" style="font-size:11px;color:var(--muted);line-height:1.6;font-family:var(--mono);cursor:pointer;">
+        Ich habe die <button onclick="showPage('datenschutz')" type="button" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:11px;font-family:var(--mono);text-decoration:underline;">Datenschutzerklärung</button> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.
+      </label>
+    </div>
+
+    <button type="submit" class="form-submit" id="cf-btn">Nachricht senden -></button>
+    <p id="cf-status" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
+  </form>
+</div>
       </div>
     </div>
   </section>
