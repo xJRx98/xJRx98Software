@@ -2120,8 +2120,8 @@ footer p {
       <h1>Das digitale<br>Wartezimmer<br><em>neu gedacht.</em></h1>
       <p class="hero-sub">Strukturierter, diskreter Patientenaufruf für Arztpraxen - ohne lautes Ausrufen, ohne Zettel, ohne Cloud. Komplett lokal, DSGVO-konform, sofort einsatzbereit.</p>
       <div class="hero-actions">
-        <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="btn-primary">Kostenlos testen -></a>
-        <a href="#pa-funktionen" class="btn-secondary">Funktionen ansehen</a>
+        <a onclick="document.getElementById('pa-download-modal').style.display='flex'" href="javascript:void(0)" class="btn-primary">Kostenlos testen -></a>
+        <a onclick="scrollToSection('pa-funktionen')" href="javascript:void(0)" class="btn-secondary">Funktionen ansehen</a>
       </div>
     </div>
   </section>
@@ -2150,7 +2150,7 @@ footer p {
     <div class="features-grid reveal">
       <div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Wartezimmer-Display</div><p class="feature-desc">Vollbild-Anzeige auf einem zweiten Bildschirm. Aktueller Aufruf groß, Verlauf darunter - mit Einblendanimation und Ton.</p></div>
       <div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Netzwerk-basiert</div><p class="feature-desc">WebSocket über TLS - alle Geräte in der Praxis sind verbunden. Mehrere Eingabe-Clients gleichzeitig möglich.</p></div>
-      <div class="feature-card"><span class="feature-icon">📊</span><div class="feature-title">Statistik</div><p class="feature-desc">Automatische Auswertung aller Aufrufe: Anzahl pro Tag, Woche, Monat, Jahr und insgesamt - sowie Auslastung nach Raum auf einen Blick.</p></div><div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Anpassbares Design</div><p class="feature-desc">Schriftfarben, Schriftgrößen und Hintergrundbild des Displays lassen sich zentral konfigurieren - live und ohne Neustart.</p></div>
+      <div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Statistik</div><p class="feature-desc">Automatische Auswertung aller Aufrufe: Anzahl pro Tag, Woche, Monat, Jahr und insgesamt - sowie Auslastung nach Raum auf einen Blick.</p></div><div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Anpassbares Design</div><p class="feature-desc">Schriftfarben, Schriftgrößen und Hintergrundbild des Displays lassen sich zentral konfigurieren - live und ohne Neustart.</p></div>
       <div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Lokal &amp; DSGVO-konform</div><p class="feature-desc">Alle Daten bleiben im internen Netzwerk der Praxis. Keine Cloud, kein externer Server, keine dauerhaften Patientendaten.</p></div>
       <div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Mehrere Zimmer</div><p class="feature-desc">Zimmer frei konfigurierbar - Behandlungsraum 1, Labor, OP, oder beliebige eigene Bezeichnungen.</p></div>
       <div class="feature-card"><span class="feature-icon"></span><div class="feature-title">Automatischer Reconnect</div><p class="feature-desc">Verbindung verloren? Der Client verbindet sich automatisch wieder - kein manueller Eingriff nötig.</p></div>
