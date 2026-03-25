@@ -2277,6 +2277,90 @@ footer p {
     </div>
   </div></div>
 
+  <div id="testlizenz-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
+  <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:32px 24px;max-width:440px;width:100%;position:relative;">
+    <button onclick="document.getElementById('testlizenz-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
+    <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Testlizenz</p>
+    <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">30 Tage kostenlos testen</h3>
+    <p style="font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;">
+      Die Geräte-ID findest du im <b style="color:var(--text)">ℹ-Dialog</b> der Client-App (oben rechts).
+    </p>
+
+    <form id="testlizenz-form">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+
+        <div><label style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:6px;">Name / Praxis</label>
+        <input type="text" id="tl-name" placeholder="Praxis Dr. Müller" required style="width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='var(--border-hi)'" onblur="this.style.borderColor='var(--border)'"></div>
+
+        <div><label style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:6px;">E-Mail</label>
+        <input type="email" id="tl-email" placeholder="praxis@beispiel.de" required style="width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='var(--border-hi)'" onblur="this.style.borderColor='var(--border)'"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><label style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:6px;">ID1</label>
+          <input type="text" id="tl-id1" placeholder="A3F9B12C4D7E" maxlength="12" required style="width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--accent);font-family:var(--mono);font-size:13px;letter-spacing:2px;outline:none;box-sizing:border-box;text-transform:uppercase;" onfocus="this.style.borderColor='var(--border-hi)'" onblur="this.style.borderColor='var(--border)'" oninput="this.value=this.value.toUpperCase()"></div>
+          <div><label style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:6px;">ID2</label>
+          <input type="text" id="tl-id2" placeholder="D7E4F9012345" maxlength="12" required style="width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--accent);font-family:var(--mono);font-size:13px;letter-spacing:2px;outline:none;box-sizing:border-box;text-transform:uppercase;" onfocus="this.style.borderColor='var(--border-hi)'" onblur="this.style.borderColor='var(--border)'" oninput="this.value=this.value.toUpperCase()"></div>
+        </div>
+
+        <button type="submit" id="tl-btn" style="width:100%;padding:13px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;color:#000;background:var(--accent);border:none;border-radius:8px;cursor:pointer;transition:background .2s;margin-top:4px;">Testlizenz anfordern -></button>
+        <p id="tl-status" style="display:none;font-size:13px;font-family:var(--mono);letter-spacing:.04em;text-align:center;margin:0;"></p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const TESTLIZENZ_GAS_URL = 'https://script.google.com/macros/s/DEINE_DEPLOYMENT_ID/exec';
+
+document.getElementById('testlizenz-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('tl-btn');
+  const status = document.getElementById('tl-status');
+  const name  = document.getElementById('tl-name').value.trim();
+  const email = document.getElementById('tl-email').value.trim();
+  const id1   = document.getElementById('tl-id1').value.trim().toUpperCase();
+  const id2   = document.getElementById('tl-id2').value.trim().toUpperCase();
+
+  const hexPattern = /^[0-9A-F]{12}$/;
+  if (!hexPattern.test(id1) || !hexPattern.test(id2)) {
+    status.textContent = 'ID1 und ID2 müssen je 12 Hex-Zeichen sein (z.B. A3F9B12C4D7E).';
+    status.style.color = 'var(--red)';
+    status.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Wird verarbeitet...';
+  btn.disabled = true;
+  status.style.display = 'none';
+
+  try {
+    const res = await fetch(TESTLIZENZ_GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ typ: 'testlizenz', name, email, id1, id2 }),
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      status.textContent = 'Lizenz verschickt! Bitte E-Mail-Postfach prüfen.';
+      status.style.color = 'var(--accent)';
+      status.style.display = 'block';
+      btn.textContent = 'Gesendet ✓';
+      document.getElementById('tl-name').value = '';
+      document.getElementById('tl-email').value = '';
+      document.getElementById('tl-id1').value = '';
+      document.getElementById('tl-id2').value = '';
+    } else {
+      throw new Error(data.message || 'Fehler');
+    }
+  } catch(err) {
+    status.textContent = 'Fehler: ' + err.message;
+    status.style.color = 'var(--red)';
+    status.style.display = 'block';
+    btn.textContent = 'Testlizenz anfordern ->';
+    btn.disabled = false;
+  }
+});
+</script>
+
   <footer>
     <span onclick="showPage('home')" style="cursor:pointer;font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;">xJRx98 Software</span>
     <div class="footer-right">
