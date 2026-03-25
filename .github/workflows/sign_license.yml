@@ -1,0 +1,37 @@
+name: Sign License
+
+on:
+  workflow_dispatch:
+    inputs:
+      license_json:
+        description: 'Lizenzdaten JSON'
+        required: true
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install cryptography
+
+      - name: Sign license
+        env:
+          PRIVATE_KEY_B64: ${{ secrets.PRIVATE_KEY_B64 }}
+        run: |
+          mkdir -p out
+          echo '${{ github.event.inputs.license_json }}' > in.json
+          python scripts/sign_license.py in.json out/signed_license.lic
+
+      - name: Upload signed license
+        uses: actions/upload-artifact@v3
+        with:
+          name: signed-license
+          path: out/signed_license.lic
