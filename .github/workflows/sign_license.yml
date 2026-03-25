@@ -6,18 +6,15 @@ on:
       license_json:
         description: 'Lizenzdaten JSON'
         required: true
-      callback_url:
-        description: 'GAS Callback URL'
-        required: true
 
 jobs:
-  sign:
+  sign-and-send:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
@@ -28,26 +25,22 @@ jobs:
       - name: Sign license and send to GAS
         env:
           PRIVATE_KEY_B64: ${{ secrets.PRIVATE_KEY_B64 }}
-          LICENSE_JSON: ${{ github.event.inputs.license_json }}
-          CALLBACK_URL: ${{ github.event.inputs.callback_url }}
+          GAS_ENDPOINT: ${{ secrets.GAS_ENDPOINT }}   # z.B. https://script.google.com/macros/s/.../exec
         run: |
-          mkdir -p out
-          echo "$LICENSE_JSON" > in.json
-          python scripts/sign_license.py in.json out/signed_license.lic
+          echo '${{ github.event.inputs.license_json }}' > in.json
+          python scripts/sign_license.py in.json out.json > LICENSE_B64.txt
+          
+          LICENSE_B64=$(cat LICENSE_B64.txt)
+          echo "Signed license (Base64): $LICENSE_B64"
 
-          # Signierte Lizenz base64 kodieren
-          LICENSE_B64=$(base64 -w 0 out/signed_license.lic)
+          # Optional: POST direkt an GAS
+          python - << 'PYTHON'
+import os, json, base64, requests
+data_b64 = os.environ['LICENSE_B64']
+endpoint = os.environ['GAS_ENDPOINT']
 
-          # GAS Callback aufrufen
-          python - <<EOF
-import requests, os, json
-payload = {
-    "email": json.loads(os.environ["LICENSE_JSON"])["support_email"],
-    "name": json.loads(os.environ["LICENSE_JSON"])["kunde"],
-    "id1": json.loads(os.environ["LICENSE_JSON"])["geraete_ids"][0]["id1"],
-    "id2": json.loads(os.environ["LICENSE_JSON"])["geraete_ids"][0]["id2"],
-    "lizenz_base64": os.environ["LICENSE_B64"]
-}
-resp = requests.post(os.environ["CALLBACK_URL"], json=payload)
-resp.raise_for_status()
-EOF
+# Lizenzdaten wieder als JSON
+lizenz_json = json.loads(base64.b64decode(data_b64).decode())
+resp = requests.post(endpoint, json=lizenz_json)
+print("GAS Response:", resp.status_code, resp.text)
+PYTHON
