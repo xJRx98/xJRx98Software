@@ -6,6 +6,9 @@ on:
       license_json:
         description: 'Lizenzdaten JSON'
         required: true
+      callback_url:
+        description: 'GAS Callback URL'
+        required: true
 
 jobs:
   sign:
@@ -20,18 +23,31 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install cryptography
+        run: pip install cryptography requests
 
-      - name: Sign license
+      - name: Sign license and send to GAS
         env:
           PRIVATE_KEY_B64: ${{ secrets.PRIVATE_KEY_B64 }}
+          LICENSE_JSON: ${{ github.event.inputs.license_json }}
+          CALLBACK_URL: ${{ github.event.inputs.callback_url }}
         run: |
           mkdir -p out
-          echo '${{ github.event.inputs.license_json }}' > in.json
+          echo "$LICENSE_JSON" > in.json
           python scripts/sign_license.py in.json out/signed_license.lic
 
-      - name: Upload signed license
-        uses: actions/upload-artifact@v3
-        with:
-          name: signed-license
-          path: out/signed_license.lic
+          # Signierte Lizenz base64 kodieren
+          LICENSE_B64=$(base64 -w 0 out/signed_license.lic)
+
+          # GAS Callback aufrufen
+          python - <<EOF
+import requests, os, json
+payload = {
+    "email": json.loads(os.environ["LICENSE_JSON"])["support_email"],
+    "name": json.loads(os.environ["LICENSE_JSON"])["kunde"],
+    "id1": json.loads(os.environ["LICENSE_JSON"])["geraete_ids"][0]["id1"],
+    "id2": json.loads(os.environ["LICENSE_JSON"])["geraete_ids"][0]["id2"],
+    "lizenz_base64": os.environ["LICENSE_B64"]
+}
+resp = requests.post(os.environ["CALLBACK_URL"], json=payload)
+resp.raise_for_status()
+EOF
