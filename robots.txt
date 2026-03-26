@@ -1,0 +1,19 @@
+# robots.txt für xJRx98 Software
+# Verhindert das Crawlen unnötiger Seiten und erleichtert die Indexierung
+
+# Alle Bots
+User-agent: *
+
+# Verzeichnisse/Seiten, die nicht gecrawlt werden sollen
+Disallow: /assets/
+Disallow: /scripts/
+Disallow: /styles/
+Disallow: /test/
+Disallow: /private/
+Disallow: /node_modules/
+
+# Erlaube alles andere
+Allow: /
+
+# Sitemap für bessere Indexierung
+Sitemap: https://www.xjrx98software.de/sitemap.xml
