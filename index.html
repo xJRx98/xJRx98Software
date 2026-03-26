@@ -7,19 +7,43 @@
 <meta name="description" content="xJRx98 Software - Individuelle Softwareentwicklung, Apps und Automatisierung. Maßgeschneiderte Lösungen für Web, Desktop und Mobile.">
 <meta name="author" content="Jonas Ruhland - xJRx98 Software">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https:xjrx98software.de">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0d1117">
+<link rel="canonical" href="https://xjrx98software.de">
 <meta property="og:type" content="website">
 <meta property="og:title" content="xJRx98 Software - Custom Development">
 <meta property="og:description" content="Individuelle Softwareentwicklung, Apps und Automatisierung. Maßgeschneiderte Lösungen für Web, Desktop und Mobile.">
-<meta property="og:url" content="https://xjrx98.github.io/xJRx98Software/">
+<meta property="og:url" content="https://xjrx98software.de">
 <meta property="og:locale" content="de_DE">
+<meta property="og:image" content="https://xjrx98software.de/xJRx98_Software_logo.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="xJRx98 Software - Custom Development">
 <meta name="twitter:description" content="Individuelle Softwareentwicklung, Apps und Automatisierung. Maßgeschneiderte Lösungen für Web, Desktop und Mobile.">
+<meta name="twitter:image" content="https://xjrx98software.de/xJRx98_Software_logo.png">
 <title>xJRx98 Software - Custom Development</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "xJRx98 Software",
+  "description": "Individuelle Softwareentwicklung, Apps und Automatisierung. Maßgeschneiderte Lösungen für Web, Desktop und Mobile.",
+  "url": "https://xjrx98software.de",
+  "founder": { "@type": "Person", "name": "Jonas Ruhland" },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rauschbergstraße 6",
+    "addressLocality": "München",
+    "postalCode": "81825",
+    "addressCountry": "DE"
+  },
+  "areaServed": "DE",
+  "serviceType": ["Softwareentwicklung", "Webentwicklung", "App-Entwicklung", "Automatisierung"]
+}
+</script>
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,7 +65,7 @@
   --sans:      'DM Sans', sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
 body {
   font-family: var(--sans);
@@ -49,6 +73,9 @@ body {
   color: var(--text);
   line-height: 1.65;
   overflow-x: hidden;
+  /* safe-area insets for notched devices */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 body::before {
@@ -71,9 +98,11 @@ nav {
   align-items: center;
   padding: 0 48px;
   height: 64px;
-  background: rgba(8,12,20,.88);
-  backdrop-filter: blur(20px);
+  background: rgba(8,12,20,.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
+  transition: background .3s;
 }
 
 .nav-logo {
@@ -273,15 +302,19 @@ nav {
   text-decoration: none;
   letter-spacing: .02em;
   box-shadow: 0 0 30px rgba(61,189,177,.2);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
 .btn-primary:hover {
   opacity: .9;
   transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(61,189,177,.3);
+  box-shadow: 0 8px 40px rgba(61,189,177,.35);
 }
+
+.btn-primary:active { transform: translateY(0); }
 
 .btn-ghost {
   padding: 14px 28px;
@@ -293,10 +326,12 @@ nav {
   border: 1px solid var(--border);
   border-radius: 8px;
   cursor: pointer;
-  transition: color .2s, border-color .2s, transform .2s;
+  transition: color .2s, border-color .2s, transform .2s, background .2s;
   text-decoration: none;
   letter-spacing: .02em;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
@@ -304,7 +339,10 @@ nav {
   color: var(--text);
   border-color: var(--border-hi);
   transform: translateY(-2px);
+  background: rgba(61,189,177,.04);
 }
+
+.btn-ghost:active { transform: translateY(0); }
 
 .hero-scroll {
   position: absolute;
@@ -417,7 +455,10 @@ section { position: relative; z-index: 1; }
   margin-bottom: 20px;
   color: var(--accent);
   opacity: .85;
+  flex-shrink: 0;
 }
+
+.service-icon[aria-hidden] { pointer-events: none; }
 
 .service-item h3 {
   font-family: var(--mono);
@@ -468,8 +509,8 @@ section { position: relative; z-index: 1; }
 
 .project-card:hover {
   border-color: var(--border-hi);
-  transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(61,189,177,.08);
 }
 
 .project-card:hover::after { opacity: 1; }
@@ -648,19 +689,24 @@ section { position: relative; z-index: 1; }
   border-radius: 8px;
   color: var(--text);
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 16px; /* min 16px prevents iOS zoom on focus */
   transition: border-color .2s, box-shadow .2s;
   outline: none;
   resize: vertical;
-  /* iOS fix: prevent zoom on focus */
-  font-size: max(16px, 14px);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: var(--border-hi);
-  box-shadow: 0 0 0 3px rgba(56,189,248,.07);
+  box-shadow: 0 0 0 3px rgba(61,189,177,.12);
 }
+
+/* Keyboard focus: accessible outline for all interactive elements */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+a:focus-visible, button:focus-visible { border-radius: 4px; }
 
 .form-group textarea { min-height: 130px; }
 
@@ -677,9 +723,12 @@ section { position: relative; z-index: 1; }
   cursor: pointer;
   transition: opacity .2s, transform .2s, box-shadow .2s;
   margin-top: 8px;
-  box-shadow: 0 0 24px rgba(14,165,233,.2);
+  box-shadow: 0 0 24px rgba(61,189,177,.2);
   letter-spacing: .02em;
   -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-submit:hover {
@@ -983,6 +1032,22 @@ footer p {
   transition: opacity .6s ease, transform .6s ease;
 }
 .reveal.visible { opacity: 1; transform: none; }
+
+/* Skip link for screen readers */
+.skip-link {
+  position: absolute; top: -100px; left: 16px; z-index: 9999;
+  padding: 10px 20px; background: var(--accent); color: #000;
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  border-radius: 0 0 8px 8px; text-decoration: none;
+  transition: top .2s;
+}
+.skip-link:focus { top: 0; }
+
+/* Minimum touch targets (44x44px) for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .nav-links a, .nav-cta, .footer-impressum-link,
+  .project-link, .btn-primary, .btn-ghost { min-height: 44px; }
+}
 
 /* ==========================================
    SHARED PRODUCT PAGE STYLES
@@ -1404,10 +1469,11 @@ footer p {
 }
 .nav-mobile-menu.open { max-height: 300px; padding: 16px 0 20px; }
 .nav-mobile-menu a {
-  display: block; padding: 14px 24px; font-size: 15px; font-weight: 500;
+  display: block; padding: 16px 24px; font-size: 15px; font-weight: 500;
   color: var(--muted2); text-decoration: none; letter-spacing: .03em;
   transition: color .2s, background .2s; cursor: pointer; border: none;
   background: none; width: 100%; text-align: left; font-family: var(--sans);
+  min-height: 52px; display: flex; align-items: center;
 }
 .nav-mobile-menu a:hover { color: var(--accent); background: rgba(61,189,177,.04); }
 .nav-mobile-menu .nav-mobile-cta {
@@ -1640,14 +1706,28 @@ footer p {
   .project-card { padding: 20px; }
   .project-card h3 { font-size: 16px; }
 }
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
 </style>
 </head>
 <body>
 
+<!-- Skip to content (accessibility) -->
+<a href="#start" class="skip-link">Zum Inhalt springen</a>
+
 <!-- NAV -->
-<nav>
-  <a onclick="showPage('home')" class="nav-logo" style="cursor:pointer">
-    <img src="xJRx98_Software_logo.png" alt="xJRx98 Software" class="nav-logo-img" loading="lazy">
+<nav role="navigation" aria-label="Hauptnavigation">
+  <a onclick="showPage('home')" class="nav-logo" style="cursor:pointer" aria-label="xJRx98 Software – Startseite" onkeydown="if(event.key==='Enter')showPage('home')">
+    <img src="xJRx98_Software_logo.png" alt="xJRx98 Software" class="nav-logo-img" loading="eager" fetchpriority="high">
   </a>
   <div class="nav-links">
     <a onclick="showPage('home'); scrollToSection('services')">Services</a>
@@ -1655,7 +1735,7 @@ footer p {
     <a onclick="showPage('home'); scrollToSection('kontakt')">Kontakt</a>
   </div>
   <a onclick="showPage('home'); scrollToSection('kontakt')" class="nav-cta">Projekt starten -></a>
-  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu öffnen" aria-expanded="false" onclick="toggleMobileMenu()">
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false" onclick="toggleMobileMenu()">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -1670,50 +1750,50 @@ footer p {
 
 <!-- =================== HOME PAGE =================== -->
 <div id="page-home" class="page active">
-
-  <section class="hero" id="start">
+<main id="main-content">
+  <section class="hero" id="start" aria-label="Einleitung">
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
-    <div class="hero-badge">Verfügbar für neue Projekte</div>
+    <div class="hero-badge" role="status" aria-live="polite">Verfügbar für neue Projekte</div>
     <h1>Custom Software<br><em>Development.</em></h1>
-    <p class="hero-sub">Individuelle Softwarelösungen, Tools und Anwendungen für Webseiten, Unternehmen und Automatisierung - präzise gebaut, termingerecht geliefert. Ideal für kleine bis mittelgroße Ideen und Projekte - privat wie geschäftlich.</p>
+    <p class="hero-sub">Individuelle Softwarelösungen, Tools und Anwendungen für Webseiten, Unternehmen und Automatisierung – präzise gebaut, termingerecht geliefert. Ideal für kleine bis mittelgroße Ideen und Projekte – privat wie geschäftlich.</p>
     <div class="hero-actions">
       <a onclick="showPage('home'); scrollToSection('kontakt')" class="btn-primary">Projekt besprechen</a>
       <a onclick="showPage('home'); scrollToSection('projekte')" class="btn-ghost">Referenzen ansehen</a>
     </div>
-    <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+    <div class="hero-scroll" aria-hidden="true"><div class="scroll-line"></div><span>Scroll</span></div>
   </section>
 
   <hr class="divider">
 
-  <section id="services">
+  <section id="services" aria-labelledby="services-heading">
     <div class="wrap">
       <p class="section-label reveal">// Was ich mache</p>
-      <h2 class="section-title reveal">Leistungen</h2>
+      <h2 class="section-title reveal" id="services-heading">Leistungen</h2>
       <p class="section-desc reveal">Von der Idee bis zur fertigen Anwendung - maßgeschneidert für deine Anforderungen.</p>
       <div class="services-grid">
         <div class="service-item reveal">
-          <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/></svg>
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/></svg>
           <h3>Softwareentwicklung</h3>
           <p>Desktop-Applikationen, Automatisierungstools und datengestützte Lösungen - präzise auf deine Anforderungen zugeschnitten.</p>
         </div>
         <div class="service-item reveal">
-          <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
           <h3>Webentwicklung</h3>
           <p>Moderne, performante Webseiten und Web-Apps mit sauberem Code und durchdachtem UX-Design.</p>
         </div>
         <div class="service-item reveal">
-          <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
           <h3>Automatisierung</h3>
           <p>Wiederkehrende Prozesse automatisieren, Daten strukturiert auswerten und wertvolle Arbeitszeit einsparen.</p>
         </div>
         <div class="service-item reveal">
-          <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M12 18.5A6.5 6.5 0 1112 5.5a6.5 6.5 0 010 13zm0 0v3m0-16v-3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1.5 12h3m15 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M12 18.5A6.5 6.5 0 1112 5.5a6.5 6.5 0 010 13zm0 0v3m0-16v-3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1.5 12h3m15 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
           <h3>Store-Publishing &amp; Verwaltung</h3>
           <p>Ich veröffentliche deine App unter meinem Developer-Account im Google Play Store und Apple App Store - inklusive Store-Einträge, Screenshots, Beschreibungen und laufender Pflege der Listings.</p>
         </div>
         <div class="service-item reveal">
-          <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           <h3>Wartung &amp; Erweiterungen</h3>
           <p>Laufende Betreuung deiner App oder Software - Bugfixes, OS-Updates, neue Features und Anpassungen, damit dein Produkt langfristig zuverlässig läuft und wächst.</p>
         </div>
@@ -1723,10 +1803,10 @@ footer p {
 
   <hr class="divider">
 
-  <section id="projekte">
+  <section id="projekte" aria-labelledby="projekte-heading">
   <div class="wrap">
     <p class="section-label reveal">// Referenzen</p>
-    <h2 class="section-title reveal">Projekte</h2>
+    <h2 class="section-title reveal" id="projekte-heading">Projekte</h2>
     <p class="section-desc reveal">Ausgewählte Arbeiten - Software, die echten Mehrwert liefert.</p>
     <div class="projects-grid">
 
@@ -1784,10 +1864,10 @@ footer p {
     </div>
   </section>
 
-  <section id="kontakt">
+  <section id="kontakt" aria-labelledby="kontakt-heading">
     <div class="wrap">
       <p class="section-label reveal">// Kontakt</p>
-      <h2 class="section-title reveal">Projekt starten</h2>
+      <h2 class="section-title reveal" id="kontakt-heading">Projekt starten</h2>
       <div class="contact-layout">
         <div class="contact-info reveal">
           <h3>Lass uns reden.</h3>
@@ -1800,9 +1880,9 @@ footer p {
         <div class="contact-form reveal">
   <form id="contact-form">
     <div style="display:none" aria-hidden="true"><label>Nicht ausfuellen</label><input type="text" id="cf-honeypot" name="honeypot" tabindex="-1" autocomplete="off"></div>
-    <div class="form-group"><label>Name</label><input type="text" id="cf-name" placeholder="Max Mustermann" required></div>
-    <div class="form-group"><label>E-Mail</label><input type="email" id="cf-email" placeholder="max@beispiel.de" required></div>
-    <div class="form-group"><label>Nachricht</label><textarea id="cf-message" placeholder="Beschreib dein Projekt..." required></textarea></div>
+    <div class="form-group"><label for="cf-name">Name</label><input type="text" id="cf-name" name="name" placeholder="Max Mustermann" required autocomplete="name"></div>
+    <div class="form-group"><label for="cf-email">E-Mail</label><input type="email" id="cf-email" name="email" placeholder="max@beispiel.de" required autocomplete="email"></div>
+    <div class="form-group"><label for="cf-message">Nachricht</label><textarea id="cf-message" name="message" placeholder="Beschreib dein Projekt..." required></textarea></div>
 
     <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-top:8px;">
       <input
@@ -1813,7 +1893,7 @@ footer p {
         style="margin-top:2px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer;"
       >
       <label for="cf-privacy" style="font-size:11px;color:var(--muted);line-height:1.6;font-family:var(--mono);cursor:pointer;">
-        Ich habe die <button onclick="showPage('datenschutz')" type="button" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:11px;font-family:var(--mono);text-decoration:underline;">Datenschutzerklärung</button> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.
+        Ich habe die <button onclick="showPage('datenschutz')" type="button" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:11px;font-family:var(--mono);text-decoration:underline;">DATENSCHUTZERKLÄRUNG</button> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.
       </label>
     </div>
 
@@ -1825,12 +1905,15 @@ footer p {
     </div>
   </section>
 
-  <footer>
-    <span onclick="showPage('home')" class="footer-logo-link">
-      <img src="xJRx98_Software_logo.png" alt="xJRx98 Software" class="footer-logo-img" loading="lazy">
+  </section>
+
+</main>
+  <footer role="contentinfo">
+    <span onclick="showPage('home')" class="footer-logo-link" role="button" aria-label="Zur Startseite" tabindex="0" onkeydown="if(event.key==='Enter')showPage('home')">
+      <img src="xJRx98_Software_logo.png" alt="xJRx98 Software" class="footer-logo-img" loading="lazy" width="auto" height="28">
     </span>
     <div class="footer-right">
-      <p>(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
+      <p>&copy; 2026 xJRx98 Software – Alle Rechte vorbehalten</p>
       <button class="footer-impressum-link" onclick="showPage('ueber-mich')">Über mich</button>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
       <button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button>
@@ -2272,17 +2355,17 @@ footer p {
   <div class="cta-section"><div class="cta-inner">
     <div>
       <h2>Bereit für ein <em>ruhigeres Wartezimmer?</em></h2>
-      <p>Überzeug dich sich selbst mit der 30-tägigen kostenlosen Testversion - unverbindlich und ohne Vertrag.</p>
+      <p>Überzeug dich selbst mit der 30-tägigen kostenlosen Testversion – unverbindlich und ohne Vertrag.</p>
     </div>
     <div class="cta-actions">
   <a onclick="document.getElementById('pa-download-modal').style.display='flex'" href="#" class="btn-primary">Jetzt testen -></a>
-  <a href="mailto:info@xjrx98software.de" class="btn-secondary">E-Mail schreiben</a>
+  <a href="/cdn-cgi/l/email-protection#20494e464f60584a52581918534f4654574152450e4445" class="btn-secondary">E-Mail schreiben</a>
 </div>
   </div></div>
 
   <div id="testlizenz-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
   <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:32px 24px;max-width:440px;width:100%;position:relative;">
-    <button onclick="document.getElementById('testlizenz-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
+    <button onclick="document.getElementById('testlizenz-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;" aria-label="Modal schließen">&times;</button>
     <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Testlizenz</p>
     <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">30 Tage kostenlos testen</h3>
     <p style="font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;">
@@ -2312,7 +2395,7 @@ footer p {
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const TESTLIZENZ_GAS_URL = 'https://script.google.com/macros/s/DEINE_DEPLOYMENT_ID/exec';
 
 document.getElementById('testlizenz-form').addEventListener('submit', async function(e) {
@@ -2364,10 +2447,10 @@ document.getElementById('testlizenz-form').addEventListener('submit', async func
 });
 </script>
 
-  <footer>
+  <footer role="contentinfo">
     <span onclick="showPage('home')" style="cursor:pointer;font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;">xJRx98 Software</span>
     <div class="footer-right">
-      <p>(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p>
+      <p>&copy; 2026 xJRx98 Software – Alle Rechte vorbehalten</p>
       <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
     </div>
   </footer>
@@ -2419,9 +2502,9 @@ document.getElementById('testlizenz-form').addEventListener('submit', async func
       </div>
     </div>
   </div>
-  <footer>
+  <footer role="contentinfo">
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
-    <div class="footer-right"><p style="font-family:var(--mono);font-size:11px;color:var(--muted);">(c) 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button></div>
+    <div class="footer-right"><p style="font-family:var(--mono);font-size:11px;color:var(--muted);">&copy; 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button></div>
   </footer>
 </div>
 
@@ -2434,7 +2517,7 @@ document.getElementById('testlizenz-form').addEventListener('submit', async func
 
     <div class="impressum-block">
       <h2>1. Verantwortlicher</h2>
-      <p>Jonas Ruhland, xJRx98 Software, Rauschbergstraße 6, 81825 München<br>E-Mail: <a href="mailto:info@xjrx98software.de">info@xjrx98software.de</a></p>
+      <p>Jonas Ruhland, xJRx98 Software, Rauschbergstraße 6, 81825 München<br>E-Mail: <a href="/cdn-cgi/l/email-protection#7b12151d143b03110903424308141d0f0c1a091e551f1e"><span class="__cf_email__" data-cfemail="a4cdcac2cbe4dcced6dc9d9cd7cbc2d0d3c5d6c18ac0c1">[email&#160;protected]</span></a></p>
     </div>
 
     <div class="impressum-block">
@@ -2462,7 +2545,7 @@ document.getElementById('testlizenz-form').addEventListener('submit', async func
 
     <div class="impressum-block">
       <h2>6. Ihre Rechte</h2>
-      <p>Sie haben gemäß DSGVO das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) sowie das Recht auf Datenübertragbarkeit (Art. 20). Zudem haben Sie das Recht, Beschwerde bei einer Datenschutzaufsichtsbehörde einzulegen (Art. 77 DSGVO). Für Bayern ist dies das Bayerische Landesamt für Datenschutzaufsicht (BayLDA).<br>Kontakt: <a href="mailto:info@xjrx98software.de">info@xjrx98software.de</a></p>
+      <p>Sie haben gemäß DSGVO das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) sowie das Recht auf Datenübertragbarkeit (Art. 20). Zudem haben Sie das Recht, Beschwerde bei einer Datenschutzaufsichtsbehörde einzulegen (Art. 77 DSGVO). Für Bayern ist dies das Bayerische Landesamt für Datenschutzaufsicht (BayLDA).<br>Kontakt: <a href="/cdn-cgi/l/email-protection#4d24232b220d35273f3574753e222b393a2c3f28632928"><span class="__cf_email__" data-cfemail="c3aaada5ac83bba9b1bbfafbb0aca5b7b4a2b1a6eda7a6">[email&#160;protected]</span></a></p>
     </div>
 
     <div class="impressum-block">
@@ -2470,9 +2553,9 @@ document.getElementById('testlizenz-form').addEventListener('submit', async func
       <p>März 2026</p>
     </div>
   </div>
-  <footer>
+  <footer role="contentinfo">
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
-    <div class="footer-right"><p style="font-family:var(--mono);font-size:11px;color:var(--muted);">(c) 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')" style="color:var(--accent)">Datenschutz</button></div>
+    <div class="footer-right"><p style="font-family:var(--mono);font-size:11px;color:var(--muted);">&copy; 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')" style="color:var(--accent)">Datenschutz</button></div>
   </footer>
 </div>
 
@@ -2482,19 +2565,20 @@ document.getElementById('testlizenz-form').addEventListener('submit', async func
     <button class="back-btn" onclick="showPage('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Zurück zur Startseite</button>
     <p class="section-label">// Rechtliches</p>
     <h1>Impressum</h1>
-    <div class="impressum-block"><h2>1. Verantwortlicher</h2><p>Jonas Ruhland, xJRx98 Software, Rauschbergstraße 6, 81825 München<br>E-Mail: <a href="mailto:info@xjrx98software.de">info@xjrx98software.de</a></p></div>
+    <div class="impressum-block"><h2>1. Verantwortlicher</h2><p>Jonas Ruhland, xJRx98 Software, Rauschbergstraße 6, 81825 München<br>E-Mail: <a href="/cdn-cgi/l/email-protection#3c55525a537c44564e4405044f535a484b5d4e59125859"><span class="__cf_email__" data-cfemail="1e777078715e66746c6627266d71786a697f6c7b307a7b">[email&#160;protected]</span></a></p></div>
     <div class="impressum-block"><h2>2. Erhebung personenbezogener Daten</h2><p>Personenbezogene Daten werden auf dieser Website nur im technisch notwendigen Umfang erhoben. In keinem Fall werden die erhobenen Daten verkauft oder an Dritte weitergegeben.</p></div>
     <div class="impressum-block"><h2>3. Kontaktformular</h2><p>Wenn Sie das Kontaktformular nutzen, werden Name, E-Mail-Adresse und Nachricht zur Bearbeitung Ihrer Anfrage verarbeitet. Die Daten werden über Google Apps Script (Google LLC, USA) übermittelt und per E-Mail weitergeleitet. Es erfolgt keine dauerhafte Speicherung auf externen Servern. Rechtsgrundlage: Art. 6 Abs. 1 lit. b und f DSGVO.</p></div>
-    <div class="impressum-block"><h2>6. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontakt: <a href="mailto:info@xjrx98software.de">info@xjrx98software.de</a></p></div>
+    <div class="impressum-block"><h2>6. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontakt: <a href="/cdn-cgi/l/email-protection#87eee9e1e8c7ffedf5ffbebff4e8e1f3f0e6f5e2a9e3e2"><span class="__cf_email__" data-cfemail="0c65626a634c74667e7435347f636a787b6d7e69226869">[email&#160;protected]</span></a></p></div>
     <div class="impressum-block"><h2>7. Stand</h2><p>März 2026</p></div>
   </div>
-  <footer>
+  <footer role="contentinfo">
     <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
-    <div class="footer-right"><p style="font-family:var(--mono);font-size:11px;color:var(--muted);">(c) 2026 xJRx98 Software - Alle Rechte vorbehalten</p><button class="footer-impressum-link" onclick="showPage('impressum')" style="color:var(--accent)">Impressum</button></div>
+    <div class="footer-right"><p style="font-family:var(--mono);font-size:11px;color:var(--muted);">&copy; 2026 xJRx98 Software – Alle Rechte vorbehalten</p><button class="footer-impressum-link" onclick="showPage('impressum')" style="color:var(--accent)">Impressum</button></div>
   </footer>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
 function tryHistoryState(fn) {
   try { fn(); } catch(e) {}
 }
@@ -2610,7 +2694,7 @@ document.getElementById('contact-form').addEventListener('submit', async functio
 </script>
 
 <!-- SCROLL TO TOP -->
-<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Nach oben scrollen">
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Nach oben scrollen" title="Nach oben scrollen">
   <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
@@ -2641,6 +2725,16 @@ window.addEventListener('scroll', function() {
   if (!btn) return;
   if (window.scrollY > 300) { btn.classList.add('visible'); } else { btn.classList.remove('visible'); }
 }, { passive: true });
+
+// Close modals with Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var dlModal = document.getElementById('pa-download-modal');
+    var tlModal = document.getElementById('testlizenz-modal');
+    if (dlModal && dlModal.style.display === 'flex') dlModal.style.display = 'none';
+    if (tlModal && tlModal.style.display === 'flex') tlModal.style.display = 'none';
+  }
+});
 </script>
 
 <!-- COOKIE BANNER -->
@@ -2655,7 +2749,7 @@ window.addEventListener('scroll', function() {
 <!-- PATIENTENAUFRUF DOWNLOAD MODAL -->
 <div id="pa-download-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;overflow-y:auto;">
   <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:32px 24px;max-width:480px;width:100%;position:relative;margin:auto;">
-    <button onclick="document.getElementById('pa-download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;">x</button>
+    <button onclick="document.getElementById('pa-download-modal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;line-height:1;" aria-label="Modal schließen">&times;</button>
     <p style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Download</p>
     <h3 style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">30 Tage kostenlos testen</h3>
     <p style="font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;">Lade Server (Anzeige) und Client (Aufruf) für dein Betriebssystem herunter.</p>
@@ -2714,19 +2808,4 @@ window.addEventListener('scroll', function() {
       </svg>
     </a>
 
-    <a href="Technische Dokumentation.pdf" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style.borderColor='var(--border-hi)'" onmouseout="this.style.borderColor='var(--border)'">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent);flex-shrink:0;">
-        <path d="M6 2h9a2 2 0 0 1 2 2v4h4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM6 4v16h12V10h-4a2 2 0 0 1-2-2V4H6z"/>
-      </svg>
-      <div>
-        <div style="font-weight:600;">Technische_Dokumentation.pdf</div>
-        <div style="font-size:12px;color:var(--muted2);">Details zu Systemanforderungen und Softwarearchitektur</div>
-      </div>
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--muted2);margin-left:auto;flex-shrink:0;">
-        <path d="M12 5v14M5 12l7 7 7-7"/>
-      </svg>
-    </a>
-  </div>
-</div>
-  </div>
-</div>
+    <a href="Technische Dokumentation.pdf" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;" onmouseover="this.style
