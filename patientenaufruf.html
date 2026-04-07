@@ -1,0 +1,217 @@
+<!-- STICKY BACK -->
+<div class="sticky-back">
+  <button class="back-btn" onclick="showPage('home'); scrollToSection('projekte')">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Zurück zu Projekten
+  </button>
+</div>
+
+<!-- BANNER -->
+<div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:28px 24px;">
+  <div class="pa-banner-grid" style="max-width:1100px;margin:0 auto;">
+    <div>
+      <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// 03 - Medizin</p>
+      <h1 style="font-family:var(--mono);font-size:clamp(22px,3vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:12px;line-height:1.1;">Patientenaufrufsystem</h1>
+      <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:620px;">Ein digitales System zum strukturierten und diskreten Aufrufen von Patienten im Wartezimmer - übersichtlich, DSGVO-konform und sofort einsatzbereit auf Windows und macOS. Mobile Apps für Android und iOS befinden sich in Entwicklung.</p>
+    </div>
+    <div class="pa-banner-sidebar">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">// Details</div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Typ</span><span style="color:var(--text);">Desktop</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Plattform</span><span style="color:var(--text);">Windows / macOS</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Datenschutz</span><span style="color:var(--text);">DSGVO-konform</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;"><span style="color:var(--muted2);font-family:var(--mono);font-size:10px;">Status</span><span style="color:#e8a84a;font-weight:600;">In Arbeit</span></div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag">WebSocket</span><span class="tag">TLS</span><span class="tag">Lokal</span><span class="tag">Flutter</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" style="min-height:100vh;text-align:left;align-items:flex-start;padding:120px 40px 80px;">
+  <div class="hero-grid"></div><div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Verfügbar . Windows . macOS</div>
+    <h1 style="text-align:left;">Das digitale<br>Wartezimmer<br><em>neu gedacht.</em></h1>
+    <p class="hero-sub" style="text-align:left;">Strukturierter, diskreter Patientenaufruf für Arztpraxen - ohne lautes Ausrufen, ohne Zettel, ohne Cloud. Komplett lokal, DSGVO-konform, sofort einsatzbereit.</p>
+    <div class="hero-actions" style="justify-content:flex-start;">
+      <a onclick="openModal('pa-download-modal')" href="javascript:void(0)" class="btn-primary">Kostenlos testen -></a>
+      <a onclick="document.getElementById('pa-funktionen').scrollIntoView({behavior:'smooth'})" href="javascript:void(0)" class="btn-ghost">Funktionen ansehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar"><div class="stats-inner">
+  <div class="stat"><span class="stat-value">0</span><span class="stat-label">Cloud-Abhängigkeit</span></div>
+  <div class="stat"><span class="stat-value" style="font-size:16px;letter-spacing:0;padding-top:4px;">unbegrenzt</span><span class="stat-label">Clients gleichzeitig</span></div>
+  <div class="stat"><span class="stat-value">2</span><span class="stat-label">Plattformen verfügbar</span></div>
+  <div class="stat"><span class="stat-value">100%</span><span class="stat-label">DSGVO-konform</span></div>
+</div></div>
+
+<!-- PROBLEM -->
+<section style="padding:80px 40px;"><div class="section-inner">
+  <p class="section-label reveal">// Das Problem</p>
+  <h2 class="section-title reveal">Wartezimmer-Chaos<br><em>hat System.</em></h2>
+  <p class="section-body reveal">In vielen Praxen läuft der Patientenaufruf noch manuell - laut, unübersichtlich und zeitaufwändig. Mit strukturiertem Aufruf per Knopfdruck, Vollbild-Anzeige im Wartezimmer, automatischer Statistik und Unterstützung für mehrere Zimmer gleichzeitig geht das deutlich besser.</p>
+  <div class="problem-grid reveal">
+    <div class="problem-card red"><h3>// Bisher</h3><ul class="problem-list"><li>Namen laut durch das Wartezimmer rufen</li><li>Keine Übersicht über bereits gerufene Patienten</li><li>Empfang muss aufstehen oder klingeln</li></ul></div>
+    <div class="problem-card green"><h3>// Mit Patientenaufruf</h3><ul class="problem-list"><li>Aufruf per Knopfdruck vom Empfang-PC</li><li>Sofortige Anzeige auf dem Wartezimmer-Display</li><li>Verlauf der letzten Aufrufe immer sichtbar</li><li>Mehrere Behandlungszimmer gleichzeitig verwaltbar</li><li>Keine Namen im Netz - alles lokal in der Praxis</li><li>Akustische Benachrichtigung am Display</li></ul></div>
+  </div>
+</div></section>
+
+<!-- FEATURES -->
+<section id="pa-funktionen" style="padding:0 40px 80px;"><div class="section-inner">
+  <p class="section-label reveal">// Funktionen</p>
+  <h2 class="section-title reveal">Alles was eine<br><em>Praxis braucht.</em></h2>
+  <div class="features-grid reveal">
+    <div class="feature-card"><span class="feature-icon">🖥️</span><div class="feature-title">Wartezimmer-Display</div><p class="feature-desc">Vollbild-Anzeige auf einem zweiten Bildschirm. Aktueller Aufruf groß, Verlauf darunter - mit Einblendanimation und Ton.</p></div>
+    <div class="feature-card"><span class="feature-icon">🌐</span><div class="feature-title">Netzwerk-basiert</div><p class="feature-desc">WebSocket über TLS - alle Geräte in der Praxis sind verbunden. Mehrere Eingabe-Clients gleichzeitig möglich.</p></div>
+    <div class="feature-card"><span class="feature-icon">📈</span><div class="feature-title">Statistik</div><p class="feature-desc">Automatische Auswertung aller Aufrufe: Anzahl pro Tag, Woche, Monat, Jahr und insgesamt - sowie Auslastung nach Raum auf einen Blick.</p></div>
+    <div class="feature-card"><span class="feature-icon">🎨</span><div class="feature-title">Anpassbares Design</div><p class="feature-desc">Schriftfarben, Schriftgrößen und Hintergrundbild des Displays lassen sich zentral konfigurieren - live und ohne Neustart.</p></div>
+    <div class="feature-card"><span class="feature-icon">🔒</span><div class="feature-title">Lokal &amp; DSGVO-konform</div><p class="feature-desc">Alle Daten bleiben im internen Netzwerk der Praxis. Keine Cloud, kein externer Server, keine dauerhaften Patientendaten.</p></div>
+    <div class="feature-card"><span class="feature-icon">🚪</span><div class="feature-title">Mehrere Zimmer</div><p class="feature-desc">Zimmer frei konfigurierbar - Behandlungsraum 1, Labor, OP, oder beliebige eigene Bezeichnungen.</p></div>
+    <div class="feature-card"><span class="feature-icon">🔄</span><div class="feature-title">Automatischer Reconnect</div><p class="feature-desc">Verbindung verloren? Der Client verbindet sich automatisch wieder - kein manueller Eingriff nötig.</p></div>
+    <div class="feature-card"><span class="feature-icon">📋</span><div class="feature-title">Aufruf-Verlauf</div><p class="feature-desc">Die letzten 5 Aufrufe werden im Client-Fenster angezeigt - mit Uhrzeit, Name und Zimmer. Für alle verbundenen Geräte synchron.</p></div>
+    <div class="feature-card"><span class="feature-icon">⚡</span><div class="feature-title">Sofort einsatzbereit</div><p class="feature-desc">Kein Server-Setup, keine IT-Abteilung nötig. IP-Adresse eingeben, verbinden, loslegen. Setup in unter 5 Minuten.</p></div>
+  </div>
+</div></section>
+
+<!-- HOW -->
+<section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 40px;"><div class="section-inner">
+  <p class="section-label reveal">// So funktioniert es</p>
+  <h2 class="section-title reveal">In vier Schritten<br><em>live.</em></h2>
+  <div class="how-grid reveal">
+    <div class="how-step"><div class="step-num">01</div><div class="step-title">Server starten</div><p class="step-desc">Auf dem Ausgabe-PC (mit Wartezimmer-Bildschirm) wird die Server-App gestartet. Die IP-Adresse wird angezeigt.</p></div>
+    <div class="how-step"><div class="step-num">02</div><div class="step-title">Clients verbinden</div><p class="step-desc">Empfangs-PCs und Mobilgeräte öffnen die Client-App, geben die IP ein - und sind sofort verbunden.</p></div>
+    <div class="how-step"><div class="step-num">03</div><div class="step-title">Patienten aufrufen</div><p class="step-desc">Name eingeben, Zimmer wählen, aufrufen. Der Aufruf erscheint sofort auf dem Wartezimmer-Display.</p></div>
+    <div class="how-step"><div class="step-num">04</div><div class="step-title">Fertig.</div><p class="step-desc">Das war's. Kein Ausrufen mehr, kein Chaos - strukturierter, diskreter Patientenfluss ab Tag 1.</p></div>
+  </div>
+</div></section>
+
+<!-- PLATFORMS -->
+<section style="padding:80px 40px;"><div class="section-inner">
+  <p class="section-label reveal">// Plattformen</p>
+  <h2 class="section-title reveal">Läuft überall wo<br><em>deine Praxis läuft.</em></h2>
+  <div class="platforms-grid reveal">
+    <div class="platform-card"><div class="platform-icon-wrap win"><svg viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#00adef;"><path d="M0 12.402l11.113-.003L11.11 24H0zm11.11-12.402L0 .003V11.11l11.11.003zM12 0l-.003 11.113L24 11.11V0zm0 24l12-.003V12.89L12 12.887z"/></svg></div><div><h3>Windows</h3><p>Server-App und Client-App für Windows. Der Ausgabe-PC zeigt das Wartezimmer-Display, der Empfangs-PC sendet Aufrufe.</p><div class="platform-tags"><span class="ptag">Server</span><span class="ptag">Client</span><span class="ptag">Windows 10/11</span><span class="ptag" style="color:#22c55e;border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.08);">Verfügbar</span></div></div></div>
+    <div class="platform-card"><div class="platform-icon-wrap mac"><svg viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#ffffff;"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div><div><h3>macOS</h3><p>Vollständige Unterstützung für macOS. Server und Client als native .app-Bundle.</p><div class="platform-tags"><span class="ptag">Server</span><span class="ptag">Client</span><span class="ptag">macOS 12+</span><span class="ptag" style="color:#22c55e;border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.08);">Verfügbar</span></div></div></div>
+    <div class="platform-card" style="opacity:.75;"><div class="platform-icon-wrap mob" style="opacity:.5;"><svg viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#3ddc84;"><path d="M17.523 15.341a.55.55 0 01-.55.55.55.55 0 01-.55-.55V9.891a.55.55 0 01.55-.55.55.55 0 01.55.55zm-10.497 0a.55.55 0 01-.55.55.55.55 0 01-.55-.55V9.891a.55.55 0 01.55-.55.55.55 0 01.55.55zm2.302 4.91a.55.55 0 01.55.55v1.649a.55.55 0 01-.55.55.55.55 0 01-.55-.55V20.8a.55.55 0 01.55-.55zm3.344 0a.55.55 0 01.55.55v1.649a.55.55 0 01-.55.55.55.55 0 01-.55-.55V20.8a.55.55 0 01.55-.55zM7.5 8.066C7.5 6.378 9.574 5 12 5s4.5 1.378 4.5 3.066v7.274c0 .552-.448 1-1 1H8.5c-.552 0-1-.448-1-1zm3.146-4.43l-.659-1.14a.2.2 0 01.073-.273.2.2 0 01.273.073l.674 1.166A4.91 4.91 0 0112 3.4c.347 0 .68.037.993.106l.674-1.166a.2.2 0 01.273-.073.2.2 0 01.073.273l-.659 1.14A3.94 3.94 0 0115.1 5H8.9a3.94 3.94 0 011.746-1.364zM10.575 6.3a.525.525 0 100-1.05.525.525 0 000 1.05zm2.85 0a.525.525 0 100-1.05.525.525 0 000 1.05z"/></svg></div><div><h3>Android <span style="font-family:var(--mono);font-size:9px;color:#e8a84a;background:rgba(232,168,74,.1);border:1px solid rgba(232,168,74,.3);border-radius:4px;padding:2px 6px;vertical-align:middle;font-weight:400;">In Arbeit</span></h3><p style="color:var(--muted);">Die Android-App befindet sich in Entwicklung. Aufrufe direkt vom Smartphone oder Tablet senden.</p><div class="platform-tags"><span class="ptag">Client</span><span class="ptag">Android 8+</span><span class="ptag" style="color:#e8a84a;border-color:rgba(232,168,74,.3);background:rgba(232,168,74,.08);">Demnächst</span></div></div></div>
+    <div class="platform-card" style="opacity:.75;"><div class="platform-icon-wrap mob" style="background:#2d1b4e;opacity:.5;"><svg viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#ffffff;"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div><div><h3>iOS <span style="font-family:var(--mono);font-size:9px;color:#e8a84a;background:rgba(232,168,74,.1);border:1px solid rgba(232,168,74,.3);border-radius:4px;padding:2px 6px;vertical-align:middle;font-weight:400;">In Arbeit</span></h3><p style="color:var(--muted);">Die iOS-App befindet sich in Entwicklung. Gleicher Funktionsumfang wie Android - für iPhone und iPad.</p><div class="platform-tags"><span class="ptag">Client</span><span class="ptag">iOS 15+</span><span class="ptag" style="color:#e8a84a;border-color:rgba(232,168,74,.3);background:rgba(232,168,74,.08);">Demnächst</span></div></div></div>
+  </div>
+</div></section>
+
+<!-- PRICING -->
+<section style="padding:0 40px 80px;"><div class="section-inner">
+  <p class="section-label reveal">// Lizenzmodell</p>
+  <h2 class="section-title reveal">Transparent.<br><em>Fair. Flexibel.</em></h2>
+  <p class="section-body reveal">Keine versteckten Kosten, keine Überraschungen. Wähle zwischen einer einmaligen Jahreslizenz oder bequemer monatlicher Ratenzahlung — ganz wie es zu deiner Praxis passt. Kein Abo, keine Kündigung: Die Lizenz läuft nach dem gewählten Zeitraum automatisch aus.</p>
+  <div class="pricing-grid reveal">
+    <div class="pricing-card">
+      <div class="pricing-tier">// Standard</div>
+      <h3>Standard</h3>
+      <p class="sub">Einstieg für kleine Praxen mit einem festen Empfangsplatz.</p>
+      <div class="price"><span style="font-family:var(--mono);font-size:32px;font-weight:700;color:var(--text);letter-spacing:-.02em;">299 €</span><span style="font-size:13px;color:var(--muted2);"> / Jahr</span><br><span style="font-size:12px;color:var(--muted2);">oder 29,90 € / Monat · 12 Monate</span></div>
+      <ul class="pricing-features"><li>1 Ausgabe-Display (Server)</li><li>3 Eingabe-Clients</li><li>Windows &amp; macOS</li><li>1 Jahr Lizenz</li><li>E-Mail Support</li></ul>
+      <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
+    </div>
+    <div class="pricing-card" style="opacity:.6;pointer-events:none;position:relative;">
+      <div style="position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(232,168,74,.15);color:#e8a84a;border:1px solid rgba(232,168,74,.3);padding:3px 10px;border-radius:2px;">In Arbeit</div>
+      <div class="pricing-tier">// Mobile</div>
+      <h3>Mobile</h3>
+      <p class="sub">Für Praxen die per Smartphone oder Tablet aufrufen möchten.</p>
+      <div class="price"><span style="font-family:var(--mono);font-size:32px;font-weight:700;color:var(--text);letter-spacing:-.02em;">259 €</span><span style="font-size:13px;color:var(--muted2);"> / Jahr</span><br><span style="font-size:12px;color:var(--muted2);">oder 24,90 € / Monat · 12 Monate</span></div>
+      <ul class="pricing-features"><li>1 Ausgabe-Display (Server)</li><li>Beliebig viele Mobilgeräte</li><li>Android &amp; iOS App</li><li>1 Jahr Lizenz</li><li>E-Mail Support</li></ul>
+      <a href="#" class="pricing-cta outline" style="opacity:.4;cursor:not-allowed;">Demnächst verfügbar</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Empfohlen</div>
+      <div class="pricing-tier">// Premium</div>
+      <h3>Premium</h3>
+      <p class="sub">Die Komplettlösung für Desktop mit 5 Jahren Laufzeit.</p>
+      <div class="price"><span style="font-family:var(--mono);font-size:32px;font-weight:700;color:var(--text);letter-spacing:-.02em;">1.199 €</span><span style="font-size:13px;color:var(--muted2);"> / 5 Jahre</span><br><span style="font-size:12px;color:var(--muted2);">oder 249 € / Jahr · 21,90 € / Monat für 60 Monate</span></div>
+      <ul class="pricing-features"><li>1 Ausgabe-Display (Server)</li><li>10 Eingabe-Clients (Win &amp; Mac)</li><li>Windows &amp; macOS</li><li>5 Jahre Lizenz</li><li>E-Mail Support</li></ul>
+      <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta filled">Jetzt anfragen -></a>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">// Unlimited</div>
+      <h3>Unlimited</h3>
+      <p class="sub">Maximale Flexibilität ohne zeitliche Einschränkung.</p>
+      <div class="price"><span style="font-family:var(--mono);font-size:32px;font-weight:700;color:var(--text);letter-spacing:-.02em;">1.499 €</span><span style="font-size:13px;color:var(--muted2);"> einmalig</span><br><span style="font-size:12px;color:var(--muted2);">Jahres- und Monatsfinanzierung auf Anfrage</span></div>
+      <ul class="pricing-features"><li>1 Ausgabe-Display (Server)</li><li>Beliebig viele Eingabe-Clients</li><li>Windows &amp; macOS</li><li>Zeitlich unbegrenzte Lizenz</li><li>E-Mail Support</li></ul>
+      <a onclick="showPage('home'); scrollToSection('kontakt')" href="#" class="pricing-cta outline">Anfrage stellen -></a>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--muted2);margin-top:10px;">Hinweis: Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer berechnet. Die angegebenen Preise verstehen sich daher <strong>inklusive aller Kosten</strong>.</p>
+</div></section>
+
+<!-- CTA -->
+<div class="cta-section" style="padding:64px 40px;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;">
+    <div>
+      <h2 style="font-family:var(--mono);font-size:clamp(20px,3vw,36px);font-weight:700;letter-spacing:-.02em;margin-bottom:8px;">Bereit für ein <em style="font-style:normal;color:var(--accent);">ruhigeres Wartezimmer?</em></h2>
+      <p style="font-size:14px;color:var(--muted2);">Überzeug dich selbst mit der 30-tägigen kostenlosen Testversion – unverbindlich und ohne Vertrag.</p>
+    </div>
+    <div class="cta-actions">
+      <a onclick="openModal('pa-download-modal')" href="#" class="btn-primary">Jetzt testen -></a>
+      <a href="mailto:info@xjrx98software.de" class="btn-ghost">E-Mail schreiben</a>
+    </div>
+  </div>
+</div>
+
+<footer role="contentinfo">
+  <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
+  <div class="footer-right"><p>&copy; 2026 xJRx98 Software – Alle Rechte vorbehalten</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button></div>
+</footer>
+
+<!-- DOWNLOAD MODAL -->
+<div id="pa-download-modal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('pa-download-modal')">&times;</button>
+    <p class="modal-label">// Download</p>
+    <h3 class="modal-title" style="margin-bottom:6px;">30 Tage kostenlos testen</h3>
+    <p style="font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;">Lade Server (Anzeige) und Client (Aufruf) für dein Betriebssystem herunter.</p>
+
+    <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Windows</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+      <a href="https://github.com/xJRx98/xJRx98Software/releases/latest/download/PatientenaufrufSetup.exe" download class="modal-dl-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M0 12.402l11.113-.003L11.11 24H0zm11.11-12.402L0 .003V11.11l11.11.003zM12 0l-.003 11.113L24 11.11V0zm0 24l12-.003V12.89L12 12.887z"/></svg>
+        <div><div style="font-weight:600;">PatientenaufrufSetup.exe</div><div style="font-size:12px;color:var(--muted2);">Installer für Client &amp; Server</div></div>
+        <svg class="dl-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </div>
+    <div style="background:var(--bg);border-left:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:12px;color:var(--muted2);line-height:1.4;">
+      Hinweis: Beim ersten Start kann Windows SmartScreen eine Warnung anzeigen. Bitte auf <strong>„Weitere Informationen"</strong> und dann <strong>„Trotzdem ausführen"</strong> klicken.
+    </div>
+
+    <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">macOS</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
+      <a href="Anzeige.app" download class="modal-dl-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div><div style="font-weight:600;">Anzeige.app</div><div style="font-size:12px;color:var(--muted2);">Server · Wartezimmer-Display</div></div>
+        <svg class="dl-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+      <a href="Aufruf.app" download class="modal-dl-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div><div style="font-weight:600;">Aufruf.app</div><div style="font-size:12px;color:var(--muted2);">Client · Empfang &amp; Eingabe</div></div>
+        <svg class="dl-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </div>
+
+    <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">// Dokumentation</p>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <a href="Anleitung_Praxispersonal.pdf" target="_blank" class="modal-dl-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h9a2 2 0 0 1 2 2v4h4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM6 4v16h12V10h-4a2 2 0 0 1-2-2V4H6z"/></svg>
+        <div><div style="font-weight:600;">Anleitung Praxispersonal.pdf</div><div style="font-size:12px;color:var(--muted2);">Schritt-für-Schritt-Anleitung</div></div>
+        <svg class="dl-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+      <a href="Technische Dokumentation.pdf" target="_blank" class="modal-dl-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h9a2 2 0 0 1 2 2v4h4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM6 4v16h12V10h-4a2 2 0 0 1-2-2V4H6z"/></svg>
+        <div><div style="font-weight:600;">Technische Dokumentation.pdf</div><div style="font-size:12px;color:var(--muted2);">Für IT &amp; Systemadministration</div></div>
+        <svg class="dl-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
