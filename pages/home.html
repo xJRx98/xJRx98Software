@@ -1,0 +1,219 @@
+<main id="main-content">
+  <!-- HERO -->
+  <section class="hero" id="start" aria-label="Einleitung">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-badge" role="status" aria-live="polite">Verfügbar für neue Projekte</div>
+    <h1>Custom Software<br><em>Development.</em></h1>
+    <p class="hero-sub">Individuelle Softwarelösungen, Tools und Anwendungen für Webseiten, Unternehmen und Automatisierung – präzise gebaut, termingerecht geliefert. Ideal für kleine bis mittelgroße Ideen und Projekte – privat wie geschäftlich.</p>
+    <div class="hero-actions">
+      <a onclick="showPage('home'); scrollToSection('kontakt')" class="btn-primary">Projekt besprechen</a>
+      <a onclick="showPage('home'); scrollToSection('projekte')" class="btn-ghost">Referenzen ansehen</a>
+    </div>
+    <div class="hero-scroll" aria-hidden="true"><div class="scroll-line"></div><span>Scroll</span></div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SERVICES -->
+  <section id="services" aria-labelledby="services-heading">
+    <div class="wrap">
+      <p class="section-label reveal">// Was ich mache</p>
+      <h2 class="section-title reveal" id="services-heading">Leistungen</h2>
+      <p class="section-desc reveal">Von der Idee bis zur fertigen Anwendung - maßgeschneidert für deine Anforderungen.</p>
+      <div class="services-grid">
+        <div class="service-item reveal">
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/></svg>
+          <h3>Softwareentwicklung</h3>
+          <p>Desktop-Applikationen, Automatisierungstools und datengestützte Lösungen - präzise auf deine Anforderungen zugeschnitten.</p>
+        </div>
+        <div class="service-item reveal">
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <h3>Webentwicklung</h3>
+          <p>Moderne, performante Webseiten und Web-Apps mit sauberem Code und durchdachtem UX-Design.</p>
+        </div>
+        <div class="service-item reveal">
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <h3>Automatisierung</h3>
+          <p>Wiederkehrende Prozesse automatisieren, Daten strukturiert auswerten und wertvolle Arbeitszeit einsparen.</p>
+        </div>
+        <div class="service-item reveal">
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M12 18.5A6.5 6.5 0 1112 5.5a6.5 6.5 0 010 13zm0 0v3m0-16v-3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1.5 12h3m15 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+          <h3>Store-Publishing &amp; Verwaltung</h3>
+          <p>Ich veröffentliche deine App unter meinem Developer-Account im Google Play Store und Apple App Store - inklusive Store-Einträge, Screenshots, Beschreibungen und laufender Pflege der Listings.</p>
+        </div>
+        <div class="service-item reveal">
+          <svg class="service-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <h3>Wartung &amp; Erweiterungen</h3>
+          <p>Laufende Betreuung deiner App oder Software - Bugfixes, OS-Updates, neue Features und Anpassungen, damit dein Produkt langfristig zuverlässig läuft und wächst.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PROJEKTE -->
+  <section id="projekte" aria-labelledby="projekte-heading">
+    <div class="wrap">
+      <p class="section-label reveal">// Referenzen</p>
+      <h2 class="section-title reveal" id="projekte-heading">Projekte</h2>
+      <p class="section-desc reveal">Ausgewählte Arbeiten - Software, die echten Mehrwert liefert.</p>
+      <div class="projects-grid">
+
+        <div class="project-card reveal" onclick="showProject('cp-app')" style="display:grid;grid-template-rows:auto auto 1fr auto auto;">
+          <p class="project-num">01 / Aquaristik</p>
+          <h3>C&amp;P Aquaplants App</h3>
+          <p>App zur Unterstützung rund um Aquaristik und Pflanzenpflege. Praktische Tools und nützliche Funktionen für Hobbyisten und Profis.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+          </div>
+          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+
+        <div class="project-card reveal" onclick="showProject('wasserpantscher')" style="display:grid;grid-template-rows:auto auto 1fr auto auto;">
+          <p class="project-num">02 / Aquaristik</p>
+          <h3>Wasserpantscher App</h3>
+          <p>Softwarelösung für präzise Aquaristik-Berechnungen und Wasserwerteanalyse - zuverlässig und einfach bedienbar.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Flutter</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Dart</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Android</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">iOS</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+          </div>
+          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+
+        <div class="project-card reveal" onclick="showPage('patientenaufruf')" style="display:grid;grid-template-rows:auto auto 1fr auto auto;">
+          <p class="project-num">03 / Medizin</p>
+          <h3>Patientenaufrufsystem</h3>
+          <p>Digitales System zum strukturierten Aufrufen von Patienten im Wartezimmer - übersichtlich, effizient und zuverlässig.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;">
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Python</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">WebSocket</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">Windows</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(61,189,177,.07);border:1px solid rgba(61,189,177,.18);border-radius:100px;color:var(--accent);">macOS</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:3px 9px;background:rgba(232,168,74,.08);border:1px solid rgba(232,168,74,.3);border-radius:100px;color:#e8a84a;">In Arbeit</span>
+          </div>
+          <button class="project-link" style="margin-top:16px;">Mehr erfahren <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2 class="reveal">Hast du ein Softwareprojekt?</h2>
+      <p class="reveal">Kontaktiere mich und wir entwickeln gemeinsam eine Lösung - von der ersten Idee bis zum fertigen Produkt.</p>
+      <a onclick="showPage('home'); scrollToSection('kontakt')" class="btn-primary reveal">Kontakt aufnehmen</a>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt" aria-labelledby="kontakt-heading">
+    <div class="wrap">
+      <p class="section-label reveal">// Kontakt</p>
+      <h2 class="section-title reveal" id="kontakt-heading">Projekt starten</h2>
+      <div class="contact-layout">
+        <div class="contact-info reveal">
+          <h3>Lass uns reden.</h3>
+          <p>Du hast eine Idee, ein Problem oder ein konkretes Projekt? Beschreib mir kurz, worum es geht - ich melde mich schnellstmöglich zurück.</p>
+          <div class="contact-note">
+            <div class="contact-note-dot"></div>
+            <p><strong>Aktuell verfügbar</strong> für neue Projekte und Anfragen.</p>
+          </div>
+        </div>
+        <div class="contact-form reveal">
+          <form id="contact-form">
+            <div style="display:none" aria-hidden="true"><label>Nicht ausfuellen</label><input type="text" id="cf-honeypot" name="honeypot" tabindex="-1" autocomplete="off"></div>
+            <div class="form-group"><label for="cf-name">Name</label><input type="text" id="cf-name" name="name" placeholder="Max Mustermann" required autocomplete="name"></div>
+            <div class="form-group"><label for="cf-email">E-Mail</label><input type="email" id="cf-email" name="email" placeholder="max@beispiel.de" required autocomplete="email"></div>
+            <div class="form-group"><label for="cf-message">Nachricht</label><textarea id="cf-message" name="message" placeholder="Beschreib dein Projekt..." required></textarea></div>
+            <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-top:8px;">
+              <input type="checkbox" id="cf-privacy" name="privacy" required style="margin-top:2px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer;">
+              <label for="cf-privacy" style="font-size:11px;color:var(--muted);line-height:1.6;font-family:var(--mono);cursor:pointer;">
+                Ich habe die <button onclick="showPage('datenschutz')" type="button" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:11px;font-family:var(--mono);text-decoration:underline;">DATENSCHUTZERKLÄRUNG</button> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.
+              </label>
+            </div>
+            <button type="submit" class="form-submit" id="cf-btn">Nachricht senden -></button>
+            <p id="cf-status" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <span onclick="showPage('home')" class="footer-logo-link" role="button" aria-label="Zur Startseite" tabindex="0">
+    <img src="xJRx98_Software_logo.png" alt="xJRx98 Software" class="footer-logo-img" loading="lazy" width="auto" height="28">
+  </span>
+  <div class="footer-right">
+    <p>&copy; 2026 xJRx98 Software – Alle Rechte vorbehalten</p>
+    <button class="footer-impressum-link" onclick="showPage('ueber-mich')">Über mich</button>
+    <button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button>
+    <button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button>
+  </div>
+</footer>
+
+<script>
+let lastSubmit = 0;
+const SUBMIT_COOLDOWN = 30000;
+const GAS_URL   = 'https://script.google.com/macros/s/AKfycbxpfHG8Z8NuViT_oFmPioMxNmLiZ907zMB4eoqdGntwshkuzF1IoMC-G2IXsElEC709dg/exec';
+const GAS_TOKEN = 'xJRx98secret2026';
+
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const now = Date.now();
+  if (now - lastSubmit < SUBMIT_COOLDOWN) {
+    const wait = Math.ceil((SUBMIT_COOLDOWN - (now - lastSubmit)) / 1000);
+    showStatus('Bitte warte noch ' + wait + ' Sekunden.', '#c94b6d');
+    return;
+  }
+  const honeypot = document.getElementById('cf-honeypot').value;
+  if (honeypot) return;
+
+  const btn = document.getElementById('cf-btn');
+  const name    = document.getElementById('cf-name').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+
+  btn.textContent = 'Wird gesendet...';
+  btn.disabled = true;
+  document.getElementById('cf-status').style.display = 'none';
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ name, email, message, token: GAS_TOKEN, honeypot }),
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      showStatus('Nachricht gesendet! Du bekommst gleich eine Bestätigung per E-Mail.', 'var(--accent)');
+      btn.textContent = 'Gesendet ✓';
+      lastSubmit = Date.now();
+      document.getElementById('cf-name').value = '';
+      document.getElementById('cf-email').value = '';
+      document.getElementById('cf-message').value = '';
+    } else { throw new Error('Fehler'); }
+  } catch(err) {
+    showStatus('Fehler beim Senden - bitte versuche es erneut oder schreib direkt eine E-Mail.', '#c94b6d');
+    btn.textContent = 'Nachricht senden ->';
+    btn.disabled = false;
+  }
+});
+
+function showStatus(msg, color) {
+  const s = document.getElementById('cf-status');
+  s.textContent = msg;
+  s.style.color = color;
+  s.style.display = 'block';
+}
+</script>
