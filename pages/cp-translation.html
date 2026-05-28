@@ -157,8 +157,8 @@
         </div>
         <div style="width:1px;background:var(--border);"></div>
         <div style="text-align:center;">
-          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent);">~2h</div>
-          <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Ungefähre Dauer</div>
+          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent);">2</div>
+          <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Sprachen bisher</div>
         </div>
       </div>
     </div>
@@ -559,9 +559,14 @@ function tlSendEmail() {
     "und hänge sie an diese E-Mail an.\n\nViele Grüße"
   );
   setTimeout(function() {
-    window.location.href = "mailto:mail@cp-aquaplants.de?subject=" + subject + "&body=" + body;
-    tlShowToast("Datei gespeichert – bitte an die E-Mail anhängen!");
-  }, 800);
+  window.location.href =
+    "mailto:mail@cp-aquaplants.de" +
+    "?cc=info@xjrx98software.de" +
+    "&subject=" + encodeURIComponent(subject) +
+    "&body=" + encodeURIComponent(body);
+
+  tlShowToast("Datei gespeichert – bitte an die E-Mail anhängen!");
+}, 800);
 }
 
 // Preset-Buttons
