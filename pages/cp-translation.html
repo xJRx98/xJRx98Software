@@ -217,9 +217,15 @@ textarea:focus,input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 
         <strong>Tipp:</strong> Du musst nicht alles in einem Durchgang machen. Du kannst deinen Fortschritt jederzeit als Datei speichern und später weitermachen.
       </div>
 
-      <button id="tl-btn-start" onclick="tlWizardGo(1)" class="btn btn-primary" style="padding:12px 28px;font-size:14px;" disabled>
-        Los geht's →
-      </button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <button id="tl-btn-start" onclick="tlWizardGo(1)" class="btn btn-primary" style="padding:12px 28px;font-size:14px;" disabled>
+          Los geht's →
+        </button>
+        <label class="btn btn-ghost" style="padding:12px 18px;font-size:13px;cursor:pointer;">
+          ↑ Gespeicherten Stand laden
+          <input type="file" accept=".json" onchange="tlLoadJson(event)" style="display:none;">
+        </label>
+      </div>
     </div><!-- end card -->
   </div><!-- end screen-0 -->
 
