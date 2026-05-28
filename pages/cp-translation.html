@@ -383,6 +383,18 @@ function tlExportDart() {
   });
 })();
 
+// window-Export — nötig damit onclick-Handler in dynamisch generiertem HTML funktionieren
+window.tlSet          = tlSet;
+window.tlGoSection    = tlGoSection;
+window.tlPrevSection  = tlPrevSection;
+window.tlNextSection  = tlNextSection;
+window.tlSetFilter    = tlSetFilter;
+window.tlSaveJson     = tlSaveJson;
+window.tlLoadJson     = tlLoadJson;
+window.tlExportDart   = tlExportDart;
+window.tlUpdate       = tlUpdate;
+window.tlRender       = tlRender;
+
 // Initial render
 tlSetFilter("all");
 tlRender();
