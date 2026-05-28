@@ -875,6 +875,14 @@ async function showPage(pageId, pushState = true) {
   }
 }
 
+// Global verfügbar machen für onclick-Handler in dynamisch geladenem HTML
+window.showPage        = showPage;
+window.showProject     = showProject;
+window.scrollToSection = scrollToSection;
+window.openModal       = openModal;
+window.closeModal      = closeModal;
+
+
 function showProject(id) { showPage(id); }
 
 function scrollToSection(id) {
