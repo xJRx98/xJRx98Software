@@ -5,475 +5,560 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>C&P Aquaplants – App übersetzen</title>
 <style>
-  :root {
-    --bg:        #0f1117;
-    --bg2:       #1a1d27;
-    --surface:   #1e2130;
-    --border:    #2e3348;
-    --border-hi: #4a5070;
-    --text:      #e8eaf0;
-    --muted:     #6b7280;
-    --muted2:    #9ca3af;
-    --accent:    #3dbdb1;
-    --mono:      'JetBrains Mono', 'Fira Mono', monospace;
-    --sans:      system-ui, -apple-system, sans-serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+:root {
+  --bg:#0f1117; --bg2:#1a1d27; --surface:#1e2130;
+  --border:#2e3348; --border-hi:#4a5070;
+  --text:#e8eaf0; --muted:#6b7280; --muted2:#9ca3af;
+  --accent:#3dbdb1; --accent-dim:rgba(61,189,177,.12);
+  --sans:system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Fira Mono',monospace;
+  --pad:clamp(16px,4vw,32px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
 
-  .btn-ghost {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted2);
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: var(--sans);
-    font-size: 13px;
-    transition: all .2s;
-    padding: 9px 18px;
-  }
-  .btn-ghost:hover { border-color: var(--border-hi); color: var(--text); background: rgba(255,255,255,.03); }
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;cursor:pointer;font-family:var(--sans);font-size:14px;transition:all .2s;padding:10px 18px;border:none;white-space:nowrap;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted2);}
+.btn-ghost:hover{border-color:var(--border-hi);color:var(--text);background:rgba(255,255,255,.03);}
+.btn-primary{background:var(--accent);color:#000;font-weight:600;}
+.btn-primary:hover:not(:disabled){opacity:.85;}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+.btn-full{width:100%;}
 
-  .btn-primary {
-    background: var(--accent);
-    border: none;
-    color: #000;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 9px 18px;
-    transition: opacity .2s;
-  }
-  .btn-primary:hover:not(:disabled) { opacity: .85; }
-  .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+/* ── Inputs ── */
+textarea,input[type=text]{
+  font-family:var(--sans);font-size:16px;/* 16px verhindert Auto-Zoom auf iOS */
+  color:var(--text);background:var(--bg);
+  border:1px solid var(--border);border-radius:8px;
+  outline:none;transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;
+}
+textarea:focus,input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(61,189,177,.12);}
 
-  .sticky-back {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 12px 24px;
-    background: rgba(15,17,23,.9);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted2);
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-size: 13px;
-    cursor: pointer;
-    font-family: var(--sans);
-    transition: all .2s;
-  }
-  .back-btn:hover { border-color: var(--border-hi); color: var(--text); }
-  .back-btn svg { width: 16px; height: 16px; }
+/* ── Wizard ── */
+.wizard-steps{display:flex;margin-bottom:32px;position:relative;}
+.wizard-steps::before{content:'';position:absolute;top:16px;left:16px;right:16px;height:1px;background:var(--border);z-index:0;}
+.wizard-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:1;cursor:pointer;}
+.wizard-step-label{font-size:11px;color:var(--muted2);text-align:center;transition:color .2s;line-height:1.3;}
+.wizard-step.active .wizard-step-label{color:var(--accent);font-weight:600;}
+.wizard-step.done .wizard-step-label{color:#22c55e;}
 
-  .hero-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(61,189,177,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(61,189,177,.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-  }
-  .hero-glow {
-    position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 300px;
-    background: radial-gradient(ellipse, rgba(61,189,177,.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-  .section-title {
-    font-size: clamp(26px, 4vw, 48px);
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.15;
-    margin-bottom: 16px;
-  }
+/* ── Step dot ── */
+.step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;flex-shrink:0;transition:all .3s;}
+.step-dot.active{background:var(--accent);color:#000;}
+.step-dot.done{background:#22c55e;color:#000;}
+.step-dot.pending{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 
-  textarea, input[type="text"] {
-    font-family: var(--sans);
-    font-size: 14px;
-    color: var(--text);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    outline: none;
-    transition: border-color .2s, box-shadow .2s;
-  }
-  textarea:focus, input[type="text"]:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(61,189,177,.12);
-  }
+/* ── Progress ring ── */
+.ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:4;}
+.ring-fg{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .5s ease;stroke-dasharray:138;}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);}
+
+/* ── Section pills ── */
+.section-pill{padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s;text-align:left;width:100%;}
+.section-pill:hover{border-color:var(--border-hi);}
+.section-pill.active{border-color:var(--accent);background:var(--accent-dim);}
+.section-pill.done{border-color:rgba(34,197,94,.3);}
+
+/* ── Callout ── */
+.callout{background:var(--accent-dim);border:1px solid rgba(61,189,177,.25);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--muted2);line-height:1.6;}
+.callout strong{color:var(--accent);}
+
+/* ── Entry card ── */
+.entry-card{padding:16px 0;border-bottom:1px solid var(--border);}
+.entry-card:last-child{border-bottom:none;}
+
+/* ── Language badge ── */
+.lang-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;font-size:13px;}
+.lang-badge.existing{background:var(--accent-dim);border:1px solid rgba(61,189,177,.3);color:var(--accent);}
+.lang-badge.wip{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);color:#eab308;}
+
+/* ── Hero decorations ── */
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(61,189,177,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(61,189,177,.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hero-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(61,189,177,.12) 0%,transparent 70%);pointer-events:none;}
+
+/* ── Layouts ── */
+.entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;}
+.progress-bar-wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.progress-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.section-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:16px var(--pad);border-bottom:1px solid var(--border);}
+.filter-row{display:flex;gap:6px;}
+.card-nav{display:flex;justify-content:space-between;align-items:center;padding:12px var(--pad);border-top:1px solid var(--border);}
+
+/* ── Explain cards ── */
+.explain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+
+/* ── MOBILE ── */
+@media(max-width:600px){
+  .explain-grid{grid-template-columns:1fr;}
+  .entry-grid{grid-template-columns:1fr;} /* Deutsch oben, Übersetzung unten */
+  .progress-bar-wrap{flex-direction:column;align-items:stretch;}
+  .progress-actions{flex-direction:column;}
+  .progress-actions .btn{width:100%;}
+  .filter-row .btn{flex:1;padding:6px 4px;font-size:11px;}
+  .section-header{flex-direction:column;align-items:flex-start;}
+  .wizard-step-label{font-size:10px;}
+  #tl-section-tabs{grid-template-columns:repeat(2,1fr) !important;}
+  .hero-glow{display:none;}
+}
+
+@media(max-width:380px){
+  #tl-section-tabs{grid-template-columns:1fr !important;}
+  .wizard-step-label{display:none;}
+}
 </style>
 </head>
 <body>
 
-<div class="sticky-back">
-  <button class="back-btn" onclick="history.back()">
-    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M15 18l-6-6 6-6"/>
-    </svg>
+<!-- BACK -->
+<div style="position:sticky;top:0;z-index:100;padding:10px var(--pad);background:rgba(15,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
+  <button class="btn btn-ghost" onclick="history.back()">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
     Zurück zur App-Seite
   </button>
 </div>
 
-<main id="main-content">
+<!-- HERO -->
+<section style="position:relative;overflow:hidden;padding:clamp(36px,8vw,56px) var(--pad) 40px;border-bottom:1px solid var(--border);text-align:center;">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div style="position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 8px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">C&amp;P Aquaplants</div>
+    <h1 style="font-size:clamp(28px,5vw,48px);font-weight:700;line-height:1.1;margin-bottom:16px;">
+      Hilf uns, die App in<br>deine Sprache zu bringen
+    </h1>
+    <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:500px;margin:0 auto 28px;">
+      Kein technisches Wissen nötig — du gibst einfach die Übersetzungen ein,
+      wir erledigen den Rest.
+    </p>
 
-  <section style="position:relative;overflow:hidden;padding:64px 40px 48px;border-bottom:1px solid var(--border);">
-    <div class="hero-grid"></div>
-    <div class="hero-glow"></div>
-    <div style="max-width:800px;margin:0 auto;position:relative;z-index:1;text-align:center;">
-      <div class="section-label" style="justify-content:center;display:flex;">C&amp;P Aquaplants</div>
-      <h1 class="section-title">App übersetzen</h1>
-      <p style="font-size:16px;color:var(--muted2);line-height:1.7;max-width:560px;margin:0 auto;">
-        Hilf uns, die App in deine Sprache zu bringen!<br>
-        Gib einfach die Übersetzungen ein – wir kümmern uns um den Rest.
-      </p>
-      <div style="display:flex;justify-content:center;gap:24px;margin-top:32px;flex-wrap:wrap;">
-        <div style="text-align:center;">
-          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent);">433</div>
-          <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Texte insgesamt</div>
-        </div>
-        <div style="width:1px;background:var(--border);"></div>
-        <div style="text-align:center;">
-          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent);">15</div>
-          <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Bereiche der App</div>
-        </div>
-        <div style="width:1px;background:var(--border);"></div>
-        <div style="text-align:center;">
-          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent);">2</div>
-          <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Sprachen bisher</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section style="padding:40px 0 80px;">
-  <div style="max-width:860px;margin:0 auto;padding:0 24px;" id="tl-root">
-
-    <!-- SCHRITT 1 -->
-    <div style="margin-bottom:32px;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-        <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;">1</div>
-        <h2 style="font-size:18px;font-weight:500;color:var(--text);margin:0;">Welche Sprache möchtest du übersetzen?</h2>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;">
-        <p style="font-size:14px;color:var(--muted2);margin-bottom:16px;">Wähle deine Sprache aus der Liste oder tippe sie ein:</p>
-        <div id="tl-presets" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;"></div>
-        <div style="display:grid;grid-template-columns:1fr 120px;gap:10px;max-width:460px;">
-          <div>
-            <label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px;">Name der Sprache</label>
-            <input id="tl-lang-name" type="text" placeholder="z.B. Français, Español …"
-              style="width:100%;padding:10px 14px;"
-              oninput="tlUpdate()">
-          </div>
-          <div>
-            <label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px;">Kürzel</label>
-            <input id="tl-lang-code" type="text" placeholder="fr, es …" maxlength="5"
-              style="width:100%;padding:10px 14px;"
-              oninput="tlUpdate()">
-          </div>
-        </div>
-      </div>
+    <!-- Vorhandene Sprachen -->
+    <div style="display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+      <span style="font-size:12px;color:var(--muted);">Bereits verfügbar:</span>
+      <span class="lang-badge existing">🇩🇪 Deutsch</span>
+      <span class="lang-badge existing">🇬🇧 Englisch</span>
+      <span class="lang-badge wip">➕ Deine Sprache?</span>
     </div>
 
-    <!-- SCHRITT 2 -->
-    <div style="margin-bottom:32px;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-        <div style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted2);font-family:var(--mono);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;" id="tl-step2-num">2</div>
-        <h2 style="font-size:18px;font-weight:500;color:var(--text);margin:0;">Dein Fortschritt</h2>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <span style="font-size:14px;color:var(--muted2);" id="tl-progress-text">Noch keine Übersetzungen</span>
-          <span style="font-family:var(--mono);font-size:13px;color:var(--accent);" id="tl-progress-label">0 / 433</span>
-        </div>
-        <div style="height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin-bottom:16px;">
-          <div id="tl-progress-bar" style="height:100%;width:0%;background:var(--accent);border-radius:4px;transition:width .4s;"></div>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button onclick="tlSaveJson()" class="btn-ghost">
-            ↓ Zwischenstand speichern
-          </button>
-          <label class="btn-ghost" style="cursor:pointer;">
-            ↑ Gespeicherten Stand laden
-            <input type="file" accept=".json" onchange="tlLoadJson(event)" style="display:none;">
-          </label>
-          <button id="tl-export-btn" onclick="tlSendEmail()" disabled class="btn-primary">
-            ✉ Übersetzung einsenden
-          </button>
-        </div>
-        <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5;">
-          Tipp: Du musst nicht alles auf einmal machen. Speichere deinen Zwischenstand und mache später weiter.
-        </p>
-      </div>
-    </div>
-
-    <!-- SCHRITT 3 -->
-    <div id="tl-step3">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-        <div style="width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted2);font-family:var(--mono);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;" id="tl-step3-num">3</div>
-        <h2 style="font-size:18px;font-weight:500;color:var(--text);margin:0;">Texte übersetzen</h2>
-      </div>
-
-      <div id="tl-section-tabs" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:24px;"></div>
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-          <div>
-            <div id="tl-section-title" style="font-size:16px;font-weight:500;color:var(--text);"></div>
-            <div id="tl-section-loc" style="font-size:13px;color:var(--muted2);margin-top:3px;"></div>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <span style="font-size:12px;color:var(--muted2);">Zeige:</span>
-            <button onclick="tlSetFilter('all')"  id="tl-f-all"  class="btn-ghost" style="padding:5px 12px;font-size:12px;">Alle</button>
-            <button onclick="tlSetFilter('todo')" id="tl-f-todo" class="btn-ghost" style="padding:5px 12px;font-size:12px;">Noch offen</button>
-            <button onclick="tlSetFilter('done')" id="tl-f-done" class="btn-ghost" style="padding:5px 12px;font-size:12px;">Erledigt</button>
-          </div>
-        </div>
-
-        <div id="tl-items" style="padding:16px 24px;"></div>
-
-        <div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-          <button onclick="tlPrevSection()" id="tl-prev" class="btn-ghost" style="padding:10px 18px;">
-            ← Zurück
-          </button>
-          <span id="tl-page-indicator" style="font-size:13px;color:var(--muted2);"></span>
-          <button onclick="tlNextSection()" id="tl-next" class="btn-primary" style="padding:10px 18px;">
-            Weiter →
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- Stats -->
 
   </div>
-  </section>
-</main>
+</section>
 
-<div id="tl-toast" style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border-hi);border-radius:10px;padding:12px 22px;font-size:13px;color:var(--text);z-index:999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);"></div>
+<!-- MAIN -->
+<div style="max-width:860px;margin:0 auto;padding:32px var(--pad) 80px;" id="tl-root">
+
+  <!-- WIZARD STEPS -->
+  <div class="wizard-steps" id="tl-wizard">
+    <div class="wizard-step active" id="ws-0" onclick="tlWizardGo(0)">
+      <div class="step-dot active" id="wd-0">1</div>
+      <div class="wizard-step-label">Sprache wählen</div>
+    </div>
+    <div class="wizard-step pending" id="ws-1" onclick="tlWizardGo(1)">
+      <div class="step-dot pending" id="wd-1">2</div>
+      <div class="wizard-step-label">Übersetzen</div>
+    </div>
+    <div class="wizard-step pending" id="ws-2" onclick="tlWizardGo(2)">
+      <div class="step-dot pending" id="wd-2">3</div>
+      <div class="wizard-step-label">Einsenden</div>
+    </div>
+  </div>
+
+  <!-- SCREEN 0: SPRACHE WÄHLEN -->
+  <div id="tl-screen-0">
+
+    <!-- Erklärung -->
+    <div class="explain-grid">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:26px;flex-shrink:0;">✍️</div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Texte eingeben</div>
+          <div style="font-size:13px;color:var(--muted2);line-height:1.6;">Für jeden deutschen Text siehst du ein Eingabefeld. Trage einfach die Übersetzung ein — kein technisches Wissen nötig.</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:26px;flex-shrink:0;">💾</div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Jederzeit pausieren</div>
+          <div style="font-size:13px;color:var(--muted2);line-height:1.6;">Du kannst deinen Fortschritt als Datei speichern und später weitermachen — du musst nicht alles auf einmal erledigen.</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:26px;flex-shrink:0;">📩</div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Einsenden &amp; fertig</div>
+          <div style="font-size:13px;color:var(--muted2);line-height:1.6;">Am Ende lädst du deine Übersetzung herunter und schickst sie uns per E-Mail. Wir fügen sie in die App ein.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;">
+      <h2 style="font-size:20px;font-weight:600;margin-bottom:8px;">Welche Sprache möchtest du hinzufügen?</h2>
+      <p style="font-size:14px;color:var(--muted2);margin-bottom:24px;">Wähle eine Sprache aus oder tippe sie unten ein.</p>
+
+      <div id="tl-presets" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 110px;gap:12px;max-width:440px;margin-bottom:24px;">
+        <div>
+          <label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px;">Name der Sprache</label>
+          <input id="tl-lang-name" type="text" placeholder="z.B. Français, Español …" style="width:100%;padding:10px 14px;" oninput="tlUpdate()">
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px;">Kürzel</label>
+          <input id="tl-lang-code" type="text" placeholder="fr, es …" maxlength="5" style="width:100%;padding:10px 14px;" oninput="tlUpdate()">
+        </div>
+      </div>
+
+      <div class="callout" style="margin-bottom:24px;">
+        <strong>Tipp:</strong> Du musst nicht alles in einem Durchgang machen. Du kannst deinen Fortschritt jederzeit als Datei speichern und später weitermachen.
+      </div>
+
+      <button id="tl-btn-start" onclick="tlWizardGo(1)" class="btn btn-primary" style="padding:12px 28px;font-size:14px;" disabled>
+        Los geht's →
+      </button>
+    </div><!-- end card -->
+  </div><!-- end screen-0 -->
+
+  <!-- SCREEN 1: ÜBERSETZEN -->
+  <div id="tl-screen-1" style="display:none;">
+
+    <!-- Top bar: Fortschritt + Aktionen -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
+      <!-- Ring -->
+      <div class="progress-bar-wrap"><div class="ring-wrap">
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle class="ring-bg" cx="28" cy="28" r="22"/>
+          <circle class="ring-fg" id="tl-ring" cx="28" cy="28" r="22" stroke-dashoffset="138"/>
+        </svg>
+        <div class="ring-text" id="tl-ring-pct">0%</div>
+      </div>
+      <!-- Text -->
+      <div style="flex:1;min-width:160px;">
+        <div style="font-size:15px;font-weight:500;color:var(--text);" id="tl-progress-text">Noch keine Übersetzungen</div>
+        <div style="font-size:13px;color:var(--muted2);margin-top:2px;" id="tl-progress-label">0 von 433 Texten</div>
+      </div>
+      </div><!-- end progress-bar-wrap -->
+      <div class="progress-actions">
+        <button onclick="tlSaveJson()" class="btn btn-ghost" style="font-size:12px;padding:8px 14px;">
+          ↓ Speichern
+        </button>
+        <label class="btn btn-ghost" style="font-size:12px;padding:8px 14px;cursor:pointer;">
+          ↑ Laden
+          <input type="file" accept=".json" onchange="tlLoadJson(event)" style="display:none;">
+        </label>
+        <button onclick="tlWizardGo(2)" class="btn btn-primary" style="font-size:12px;padding:8px 14px;" id="tl-btn-send">
+          Fertig → Einsenden
+        </button>
+      </div>
+    </div>
+
+    <!-- Bereiche Grid -->
+    <div id="tl-section-tabs" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:16px;"></div>
+
+    <!-- Aktueller Bereich -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+
+      <!-- Header -->
+      <div class="section-header">
+        <div>
+          <div id="tl-section-title" style="font-size:16px;font-weight:600;color:var(--text);"></div>
+          <div id="tl-section-loc" style="font-size:12px;color:var(--muted2);margin-top:3px;"></div>
+        </div>
+        <div class="filter-row">
+          <button onclick="tlSetFilter('all')"  id="tl-f-all"  class="btn btn-ghost" style="padding:5px 11px;font-size:12px;">Alle</button>
+          <button onclick="tlSetFilter('todo')" id="tl-f-todo" class="btn btn-ghost" style="padding:5px 11px;font-size:12px;">Offen</button>
+          <button onclick="tlSetFilter('done')" id="tl-f-done" class="btn btn-ghost" style="padding:5px 11px;font-size:12px;">Fertig</button>
+        </div>
+      </div>
+
+      <!-- Einträge -->
+      <div id="tl-items" style="padding:8px var(--pad);"></div>
+
+      <!-- Footer Nav -->
+      <div class="card-nav">
+        <button onclick="tlPrevSection()" id="tl-prev" class="btn btn-ghost">← Zurück</button>
+        <button onclick="tlSaveJson()" class="btn btn-ghost">↓ Speichern</button>
+        <span id="tl-page-indicator" style="font-size:12px;color:var(--muted);"></span>
+        <button onclick="tlNextSection()" id="tl-next" class="btn btn-primary">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: EINSENDEN -->
+  <div id="tl-screen-2" style="display:none;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px;text-align:center;max-width:560px;margin:0 auto;">
+      <div style="font-size:48px;margin-bottom:16px;" id="tl-send-icon">🎉</div>
+      <h2 style="font-size:22px;font-weight:600;margin-bottom:12px;" id="tl-send-title">Fast geschafft!</h2>
+      <p style="font-size:14px;color:var(--muted2);line-height:1.7;margin-bottom:28px;" id="tl-send-desc">
+        Lade zuerst deine Übersetzung als Datei herunter,<br>
+        dann öffnet sich deine E-Mail-App mit einer fertigen Nachricht.<br>
+        Hänge die Datei einfach an und sende sie ab.
+      </p>
+
+      <!-- Fortschritt-Zusammenfassung -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:28px;display:flex;align-items:center;gap:16px;">
+        <div class="ring-wrap">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle class="ring-bg" cx="28" cy="28" r="22"/>
+            <circle class="ring-fg" id="tl-ring2" cx="28" cy="28" r="22" stroke-dashoffset="138"/>
+          </svg>
+          <div class="ring-text" id="tl-ring2-pct">0%</div>
+        </div>
+        <div style="text-align:left;">
+          <div style="font-size:15px;font-weight:500;" id="tl-send-stat"></div>
+          <div style="font-size:12px;color:var(--muted2);margin-top:3px;" id="tl-send-lang"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button onclick="tlSendEmail()" class="btn btn-primary" style="padding:14px 24px;font-size:15px;justify-content:center;">
+          ✉ Übersetzung herunterladen &amp; einsenden
+        </button>
+        <button onclick="tlWizardGo(1)" class="btn btn-ghost" style="padding:12px 24px;font-size:13px;justify-content:center;">
+          ← Zurück zum Übersetzen
+        </button>
+      </div>
+
+      <p style="font-size:12px;color:var(--muted);margin-top:20px;line-height:1.6;">
+        Es wird eine Datei auf deinem Gerät gespeichert und deine E-Mail-App geöffnet.<br>
+        Hänge die gespeicherte Datei an die E-Mail an und sende sie ab.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div id="tl-toast" style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border-hi);border-radius:10px;padding:12px 22px;font-size:13px;color:var(--text);z-index:999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5);"></div>
 
 <script>
-(function () {
+(function() {
 
-var SECTIONS = [{"title":"Navigation & universelle Buttons","location":"Erscheinen überall in der App — Navigationsleiste unten und in allen Dialogen","items":[{"key":"navStart","de":"Start","context":"Untere Nav-Leiste: erster Tab"},{"key":"navAquariums","de":"Aquarien","context":"Untere Nav-Leiste: zweiter Tab"},{"key":"navMeasurement","de":"Messung","context":"Untere Nav-Leiste: dritter Tab"},{"key":"navValues","de":"Messwerte","context":"Untere Nav-Leiste: vierter Tab"},{"key":"navFertilization","de":"Düngung","context":"Untere Nav-Leiste: fünfter Tab"},{"key":"navVideos","de":"Videos","context":"Untere Nav-Leiste: sechster Tab"},{"key":"tooltipSettings","de":"Einstellungen","context":"Tooltip des Zahnrad-Buttons oben rechts"},{"key":"tooltipHelp","de":"Hilfe","context":"Tooltip des Hilfe-Buttons oben rechts"},{"key":"ok","de":"OK","context":"Bestätigungs-Button in allen Dialogen"},{"key":"cancel","de":"Abbrechen","context":"Abbrechen-Button in allen Dialogen"},{"key":"yes","de":"Ja","context":"Ja-Button"},{"key":"no","de":"Nein","context":"Nein-Button"},{"key":"save","de":"Speichern","context":"Speichern-Button"},{"key":"back","de":"Zurück","context":"Zurück-Button"},{"key":"next","de":"Weiter","context":"Weiter-Button"},{"key":"done","de":"Fertig","context":"Fertig-Button"},{"key":"skip","de":"Überspringen","context":"Überspringen-Button (Onboarding-Tour)"},{"key":"finish","de":"Fertig","context":"Abschluss-Button"},{"key":"reminder","de":"Erinnerung","context":"Titel von Erinnerungs-Benachrichtigungen"},{"key":"error","de":"Fehler","context":"Fehler-Dialog: Titel"},{"key":"info","de":"Information","context":"Info-Dialog: Titel"},{"key":"close","de":"Schließen","context":"Schließen-Button"},{"key":"share","de":"Teilen","context":"Teilen-Button im Messwerte-Tab"},{"key":"copiedToClipboard","de":"In die Zwischenablage kopiert","context":"Snackbar-Text nach Kopieren"}]},{"title":"Einstellungen","location":"Einstellungen-Screen (Zahnrad-Symbol oben rechts in der App)","items":[{"key":"settingsTitle","de":"Einstellungen","context":"Screen-Titel"},{"key":"settingsMeasureWithPhotometer","de":"Messung mit Fotometer","context":"Schalter-Label"},{"key":"settingsPhotometerType","de":"Fotometer Typ:","context":"Eingabefeld-Label: Fotometer-Typ"},{"key":"settingsPhotometerTypeInfo","de":"Bitte gib den Typ G002 oder G003 ein. Dieser steht auf deinem Fotometer.","context":"Info-Text unter dem Typ-Feld"},{"key":"settingsSerialNumber","de":"Fotometer Seriennummer:","context":"Eingabefeld-Label: Seriennummer"},{"key":"settingsSerialNumberInfo","de":"Gib die Seriennummer deines Fotometers ein (z.B. 3821). Diese findest du auf der Unterseite deines Fotometers.","context":"Info-Text unter dem Seriennummer-Feld"},{"key":"settingsPhotometerId","de":"Fotometerkennung:","context":"Eingabefeld-Label: Fotometerkennung"},{"key":"settingsPhotometerIdInfo","de":"Deine dreistellige Fotometerkennung findest du auf den Tabellen, die mit dem Fotometer mitgeliefert wurden.","context":"Info-Text unter dem Kennungs-Feld"},{"key":"settingsFactorF","de":"Faktor F für Trübungstests:","context":"Eingabefeld-Label: Faktor F"},{"key":"settingsFactorFInfo","de":"Den Faktor F für Trübungstests findest du auf einem Zettel, der dem Fotometer beigefügt ist. Solltest du den Wert nicht mehr wissen, kannst du diesen bei 0.80 lassen, das Ergebnis ist dann aber etwas ungenauer.","context":"Info-Text unter dem Faktor-F-Feld"},{"key":"settingsTestValue","de":"Testwert","context":"Tabellen-Header"},{"key":"settingsSeries","de":"Serie","context":"Tabellen-Header"},{"key":"settingsExport","de":"Daten exportieren","context":"Button-Text"},{"key":"settingsImport","de":"Daten importieren","context":"Button-Text"},{"key":"settingsReset","de":"App zurücksetzen","context":"Button-Text"},{"key":"settingsResetTitle","de":"App zurücksetzen","context":"Dialog-Titel"},{"key":"settingsResetWarning","de":"Möchtest du die App wirklich zurücksetzen? Alle Einstellungen und gespeicherten Werte gehen dabei verloren!","context":"Dialog-Text: Warnung vor Reset"},{"key":"settingsResetConfirmText","de":"Achtung! Diese Aktion setzt alle gespeicherten Daten zurück.","context":"Dialog-Text: Bestätigungstext"},{"key":"settingsResetDone","de":"App wurde zurückgesetzt","context":"Snackbar nach erfolgreichem Reset"},{"key":"settingsExportSuccess","de":"✅ Export erfolgreich: ","context":"Snackbar: Export erfolgreich (danach kommt der Dateiname)"},{"key":"settingsExportError","de":"Fehler beim Export: ","context":"Snackbar: Export-Fehler (danach kommt der Fehlertext)"},{"key":"settingsImportSuccess","de":"Import erfolgreich!","context":"Snackbar: Import erfolgreich"},{"key":"settingsImportError","de":"Fehler beim Import: ","context":"Snackbar: Import-Fehler"},{"key":"settingsImportCancelled","de":"Import abgebrochen.","context":"Snackbar: Import abgebrochen"},{"key":"settingsAppVersion","de":"Appversion: ","context":"Label vor der Versionsnummer"},{"key":"settingsLanguage","de":"Sprache","context":"Abschnitt-Titel für Sprachauswahl"},{"key":"settingsOnlyG002G003","de":"Nur G002 oder G003 sind erlaubt","context":"Fehlermeldung bei falschem Fotometer-Typ"}]},{"title":"Benachrichtigungen","location":"Push-Benachrichtigungen — erscheinen auf dem Sperrbildschirm des Geräts","items":[{"key":"duengekapselDueToday","de":"[Parameter: String name] Aquarium \"$name\": Neue Düngekapseln heute fällig!","context":"Benachrichtigung: Düngekapseln heute fällig ({name} = Aquarium-Name)"},{"key":"duengekapselDueInDays","de":"[Parameter: String name, int days] Aquarium \"$name\": Neue Düngekapseln fällig in $days Tagen!","context":"Benachrichtigung: Düngekapseln in X Tagen fällig ({name}, {days})"},{"key":"duengekapselOverdue","de":"[Parameter: String name, int days] Aquarium \"$name\": Neue Düngekapseln seit $days Tagen überfällig!","context":"Benachrichtigung: Düngekapseln überfällig ({name}, {days})"}]},{"title":"Sprachwahl","location":"Sprache-wählen-Screen — erscheint beim allerersten App-Start","items":[{"key":"languageSelectionTitle","de":"Sprache wählen","context":"Screen-Titel"},{"key":"languageSelectionSubtitle","de":"Bitte wähle deine bevorzugte Sprache.\\nDu kannst sie später in den Einstellungen ändern.","context":"Erklärungstext"},{"key":"languageSelectionButton","de":"Weiter","context":"Weiter-Button"}]},{"title":"Videos","location":"Videos-Tab (letzter Tab) — YouTube-Video-Titel und Tab-Bezeichnungen","items":[{"key":"videosTitle","de":"Videomaterial","context":"AppBar-Titel des Screens"},{"key":"videosTabPhotometer","de":"Photometer/Messung","context":"Tab-Bezeichnung: Fotometer-Videos"},{"key":"videosTabGeneral","de":"Allgemeines","context":"Tab-Bezeichnung: Allgemeine Videos"},{"key":"videosTabLatest","de":"Aktuelle Videos","context":"Tab-Bezeichnung: Neueste Videos"},{"key":"videosNew","de":"NEU","context":"Badge-Text auf neuen Videos"},{"key":"videosErrorOpenYoutube","de":"Konnte YouTube nicht öffnen","context":"Fehlersnackbar wenn YouTube nicht öffnet"}]},{"title":"Messung — mit Fotometer","location":"Mess-Tab (3. Tab) mit Fotometer — Tabelle mit mV-Eingabe und Ergebnis","items":[{"key":"measureColTest","de":"Wassertest","context":"Spalten-Header: Wassertest"},{"key":"measureColFactor","de":"Verdün-\\nnungs F.","context":"Spalten-Header: Verdünnungsfaktor"},{"key":"measureColValue","de":"Messwert","context":"Spalten-Header: Messwert"},{"key":"measureColResult","de":"Ergebnis","context":"Spalten-Header: Ergebnis"},{"key":"measureInfoTest","de":"Anleitungen zu den Wassertests gibt es unter https://www.wasserpantscher.at/ oder auf dem C&P Aquaplants Youtube Kanal.","context":"Info-Dialog: Text zu Wassertest-Anleitungen"},{"key":"measureInfoFactor","de":"**1:5-Verdünnung (Faktor = 5):**\\n\\n4 Teile destilliertes Wasser 1 + Teil Aquariumwasser\\n\\nZum Beispiel: 80g destilliertes Wasser + 20g Aquariumwasser\\n\\n\\n\\n**1:10-Verdünnung (Faktor = 10):**\\n\\n9 Teile destilliertes Wasser + 1 Teil Aquariumwasser\\n\\nZum Beispiel: 90g destilliertes Wasser + 10g Aquariumwasser","context":"Info-Dialog: Erklärung Verdünnungsfaktor (Markdown)"},{"key":"measureInfoValue","de":"Der Messwert wird in mV angegeben. Das heißt, ohne Punkt oder Komma, nur die Zahlen auf dem Photometer.\\n\\nBei KH und GH ist die Anzahl der Tropfen bis zum Farbumschlag angeben.","context":"Info-Dialog: Erklärung Messwert-Eingabe"},{"key":"measureInfoResult","de":"Bei Ergebnissen über 20mg/l sollten folgende Tests mit Verdünnung durchgeführt werden:\\nNitrat, Kalium, Magnesium\\n\\nCalcium sollte immer mit 1:10-Verdünnung durchgeführt werden.","context":"Info-Dialog: Erklärung Ergebnis-Spalte"},{"key":"measureParamNitrate","de":"Nitrat","context":"Zeilen-Label: Nitrat"},{"key":"measureParamPhosphate","de":"Phosphat","context":"Zeilen-Label: Phosphat"},{"key":"measureParamPotassium","de":"Kalium","context":"Zeilen-Label: Kalium"},{"key":"measureParamMagnesium","de":"Magnesium","context":"Zeilen-Label: Magnesium"},{"key":"measureParamIron","de":"Eisen sensitiv","context":"Zeilen-Label: Eisen"},{"key":"measureParamCalcium","de":"Calcium","context":"Zeilen-Label: Calcium"},{"key":"measureParamPh","de":"pH","context":"Zeilen-Label: pH"},{"key":"measureParamKh","de":"KH","context":"Zeilen-Label: KH"},{"key":"measureParamGh","de":"GH","context":"Zeilen-Label: GH"},{"key":"measureParamSilicate","de":"Silikat","context":"Zeilen-Label: Silikat"},{"key":"measureParamNitrite","de":"Nitrit","context":"Zeilen-Label: Nitrit"},{"key":"measurePhRange1","de":"pH 5,66 - 8","context":"pH-Dropdown: Option 1"},{"key":"measurePhRange2","de":"pH 4,5 - 5,65","context":"pH-Dropdown: Option 2"},{"key":"measurePhInfoTitle","de":"Info zum pH-Test","context":"pH-Info-Dialog: Titel"},{"key":"measurePhInfoContent","de":"Bitte wähle den passenden pH-Bereich aus:\\n\\n • pH 4,5 - 5,65: Nur wenn sehr saures Wasser zu erwarten ist. Der Test verfärbt sich rötlich.\\n • pH 5,66 - 8: Immer sonst. Der Test verfärbt sich gelb-grünlich.\\n\\n Der pH-Wert ist immer unverdünnt zu messen!","context":"pH-Info-Dialog: Text"},{"key":"measureCalciumInfoTitle","de":"Info zum Calcium-Test","context":"Calcium-Info-Dialog: Titel"},{"key":"measureCalciumInfoContent","de":"Calcium ist immer mit einer 1:10 Verdünnung zu rechnen. Nur bei erwarteten Calciumwerten von unter 10 mg/l macht ein unverdünnter Test Sinn.","context":"Calcium-Info-Dialog: Text"},{"key":"measureTestNitrateNitrite","de":"Nitrat/Nitrit","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestPhosphateCalcium","de":"Phosphat/Calcium","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestIron","de":"Eisen sensitiv","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestPotassium","de":"Kalium","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestSilicate","de":"Silikat","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestGh","de":"GH","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestCustom","de":"Eigener Test","context":"Timer-Auswahl: Option für eigenen Test"},{"key":"measureResultTooHigh","de":"zu hoch","context":"Ergebnis-Zelle: Wert zu hoch — WICHTIG: intern immer auf DE gespeichert"},{"key":"measureResultTooLow","de":"zu niedrig","context":"Ergebnis-Zelle: Wert zu niedrig — WICHTIG: intern immer auf DE gespeichert"},{"key":"measureResultIdWrong","de":"Fotometer-\\nkennung falsch!","context":"Ergebnis-Zelle: falsche Fotometerkennung"},{"key":"measureDrops","de":"Tropfen","context":"Einheit für KH/GH — WICHTIG: intern immer auf DE gespeichert"},{"key":"measureTimerStart","de":"Mess-Timer starten","context":"Button: Mess-Timer starten"},{"key":"measureTimerSelect","de":"Welchen Timer starten?","context":"Dialog-Titel: Welchen Timer starten?"},{"key":"measureTimerStart2","de":"Starten","context":"Button im Timer-Dialog: Starten"},{"key":"measureTimerAbort","de":"Abbrechen","context":"Button im Timer-Dialog: Abbrechen"},{"key":"measureTimerDone","de":"[Parameter: String label] Alle Timer für $label beendet!","context":"Snackbar nach Timer-Ende ({label} = Test-Name)"},{"key":"measureTimerLabel","de":"[Parameter: String label, int current, int total] Mess-Timer $label – Schritt $current von $total","context":"Timer-Anzeige ({label}, {current}, {total})"},{"key":"measureStepCount","de":"Anzahl der Schritte","context":"Timer-Konfiguration: Label"},{"key":"measureStepDuration","de":"[Parameter: int step] Dauer Schritt $step (Sekunden)","context":"Timer-Konfiguration: Label pro Schritt ({step} = Schrittnummer)"},{"key":"measureAutoNext","de":"Automatisch weiterschalten","context":"Timer-Konfiguration: Schalter"},{"key":"measureCustomTest","de":"Eigenen Test konfigurieren","context":"Button: eigenen Test konfigurieren"},{"key":"measureOkay","de":"Okay","context":"Button im Timer"},{"key":"measureSaveData","de":"Daten speichern","context":"Button: Daten speichern"},{"key":"measureSaveTitle","de":"Daten Speichern","context":"Dialog-Titel: Speichern"},{"key":"measureSaveForAquarium","de":"Für welches Aquarium speichern?","context":"Dialog: Für welches Aquarium?"},{"key":"measureSaveConfirm","de":"[Parameter: String name] Möchtest du die Messwerte für das Aquarium $name speichern?","context":"Dialog-Text ({name} = Aquarium-Name)"},{"key":"measureSavedFor","de":"[Parameter: String name] Daten für $name gespeichert.","context":"Snackbar: gespeichert ({name} = Aquarium-Name)"},{"key":"measureSaveCancelled","de":"Speichern abgebrochen.","context":"Snackbar: Speichern abgebrochen"},{"key":"measureNoAquarium","de":"Kein Aquarium gefunden.","context":"Snackbar: kein Aquarium vorhanden"},{"key":"measureComment","de":"Kommentar","context":"Kommentar-Feld: Label"},{"key":"measureCommentHint","de":"z.B. nach WW","context":"Kommentar-Feld: Platzhalter"},{"key":"measureHintTitle","de":"Hinweis","context":"Hinweis-Dialog: Titel"},{"key":"measureHintPhotometer","de":"Bitte erst in den Einstellungen die Fotometerdaten eingeben!","context":"Hinweis-Dialog: Text wenn Fotometer-Daten fehlen"},{"key":"measureValidStepDurations","de":"Bitte gültige Schritt-Dauern angeben.","context":"Fehlermeldung: ungültige Schritt-Dauern"}]},{"title":"Messung — ohne Fotometer","location":"Mess-Tab (3. Tab) ohne Fotometer — direkte Werteingabe","items":[{"key":"measureSixInfoTest","de":"Du kannst jeden beliebigen Wassertest verwenden. Solltest du das Photometer von Wasserpantscher verwenden, gib das bitte in den Einstellungen an.","context":"Info-Text über dem Formular"},{"key":"measureSixInfoValue","de":"Hier gibst du den Wert an, den dein Wassertest ergeben hat. Bei Verdünnung bitte den Faktor angeben und dann das verdünnte Ergebnis angeben. Der Wert wird dann automatisch ausgerechnet.","context":"Info-Text für die Wert-Eingabe"},{"key":"measureSixPhInfoTitle","de":"Info zum pH-Test","context":"pH-Info-Dialog: Titel"},{"key":"measureSixPhInfoContent","de":"Wenn der pH-Test gelb-grünlich ist, dann liegt der pH-Wert im Bereich zwischen 5,65 und 8. Sollte dein Test rötlich sein, liegt der pH-Wert unter 5,65. In diesem Fall bitte die Excel-Datei zum Umrechnen verwenden.","context":"pH-Info-Dialog: Text"}]},{"title":"Messwerte-Anzeige","location":"Messwerte-Tab (4. Tab) — Tabelle mit gespeicherten Messungen","items":[{"key":"valuesEdit","de":"Messwerte bearbeiten","context":"AppBar-Titel beim Bearbeiten"},{"key":"valuesDateTime","de":"Datum und Uhrzeit:","context":"Tabellen-Header: Datum/Uhrzeit"},{"key":"valuesAquarium","de":"Zugehöriges Aquarium:","context":"Label über dem Aquarium-Dropdown"},{"key":"valuesActionTitle","de":"Aktion wählen","context":"Long-Press-Dialog: Titel"},{"key":"valuesActionContent","de":"Was möchtest du mit dieser Spalte tun?","context":"Long-Press-Dialog: Text"},{"key":"valuesEditColumn","de":"Spalte bearbeiten","context":"Long-Press-Dialog: Option Bearbeiten"},{"key":"valuesDeleteColumn","de":"Spalte löschen","context":"Long-Press-Dialog: Option Löschen"},{"key":"valuesNoAquarium","de":"Kein Aquarium ausgewählt","context":"Platzhalter: kein Aquarium ausgewählt"},{"key":"valuesNoData","de":"Keine Messdaten vorhanden","context":"Platzhalter: keine Messdaten"},{"key":"valuesNoMeasurements","de":"Keine Messwerte gefunden","context":"Platzhalter: keine Messwerte"},{"key":"valuesTooltip","de":"Zum Bearbeiten oder Löschen lange drücken","context":"Tooltip unter der Tabelle"},{"key":"valuesComment","de":"Kommentar","context":"Kommentar-Dialog: Titel"},{"key":"valuesSeconds","de":"Sekunden wählen","context":"Dialog: Sekunden wählen"},{"key":"valuesMovedTo","de":"[Parameter: String name] Messreihe wurde zu \"$name\" verschoben","context":"Snackbar: verschoben ({name} = Aquarium-Name)"},{"key":"valuesUpdated","de":"Messreihe wurde aktualisiert","context":"Snackbar: aktualisiert"},{"key":"valuesAquariumDataMissing","de":"Aquarium-Daten nicht gefunden","context":"Fehlermeldung: Aquarium-Daten fehlen"},{"key":"measureLabelNitrate","de":"Nitrat","context":"Zeilen-Label in der Tabelle: Nitrat"},{"key":"measureLabelPhosphate","de":"Phosphat","context":"Zeilen-Label in der Tabelle: Phosphat"},{"key":"measureLabelPotassium","de":"Kalium","context":"Zeilen-Label in der Tabelle: Kalium"},{"key":"measureLabelMagnesium","de":"Magnesium","context":"Zeilen-Label in der Tabelle: Magnesium"},{"key":"measureLabelIronSensitive","de":"Eisen sensitiv","context":"Zeilen-Label in der Tabelle: Eisen"},{"key":"measureLabelCalcium","de":"Calcium","context":"Zeilen-Label in der Tabelle: Calcium"},{"key":"measureLabelPh","de":"pH 4,5 – 8","context":"Zeilen-Label in der Tabelle: pH"},{"key":"measureLabelKh","de":"KH","context":"Zeilen-Label in der Tabelle: KH"},{"key":"measureLabelGh","de":"GH","context":"Zeilen-Label in der Tabelle: GH"},{"key":"measureLabelSilicate","de":"Silikat","context":"Zeilen-Label in der Tabelle: Silikat"},{"key":"measureLabelNitrite","de":"Nitrit","context":"Zeilen-Label in der Tabelle: Nitrit"},{"key":"measureLabelComment","de":"Kommentar","context":"Zeilen-Label in der Tabelle: Kommentar"}]},{"title":"Düngung","location":"Düngung-Tab (5. Tab) — Düngerechner, Salzrechner, tägliche Düngung, Kapseln","items":[{"key":"fertCalcTitle","de":"Düngerechner:","context":"Abschnitt-Titel: Düngerechner"},{"key":"fertCalcInfo","de":"Es sind die Werte für die Einzeldünger Nitrat, Phosphat und Magnesium von C&P Aquaplants hinterlegt. Kalium wird nicht separat gedüngt, sondern über das Aufhärtesalz angepasst.\\n\\n Hinweis: Bei der Magnesium-Berechnung wird berücksichtigt, dass 1 ml Nitratdünger auf 50 L auch Magnesium um 0,2 mg/l erhöht.\\n\\n Zielwerte:\\nPO4: 1–1,5 mg/L (mind. 1 mg/L)\\nNO3: 16–25 mg/L (mind. 16 mg/L)\\n Magnesium: Doppelt so hoch wie Kalium, maximal 20 mg/L","context":"Info-Text unter dem Düngerechner"},{"key":"fertNutrient","de":"Nährstoff","context":"Tabellen-Header: Nährstoff"},{"key":"fertCurrentValue","de":"Ist-Wert","context":"Tabellen-Header: Ist-Wert"},{"key":"fertDosage","de":"Düngung","context":"Tabellen-Header: Düngung"},{"key":"fertTargetValue","de":"Zielwert","context":"Tabellen-Header: Zielwert"},{"key":"fertNitrateHint","de":"Nitrat sollte mind. bei 16 mg/l, Phosphat mind. bei 1 mg/l liegen.","context":"Hinweis-Text unter dem Düngerechner"},{"key":"fertSaltCalc","de":"Salzrechner:","context":"Abschnitt-Titel: Salzrechner"},{"key":"fertSaltCalcInfo","de":"Gib an, wie viele Liter Wasserwechsel du gemacht hast und welches Salz du verwendest. \\n\\nAchtung: Aktuell gibt es KH/GH+ mit verschiedenen Dosierungen!\\n\\n Die benötigte Salzmenge wird automatisch berechnet.","context":"Info-Text zum Salzrechner"},{"key":"fertLitersLabel","de":"Menge","context":"Eingabefeld-Label: Menge"},{"key":"fertLitersWW","de":"Liter WW mit","context":"Label neben dem Liter-Feld"},{"key":"fertSaltType","de":"Salzart","context":"Dropdown-Label: Salzart"},{"key":"fertSaltResult","de":"[Parameter: String amount, String saltName, String khPart] Bitte ${amount}g $saltName zugeben für ${khPart}GH 6","context":"Ergebnis-Text ({amount} g {saltName} für {khPart})"},{"key":"fertSaltKhPart","de":"KH 2 und ","context":"Teil des Ergebnistextes: KH-Anteil"},{"key":"fertSaltGhTarget","de":"GH 6","context":"Teil des Ergebnistextes: GH-Ziel"},{"key":"fertDailyTitle","de":"Aktuelle tägliche Düngung:","context":"Abschnitt-Titel: Tägliche Düngung"},{"key":"fertDailyInfo","de":"Wenn du die Felder der einzelnen Dünger lange gedrückt hältst, kannst du die Namen ändern. So kannst du auch Produkte verwenden, die nicht von C&P Aquaplants sind.","context":"Info-Text zur täglichen Düngung"},{"key":"fertLongPress","de":"Lange drücken, um den Namen zu ändern.","context":"Hinweis-Text unter den Dünger-Feldern"},{"key":"fertChangeName","de":"Name ändern","context":"Dialog-Titel: Name ändern"},{"key":"fertNewNameHint","de":"Neuer Name","context":"Eingabefeld-Platzhalter: neuer Name"},{"key":"fertLastCapsule","de":"Letzter Einsatz von Düngekapseln:","context":"Abschnitt-Titel: letzter Düngekapseleinsatz"},{"key":"fertLastCapsuleInfo","de":"Düngekapseln sollten alle 6 bis 10 Wochen im Abstand von etwa 15 cm gesetzt werden. Die App erinnert dich eine Woche bevor neue Düngekapseln fällig sind.","context":"Info-Text zu Düngekapseln"},{"key":"fertPickDateHint","de":"Datum wählen","context":"Datum-Auswahl-Hint"},{"key":"fertCapsuleInterval","de":"Düngekapselintervall:","context":"Label: Kapseln-Intervall"},{"key":"fertWeeks","de":"Wochen","context":"Einheit: Wochen"},{"key":"fertEnterValueHint","de":"Wert eingeben","context":"Eingabefeld-Platzhalter"},{"key":"fertNoData","de":"Keine Daten","context":"Platzhalter: keine Daten"},{"key":"fertInvalidFactor","de":"Ungültiger Faktor","context":"Fehlermeldung: ungültiger Faktor"},{"key":"fertWW","de":"WW","context":"Abkürzung für Wasserwechsel"},{"key":"fertLastLoadedFrom","de":"[Parameter: String date, String name] Als Ist-Werte wurden die zuletzt gespeicherten Daten vom $date für $name geladen.","context":"Info-Text: Werte geladen ({date}, {name})"},{"key":"nutrientNitrate","de":"Nitrat","context":"Nährstoff-Name"},{"key":"nutrientPhosphate","de":"Phosphat","context":"Nährstoff-Name"},{"key":"nutrientPotassium","de":"Kalium","context":"Nährstoff-Name"},{"key":"nutrientMagnesium","de":"Magnesium","context":"Nährstoff-Name"}]},{"title":"Startseite","location":"Start-Tab (1. Tab) — Produkte, Social-Media, WhatsApp, Kontakt","items":[{"key":"homeWelcome","de":"Willkommen in unserer App!","context":"Willkommens-Überschrift"},{"key":"homeIntro","de":"Hochqualitative Aquarium Dünger – hergestellt in Deutschland für beste Qualität und Nachhaltigkeit.","context":"Einleitungstext unter der Überschrift"},{"key":"homeProductsTitle","de":"Unsere Produkte","context":"Abschnitt-Titel: Produkte"},{"key":"homeProduct1","de":"Komplex A+B Kombidünger","context":"Produktname"},{"key":"homeProduct2","de":"Kaliumfreier Nitrat- und Phosphatdünger","context":"Produktname"},{"key":"homeProduct3","de":"Magnesiumdünger und Magnesiumsulfat","context":"Produktname"},{"key":"homeProduct4","de":"Bodendünger Caps","context":"Produktname"},{"key":"homeProduct5","de":"Startersets für Osmose- und Leitungswasser","context":"Produktname"},{"key":"homeProduct6","de":"Präzise Wassertests und Photometer","context":"Produktname"},{"key":"homeWhyTitle","de":"Warum C&P Aquaplants?","context":"Abschnitt-Titel: Warum C&P?"},{"key":"homeWhy1","de":"Kostenloser Support individuell für dich","context":"Grund-Aufzählung"},{"key":"homeWhy2","de":"Einfaches und verständliches Düngesystem","context":"Grund-Aufzählung"},{"key":"homeWhy3","de":"Wissenschaftlich fundierte Zusammensetzung","context":"Grund-Aufzählung"},{"key":"homeWhy4","de":"Nachhaltige Produktion in Deutschland","context":"Grund-Aufzählung"},{"key":"homeWhy5","de":"Über 500 betreute Aquarien als Referenz","context":"Grund-Aufzählung"},{"key":"homeContactTitle","de":"Kontakt","context":"Abschnitt-Titel: Kontakt"},{"key":"homeNote","de":"Hinweis: Keine separate Eisendüngung nötig. Der Eisenanteil ist im Kombidünger optimal abgestimmt.","context":"Hinweis-Text zum Eisen"},{"key":"homeFertGuide","de":"Düngeanleitung","context":"Button: Düngeanleitung öffnen"},{"key":"homeWhatsAppSelect","de":"Für welches Aquarium benötigst du Hilfe?","context":"Dialog: Für welches Aquarium benötigst du Hilfe?"},{"key":"homeErrorEmail","de":"E-Mail-App konnte nicht geöffnet werden:\\n","context":"Fehlermeldung wenn E-Mail-App fehlt"},{"key":"homeErrorLink","de":"Link konnte nicht geöffnet werden: ","context":"Fehlermeldung wenn Link nicht öffnet"},{"key":"homeIdeaEmailSubject","de":"Idee einreichen","context":"E-Mail-Betreff bei Ideen-Einreichung"},{"key":"homeIdeaEmailBody","de":"Hallo liebes C&P Aquaplants-Team,\\r\\n\\r\\nich habe folgende Idee:\\r\\n\\r\\n[Hier deine Idee eintragen]\\r\\n\\r\\nViele Grüße,\\r\\n[Dein Name]","context":"E-Mail-Vortext bei Ideen-Einreichung"},{"key":"homeWhatsAppGreeting","de":"Hallo, ich benötige Hilfe für mein Aquarium.","context":"WhatsApp-Nachricht Begrüßungstext"}]},{"title":"Düngeanleitung","location":"Düngeanleitung-Screen — wird vom Start-Tab aus geöffnet","items":[{"key":"guideTitle","de":"Düngeanleitung für Ihr Aquarium","context":"Screen-Titel"},{"key":"guideSectionBasics","de":"Grundregeln und Nährstoffverhältnisse","context":"Abschnitt-Titel"},{"key":"guideSectionTargetValues","de":"Zielwerte im Aquariumwasser","context":"Abschnitt-Titel"},{"key":"guideSectionTips","de":"Tipps zur Düngung","context":"Abschnitt-Titel"},{"key":"guideSectionTankTypes","de":"Besonderheiten bei verschiedenen Beckentypen","context":"Abschnitt-Titel"},{"key":"guideSectionLighting","de":"Beleuchtung","context":"Abschnitt-Titel"},{"key":"guideSectionContact","de":"Kontakt & Support","context":"Abschnitt-Titel"},{"key":"guideBasics1","de":"Nitrat : Phosphat = 16 : 1 — z. B.:\\n20 mg NO3 : 16 = 1,25\u00A0mg PO4","context":"Grundregel 1 (Nitrat:Phosphat-Verhältnis)"},{"key":"guideBasics2","de":"Kalium : Magnesium : Calcium = 0,5\u00A0:\u00A01\u00A0:\u00A02–4","context":"Grundregel 2 (K:Mg:Ca-Verhältnis)"},{"key":"guideBasics3","de":"Magnesium von 4 - 25 mg, sollte doppelt so hoch sein wie Kalium, aber maximal 25mg","context":"Grundregel 3 (Magnesium-Bereich)"},{"key":"guideTarget1","de":"Nitrat: 16–25 mg/l","context":"Zielwert Nitrat"},{"key":"guideTarget2","de":"Phosphat: 1,0–1,5 mg/l","context":"Zielwert Phosphat"},{"key":"guideTarget3","de":"Kalium: 2–10 mg/l (je nach KH-Wert)","context":"Zielwert Kalium"},{"key":"guideTarget4","de":"Magnesium: 4–25 mg/l (je nach GH-Wert)","context":"Zielwert Magnesium"},{"key":"guideTarget5","de":"Eisen: ist in Komplex A+B ausreichend vorhanden","context":"Zielwert Eisen"},{"key":"guideTip1","de":"Mit stabilen Nährstoffwerten beginnen, um Mangelerscheinungen zu vermeiden.","context":"Tipp 1"},{"key":"guideTip2","de":"Nitrat und Phosphat nach jedem Wasserwechsel mit passenden Düngern einstellen.","context":"Tipp 2"},{"key":"guideTip3","de":"Bei Osmosewasser Aufhärtesalze verwenden, Kalium und Magnesium kontrollieren.","context":"Tipp 3"},{"key":"guideTip4","de":"Unser Aufhärtesalz (KH/GH+) stellt bereits das optimale Verhältnis ein, trotzdem alle 3–4 Wochen Werte kontrollieren.","context":"Tipp 4"},{"key":"guideTip5","de":"Komplexdünger A und B täglich 1\u00A0ml pro 50 Liter Beckeninhalt in der Lichtphase düngen (Start mit 0,5\u00A0ml empfohlen).","context":"Tipp 5"},{"key":"guideTip6","de":"In den ersten 2–3 Wochen täglich messen und Dosierung ggf. anpassen.","context":"Tipp 6"},{"key":"guideTip7","de":"Bodendünger im Radius von ca. 15 cm im Substrat einsetzen, um Nährstoffe zu stabilisieren.","context":"Tipp 7"},{"key":"guideTankType1","de":"Iwagumi / Aufsitzer-Becken: reduzierte Dosierung (0,2 – 0,3\u00A0ml pro 50\u00A0L).","context":"Beckentyp-Besonderheit 1"},{"key":"guideTankType2","de":"Standard-Aquarien / Garden Style / Dutch Style: 0,3 - 1\u00A0ml pro 50\u00A0L.","context":"Beckentyp-Besonderheit 2"},{"key":"guideLighting1","de":"Die Intensität und Beleuchtungsdauer ist immer individuell an das Becken und die Bepflanzung anzupassen. Lieber mit weniger beginnen und sich dann steigern.","context":"Beleuchtungshinweis"},{"key":"guideContact1","de":"WhatsApp-Button nutzen","context":"Kontakt-Option 1"},{"key":"guideContact2","de":"E-Mail: mail@cp-aquaplants.de","context":"Kontakt-Option 2"},{"key":"guideContact3","de":"Telefon: +49 40 84306403","context":"Kontakt-Option 3"},{"key":"guideContact4","de":"Mobil: +49 172 5182784","context":"Kontakt-Option 4"}]},{"title":"Export & Teilen","location":"Text der beim Teilen (WhatsApp/E-Mail) generiert wird — Labels für den Export","items":[{"key":"exportAquarium","de":"Aquarium","context":"Label"},{"key":"exportDimensions","de":"Maße (B x H x T)","context":"Label"},{"key":"exportNetVolume","de":"Nettovolumen","context":"Label"},{"key":"exportNetVolumeFilter","de":"Nettovolumen: %s Liter (davon %s L Filterbecken)","context":"Label mit Platzhaltern (%s = Volumen, %s = Filtervol)"},{"key":"exportWaterType","de":"Verwendetes Wasser","context":"Label"},{"key":"exportTapWaterValues","de":"  Werte Leitungswasser","context":"Label"},{"key":"exportMixRatio","de":"  Mischverhältnis Leitungs:Osmosewasser","context":"Label"},{"key":"exportSubstrate","de":"Bodengrund","context":"Label"},{"key":"exportHardscape","de":"Hardscape","context":"Label"},{"key":"exportLighting","de":"Beleuchtung","context":"Label"},{"key":"exportLamp","de":"  Lampe","context":"Label"},{"key":"exportDuration","de":"  Dauer","context":"Label"},{"key":"exportIntensity","de":"  Intensität","context":"Label"},{"key":"exportDetails","de":"  Details","context":"Label"},{"key":"exportCo2Present","de":"CO2-Anlage vorhanden","context":"Label"},{"key":"exportFilter","de":"Filter","context":"Label"},{"key":"exportMaintenanceRoutine","de":"Pflegeroutine","context":"Label"},{"key":"exportMeasurements","de":"Messwerte","context":"Label"},{"key":"exportMeasuredWithPhotometer","de":"Messung mit Photometer","context":"Label"},{"key":"exportPhotometerType","de":"Photometertyp","context":"Label"},{"key":"exportSerialNumber","de":"Seriennummer","context":"Label"},{"key":"exportPhotometerId","de":"Photometerkennung","context":"Label"},{"key":"exportFactorF","de":"Faktor F","context":"Label"},{"key":"exportDailyFertilization","de":"Tägliche Düngung","context":"Label"},{"key":"exportCapsulesSetOn","de":"Düngekapseln gesetzt am","context":"Label"},{"key":"exportAppVersion","de":"Appversion","context":"Label"},{"key":"exportShareSubject","de":"Aquarium Messdaten","context":"E-Mail-Betreff"},{"key":"exportYes","de":"Ja","context":"Ja-Wert im Export-Text"},{"key":"exportNo","de":"Nein","context":"Nein-Wert im Export-Text"}]},{"title":"Aquarium-Liste & Formular","location":"Aquarium-Tab (2. Tab) und Aquarium anlegen/bearbeiten — alle Eingabefelder","items":[{"key":"aquariumCreate","de":"Aquarium anlegen","context":"Button: Aquarium anlegen"},{"key":"aquariumNone","de":"Keine Aquarien vorhanden","context":"Platzhalter: keine Aquarien"},{"key":"aquariumDeleted","de":"Aquarium wurde gelöscht","context":"Snackbar: Aquarium gelöscht"},{"key":"aquariumAlreadyExists","de":"Aquarium bereits vorhanden","context":"Import-Dialog: Titel"},{"key":"aquariumAlreadyExistsMsg","de":"[Parameter: String name] Ein Aquarium mit dem Namen \"$name\" existiert bereits.\\n\\n Möchtest du die Daten zusammenführen oder ein neues Aquarium anlegen?","context":"Import-Dialog: Text ({name} = Aquarium-Name)"},{"key":"aquariumMerge","de":"Zusammenführen","context":"Import-Dialog: Button Zusammenführen"},{"key":"aquariumCreateNew","de":"Neues Aquarium anlegen","context":"Import-Dialog: Button Neues Aquarium"},{"key":"aquariumMergeError","de":"Fehler beim Zusammenführen. Erstelle neues Aquarium.","context":"Import-Dialog: Fehlermeldung"},{"key":"aquariumFormNew","de":"Neues Aquarium anlegen","context":"Formular AppBar: Titel beim Anlegen"},{"key":"aquariumFormEdit","de":"Aquarium bearbeiten","context":"Formular AppBar: Titel beim Bearbeiten"},{"key":"aquariumFormDeleteTooltip","de":"Aquarium löschen","context":"Formular: Löschen-Button Tooltip"},{"key":"aquariumTabGeneral","de":"Allgemein","context":"Tab: Allgemein"},{"key":"aquariumTabTech","de":"Technik","context":"Tab: Technik"},{"key":"aquariumTabMaintenance","de":"Pflege","context":"Tab: Pflege"},{"key":"aquariumTabPlants","de":"Pflanzen","context":"Tab: Pflanzen"},{"key":"aquariumTabLivestock","de":"Besatz","context":"Tab: Besatz"},{"key":"aquariumGeneralTitle","de":"Allgemeine Angaben","context":"Abschnitt: Allgemeine Angaben"},{"key":"aquariumAutoVolume","de":"Nettovolumen automatisch berechnen","context":"Schalter: Nettovolumen automatisch"},{"key":"aquariumDimensions","de":"Maße","context":"Abschnitt: Maße"},{"key":"aquariumSubstrateAndHardscape","de":"Bodengrund und Hardscape","context":"Abschnitt: Bodengrund & Hardscape"},{"key":"aquariumFilterSump","de":"Filterbecken","context":"Label: Filterbecken"},{"key":"aquariumNetVolume","de":"Netto-Volumen","context":"Label: Netto-Volumen"},{"key":"aquariumFieldName","de":"Name","context":"Feld: Name"},{"key":"aquariumFieldWidth","de":"Breite in cm","context":"Feld: Breite"},{"key":"aquariumFieldHeight","de":"Höhe in cm","context":"Feld: Höhe"},{"key":"aquariumFieldDepth","de":"Tiefe in cm","context":"Feld: Tiefe"},{"key":"aquariumFieldGlass","de":"Glasstärke in mm","context":"Feld: Glasstärke"},{"key":"aquariumFieldWaterline","de":"Abstand Wasser - Obere Glaskante in cm","context":"Feld: Wasserabstand"},{"key":"aquariumFieldHardscapeSubtract","de":"Abzug Hardscape in L","context":"Feld: Hardscape-Abzug"},{"key":"aquariumFieldSubstrateFront","de":"Höhe Bodengrund vorne in cm","context":"Feld: Bodengrund vorne"},{"key":"aquariumFieldSubstrateBack","de":"Höhe Bodengrund hinten in cm","context":"Feld: Bodengrund hinten"},{"key":"aquariumFieldSubstrate","de":"Bodengrund","context":"Feld: Bodengrund-Typ"},{"key":"aquariumFieldHardscape","de":"Hardscape","context":"Feld: Hardscape-Typ"},{"key":"aquariumFieldSubstrateHint","de":"z.B. Soil, Sand, Kies","context":"Platzhalter Bodengrund"},{"key":"aquariumFieldHardscapeHint","de":"z.B. Schwarze Lava, Drachenstein","context":"Platzhalter Hardscape"},{"key":"aquariumFieldSumpVolume","de":"Nettovolumen des Filterbeckens in L","context":"Feld: Filterbecken-Volumen"},{"key":"aquariumFieldManualVolume","de":"Netto-Volumen in Liter","context":"Feld: Manuelles Volumen"},{"key":"aquariumNetVolumeLitres","de":"Netto-Volumen: %s L","context":"Anzeige berechnetes Volumen (%s = Zahl)"},{"key":"aquariumTechTitle","de":"Angaben zur Beleuchtung","context":"Abschnitt: Beleuchtung"},{"key":"aquariumLightingTitle","de":"Angaben zur Beleuchtung","context":"Abschnitt: Beleuchtung"},{"key":"aquariumFieldLamp","de":"Lampe","context":"Feld: Lampe"},{"key":"aquariumFieldLightDuration","de":"Beleuchtungsdauer (inkl. Sonnenauf- und -untergang)","context":"Feld: Beleuchtungsdauer"},{"key":"aquariumFieldLightIntensity","de":"Beleuchtungsintensität (z.B. 80%)","context":"Feld: Intensität"},{"key":"aquariumFieldLightDetails","de":"Platz für Detailangaben","context":"Feld: Details"},{"key":"aquariumFieldLightDetailsHint","de":"z.B.: R: 90, G: 85, B: 77 oder Watt-, Lumen, PAR-, Farbtemperaturangaben","context":"Platzhalter Details"},{"key":"aquariumLampImageHint","de":"Screenshot der Lampeneinstellungen hinzufügen","context":"Hint: Bild hinzufügen"},{"key":"aquariumCo2Title","de":"Angaben zum CO2","context":"Abschnitt: CO2"},{"key":"aquariumCo2Present","de":"CO2-Anlage vorhanden","context":"Schalter: CO2 vorhanden"},{"key":"aquariumFieldCo2Details","de":"Details zum CO2","context":"Feld: CO2-Details"},{"key":"aquariumFieldCo2DetailsHint","de":"z.B.: Diffusor, Inline-Diffusor, Reaktor","context":"Platzhalter CO2"},{"key":"aquariumFilterTitle","de":"Angaben zum Filter","context":"Abschnitt: Filter"},{"key":"aquariumFieldFilter","de":"Filter","context":"Feld: Filter"},{"key":"aquariumFieldFilterDetails","de":"Platz für Detailangaben","context":"Feld: Filter-Details"},{"key":"aquariumFieldFilterDetailsHint","de":"z.B.: Filtermedien, Reinigungszyklus, etc.","context":"Platzhalter Filter"},{"key":"aquariumMaintenanceTitle","de":"Angaben zur Pflegeroutine","context":"Abschnitt: Pflegeroutine"},{"key":"aquariumWaterTypeTitle","de":"Verwendetes Wasser","context":"Abschnitt: Wasserart"},{"key":"aquariumWaterTypeSelected","de":"Ausgewählt","context":"Label: Ausgewählt"},{"key":"aquariumWaterTypeLabel0","de":"Leitungswasser","context":"Option: Leitungswasser"},{"key":"aquariumWaterTypeLabel1","de":"Verschnitt Osmose-/Leitungswasser","context":"Option: Verschnitt"},{"key":"aquariumWaterTypeLabel2","de":"Osmosewasser","context":"Option: Osmosewasser"},{"key":"aquariumFieldTapWaterValues","de":"Wasserwerte Leitungswasser","context":"Feld: Leitungswasserwerte"},{"key":"aquariumFieldTapWaterValuesHint","de":"z.B.: GH, KH, pH, etc.","context":"Platzhalter Leitungswasser"},{"key":"aquariumFieldMixRatio","de":"Mischverhältnis Leitungswasser : Osmosewasser","context":"Feld: Mischverhältnis"},{"key":"aquariumFieldMixRatioHint","de":"z.B.: 1:1","context":"Platzhalter Mischverhältnis"},{"key":"aquariumMaintenanceListTitle","de":"Pflegemaßnahmen","context":"Liste: Pflegemaßnahmen"},{"key":"aquariumMaintenanceAddButton","de":"Pflegemaßnahme hinzufügen","context":"Button: Pflegemaßnahme hinzufügen"},{"key":"aquariumMaintenanceDate","de":"Datum","context":"Spalte: Datum"},{"key":"aquariumMaintenanceDialogTitle","de":"Pflegemaßnahme","context":"Dialog: Pflegemaßnahme"},{"key":"aquariumMaintenanceTypeLabel","de":"Typ der Maßnahme","context":"Feld: Typ der Maßnahme"},{"key":"aquariumMaintenanceTypeCustom","de":"+ Eigene Maßnahme eingeben","context":"Option: Eigene Maßnahme"},{"key":"aquariumMaintenanceTypeCustomLabel","de":"Eigene Maßnahme","context":"Label: eigene Maßnahme"},{"key":"aquariumMaintenanceTypeCustomHint","de":"z.B. Skimmer installieren","context":"Platzhalter: eigene Maßnahme"},{"key":"aquariumMaintenanceCommentLabel","de":"Kommentar","context":"Feld: Kommentar"},{"key":"aquariumMaintenanceAddAction","de":"Hinzufügen","context":"Button: Hinzufügen"},{"key":"aquariumMaintenanceTypeWaterChange","de":"Wasserwechsel","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypePruning","de":"Rückschnitt","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeFilterClean","de":"Filter reinigen","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeTechChange","de":"Technik ändern","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypePlantSwap","de":"Pflanzen austauschen","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeHardscapeChange","de":"Hardscape ändern","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeSubstrateSwap","de":"Bodengrund austauschen","context":"Maßnahmen-Typ"},{"key":"aquariumHintWaterChange","de":"z.B. Menge Wasserwechsel","context":"Platzhalter"},{"key":"aquariumHintPruning","de":"z.B. Rotala zurückgeschnitten","context":"Platzhalter"},{"key":"aquariumHintFilterClean","de":"z.B. Filtermedien gewechselt","context":"Platzhalter"},{"key":"aquariumHintTechChange","de":"z.B. neuer Skimmer","context":"Platzhalter"},{"key":"aquariumHintPlantSwap","de":"z.B. Anubias raus, Bucephalandra rein","context":"Platzhalter"},{"key":"aquariumHintHardscapeChange","de":"z.B. Steine umpositioniert","context":"Platzhalter"},{"key":"aquariumHintSubstrateSwap","de":"z.B. Sand erneuert","context":"Platzhalter"},{"key":"aquariumPlantsTitle","de":"Pflanzenliste","context":"Tab Pflanzen: Listen-Titel"},{"key":"aquariumPlantsAddButton","de":"Pflanze hinzufügen","context":"Tab Pflanzen: Button"},{"key":"aquariumPlantsDialogTitle","de":"Neue Pflanze hinzufügen","context":"Tab Pflanzen: Dialog-Titel"},{"key":"aquariumPlantsHint","de":"Pflanzenname eingeben","context":"Tab Pflanzen: Platzhalter"},{"key":"aquariumPlantsAddAction","de":"Hinzufügen","context":"Tab Pflanzen: Button im Dialog"},{"key":"aquariumLivestockTitle","de":"Besatzliste","context":"Tab Besatz: Listen-Titel"},{"key":"aquariumLivestockAddButton","de":"Besatz hinzufügen","context":"Tab Besatz: Button"},{"key":"aquariumLivestockCount","de":"Anzahl","context":"Tab Besatz: Spalten-Header"},{"key":"aquariumLivestockAddDialogTitle","de":"Neuen Besatz hinzufügen","context":"Tab Besatz: Dialog-Titel"},{"key":"aquariumLivestockEditDialogTitle","de":"Besatz bearbeiten","context":"Tab Besatz: Dialog-Titel Bearbeiten"},{"key":"aquariumLivestockNameLabel","de":"Besatz","context":"Tab Besatz: Feld-Label"},{"key":"aquariumLivestockNameHint","de":"Namen eingeben","context":"Tab Besatz: Platzhalter"},{"key":"aquariumLivestockCountLabel","de":"Anzahl","context":"Tab Besatz: Anzahl-Label"},{"key":"aquariumLivestockCountHint","de":"Anzahl eingeben","context":"Tab Besatz: Platzhalter"},{"key":"aquariumImageHint","de":"Bild auswählen","context":"Bild-Auswahl Hint"},{"key":"aquariumDiscardTitle","de":"Änderungen verwerfen?","context":"Dialog: Änderungen verwerfen?"},{"key":"aquariumDiscardContent","de":"Möchtest du wirklich ohne Speichern verlassen? Alle Änderungen gehen verloren.","context":"Dialog-Text: Verwerfen"},{"key":"aquariumDiscardLeave","de":"Verlassen","context":"Button: Verlassen"},{"key":"aquariumDeleteTitle","de":"Aquarium löschen?","context":"Dialog: Aquarium löschen?"},{"key":"aquariumDeleteContent","de":"[Parameter: String name] Möchtest du das Aquarium \"$name\" wirklich unwiderruflich löschen?","context":"Dialog-Text ({name} = Aquarium-Name)"},{"key":"aquariumDeleteConfirm","de":"Ja, löschen","context":"Button: Löschen bestätigen"},{"key":"aquariumMissingFieldsTitle","de":"Fehlende Angaben","context":"Dialog: Fehlende Angaben"},{"key":"aquariumMissingFieldsAutoContent","de":"Bitte gib einen Namen sowie gültige Werte für Breite, Höhe und Tiefe ein.","context":"Dialog-Text: auto Modus"},{"key":"aquariumMissingFieldsManualContent","de":"Bitte gib einen Namen und ein gültiges Nettovolumen ein.","context":"Dialog-Text: manueller Modus"},{"key":"aquariumYesNo","de":"Ja","context":"Ja/Nein-Label"}]},{"title":"Onboarding","location":"Intro-Tour beim allerersten App-Start — Titel und Beschreibungen der einzelnen Seiten","items":[{"key":"onboardingPage1_title","de":"Willkommen!","context":"Onboarding Seite 1: Titel"},{"key":"onboardingPage1_description","de":"Willkommen in der C&P Aquaplants App. Du bekommst zu Beginn eine Tour durch die App, dann kannst du sofort loslegen.","context":"Onboarding Seite 1: Beschreibungstext"},{"key":"onboardingPage2_title","de":"Aquarium anlegen","context":"Onboarding Seite 2: Titel"},{"key":"onboardingPage2_description","de":"Lege beliebig viele Aquarien an. Die Reihenfolge deiner Aquarien kannst du durch Verschieben flexibel anpassen.","context":"Onboarding Seite 2: Beschreibungstext"},{"key":"onboardingPage3_title","de":"Größe eingeben","context":"Onboarding Seite 3: Titel"},{"key":"onboardingPage3_description","de":"Gib die Maße deines Aquariums, sowie weitere Infos zum Bodengrundaufbau etc. ein. Dein Nettovolumen wird daraus automatisch berechnet. Du kannst dein Nettovolumen natürlich auch manuell eingeben.","context":"Onboarding Seite 3: Beschreibungstext"},{"key":"onboardingPage4_title","de":"Technikkomponenten","context":"Onboarding Seite 4: Titel"},{"key":"onboardingPage4_description","de":"Hinterlege deine genutzten Technikkomponenten mit allen Details. Das kann später beim Support helfen.","context":"Onboarding Seite 4: Beschreibungstext"},{"key":"onboardingPage5_title","de":"Pflegeroutine","context":"Onboarding Seite 5: Titel"},{"key":"onboardingPage5_description","de":"Hier kannst du deine Pflegemaßnahmen dokumentieren, um immer den Überblick zu behalten.","context":"Onboarding Seite 5: Beschreibungstext"},{"key":"onboardingPage6_title","de":"Pflanzen","context":"Onboarding Seite 6: Titel"},{"key":"onboardingPage6_description","de":"Hier kannst du festhalten, welche Pflanzen du in deinem Becken hast.","context":"Onboarding Seite 6: Beschreibungstext"},{"key":"onboardingPage7_title","de":"Besatz","context":"Onboarding Seite 7: Titel"},{"key":"onboardingPage7_description","de":"Hier kannst du alle deine Tiere eintragen.","context":"Onboarding Seite 7: Beschreibungstext"},{"key":"onboardingPage8_title","de":"Einstellungen","context":"Onboarding Seite 8: Titel"},{"key":"onboardingPage8_description","de":"Auf der Unterseite deines Photometers findst du eine Kennzeichnung G002 oder G003 gefolgt von einer Nummer. Diese Nummer ist die Seriennummer deines Geräts.\\n\\n Die Photometerkennung findest du ganz oben auf den Papiertabellen, die dem Photometer beim Kauf beigelegt waren. Ebenso war ein Blatt mit einem Faktor F beigelegt.\\n\\n Auf jedem deiner Wassertests steht eine Serie. Gib all diese Infos in den Einstellungen an und schon kannst du mit dem Messen loslegen.","context":"Onboarding Seite 8: Beschreibungstext"},{"key":"onboardingPage9_title","de":"Daten exportieren bzw. importieren","context":"Onboarding Seite 9: Titel"},{"key":"onboardingPage9_description","de":"Ganz unten bei den Einstellungen findest du Funktionen zum Exportieren, bzw. importieren aller Appdaten. So kannst du die Daten ganz einfach von einem Gerät auf ein anderes übertragen. Dies funktioniert auch plattformübergreifend.","context":"Onboarding Seite 9: Beschreibungstext"},{"key":"onboardingPage10_title","de":"Messungen","context":"Onboarding Seite 10: Titel"},{"key":"onboardingPage10_description","de":"Gib einfach die Messwerte deines Photometers ein – das Ergebnis wird automatisch berechnet. Wenn du kein Photometer verwendest, kannst du dies in den Einstellungen angeben und hier deine Messwerte von den Tröpfchentests angeben.","context":"Onboarding Seite 10: Beschreibungstext"},{"key":"onboardingPage11_title","de":"Timer","context":"Onboarding Seite 11: Titel"},{"key":"onboardingPage11_description","de":"Verwende den integrierten Timer in der App. Dort sind schon einige Timer festgelegt, du kannst aber auch individuelle Timer erstellen. So hast du immer die Zeit im Blick, ohne die App wechseln zu müssen.","context":"Onboarding Seite 11: Beschreibungstext"},{"key":"onboardingPage12_title","de":"Übersicht","context":"Onboarding Seite 12: Titel"},{"key":"onboardingPage12_description","de":"Behalte den Überblick: Wähle oben dein Aquarium aus. Die Tabelle zeigt alle Messwerte deines ausgewählten Aquariums. Einträge lassen sich durch langes Drücken ganz einfach anpassen oder entfernen.","context":"Onboarding Seite 12: Beschreibungstext"},{"key":"onboardingPage13_title","de":"Messwerte teilen","context":"Onboarding Seite 13: Titel"},{"key":"onboardingPage13_description","de":"Oben rechts im Übersicht-Reiter findest du die Option Teilen. Deine letzten 5 Messungen, sowie alle Angaben zum Aquarium werden geteilt. So kannst du den Support noch schneller und einfacher mit allen deinen Daten kontaktieren oder deine Daten mit Freunden teilen.","context":"Onboarding Seite 13: Beschreibungstext"},{"key":"onboardingPage14_title","de":"Düngung","context":"Onboarding Seite 14: Titel"},{"key":"onboardingPage14_description","de":"Beim Reiter Düngung kannst du deine Zielwerte eingeben. Dein Bedarf an Dünger wird dann automatisch für deine Aquarien berechnet. Mit dem integrierten Salzrechner weißt du immer, wie viel Aufhärtesalz du nach dem Wasserwechsel zugeben musst.","context":"Onboarding Seite 14: Beschreibungstext"},{"key":"onboardingPage15_title","de":"Düngung","context":"Onboarding Seite 15: Titel"},{"key":"onboardingPage15_description","de":"Außerdem kannst du deine tägliche Düngung angeben, sowie das Datum Düngekapseln. Gib einfach dein gewünschtes Intervall an und du wirst automatisch benachrichtigt, wenn neue Düngekapseln fällig sind.","context":"Onboarding Seite 15: Beschreibungstext"},{"key":"onboardingPage16_title","de":"Videomaterial","context":"Onboarding Seite 16: Titel"},{"key":"onboardingPage16_description","de":"In diesem Reiter wird dir ausgewähltes Videomaterial zum Photometer und der Düngung, sowie die neuesten Videos von C&P Aquaplants zur Verfügung gestellt.","context":"Onboarding Seite 16: Beschreibungstext"}]},{"title":"Impressum & Datenschutz","location":"Impressum-Screen (erreichbar über Info-Button)","items":[{"key":"impressumPageTitle","de":"Impressum & Datenschutz","context":"Screen-Titel"},{"key":"impressumHeading","de":"Impressum","context":"Überschrift Impressum"},{"key":"impressumSupervisoryAuthority","de":"Zuständige Aufsichtsbehörde für das Angebot audiovisueller Mediendienste:","context":"Label: Aufsichtsbehörde"},{"key":"impressumOdrPlatform","de":"Plattform der EU-Kommission zur Online-Streitbeilegung:","context":"Label: ODR-Plattform"},{"key":"impressumDisputeNote","de":"Wir sind zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle nicht verpflichtet, hierzu jedoch bereit.","context":"Text: Schlichtungshinweis"},{"key":"impressumLastUpdated","de":"Stand: 05.07.2025, 16:09:00 Uhr","context":"Label: Datum der letzten Änderung"},{"key":"privacyHeading","de":"Datenschutzerklärung","context":"Überschrift Datenschutz"},{"key":"privacyIntro","de":"Der Schutz Ihrer Daten ist uns wichtig. Diese App sammelt oder speichert keine personenbezogenen Daten.","context":"Einleitungstext"},{"key":"privacySection1Title","de":"1. Verantwortliche Stelle","context":"Abschnitt 1: Titel"},{"key":"privacySection1Body","de":"Verantwortlich für die Datenverarbeitung im Sinne der DSGVO ist C&P Aquaplants.","context":"Abschnitt 1: Text"},{"key":"privacySection2Title","de":"2. Datenerhebung","context":"Abschnitt 2: Titel"},{"key":"privacySection2Body","de":"Diese App erhebt, speichert oder überträgt keine personenbezogenen Daten.\\n Die App ermöglicht es Ihnen, gebündelte Informationen über Ihr Aquarium lokal zu erzeugen und diese selbst über externe Anwendungen (wie WhatsApp, E-Mail usw.) zu teilen. Dabei werden keine personenbezogenen Daten von der App gespeichert oder übertragen. Die Weitergabe der Daten erfolgt ausschließlich durch Ihre aktive Entscheidung und Nutzung externer Dienste, auf die die App keinen Einfluss hat.","context":"Abschnitt 2: Text"},{"key":"privacySection3Title","de":"3. Analyse und Tracking","context":"Abschnitt 3: Titel"},{"key":"privacySection3Body","de":"Es werden keine Analyse-Tools oder Tracking-Dienste verwendet.","context":"Abschnitt 3: Text"},{"key":"privacySection4Title","de":"4. Externe Dienste","context":"Abschnitt 4: Titel"},{"key":"privacySection4Body","de":"Diese App nutzt keine externen Server oder Schnittstellen, die personenbezogene Daten übertragen oder verarbeiten. Beim Teilen von Informationen über externe Anwendungen (z. B. WhatsApp, E-Mail) erfolgt die Übertragung ausschließlich durch die von Ihnen gewählte App und nicht durch diese Anwendung selbst.","context":"Abschnitt 4: Text"},{"key":"privacySection5Title","de":"5. Ihre Rechte","context":"Abschnitt 5: Titel"},{"key":"privacySection5Body","de":"Da die App selbst keine personenbezogenen Daten erhebt oder speichert, ergeben sich im Rahmen der Nutzung keine spezifischen Betroffenenrechte nach DSGVO.","context":"Abschnitt 5: Text"}]}];
+var SECTIONS = [{"title":"Navigation & universelle Buttons","location":"Erscheinen überall in der App — Navigationsleiste unten und in allen Dialogen","items":[{"key":"navStart","de":"Start","context":"Untere Nav-Leiste: erster Tab"},{"key":"navAquariums","de":"Aquarien","context":"Untere Nav-Leiste: zweiter Tab"},{"key":"navMeasurement","de":"Messung","context":"Untere Nav-Leiste: dritter Tab"},{"key":"navValues","de":"Messwerte","context":"Untere Nav-Leiste: vierter Tab"},{"key":"navFertilization","de":"Düngung","context":"Untere Nav-Leiste: fünfter Tab"},{"key":"navVideos","de":"Videos","context":"Untere Nav-Leiste: sechster Tab"},{"key":"tooltipSettings","de":"Einstellungen","context":"Tooltip des Zahnrad-Buttons oben rechts"},{"key":"tooltipHelp","de":"Hilfe","context":"Tooltip des Hilfe-Buttons oben rechts"},{"key":"ok","de":"OK","context":"Bestätigungs-Button in allen Dialogen"},{"key":"cancel","de":"Abbrechen","context":"Abbrechen-Button in allen Dialogen"},{"key":"yes","de":"Ja","context":"Ja-Button"},{"key":"no","de":"Nein","context":"Nein-Button"},{"key":"save","de":"Speichern","context":"Speichern-Button"},{"key":"back","de":"Zurück","context":"Zurück-Button"},{"key":"next","de":"Weiter","context":"Weiter-Button"},{"key":"done","de":"Fertig","context":"Fertig-Button"},{"key":"skip","de":"Überspringen","context":"Überspringen-Button (Onboarding-Tour)"},{"key":"finish","de":"Fertig","context":"Abschluss-Button"},{"key":"reminder","de":"Erinnerung","context":"Titel von Erinnerungs-Benachrichtigungen"},{"key":"error","de":"Fehler","context":"Fehler-Dialog: Titel"},{"key":"info","de":"Information","context":"Info-Dialog: Titel"},{"key":"close","de":"Schließen","context":"Schließen-Button"},{"key":"share","de":"Teilen","context":"Teilen-Button im Messwerte-Tab"},{"key":"copiedToClipboard","de":"In die Zwischenablage kopiert","context":"Snackbar-Text nach Kopieren"}]},{"title":"Einstellungen","location":"Einstellungen-Screen (Zahnrad-Symbol oben rechts in der App)","items":[{"key":"settingsTitle","de":"Einstellungen","context":"Screen-Titel"},{"key":"settingsMeasureWithPhotometer","de":"Messung mit Fotometer","context":"Schalter-Label"},{"key":"settingsPhotometerType","de":"Fotometer Typ:","context":"Eingabefeld-Label: Fotometer-Typ"},{"key":"settingsPhotometerTypeInfo","de":"Bitte gib den Typ G002 oder G003 ein. Dieser steht auf deinem Fotometer.","context":"Info-Text unter dem Typ-Feld"},{"key":"settingsSerialNumber","de":"Fotometer Seriennummer:","context":"Eingabefeld-Label: Seriennummer"},{"key":"settingsSerialNumberInfo","de":"Gib die Seriennummer deines Fotometers ein (z.B. 3821). Diese findest du auf der Unterseite deines Fotometers.","context":"Info-Text unter dem Seriennummer-Feld"},{"key":"settingsPhotometerId","de":"Fotometerkennung:","context":"Eingabefeld-Label: Fotometerkennung"},{"key":"settingsPhotometerIdInfo","de":"Deine dreistellige Fotometerkennung findest du auf den Tabellen, die mit dem Fotometer mitgeliefert wurden.","context":"Info-Text unter dem Kennungs-Feld"},{"key":"settingsFactorF","de":"Faktor F für Trübungstests:","context":"Eingabefeld-Label: Faktor F"},{"key":"settingsFactorFInfo","de":"Den Faktor F für Trübungstests findest du auf einem Zettel, der dem Fotometer beigefügt ist.  Solltest du den Wert nicht mehr wissen, kannst du diesen bei 0.80 lassen,  das Ergebnis ist dann aber etwas ungenauer.","context":"Info-Text unter dem Faktor-F-Feld"},{"key":"settingsTestValue","de":"Testwert","context":"Tabellen-Header"},{"key":"settingsSeries","de":"Serie","context":"Tabellen-Header"},{"key":"settingsExport","de":"Daten exportieren","context":"Button-Text"},{"key":"settingsImport","de":"Daten importieren","context":"Button-Text"},{"key":"settingsReset","de":"App zurücksetzen","context":"Button-Text"},{"key":"settingsResetTitle","de":"App zurücksetzen","context":"Dialog-Titel"},{"key":"settingsResetWarning","de":"Möchtest du die App wirklich zurücksetzen? Alle Einstellungen und gespeicherten Werte gehen dabei verloren!","context":"Dialog-Text: Warnung vor Reset"},{"key":"settingsResetConfirmText","de":"Achtung! Diese Aktion setzt alle gespeicherten Daten zurück.","context":"Dialog-Text: Bestätigungstext"},{"key":"settingsResetDone","de":"App wurde zurückgesetzt","context":"Snackbar nach erfolgreichem Reset"},{"key":"settingsExportSuccess","de":"✅ Export erfolgreich: ","context":"Snackbar: Export erfolgreich (danach kommt der Dateiname)"},{"key":"settingsExportError","de":"Fehler beim Export: ","context":"Snackbar: Export-Fehler (danach kommt der Fehlertext)"},{"key":"settingsImportSuccess","de":"Import erfolgreich!","context":"Snackbar: Import erfolgreich"},{"key":"settingsImportError","de":"Fehler beim Import: ","context":"Snackbar: Import-Fehler"},{"key":"settingsImportCancelled","de":"Import abgebrochen.","context":"Snackbar: Import abgebrochen"},{"key":"settingsAppVersion","de":"Appversion: ","context":"Label vor der Versionsnummer"},{"key":"settingsLanguage","de":"Sprache","context":"Abschnitt-Titel für Sprachauswahl"},{"key":"settingsOnlyG002G003","de":"Nur G002 oder G003 sind erlaubt","context":"Fehlermeldung bei falschem Fotometer-Typ"}]},{"title":"Benachrichtigungen","location":"Push-Benachrichtigungen — erscheinen auf dem Sperrbildschirm des Geräts","items":[{"key":"duengekapselDueToday","de":"[Parameter: String name] Aquarium \"$name\": Neue Düngekapseln heute fällig!","context":"Benachrichtigung: Düngekapseln heute fällig ({name} = Aquarium-Name)"},{"key":"duengekapselDueInDays","de":"[Parameter: String name, int days] Aquarium \"$name\": Neue Düngekapseln fällig in $days Tagen!","context":"Benachrichtigung: Düngekapseln in X Tagen fällig ({name}, {days})"},{"key":"duengekapselOverdue","de":"[Parameter: String name, int days] Aquarium \"$name\": Neue Düngekapseln seit $days Tagen überfällig!","context":"Benachrichtigung: Düngekapseln überfällig ({name}, {days})"}]},{"title":"Sprachwahl","location":"Sprache-wählen-Screen — erscheint beim allerersten App-Start","items":[{"key":"languageSelectionTitle","de":"Sprache wählen","context":"Screen-Titel"},{"key":"languageSelectionSubtitle","de":"Bitte wähle deine bevorzugte Sprache.\\nDu kannst sie später in den Einstellungen ändern.","context":"Erklärungstext"},{"key":"languageSelectionButton","de":"Weiter","context":"Weiter-Button"}]},{"title":"Videos","location":"Videos-Tab (letzter Tab) — YouTube-Video-Titel und Tab-Bezeichnungen","items":[{"key":"videosTitle","de":"Videomaterial","context":"AppBar-Titel des Screens"},{"key":"videosTabPhotometer","de":"Photometer/Messung","context":"Tab-Bezeichnung: Fotometer-Videos"},{"key":"videosTabGeneral","de":"Allgemeines","context":"Tab-Bezeichnung: Allgemeine Videos"},{"key":"videosTabLatest","de":"Aktuelle Videos","context":"Tab-Bezeichnung: Neueste Videos"},{"key":"videosNew","de":"NEU","context":"Badge-Text auf neuen Videos"},{"key":"videosErrorOpenYoutube","de":"Konnte YouTube nicht öffnen","context":"Fehlersnackbar wenn YouTube nicht öffnet"}]},{"title":"Messung — mit Fotometer","location":"Mess-Tab (3. Tab) mit Fotometer — Tabelle mit mV-Eingabe und Ergebnis","items":[{"key":"measureColTest","de":"Wassertest","context":"Spalten-Header: Wassertest"},{"key":"measureColFactor","de":"Verdün-\\nnungs F.","context":"Spalten-Header: Verdünnungsfaktor"},{"key":"measureColValue","de":"Messwert","context":"Spalten-Header: Messwert"},{"key":"measureColResult","de":"Ergebnis","context":"Spalten-Header: Ergebnis"},{"key":"measureInfoTest","de":"Anleitungen zu den Wassertests gibt es unter https://www.wasserpantscher.at/ oder auf dem C&P Aquaplants Youtube Kanal.","context":"Info-Dialog: Text zu Wassertest-Anleitungen"},{"key":"measureInfoFactor","de":"**1:5-Verdünnung (Faktor = 5):**\\n\\n4 Teile destilliertes Wasser 1 + Teil Aquariumwasser\\n\\nZum Beispiel: 80g destilliertes Wasser + 20g Aquariumwasser\\n\\n\\n\\n**1:10-Verdünnung (Faktor = 10):**\\n\\n9 Teile destilliertes Wasser + 1 Teil Aquariumwasser\\n\\nZum Beispiel: 90g destilliertes Wasser + 10g Aquariumwasser","context":"Info-Dialog: Erklärung Verdünnungsfaktor (Markdown)"},{"key":"measureInfoValue","de":"Der Messwert wird in mV angegeben. Das heißt, ohne Punkt oder Komma, nur die Zahlen auf dem Photometer.\\n\\nBei KH und GH ist die Anzahl der Tropfen bis zum Farbumschlag angeben.","context":"Info-Dialog: Erklärung Messwert-Eingabe"},{"key":"measureInfoResult","de":"Bei Ergebnissen über 20mg/l sollten folgende Tests mit Verdünnung durchgeführt werden:\\nNitrat, Kalium, Magnesium\\n\\nCalcium sollte immer mit 1:10-Verdünnung durchgeführt werden.","context":"Info-Dialog: Erklärung Ergebnis-Spalte"},{"key":"measureParamNitrate","de":"Nitrat","context":"Zeilen-Label: Nitrat"},{"key":"measureParamPhosphate","de":"Phosphat","context":"Zeilen-Label: Phosphat"},{"key":"measureParamPotassium","de":"Kalium","context":"Zeilen-Label: Kalium"},{"key":"measureParamMagnesium","de":"Magnesium","context":"Zeilen-Label: Magnesium"},{"key":"measureParamIron","de":"Eisen sensitiv","context":"Zeilen-Label: Eisen"},{"key":"measureParamCalcium","de":"Calcium","context":"Zeilen-Label: Calcium"},{"key":"measureParamPh","de":"pH","context":"Zeilen-Label: pH"},{"key":"measureParamKh","de":"KH","context":"Zeilen-Label: KH"},{"key":"measureParamGh","de":"GH","context":"Zeilen-Label: GH"},{"key":"measureParamSilicate","de":"Silikat","context":"Zeilen-Label: Silikat"},{"key":"measureParamNitrite","de":"Nitrit","context":"Zeilen-Label: Nitrit"},{"key":"measurePhRange1","de":"pH 5,66 - 8","context":"pH-Dropdown: Option 1"},{"key":"measurePhRange2","de":"pH 4,5 - 5,65","context":"pH-Dropdown: Option 2"},{"key":"measurePhInfoTitle","de":"Info zum pH-Test","context":"pH-Info-Dialog: Titel"},{"key":"measurePhInfoContent","de":"Bitte wähle den passenden pH-Bereich aus:\\n\\n • pH 4,5 - 5,65: Nur wenn sehr saures Wasser zu erwarten ist. Der Test verfärbt sich rötlich.\\n • pH 5,66 - 8: Immer sonst. Der Test verfärbt sich gelb-grünlich.\\n\\n Der pH-Wert ist immer unverdünnt zu messen!","context":"pH-Info-Dialog: Text"},{"key":"measureCalciumInfoTitle","de":"Info zum Calcium-Test","context":"Calcium-Info-Dialog: Titel"},{"key":"measureCalciumInfoContent","de":"Calcium ist immer mit einer 1:10 Verdünnung zu rechnen.  Nur bei erwarteten Calciumwerten von unter 10 mg/l macht ein unverdünnter Test Sinn.","context":"Calcium-Info-Dialog: Text"},{"key":"measureTestNitrateNitrite","de":"Nitrat/Nitrit","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestPhosphateCalcium","de":"Phosphat/Calcium","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestIron","de":"Eisen sensitiv","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestPotassium","de":"Kalium","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestSilicate","de":"Silikat","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestGh","de":"GH","context":"Timer-Auswahl: Test-Name"},{"key":"measureTestCustom","de":"Eigener Test","context":"Timer-Auswahl: Option für eigenen Test"},{"key":"measureResultTooHigh","de":"zu hoch","context":"Ergebnis-Zelle: Wert zu hoch — WICHTIG: intern immer auf DE gespeichert"},{"key":"measureResultTooLow","de":"zu niedrig","context":"Ergebnis-Zelle: Wert zu niedrig — WICHTIG: intern immer auf DE gespeichert"},{"key":"measureResultIdWrong","de":"Fotometer-\\nkennung falsch!","context":"Ergebnis-Zelle: falsche Fotometerkennung"},{"key":"measureDrops","de":"Tropfen","context":"Einheit für KH/GH — WICHTIG: intern immer auf DE gespeichert"},{"key":"measureTimerStart","de":"Mess-Timer starten","context":"Button: Mess-Timer starten"},{"key":"measureTimerSelect","de":"Welchen Timer starten?","context":"Dialog-Titel: Welchen Timer starten?"},{"key":"measureTimerStart2","de":"Starten","context":"Button im Timer-Dialog: Starten"},{"key":"measureTimerAbort","de":"Abbrechen","context":"Button im Timer-Dialog: Abbrechen"},{"key":"measureTimerDone","de":"[Parameter: String label] Alle Timer für $label beendet!","context":"Snackbar nach Timer-Ende ({label} = Test-Name)"},{"key":"measureTimerLabel","de":"[Parameter: String label, int current, int total] Mess-Timer $label – Schritt $current von $total","context":"Timer-Anzeige ({label}, {current}, {total})"},{"key":"measureStepCount","de":"Anzahl der Schritte","context":"Timer-Konfiguration: Label"},{"key":"measureStepDuration","de":"[Parameter: int step] Dauer Schritt $step (Sekunden)","context":"Timer-Konfiguration: Label pro Schritt ({step} = Schrittnummer)"},{"key":"measureAutoNext","de":"Automatisch weiterschalten","context":"Timer-Konfiguration: Schalter"},{"key":"measureCustomTest","de":"Eigenen Test konfigurieren","context":"Button: eigenen Test konfigurieren"},{"key":"measureOkay","de":"Okay","context":"Button im Timer"},{"key":"measureSaveData","de":"Daten speichern","context":"Button: Daten speichern"},{"key":"measureSaveTitle","de":"Daten Speichern","context":"Dialog-Titel: Speichern"},{"key":"measureSaveForAquarium","de":"Für welches Aquarium speichern?","context":"Dialog: Für welches Aquarium?"},{"key":"measureSaveConfirm","de":"[Parameter: String name] Möchtest du die Messwerte für das Aquarium $name speichern?","context":"Dialog-Text ({name} = Aquarium-Name)"},{"key":"measureSavedFor","de":"[Parameter: String name] Daten für $name gespeichert.","context":"Snackbar: gespeichert ({name} = Aquarium-Name)"},{"key":"measureSaveCancelled","de":"Speichern abgebrochen.","context":"Snackbar: Speichern abgebrochen"},{"key":"measureNoAquarium","de":"Kein Aquarium gefunden.","context":"Snackbar: kein Aquarium vorhanden"},{"key":"measureComment","de":"Kommentar","context":"Kommentar-Feld: Label"},{"key":"measureCommentHint","de":"z.B. nach WW","context":"Kommentar-Feld: Platzhalter"},{"key":"measureHintTitle","de":"Hinweis","context":"Hinweis-Dialog: Titel"},{"key":"measureHintPhotometer","de":"Bitte erst in den Einstellungen die Fotometerdaten eingeben!","context":"Hinweis-Dialog: Text wenn Fotometer-Daten fehlen"},{"key":"measureValidStepDurations","de":"Bitte gültige Schritt-Dauern angeben.","context":"Fehlermeldung: ungültige Schritt-Dauern"}]},{"title":"Messung — ohne Fotometer","location":"Mess-Tab (3. Tab) ohne Fotometer — direkte Werteingabe","items":[{"key":"measureSixInfoTest","de":"Du kannst jeden beliebigen Wassertest verwenden. Solltest du das Photometer von Wasserpantscher verwenden, gib das bitte in den Einstellungen an.","context":"Info-Text über dem Formular"},{"key":"measureSixInfoValue","de":"Hier gibst du den Wert an, den dein Wassertest ergeben hat. Bei Verdünnung bitte den Faktor angeben und dann das verdünnte Ergebnis angeben. Der Wert wird dann automatisch ausgerechnet.","context":"Info-Text für die Wert-Eingabe"},{"key":"measureSixPhInfoTitle","de":"Info zum pH-Test","context":"pH-Info-Dialog: Titel"},{"key":"measureSixPhInfoContent","de":"Wenn der pH-Test gelb-grünlich ist, dann liegt der pH-Wert im Bereich zwischen 5,65 und 8.  Sollte dein Test rötlich sein, liegt der pH-Wert unter 5,65. In diesem Fall bitte die Excel-Datei zum Umrechnen verwenden.","context":"pH-Info-Dialog: Text"}]},{"title":"Messwerte-Anzeige","location":"Messwerte-Tab (4. Tab) — Tabelle mit gespeicherten Messungen","items":[{"key":"valuesEdit","de":"Messwerte bearbeiten","context":"AppBar-Titel beim Bearbeiten"},{"key":"valuesDateTime","de":"Datum und Uhrzeit:","context":"Tabellen-Header: Datum/Uhrzeit"},{"key":"valuesAquarium","de":"Zugehöriges Aquarium:","context":"Label über dem Aquarium-Dropdown"},{"key":"valuesActionTitle","de":"Aktion wählen","context":"Long-Press-Dialog: Titel"},{"key":"valuesActionContent","de":"Was möchtest du mit dieser Spalte tun?","context":"Long-Press-Dialog: Text"},{"key":"valuesEditColumn","de":"Spalte bearbeiten","context":"Long-Press-Dialog: Option Bearbeiten"},{"key":"valuesDeleteColumn","de":"Spalte löschen","context":"Long-Press-Dialog: Option Löschen"},{"key":"valuesNoAquarium","de":"Kein Aquarium ausgewählt","context":"Platzhalter: kein Aquarium ausgewählt"},{"key":"valuesNoData","de":"Keine Messdaten vorhanden","context":"Platzhalter: keine Messdaten"},{"key":"valuesNoMeasurements","de":"Keine Messwerte gefunden","context":"Platzhalter: keine Messwerte"},{"key":"valuesTooltip","de":"Zum Bearbeiten oder Löschen lange drücken","context":"Tooltip unter der Tabelle"},{"key":"valuesComment","de":"Kommentar","context":"Kommentar-Dialog: Titel"},{"key":"valuesSeconds","de":"Sekunden wählen","context":"Dialog: Sekunden wählen"},{"key":"valuesMovedTo","de":"[Parameter: String name] Messreihe wurde zu \"$name\" verschoben","context":"Snackbar: verschoben ({name} = Aquarium-Name)"},{"key":"valuesUpdated","de":"Messreihe wurde aktualisiert","context":"Snackbar: aktualisiert"},{"key":"valuesAquariumDataMissing","de":"Aquarium-Daten nicht gefunden","context":"Fehlermeldung: Aquarium-Daten fehlen"},{"key":"measureLabelNitrate","de":"Nitrat","context":"Zeilen-Label in der Tabelle: Nitrat"},{"key":"measureLabelPhosphate","de":"Phosphat","context":"Zeilen-Label in der Tabelle: Phosphat"},{"key":"measureLabelPotassium","de":"Kalium","context":"Zeilen-Label in der Tabelle: Kalium"},{"key":"measureLabelMagnesium","de":"Magnesium","context":"Zeilen-Label in der Tabelle: Magnesium"},{"key":"measureLabelIronSensitive","de":"Eisen sensitiv","context":"Zeilen-Label in der Tabelle: Eisen"},{"key":"measureLabelCalcium","de":"Calcium","context":"Zeilen-Label in der Tabelle: Calcium"},{"key":"measureLabelPh","de":"pH 4,5 – 8","context":"Zeilen-Label in der Tabelle: pH"},{"key":"measureLabelKh","de":"KH","context":"Zeilen-Label in der Tabelle: KH"},{"key":"measureLabelGh","de":"GH","context":"Zeilen-Label in der Tabelle: GH"},{"key":"measureLabelSilicate","de":"Silikat","context":"Zeilen-Label in der Tabelle: Silikat"},{"key":"measureLabelNitrite","de":"Nitrit","context":"Zeilen-Label in der Tabelle: Nitrit"},{"key":"measureLabelComment","de":"Kommentar","context":"Zeilen-Label in der Tabelle: Kommentar"}]},{"title":"Düngung","location":"Düngung-Tab (5. Tab) — Düngerechner, Salzrechner, tägliche Düngung, Kapseln","items":[{"key":"fertCalcTitle","de":"Düngerechner:","context":"Abschnitt-Titel: Düngerechner"},{"key":"fertCalcInfo","de":"Es sind die Werte für die Einzeldünger Nitrat, Phosphat und Magnesium von C&P Aquaplants hinterlegt.  Kalium wird nicht separat gedüngt, sondern über das Aufhärtesalz angepasst.\\n\\n Hinweis: Bei der Magnesium-Berechnung wird berücksichtigt, dass 1 ml Nitratdünger auf 50 L  auch Magnesium um 0,2 mg/l erhöht.\\n\\n Zielwerte:\\nPO4: 1–1,5 mg/L (mind. 1 mg/L)\\nNO3: 16–25 mg/L (mind. 16 mg/L)\\n Magnesium: Doppelt so hoch wie Kalium, maximal 20 mg/L","context":"Info-Text unter dem Düngerechner"},{"key":"fertNutrient","de":"Nährstoff","context":"Tabellen-Header: Nährstoff"},{"key":"fertCurrentValue","de":"Ist-Wert","context":"Tabellen-Header: Ist-Wert"},{"key":"fertDosage","de":"Düngung","context":"Tabellen-Header: Düngung"},{"key":"fertTargetValue","de":"Zielwert","context":"Tabellen-Header: Zielwert"},{"key":"fertNitrateHint","de":"Nitrat sollte mind. bei 16 mg/l, Phosphat mind. bei 1 mg/l liegen.","context":"Hinweis-Text unter dem Düngerechner"},{"key":"fertSaltCalc","de":"Salzrechner:","context":"Abschnitt-Titel: Salzrechner"},{"key":"fertSaltCalcInfo","de":"Gib an, wie viele Liter Wasserwechsel du gemacht hast und welches Salz du verwendest. \\n\\nAchtung: Aktuell gibt es KH/GH+ mit verschiedenen Dosierungen!\\n\\n Die benötigte Salzmenge wird automatisch berechnet.","context":"Info-Text zum Salzrechner"},{"key":"fertLitersLabel","de":"Menge","context":"Eingabefeld-Label: Menge"},{"key":"fertLitersWW","de":"Liter WW mit","context":"Label neben dem Liter-Feld"},{"key":"fertSaltType","de":"Salzart","context":"Dropdown-Label: Salzart"},{"key":"fertSaltResult","de":"[Parameter: String amount, String saltName, String khPart] Bitte ${amount}g $saltName zugeben für ${khPart}GH 6","context":"Ergebnis-Text ({amount} g {saltName} für {khPart})"},{"key":"fertSaltKhPart","de":"KH 2 und ","context":"Teil des Ergebnistextes: KH-Anteil"},{"key":"fertSaltGhTarget","de":"GH 6","context":"Teil des Ergebnistextes: GH-Ziel"},{"key":"fertDailyTitle","de":"Aktuelle tägliche Düngung:","context":"Abschnitt-Titel: Tägliche Düngung"},{"key":"fertDailyInfo","de":"Wenn du die Felder der einzelnen Dünger lange gedrückt hältst,  kannst du die Namen ändern. So kannst du auch Produkte verwenden,  die nicht von C&P Aquaplants sind.","context":"Info-Text zur täglichen Düngung"},{"key":"fertLongPress","de":"Lange drücken, um den Namen zu ändern.","context":"Hinweis-Text unter den Dünger-Feldern"},{"key":"fertChangeName","de":"Name ändern","context":"Dialog-Titel: Name ändern"},{"key":"fertNewNameHint","de":"Neuer Name","context":"Eingabefeld-Platzhalter: neuer Name"},{"key":"fertLastCapsule","de":"Letzter Einsatz von Düngekapseln:","context":"Abschnitt-Titel: letzter Düngekapseleinsatz"},{"key":"fertLastCapsuleInfo","de":"Düngekapseln sollten alle 6 bis 10 Wochen im Abstand von etwa 15 cm gesetzt werden.  Die App erinnert dich eine Woche bevor neue Düngekapseln fällig sind.","context":"Info-Text zu Düngekapseln"},{"key":"fertPickDateHint","de":"Datum wählen","context":"Datum-Auswahl-Hint"},{"key":"fertCapsuleInterval","de":"Düngekapselintervall:","context":"Label: Kapseln-Intervall"},{"key":"fertWeeks","de":"Wochen","context":"Einheit: Wochen"},{"key":"fertEnterValueHint","de":"Wert eingeben","context":"Eingabefeld-Platzhalter"},{"key":"fertNoData","de":"Keine Daten","context":"Platzhalter: keine Daten"},{"key":"fertInvalidFactor","de":"Ungültiger Faktor","context":"Fehlermeldung: ungültiger Faktor"},{"key":"fertWW","de":"WW","context":"Abkürzung für Wasserwechsel"},{"key":"fertLastLoadedFrom","de":"[Parameter: String date, String name] Als Ist-Werte wurden die zuletzt gespeicherten Daten vom $date für $name geladen.","context":"Info-Text: Werte geladen ({date}, {name})"},{"key":"nutrientNitrate","de":"Nitrat","context":"Nährstoff-Name"},{"key":"nutrientPhosphate","de":"Phosphat","context":"Nährstoff-Name"},{"key":"nutrientPotassium","de":"Kalium","context":"Nährstoff-Name"},{"key":"nutrientMagnesium","de":"Magnesium","context":"Nährstoff-Name"}]},{"title":"Startseite","location":"Start-Tab (1. Tab) — Produkte, Social-Media, WhatsApp, Kontakt","items":[{"key":"homeWelcome","de":"Willkommen in unserer App!","context":"Willkommens-Überschrift"},{"key":"homeIntro","de":"Hochqualitative Aquarium Dünger – hergestellt in Deutschland für beste Qualität und Nachhaltigkeit.","context":"Einleitungstext unter der Überschrift"},{"key":"homeProductsTitle","de":"Unsere Produkte","context":"Abschnitt-Titel: Produkte"},{"key":"homeProduct1","de":"Komplex A+B Kombidünger","context":"Produktname"},{"key":"homeProduct2","de":"Kaliumfreier Nitrat- und Phosphatdünger","context":"Produktname"},{"key":"homeProduct3","de":"Magnesiumdünger und Magnesiumsulfat","context":"Produktname"},{"key":"homeProduct4","de":"Bodendünger Caps","context":"Produktname"},{"key":"homeProduct5","de":"Startersets für Osmose- und Leitungswasser","context":"Produktname"},{"key":"homeProduct6","de":"Präzise Wassertests und Photometer","context":"Produktname"},{"key":"homeWhyTitle","de":"Warum C&P Aquaplants?","context":"Abschnitt-Titel: Warum C&P?"},{"key":"homeWhy1","de":"Kostenloser Support individuell für dich","context":"Grund-Aufzählung"},{"key":"homeWhy2","de":"Einfaches und verständliches Düngesystem","context":"Grund-Aufzählung"},{"key":"homeWhy3","de":"Wissenschaftlich fundierte Zusammensetzung","context":"Grund-Aufzählung"},{"key":"homeWhy4","de":"Nachhaltige Produktion in Deutschland","context":"Grund-Aufzählung"},{"key":"homeWhy5","de":"Über 500 betreute Aquarien als Referenz","context":"Grund-Aufzählung"},{"key":"homeContactTitle","de":"Kontakt","context":"Abschnitt-Titel: Kontakt"},{"key":"homeNote","de":"Hinweis: Keine separate Eisendüngung nötig. Der Eisenanteil ist im Kombidünger optimal abgestimmt.","context":"Hinweis-Text zum Eisen"},{"key":"homeFertGuide","de":"Düngeanleitung","context":"Button: Düngeanleitung öffnen"},{"key":"homeWhatsAppSelect","de":"Für welches Aquarium benötigst du Hilfe?","context":"Dialog: Für welches Aquarium benötigst du Hilfe?"},{"key":"homeErrorEmail","de":"E-Mail-App konnte nicht geöffnet werden:\\n","context":"Fehlermeldung wenn E-Mail-App fehlt"},{"key":"homeErrorLink","de":"Link konnte nicht geöffnet werden: ","context":"Fehlermeldung wenn Link nicht öffnet"},{"key":"homeIdeaEmailSubject","de":"Idee einreichen","context":"E-Mail-Betreff bei Ideen-Einreichung"},{"key":"homeIdeaEmailBody","de":"Hallo liebes C&P Aquaplants-Team,\\r\\n\\r\\nich habe folgende Idee:\\r\\n\\r\\n[Hier deine Idee eintragen]\\r\\n\\r\\nViele Grüße,\\r\\n[Dein Name]","context":"E-Mail-Vortext bei Ideen-Einreichung"},{"key":"homeWhatsAppGreeting","de":"Hallo, ich benötige Hilfe für mein Aquarium.","context":"WhatsApp-Nachricht Begrüßungstext"}]},{"title":"Düngeanleitung","location":"Düngeanleitung-Screen — wird vom Start-Tab aus geöffnet","items":[{"key":"guideTitle","de":"Düngeanleitung für Ihr Aquarium","context":"Screen-Titel"},{"key":"guideSectionBasics","de":"Grundregeln und Nährstoffverhältnisse","context":"Abschnitt-Titel"},{"key":"guideSectionTargetValues","de":"Zielwerte im Aquariumwasser","context":"Abschnitt-Titel"},{"key":"guideSectionTips","de":"Tipps zur Düngung","context":"Abschnitt-Titel"},{"key":"guideSectionTankTypes","de":"Besonderheiten bei verschiedenen Beckentypen","context":"Abschnitt-Titel"},{"key":"guideSectionLighting","de":"Beleuchtung","context":"Abschnitt-Titel"},{"key":"guideSectionContact","de":"Kontakt & Support","context":"Abschnitt-Titel"},{"key":"guideBasics1","de":"Nitrat : Phosphat = 16 : 1 — z. B.:\\n20 mg NO3 : 16 = 1,25\\u00A0mg PO4","context":"Grundregel 1 (Nitrat:Phosphat-Verhältnis)"},{"key":"guideBasics2","de":"Kalium : Magnesium : Calcium = 0,5\\u00A0:\\u00A01\\u00A0:\\u00A02–4","context":"Grundregel 2 (K:Mg:Ca-Verhältnis)"},{"key":"guideBasics3","de":"Magnesium von 4 - 25 mg, sollte doppelt so hoch sein wie Kalium, aber maximal 25mg","context":"Grundregel 3 (Magnesium-Bereich)"},{"key":"guideTarget1","de":"Nitrat: 16–25 mg/l","context":"Zielwert Nitrat"},{"key":"guideTarget2","de":"Phosphat: 1,0–1,5 mg/l","context":"Zielwert Phosphat"},{"key":"guideTarget3","de":"Kalium: 2–10 mg/l (je nach KH-Wert)","context":"Zielwert Kalium"},{"key":"guideTarget4","de":"Magnesium: 4–25 mg/l (je nach GH-Wert)","context":"Zielwert Magnesium"},{"key":"guideTarget5","de":"Eisen: ist in Komplex A+B ausreichend vorhanden","context":"Zielwert Eisen"},{"key":"guideTip1","de":"Mit stabilen Nährstoffwerten beginnen, um Mangelerscheinungen zu vermeiden.","context":"Tipp 1"},{"key":"guideTip2","de":"Nitrat und Phosphat nach jedem Wasserwechsel mit passenden Düngern einstellen.","context":"Tipp 2"},{"key":"guideTip3","de":"Bei Osmosewasser Aufhärtesalze verwenden, Kalium und Magnesium kontrollieren.","context":"Tipp 3"},{"key":"guideTip4","de":"Unser Aufhärtesalz (KH/GH+) stellt bereits das optimale Verhältnis ein, trotzdem alle 3–4 Wochen Werte kontrollieren.","context":"Tipp 4"},{"key":"guideTip5","de":"Komplexdünger A und B täglich 1\\u00A0ml pro 50 Liter Beckeninhalt in der Lichtphase düngen (Start mit 0,5\\u00A0ml empfohlen).","context":"Tipp 5"},{"key":"guideTip6","de":"In den ersten 2–3 Wochen täglich messen und Dosierung ggf. anpassen.","context":"Tipp 6"},{"key":"guideTip7","de":"Bodendünger im Radius von ca. 15 cm im Substrat einsetzen, um Nährstoffe zu stabilisieren.","context":"Tipp 7"},{"key":"guideTankType1","de":"Iwagumi / Aufsitzer-Becken: reduzierte Dosierung (0,2 – 0,3\\u00A0ml pro 50\\u00A0L).","context":"Beckentyp-Besonderheit 1"},{"key":"guideTankType2","de":"Standard-Aquarien / Garden Style / Dutch Style: 0,3 - 1\\u00A0ml pro 50\\u00A0L.","context":"Beckentyp-Besonderheit 2"},{"key":"guideLighting1","de":"Die Intensität und Beleuchtungsdauer ist immer individuell an das Becken und die Bepflanzung anzupassen. Lieber mit weniger beginnen und sich dann steigern.","context":"Beleuchtungshinweis"},{"key":"guideContact1","de":"WhatsApp-Button nutzen","context":"Kontakt-Option 1"},{"key":"guideContact2","de":"E-Mail: mail@cp-aquaplants.de","context":"Kontakt-Option 2"},{"key":"guideContact3","de":"Telefon: +49 40 84306403","context":"Kontakt-Option 3"},{"key":"guideContact4","de":"Mobil: +49 172 5182784","context":"Kontakt-Option 4"}]},{"title":"Export & Teilen","location":"Text der beim Teilen (WhatsApp/E-Mail) generiert wird — Labels für den Export","items":[{"key":"exportAquarium","de":"Aquarium","context":"Label"},{"key":"exportDimensions","de":"Maße (B x H x T)","context":"Label"},{"key":"exportNetVolume","de":"Nettovolumen","context":"Label"},{"key":"exportNetVolumeFilter","de":"Nettovolumen: %s Liter (davon %s L Filterbecken)","context":"Label mit Platzhaltern (%s = Volumen, %s = Filtervol)"},{"key":"exportWaterType","de":"Verwendetes Wasser","context":"Label"},{"key":"exportTapWaterValues","de":"  Werte Leitungswasser","context":"Label"},{"key":"exportMixRatio","de":"  Mischverhältnis Leitungs:Osmosewasser","context":"Label"},{"key":"exportSubstrate","de":"Bodengrund","context":"Label"},{"key":"exportHardscape","de":"Hardscape","context":"Label"},{"key":"exportLighting","de":"Beleuchtung","context":"Label"},{"key":"exportLamp","de":"  Lampe","context":"Label"},{"key":"exportDuration","de":"  Dauer","context":"Label"},{"key":"exportIntensity","de":"  Intensität","context":"Label"},{"key":"exportDetails","de":"  Details","context":"Label"},{"key":"exportCo2Present","de":"CO2-Anlage vorhanden","context":"Label"},{"key":"exportFilter","de":"Filter","context":"Label"},{"key":"exportMaintenanceRoutine","de":"Pflegeroutine","context":"Label"},{"key":"exportMeasurements","de":"Messwerte","context":"Label"},{"key":"exportMeasuredWithPhotometer","de":"Messung mit Photometer","context":"Label"},{"key":"exportPhotometerType","de":"Photometertyp","context":"Label"},{"key":"exportSerialNumber","de":"Seriennummer","context":"Label"},{"key":"exportPhotometerId","de":"Photometerkennung","context":"Label"},{"key":"exportFactorF","de":"Faktor F","context":"Label"},{"key":"exportDailyFertilization","de":"Tägliche Düngung","context":"Label"},{"key":"exportCapsulesSetOn","de":"Düngekapseln gesetzt am","context":"Label"},{"key":"exportAppVersion","de":"Appversion","context":"Label"},{"key":"exportShareSubject","de":"Aquarium Messdaten","context":"E-Mail-Betreff"},{"key":"exportYes","de":"Ja","context":"Ja-Wert im Export-Text"},{"key":"exportNo","de":"Nein","context":"Nein-Wert im Export-Text"}]},{"title":"Aquarium-Liste & Formular","location":"Aquarium-Tab (2. Tab) und Aquarium anlegen/bearbeiten — alle Eingabefelder","items":[{"key":"aquariumCreate","de":"Aquarium anlegen","context":"Button: Aquarium anlegen"},{"key":"aquariumNone","de":"Keine Aquarien vorhanden","context":"Platzhalter: keine Aquarien"},{"key":"aquariumDeleted","de":"Aquarium wurde gelöscht","context":"Snackbar: Aquarium gelöscht"},{"key":"aquariumAlreadyExists","de":"Aquarium bereits vorhanden","context":"Import-Dialog: Titel"},{"key":"aquariumAlreadyExistsMsg","de":"[Parameter: String name] Ein Aquarium mit dem Namen \"$name\" existiert bereits.\\n\\n Möchtest du die Daten zusammenführen oder ein neues Aquarium anlegen?","context":"Import-Dialog: Text ({name} = Aquarium-Name)"},{"key":"aquariumMerge","de":"Zusammenführen","context":"Import-Dialog: Button Zusammenführen"},{"key":"aquariumCreateNew","de":"Neues Aquarium anlegen","context":"Import-Dialog: Button Neues Aquarium"},{"key":"aquariumMergeError","de":"Fehler beim Zusammenführen. Erstelle neues Aquarium.","context":"Import-Dialog: Fehlermeldung"},{"key":"aquariumFormNew","de":"Neues Aquarium anlegen","context":"Formular AppBar: Titel beim Anlegen"},{"key":"aquariumFormEdit","de":"Aquarium bearbeiten","context":"Formular AppBar: Titel beim Bearbeiten"},{"key":"aquariumFormDeleteTooltip","de":"Aquarium löschen","context":"Formular: Löschen-Button Tooltip"},{"key":"aquariumTabGeneral","de":"Allgemein","context":"Tab: Allgemein"},{"key":"aquariumTabTech","de":"Technik","context":"Tab: Technik"},{"key":"aquariumTabMaintenance","de":"Pflege","context":"Tab: Pflege"},{"key":"aquariumTabPlants","de":"Pflanzen","context":"Tab: Pflanzen"},{"key":"aquariumTabLivestock","de":"Besatz","context":"Tab: Besatz"},{"key":"aquariumGeneralTitle","de":"Allgemeine Angaben","context":"Abschnitt: Allgemeine Angaben"},{"key":"aquariumAutoVolume","de":"Nettovolumen automatisch berechnen","context":"Schalter: Nettovolumen automatisch"},{"key":"aquariumDimensions","de":"Maße","context":"Abschnitt: Maße"},{"key":"aquariumSubstrateAndHardscape","de":"Bodengrund und Hardscape","context":"Abschnitt: Bodengrund & Hardscape"},{"key":"aquariumFilterSump","de":"Filterbecken","context":"Label: Filterbecken"},{"key":"aquariumNetVolume","de":"Netto-Volumen","context":"Label: Netto-Volumen"},{"key":"aquariumFieldName","de":"Name","context":"Feld: Name"},{"key":"aquariumFieldWidth","de":"Breite in cm","context":"Feld: Breite"},{"key":"aquariumFieldHeight","de":"Höhe in cm","context":"Feld: Höhe"},{"key":"aquariumFieldDepth","de":"Tiefe in cm","context":"Feld: Tiefe"},{"key":"aquariumFieldGlass","de":"Glasstärke in mm","context":"Feld: Glasstärke"},{"key":"aquariumFieldWaterline","de":"Abstand Wasser - Obere Glaskante in cm","context":"Feld: Wasserabstand"},{"key":"aquariumFieldHardscapeSubtract","de":"Abzug Hardscape in L","context":"Feld: Hardscape-Abzug"},{"key":"aquariumFieldSubstrateFront","de":"Höhe Bodengrund vorne in cm","context":"Feld: Bodengrund vorne"},{"key":"aquariumFieldSubstrateBack","de":"Höhe Bodengrund hinten in cm","context":"Feld: Bodengrund hinten"},{"key":"aquariumFieldSubstrate","de":"Bodengrund","context":"Feld: Bodengrund-Typ"},{"key":"aquariumFieldHardscape","de":"Hardscape","context":"Feld: Hardscape-Typ"},{"key":"aquariumFieldSubstrateHint","de":"z.B. Soil, Sand, Kies","context":"Platzhalter Bodengrund"},{"key":"aquariumFieldHardscapeHint","de":"z.B. Schwarze Lava, Drachenstein","context":"Platzhalter Hardscape"},{"key":"aquariumFieldSumpVolume","de":"Nettovolumen des Filterbeckens in L","context":"Feld: Filterbecken-Volumen"},{"key":"aquariumFieldManualVolume","de":"Netto-Volumen in Liter","context":"Feld: Manuelles Volumen"},{"key":"aquariumNetVolumeLitres","de":"Netto-Volumen: %s L","context":"Anzeige berechnetes Volumen (%s = Zahl)"},{"key":"aquariumTechTitle","de":"Angaben zur Beleuchtung","context":"Abschnitt: Beleuchtung"},{"key":"aquariumLightingTitle","de":"Angaben zur Beleuchtung","context":"Abschnitt: Beleuchtung"},{"key":"aquariumFieldLamp","de":"Lampe","context":"Feld: Lampe"},{"key":"aquariumFieldLightDuration","de":"Beleuchtungsdauer (inkl. Sonnenauf- und -untergang)","context":"Feld: Beleuchtungsdauer"},{"key":"aquariumFieldLightIntensity","de":"Beleuchtungsintensität (z.B. 80%)","context":"Feld: Intensität"},{"key":"aquariumFieldLightDetails","de":"Platz für Detailangaben","context":"Feld: Details"},{"key":"aquariumFieldLightDetailsHint","de":"z.B.: R: 90, G: 85, B: 77 oder Watt-, Lumen, PAR-, Farbtemperaturangaben","context":"Platzhalter Details"},{"key":"aquariumLampImageHint","de":"Screenshot der Lampeneinstellungen hinzufügen","context":"Hint: Bild hinzufügen"},{"key":"aquariumCo2Title","de":"Angaben zum CO2","context":"Abschnitt: CO2"},{"key":"aquariumCo2Present","de":"CO2-Anlage vorhanden","context":"Schalter: CO2 vorhanden"},{"key":"aquariumFieldCo2Details","de":"Details zum CO2","context":"Feld: CO2-Details"},{"key":"aquariumFieldCo2DetailsHint","de":"z.B.: Diffusor, Inline-Diffusor, Reaktor","context":"Platzhalter CO2"},{"key":"aquariumFilterTitle","de":"Angaben zum Filter","context":"Abschnitt: Filter"},{"key":"aquariumFieldFilter","de":"Filter","context":"Feld: Filter"},{"key":"aquariumFieldFilterDetails","de":"Platz für Detailangaben","context":"Feld: Filter-Details"},{"key":"aquariumFieldFilterDetailsHint","de":"z.B.: Filtermedien, Reinigungszyklus, etc.","context":"Platzhalter Filter"},{"key":"aquariumMaintenanceTitle","de":"Angaben zur Pflegeroutine","context":"Abschnitt: Pflegeroutine"},{"key":"aquariumWaterTypeTitle","de":"Verwendetes Wasser","context":"Abschnitt: Wasserart"},{"key":"aquariumWaterTypeSelected","de":"Ausgewählt","context":"Label: Ausgewählt"},{"key":"aquariumWaterTypeLabel0","de":"Leitungswasser","context":"Option: Leitungswasser"},{"key":"aquariumWaterTypeLabel1","de":"Verschnitt Osmose-/Leitungswasser","context":"Option: Verschnitt"},{"key":"aquariumWaterTypeLabel2","de":"Osmosewasser","context":"Option: Osmosewasser"},{"key":"aquariumFieldTapWaterValues","de":"Wasserwerte Leitungswasser","context":"Feld: Leitungswasserwerte"},{"key":"aquariumFieldTapWaterValuesHint","de":"z.B.: GH, KH, pH, etc.","context":"Platzhalter Leitungswasser"},{"key":"aquariumFieldMixRatio","de":"Mischverhältnis Leitungswasser : Osmosewasser","context":"Feld: Mischverhältnis"},{"key":"aquariumFieldMixRatioHint","de":"z.B.: 1:1","context":"Platzhalter Mischverhältnis"},{"key":"aquariumMaintenanceListTitle","de":"Pflegemaßnahmen","context":"Liste: Pflegemaßnahmen"},{"key":"aquariumMaintenanceAddButton","de":"Pflegemaßnahme hinzufügen","context":"Button: Pflegemaßnahme hinzufügen"},{"key":"aquariumMaintenanceDate","de":"Datum","context":"Spalte: Datum"},{"key":"aquariumMaintenanceDialogTitle","de":"Pflegemaßnahme","context":"Dialog: Pflegemaßnahme"},{"key":"aquariumMaintenanceTypeLabel","de":"Typ der Maßnahme","context":"Feld: Typ der Maßnahme"},{"key":"aquariumMaintenanceTypeCustom","de":"+ Eigene Maßnahme eingeben","context":"Option: Eigene Maßnahme"},{"key":"aquariumMaintenanceTypeCustomLabel","de":"Eigene Maßnahme","context":"Label: eigene Maßnahme"},{"key":"aquariumMaintenanceTypeCustomHint","de":"z.B. Skimmer installieren","context":"Platzhalter: eigene Maßnahme"},{"key":"aquariumMaintenanceCommentLabel","de":"Kommentar","context":"Feld: Kommentar"},{"key":"aquariumMaintenanceAddAction","de":"Hinzufügen","context":"Button: Hinzufügen"},{"key":"aquariumMaintenanceTypeWaterChange","de":"Wasserwechsel","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypePruning","de":"Rückschnitt","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeFilterClean","de":"Filter reinigen","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeTechChange","de":"Technik ändern","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypePlantSwap","de":"Pflanzen austauschen","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeHardscapeChange","de":"Hardscape ändern","context":"Maßnahmen-Typ"},{"key":"aquariumMaintenanceTypeSubstrateSwap","de":"Bodengrund austauschen","context":"Maßnahmen-Typ"},{"key":"aquariumHintWaterChange","de":"z.B. Menge Wasserwechsel","context":"Platzhalter"},{"key":"aquariumHintPruning","de":"z.B. Rotala zurückgeschnitten","context":"Platzhalter"},{"key":"aquariumHintFilterClean","de":"z.B. Filtermedien gewechselt","context":"Platzhalter"},{"key":"aquariumHintTechChange","de":"z.B. neuer Skimmer","context":"Platzhalter"},{"key":"aquariumHintPlantSwap","de":"z.B. Anubias raus, Bucephalandra rein","context":"Platzhalter"},{"key":"aquariumHintHardscapeChange","de":"z.B. Steine umpositioniert","context":"Platzhalter"},{"key":"aquariumHintSubstrateSwap","de":"z.B. Sand erneuert","context":"Platzhalter"},{"key":"aquariumPlantsTitle","de":"Pflanzenliste","context":"Tab Pflanzen: Listen-Titel"},{"key":"aquariumPlantsAddButton","de":"Pflanze hinzufügen","context":"Tab Pflanzen: Button"},{"key":"aquariumPlantsDialogTitle","de":"Neue Pflanze hinzufügen","context":"Tab Pflanzen: Dialog-Titel"},{"key":"aquariumPlantsHint","de":"Pflanzenname eingeben","context":"Tab Pflanzen: Platzhalter"},{"key":"aquariumPlantsAddAction","de":"Hinzufügen","context":"Tab Pflanzen: Button im Dialog"},{"key":"aquariumLivestockTitle","de":"Besatzliste","context":"Tab Besatz: Listen-Titel"},{"key":"aquariumLivestockAddButton","de":"Besatz hinzufügen","context":"Tab Besatz: Button"},{"key":"aquariumLivestockCount","de":"Anzahl","context":"Tab Besatz: Spalten-Header"},{"key":"aquariumLivestockAddDialogTitle","de":"Neuen Besatz hinzufügen","context":"Tab Besatz: Dialog-Titel"},{"key":"aquariumLivestockEditDialogTitle","de":"Besatz bearbeiten","context":"Tab Besatz: Dialog-Titel Bearbeiten"},{"key":"aquariumLivestockNameLabel","de":"Besatz","context":"Tab Besatz: Feld-Label"},{"key":"aquariumLivestockNameHint","de":"Namen eingeben","context":"Tab Besatz: Platzhalter"},{"key":"aquariumLivestockCountLabel","de":"Anzahl","context":"Tab Besatz: Anzahl-Label"},{"key":"aquariumLivestockCountHint","de":"Anzahl eingeben","context":"Tab Besatz: Platzhalter"},{"key":"aquariumImageHint","de":"Bild auswählen","context":"Bild-Auswahl Hint"},{"key":"aquariumDiscardTitle","de":"Änderungen verwerfen?","context":"Dialog: Änderungen verwerfen?"},{"key":"aquariumDiscardContent","de":"Möchtest du wirklich ohne Speichern verlassen? Alle Änderungen gehen verloren.","context":"Dialog-Text: Verwerfen"},{"key":"aquariumDiscardLeave","de":"Verlassen","context":"Button: Verlassen"},{"key":"aquariumDeleteTitle","de":"Aquarium löschen?","context":"Dialog: Aquarium löschen?"},{"key":"aquariumDeleteContent","de":"[Parameter: String name] Möchtest du das Aquarium \"$name\" wirklich unwiderruflich löschen?","context":"Dialog-Text ({name} = Aquarium-Name)"},{"key":"aquariumDeleteConfirm","de":"Ja, löschen","context":"Button: Löschen bestätigen"},{"key":"aquariumMissingFieldsTitle","de":"Fehlende Angaben","context":"Dialog: Fehlende Angaben"},{"key":"aquariumMissingFieldsAutoContent","de":"Bitte gib einen Namen sowie gültige Werte für Breite, Höhe und Tiefe ein.","context":"Dialog-Text: auto Modus"},{"key":"aquariumMissingFieldsManualContent","de":"Bitte gib einen Namen und ein gültiges Nettovolumen ein.","context":"Dialog-Text: manueller Modus"},{"key":"aquariumYesNo","de":"Ja","context":"Ja/Nein-Label"}]},{"title":"Onboarding","location":"Intro-Tour beim allerersten App-Start — Titel und Beschreibungen der einzelnen Seiten","items":[{"key":"onboardingPage1_title","de":"Willkommen!","context":"Onboarding Seite 1: Titel"},{"key":"onboardingPage1_description","de":"Willkommen in der C&P Aquaplants App. Du bekommst zu Beginn eine Tour durch die App, dann kannst du sofort loslegen.","context":"Onboarding Seite 1: Beschreibungstext"},{"key":"onboardingPage2_title","de":"Aquarium anlegen","context":"Onboarding Seite 2: Titel"},{"key":"onboardingPage2_description","de":"Lege beliebig viele Aquarien an. Die Reihenfolge deiner Aquarien kannst du durch Verschieben flexibel anpassen.","context":"Onboarding Seite 2: Beschreibungstext"},{"key":"onboardingPage3_title","de":"Größe eingeben","context":"Onboarding Seite 3: Titel"},{"key":"onboardingPage3_description","de":"Gib die Maße deines Aquariums, sowie weitere Infos zum Bodengrundaufbau etc. ein.  Dein Nettovolumen wird daraus automatisch berechnet. Du kannst dein Nettovolumen natürlich auch manuell eingeben.","context":"Onboarding Seite 3: Beschreibungstext"},{"key":"onboardingPage4_title","de":"Technikkomponenten","context":"Onboarding Seite 4: Titel"},{"key":"onboardingPage4_description","de":"Hinterlege deine genutzten Technikkomponenten mit allen Details. Das kann später beim Support helfen.","context":"Onboarding Seite 4: Beschreibungstext"},{"key":"onboardingPage5_title","de":"Pflegeroutine","context":"Onboarding Seite 5: Titel"},{"key":"onboardingPage5_description","de":"Hier kannst du deine Pflegemaßnahmen dokumentieren, um immer den Überblick zu behalten.","context":"Onboarding Seite 5: Beschreibungstext"},{"key":"onboardingPage6_title","de":"Pflanzen","context":"Onboarding Seite 6: Titel"},{"key":"onboardingPage6_description","de":"Hier kannst du festhalten, welche Pflanzen du in deinem Becken hast.","context":"Onboarding Seite 6: Beschreibungstext"},{"key":"onboardingPage7_title","de":"Besatz","context":"Onboarding Seite 7: Titel"},{"key":"onboardingPage7_description","de":"Hier kannst du alle deine Tiere eintragen.","context":"Onboarding Seite 7: Beschreibungstext"},{"key":"onboardingPage8_title","de":"Einstellungen","context":"Onboarding Seite 8: Titel"},{"key":"onboardingPage8_description","de":"Auf der Unterseite deines Photometers findst du eine Kennzeichnung G002 oder G003 gefolgt von einer Nummer.  Diese Nummer ist die Seriennummer deines Geräts.\\n\\n Die Photometerkennung findest du ganz oben auf den Papiertabellen, die dem Photometer beim Kauf beigelegt waren. Ebenso war ein Blatt mit einem Faktor F beigelegt.\\n\\n Auf jedem deiner Wassertests steht eine Serie. Gib all diese Infos in den Einstellungen an und schon kannst du mit dem Messen loslegen.","context":"Onboarding Seite 8: Beschreibungstext"},{"key":"onboardingPage9_title","de":"Daten exportieren bzw. importieren","context":"Onboarding Seite 9: Titel"},{"key":"onboardingPage9_description","de":"Ganz unten bei den Einstellungen findest du Funktionen zum Exportieren, bzw. importieren aller Appdaten.  So kannst du die Daten ganz einfach von einem Gerät auf ein anderes übertragen. Dies funktioniert auch plattformübergreifend.","context":"Onboarding Seite 9: Beschreibungstext"},{"key":"onboardingPage10_title","de":"Messungen","context":"Onboarding Seite 10: Titel"},{"key":"onboardingPage10_description","de":"Gib einfach die Messwerte deines Photometers ein – das Ergebnis wird automatisch berechnet.  Wenn du kein Photometer verwendest, kannst du dies in den Einstellungen angeben und hier deine Messwerte von den Tröpfchentests angeben.","context":"Onboarding Seite 10: Beschreibungstext"},{"key":"onboardingPage11_title","de":"Timer","context":"Onboarding Seite 11: Titel"},{"key":"onboardingPage11_description","de":"Verwende den integrierten Timer in der App.  Dort sind schon einige Timer festgelegt, du kannst aber auch individuelle Timer erstellen.  So hast du immer die Zeit im Blick, ohne die App wechseln zu müssen.","context":"Onboarding Seite 11: Beschreibungstext"},{"key":"onboardingPage12_title","de":"Übersicht","context":"Onboarding Seite 12: Titel"},{"key":"onboardingPage12_description","de":"Behalte den Überblick: Wähle oben dein Aquarium aus. Die Tabelle zeigt alle Messwerte deines ausgewählten Aquariums.  Einträge lassen sich durch langes Drücken ganz einfach anpassen oder entfernen.","context":"Onboarding Seite 12: Beschreibungstext"},{"key":"onboardingPage13_title","de":"Messwerte teilen","context":"Onboarding Seite 13: Titel"},{"key":"onboardingPage13_description","de":"Oben rechts im Übersicht-Reiter findest du die Option Teilen. Deine letzten 5 Messungen, sowie alle Angaben zum Aquarium werden geteilt. \\n\\nSo kannst du den Support noch schneller und einfacher mit allen deinen Daten kontaktieren oder deine Daten mit Freunden teilen.","context":"Onboarding Seite 13: Beschreibungstext"},{"key":"onboardingPage14_title","de":"Düngung","context":"Onboarding Seite 14: Titel"},{"key":"onboardingPage14_description","de":"Beim Reiter Düngung kannst du deine Zielwerte eingeben. Dein Bedarf an Dünger wird dann automatisch für deine Aquarien berechnet.  Mit dem integrierten Salzrechner weißt du immer, wie viel Aufhärtesalz du nach dem Wasserwechsel zugeben musst.","context":"Onboarding Seite 14: Beschreibungstext"},{"key":"onboardingPage15_title","de":"Düngung","context":"Onboarding Seite 15: Titel"},{"key":"onboardingPage15_description","de":"Außerdem kannst du deine tägliche Düngung angeben, sowie das Datum Düngekapseln.  Gib einfach dein gewünschtes Intervall an und du wirst automatisch benachrichtigt, wenn neue Düngekapseln fällig sind.","context":"Onboarding Seite 15: Beschreibungstext"},{"key":"onboardingPage16_title","de":"Videomaterial","context":"Onboarding Seite 16: Titel"},{"key":"onboardingPage16_description","de":"In diesem Reiter wird dir ausgewähltes Videomaterial zum Photometer und der Düngung, sowie die neuesten Videos von C&P Aquaplants zur Verfügung gestellt.","context":"Onboarding Seite 16: Beschreibungstext"}]},{"title":"Impressum & Datenschutz","location":"Impressum-Screen (erreichbar über Info-Button)","items":[{"key":"impressumPageTitle","de":"Impressum & Datenschutz","context":"Screen-Titel"},{"key":"impressumHeading","de":"Impressum","context":"Überschrift Impressum"},{"key":"impressumSupervisoryAuthority","de":"Zuständige Aufsichtsbehörde für das Angebot audiovisueller Mediendienste:","context":"Label: Aufsichtsbehörde"},{"key":"impressumOdrPlatform","de":"Plattform der EU-Kommission zur Online-Streitbeilegung:","context":"Label: ODR-Plattform"},{"key":"impressumDisputeNote","de":"Wir sind zur Teilnahme an einem Streitbeilegungsverfahren vor einer  Verbraucherschlichtungsstelle nicht verpflichtet, hierzu jedoch bereit.","context":"Text: Schlichtungshinweis"},{"key":"impressumLastUpdated","de":"Stand: 05.07.2025, 16:09:00 Uhr","context":"Label: Datum der letzten Änderung"},{"key":"privacyHeading","de":"Datenschutzerklärung","context":"Überschrift Datenschutz"},{"key":"privacyIntro","de":"Der Schutz Ihrer Daten ist uns wichtig. Diese App sammelt oder speichert keine personenbezogenen Daten.","context":"Einleitungstext"},{"key":"privacySection1Title","de":"1. Verantwortliche Stelle","context":"Abschnitt 1: Titel"},{"key":"privacySection1Body","de":"Verantwortlich für die Datenverarbeitung im Sinne der DSGVO ist C&P Aquaplants.","context":"Abschnitt 1: Text"},{"key":"privacySection2Title","de":"2. Datenerhebung","context":"Abschnitt 2: Titel"},{"key":"privacySection2Body","de":"Diese App erhebt, speichert oder überträgt keine personenbezogenen Daten.\\n Die App ermöglicht es Ihnen, gebündelte Informationen über Ihr Aquarium lokal zu erzeugen  und diese selbst über externe Anwendungen (wie WhatsApp, E-Mail usw.) zu teilen. Dabei werden  keine personenbezogenen Daten von der App gespeichert oder übertragen. Die Weitergabe der Daten  erfolgt ausschließlich durch Ihre aktive Entscheidung und Nutzung externer Dienste, auf die die App keinen Einfluss hat.","context":"Abschnitt 2: Text"},{"key":"privacySection3Title","de":"3. Analyse und Tracking","context":"Abschnitt 3: Titel"},{"key":"privacySection3Body","de":"Es werden keine Analyse-Tools oder Tracking-Dienste verwendet.","context":"Abschnitt 3: Text"},{"key":"privacySection4Title","de":"4. Externe Dienste","context":"Abschnitt 4: Titel"},{"key":"privacySection4Body","de":"Diese App nutzt keine externen Server oder Schnittstellen, die personenbezogene Daten übertragen oder verarbeiten.  Beim Teilen von Informationen über externe Anwendungen (z. B. WhatsApp, E-Mail) erfolgt die Übertragung ausschließlich  durch die von Ihnen gewählte App und nicht durch diese Anwendung selbst.","context":"Abschnitt 4: Text"},{"key":"privacySection5Title","de":"5. Ihre Rechte","context":"Abschnitt 5: Titel"},{"key":"privacySection5Body","de":"Da die App selbst keine personenbezogenen Daten erhebt oder speichert, ergeben sich im Rahmen  der Nutzung keine spezifischen Betroffenenrechte nach DSGVO.","context":"Abschnitt 5: Text"}]}];
+var SECTION_META = [["Navigation","Die Tabs ganz unten in der App"],["Einstellungen","Der Einstellungs-Screen"],["Benachrichtigungen","Erinnerungen auf dem Sperrbildschirm"],["Sprachwahl","Beim ersten Start der App"],["Videos","Der Video-Bereich"],["Messung mit Fotometer","Messwerte eingeben und auswerten"],["Messung ohne Fotometer","Direkte Werteingabe"],["Messwerte-Tabelle","Gespeicherte Messungen anzeigen"],["Düngung","Düngerechner und Salzrechner"],["Startseite","Produkte, Kontakt und WhatsApp"],["Düngeanleitung","Die Anleitung zum Düngen"],["Teilen-Funktion","Text beim Teilen per WhatsApp oder E-Mail"],["Aquarium-Verwaltung","Aquarium anlegen und bearbeiten"],["Einführungs-Tour","Die Tour beim ersten App-Start"],["Impressum & Datenschutz","Rechtliche Texte"]];
 
-var SECTION_META = [
-  ["Navigation","Die Tabs ganz unten in der App"],
-  ["Einstellungen","Der Einstellungs-Screen"],
-  ["Benachrichtigungen","Erinnerungen auf dem Sperrbildschirm"],
-  ["Sprachwahl","Beim ersten Start der App"],
-  ["Videos","Der Video-Bereich"],
-  ["Messung mit Fotometer","Messwerte eingeben und auswerten"],
-  ["Messung ohne Fotometer","Direkte Werteingabe"],
-  ["Messwerte-Tabelle","Gespeicherte Messungen anzeigen"],
-  ["Düngung","Düngerechner und Salzrechner"],
-  ["Startseite","Produkte, Kontakt und WhatsApp"],
-  ["Düngeanleitung","Die Anleitung zum Dünger"],
-  ["Teilen-Funktion","Text beim Teilen per WhatsApp oder E-Mail"],
-  ["Aquarium-Verwaltung","Aquarium anlegen und bearbeiten"],
-  ["Einführungs-Tour","Die Tour beim ersten App-Start"],
-  ["Impressum und Datenschutz","Rechtliche Texte"]
-];
-
-var state = { section: 0, filter: "all", translations: {}, langName: "", langCode: "" };
-var totalStrings = SECTIONS.reduce(function(a, s) { return a + s.items.length; }, 0);
+var state = { screen:0, section:0, filter:"all", translations:{}, langName:"", langCode:"" };
+var totalStrings = SECTIONS.reduce(function(a,s){ return a+s.items.length; },0);
 
 function filled() {
-  var n = 0;
-  Object.keys(state.translations).forEach(function(k) {
-    if (state.translations[k] && state.translations[k].trim()) n++;
+  var n=0;
+  Object.keys(state.translations).forEach(function(k){
+    if(state.translations[k]&&state.translations[k].trim()) n++;
   });
   return n;
 }
-
 function sectionFilled(i) {
-  var n = 0;
-  SECTIONS[i].items.forEach(function(item) {
-    if ((state.translations[item.key] || "").trim()) n++;
+  var n=0;
+  SECTIONS[i].items.forEach(function(item){
+    if((state.translations[item.key]||"").trim()) n++;
   });
   return n;
 }
+function el(id){ return document.getElementById(id); }
 
-function el(id) { return document.getElementById(id); }
+// ── WIZARD ──────────────────────────────────────────────
+function tlWizardGo(screen) {
+  if(screen===1 && (!state.langName||!state.langCode)) return;
+  state.screen = screen;
 
+  // Update step dots
+  for(var i=0;i<3;i++){
+    var dot = el("wd-"+i), step = el("ws-"+i);
+    dot.className = "step-dot " + (i<screen?"done":i===screen?"active":"pending");
+    dot.textContent = i<screen?"✓":(i+1);
+    step.className = "wizard-step " + (i<screen?"done":i===screen?"active":"pending");
+  }
+
+  // Show correct screen
+  [0,1,2].forEach(function(i){
+    el("tl-screen-"+i).style.display = i===screen?"block":"none";
+  });
+
+  if(screen===1){ tlRender(); window.scrollTo({top:0,behavior:"smooth"}); }
+  if(screen===2){ tlRenderSendScreen(); window.scrollTo({top:0,behavior:"smooth"}); }
+}
+
+// ── LANGUAGE UPDATE ──────────────────────────────────────
 function tlUpdate() {
-  state.langName = ((el("tl-lang-name") || {}).value || "").trim();
-  state.langCode = ((el("tl-lang-code") || {}).value || "").trim();
-  var btn = el("tl-export-btn");
-  if (btn) {
-    btn.disabled = !state.langName || !state.langCode;
-  }
-  if (state.langName && state.langCode) {
-    var s2 = el("tl-step2-num"), s3 = el("tl-step3-num");
-    if (s2) { s2.style.background = "var(--accent)"; s2.style.color = "#000"; s2.style.border = "none"; }
-    if (s3) { s3.style.background = "var(--accent)"; s3.style.color = "#000"; s3.style.border = "none"; }
-  }
+  state.langName = ((el("tl-lang-name")||{}).value||"").trim();
+  state.langCode = ((el("tl-lang-code")||{}).value||"").trim();
+  var ok = !!(state.langName && state.langCode);
+  var btn = el("tl-btn-start");
+  if(btn){ btn.disabled=!ok; }
   tlRenderProgress();
-  tlRenderSectionTabs();
-  document.querySelectorAll(".tl-lang-label").forEach(function(l) {
-    l.textContent = "✍ " + (state.langName || "Deine Übersetzung");
-  });
 }
 
+// ── PROGRESS ─────────────────────────────────────────────
 function tlRenderProgress() {
-  var f = filled(), pct = Math.round(f / totalStrings * 100);
-  var lbl = el("tl-progress-label");
-  if (lbl) lbl.textContent = f + " von " + totalStrings + " Texten";
-  var bar = el("tl-progress-bar");
-  if (bar) { bar.style.width = pct + "%"; bar.style.background = pct === 100 ? "#22c55e" : "var(--accent)"; }
-  var txt = el("tl-progress-text");
-  if (txt) {
-    if (f === 0) txt.textContent = "Noch keine Übersetzungen eingetragen";
-    else if (pct === 100) txt.textContent = "Alle Texte übersetzt! 🎉";
-    else txt.textContent = pct + "% fertig – weiter so!";
+  var f=filled(), pct=Math.round(f/totalStrings*100);
+  // Ring
+  var circumference=138;
+  var offset=circumference-(circumference*pct/100);
+  var ring=el("tl-ring");
+  if(ring){ ring.style.strokeDashoffset=offset; ring.style.stroke=pct===100?"#22c55e":"var(--accent)"; }
+  var rp=el("tl-ring-pct");
+  if(rp){ rp.textContent=pct+"%"; rp.style.color=pct===100?"#22c55e":"var(--accent)"; }
+  // Text
+  var lbl=el("tl-progress-label");
+  if(lbl) lbl.textContent=f+" von "+totalStrings+" Texten";
+  var txt=el("tl-progress-text");
+  if(txt){
+    if(f===0) txt.textContent="Noch keine Übersetzungen";
+    else if(pct===100) txt.textContent="Alle Texte übersetzt! 🎉";
+    else txt.textContent=pct+"% geschafft — weiter so!";
+  }
+  // Send screen ring
+  var r2=el("tl-ring2");
+  if(r2){ r2.style.strokeDashoffset=offset; r2.style.stroke=pct===100?"#22c55e":"var(--accent)"; }
+  var r2p=el("tl-ring2-pct");
+  if(r2p){ r2p.textContent=pct+"%"; }
+}
+
+function tlRenderSendScreen() {
+  var f=filled(), pct=Math.round(f/totalStrings*100);
+  tlRenderProgress();
+  var st=el("tl-send-stat");
+  if(st) st.textContent=f+" von "+totalStrings+" Texten übersetzt ("+pct+"%)";
+  var sl=el("tl-send-lang");
+  if(sl) sl.textContent="Sprache: "+state.langName;
+  if(pct===100){
+    var ic=el("tl-send-icon"); if(ic) ic.textContent="🏆";
+    var ti=el("tl-send-title"); if(ti) ti.textContent="Perfekt — vollständig übersetzt!";
   }
 }
 
+// ── SECTION TABS ─────────────────────────────────────────
 function tlRenderSectionTabs() {
-  var c = el("tl-section-tabs");
-  if (!c) return;
-  var html = "";
-  SECTIONS.forEach(function(s, i) {
-    var f = sectionFilled(i);
-    var pct = s.items.length ? Math.round(f / s.items.length * 100) : 0;
-    var meta = SECTION_META[i] || ["", ""];
-    var active = i === state.section;
-    var done = pct === 100;
-    var border = active ? "var(--accent)" : (done ? "rgba(34,197,94,.3)" : "var(--border)");
-    var bg = active ? "rgba(61,189,177,.1)" : "var(--surface)";
-    var nameColor = active ? "var(--accent)" : (done ? "#22c55e" : "var(--text)");
-    var check = done ? '<span style="margin-left:auto;color:#22c55e;">✓</span>' : "";
-    html += '<button onclick="tlGoSection(' + i + ')" style="text-align:left;padding:12px 14px;border-radius:10px;border:1px solid ' + border + ';background:' + bg + ';cursor:pointer;transition:all .2s;width:100%;">';
-    html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">';
-    html += '<span style="font-size:13px;font-weight:' + (active ? 600 : 400) + ';color:' + nameColor + ';line-height:1.2;">' + meta[0] + '</span>';
-    html += check + '</div>';
-    html += '<div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;">';
-    html += '<div style="height:100%;width:' + pct + '%;background:' + (done ? "#22c55e" : "var(--accent)") + ';border-radius:2px;"></div></div>';
-    html += '<div style="font-size:11px;color:var(--muted);margin-top:4px;">' + f + '/' + s.items.length + ' Texte</div>';
-    html += '</button>';
+  var c=el("tl-section-tabs"); if(!c) return;
+  var html="";
+  SECTIONS.forEach(function(s,i){
+    var f=sectionFilled(i);
+    var pct=s.items.length?Math.round(f/s.items.length*100):0;
+    var meta=SECTION_META[i]||["",""];
+    var active=i===state.section, done=pct===100;
+    var cls="section-pill"+(active?" active":"")+(done&&!active?" done":"");
+    var barColor=done?"#22c55e":"var(--accent)";
+    var nameColor=active?"var(--accent)":(done?"#22c55e":"var(--text)");
+    html+='<button class="'+cls+'" onclick="tlGoSection('+i+')">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">';
+    html+='<span style="font-size:12px;font-weight:'+(active?600:400)+';color:'+nameColor+';">'+meta[0]+'</span>';
+    if(done) html+='<span style="color:#22c55e;font-size:12px;">✓</span>';
+    html+='</div>';
+    html+='<div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;">';
+    html+='<div style="height:100%;width:'+pct+'%;background:'+barColor+';border-radius:2px;"></div></div>';
+    html+='<div style="font-size:11px;color:var(--muted);margin-top:4px;">'+f+'/'+s.items.length+'</div>';
+    html+='</button>';
   });
-  c.innerHTML = html;
+  c.innerHTML=html;
 }
 
+// ── FILTER ───────────────────────────────────────────────
 function tlSetFilter(f) {
-  state.filter = f;
-  ["all", "todo", "done"].forEach(function(id) {
-    var b = el("tl-f-" + id);
-    if (!b) return;
-    b.style.borderColor = id === f ? "var(--accent)" : "var(--border)";
-    b.style.color       = id === f ? "var(--accent)" : "var(--muted2)";
-    b.style.background  = id === f ? "rgba(61,189,177,.08)" : "transparent";
+  state.filter=f;
+  ["all","todo","done"].forEach(function(id){
+    var b=el("tl-f-"+id); if(!b) return;
+    b.style.borderColor=id===f?"var(--accent)":"var(--border)";
+    b.style.color=id===f?"var(--accent)":"var(--muted2)";
+    b.style.background=id===f?"rgba(61,189,177,.08)":"transparent";
   });
   tlRenderItems();
 }
 
 function tlUpdateFilterCounts() {
-  var s = SECTIONS[state.section];
-  var done = sectionFilled(state.section);
-  var fa = el("tl-f-all"), ft = el("tl-f-todo"), fd = el("tl-f-done");
-  if (fa) fa.textContent = "Alle (" + s.items.length + ")";
-  if (ft) ft.textContent = "Noch offen (" + (s.items.length - done) + ")";
-  if (fd) fd.textContent = "Erledigt (" + done + ")";
+  var s=SECTIONS[state.section], done=sectionFilled(state.section);
+  var fa=el("tl-f-all"),ft=el("tl-f-todo"),fd=el("tl-f-done");
+  if(fa) fa.textContent="Alle ("+s.items.length+")";
+  if(ft) ft.textContent="Offen ("+(s.items.length-done)+")";
+  if(fd) fd.textContent="Fertig ("+done+")";
 }
 
+// ── RENDER HEADER ────────────────────────────────────────
 function tlRenderHeader() {
-  var meta = SECTION_META[state.section] || ["", ""];
-  var t = el("tl-section-title"); if (t) t.textContent = meta[0];
-  var l = el("tl-section-loc");   if (l) l.textContent = "Wo in der App: " + meta[1];
-  var pi = el("tl-page-indicator"); if (pi) pi.textContent = "Bereich " + (state.section + 1) + " von " + SECTIONS.length;
-  var prev = el("tl-prev");
-  if (prev) { prev.style.opacity = state.section === 0 ? ".3" : "1"; prev.disabled = state.section === 0; }
-  var next = el("tl-next");
-  if (next) next.textContent = state.section === SECTIONS.length - 1 ? "Fertig ✓" : "Weiter →";
+  var meta=SECTION_META[state.section]||["",""];
+  var t=el("tl-section-title"); if(t) t.textContent=meta[0];
+  var l=el("tl-section-loc"); if(l) l.textContent="Wo in der App: "+meta[1];
+  var pi=el("tl-page-indicator"); if(pi) pi.textContent=(state.section+1)+" / "+SECTIONS.length;
+  var prev=el("tl-prev"); if(prev){ prev.disabled=state.section===0; prev.style.opacity=state.section===0?".3":"1"; }
+  var next=el("tl-next");
+  if(next) next.textContent=state.section===SECTIONS.length-1?"✓ Fertig":"Weiter →";
   tlUpdateFilterCounts();
 }
 
+// ── RENDER ITEMS ─────────────────────────────────────────
 function tlRenderItems() {
-  var container = el("tl-items");
-  if (!container) return;
-  var s = SECTIONS[state.section];
-  var langLabel = state.langName || "Deine Übersetzung";
+  var container=el("tl-items"); if(!container) return;
+  var s=SECTIONS[state.section];
+  var langLabel=state.langName||"Deine Übersetzung";
 
-  var items = s.items.filter(function(item) {
-    if (state.filter === "done" && !(state.translations[item.key] || "").trim()) return false;
-    if (state.filter === "todo" &&  (state.translations[item.key] || "").trim()) return false;
+  var items=s.items.filter(function(item){
+    if(state.filter==="done"&&!(state.translations[item.key]||"").trim()) return false;
+    if(state.filter==="todo"&&(state.translations[item.key]||"").trim()) return false;
     return true;
   });
 
-  if (items.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">Keine Einträge in dieser Ansicht.</div>';
+  if(items.length===0){
+    container.innerHTML='<div style="text-align:center;padding:48px;color:var(--muted);font-size:14px;">'+
+      (state.filter==="done"?"Noch keine erledigten Einträge in diesem Bereich.":
+       state.filter==="todo"?"Alle Einträge in diesem Bereich erledigt! 🎉":
+       "Keine Einträge.")+'</div>';
     return;
   }
 
-  var parts = [];
-  items.forEach(function(item) {
-    var isDone  = !!(state.translations[item.key] || "").trim();
-    var isParam = item.de.indexOf("[Parameter:") === 0;
-    var borderColor = isDone ? "rgba(61,189,177,.4)" : "var(--border)";
+  var parts=[];
+  items.forEach(function(item){
+    var isDone=!!(state.translations[item.key]||"").trim();
+    var isParam=item.de.indexOf("[Parameter:")===0;
+    var borderColor=isDone?"rgba(61,189,177,.4)":"var(--border)";
 
-    var deDisplay = item.de;
-    if (isParam) {
-      deDisplay = item.de
-        .replace(/^\[Parameter:[^\]]+\]\s*/, "")
-        .replace(/\$\{?(\w+)\}?/g, "[{$1}]")
-        .replace(/\$(\w+)/g, "[{$1}]");
+    var deDisplay=item.de;
+    if(isParam){
+      deDisplay=item.de.replace(/^\[Parameter:[^\]]+\]\s*/,"")
+        .replace(/\$\{?(\w+)\}?/g,"[{$1}]").replace(/\$(\w+)/g,"[{$1}]");
     }
-    if (deDisplay.length > 200) deDisplay = deDisplay.slice(0, 200) + "…";
-    deDisplay = deDisplay.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    if(deDisplay.length>200) deDisplay=deDisplay.slice(0,200)+"…";
+    deDisplay=deDisplay.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
-    var val = (state.translations[item.key] || "")
+    var val=(state.translations[item.key]||"")
       .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    var isLong=item.de.length>80;
+    var rows=Math.min(4,Math.ceil(item.de.length/60)+1);
+    var baseStyle="width:100%;box-sizing:border-box;padding:10px 14px;background:var(--bg);border:1px solid "+borderColor+";border-radius:8px;color:var(--text);font-family:var(--sans);font-size:14px;outline:none;transition:border-color .2s;";
+    var inputEl=isLong
+      ?'<textarea rows="'+rows+'" data-key="'+item.key+'" oninput="tlSet(this)" placeholder="Deine Übersetzung …" style="'+baseStyle+'resize:vertical;line-height:1.6;">'+val+'</textarea>'
+      :'<input type="text" data-key="'+item.key+'" oninput="tlSet(this)" value="'+val+'" placeholder="Deine Übersetzung …" style="'+baseStyle+'">';
 
-    var isLong = item.de.length > 80;
-    var rows = Math.min(4, Math.ceil(item.de.length / 60) + 1);
-    var baseStyle = "width:100%;box-sizing:border-box;padding:10px 14px;background:var(--bg);border:1px solid " + borderColor + ";border-radius:8px;color:var(--text);font-family:var(--sans);font-size:14px;outline:none;transition:border-color .2s;";
-
-    var inputEl;
-    if (isLong) {
-      inputEl = '<textarea rows="' + rows + '" data-key="' + item.key + '" oninput="tlSet(this)" placeholder="Hier deine Übersetzung eingeben …" style="' + baseStyle + 'resize:vertical;line-height:1.6;">' + val + '</textarea>';
-    } else {
-      inputEl = '<input type="text" data-key="' + item.key + '" oninput="tlSet(this)" value="' + val + '" placeholder="Hier deine Übersetzung eingeben …" style="' + baseStyle + '">';
+    var doneCheck=isDone?'<span style="color:#22c55e;font-size:12px;margin-left:auto;flex-shrink:0;">✓</span>':"";
+    var placeholders=[];
+    if(isParam){
+      var pm=item.de.match(/\$\{?(\w+)\}?/g)||[];
+      pm.forEach(function(p){ placeholders.push('[{'+p.replace(/^\$\{?|\}?$/g,'')+'}]'); });
     }
-
-    var doneCheck = isDone  ? '<span style="color:#22c55e;font-size:12px;margin-left:auto;">✓ Übersetzt</span>' : "";
-    var paramWarn = isParam ? '<span style="background:rgba(201,75,109,.1);color:#c94b6d;padding:2px 8px;border-radius:4px;font-size:11px;">⚠ Platzhalter in [{}] beibehalten!</span>' : "";
+    var paramWarn=isParam?'<span style="background:rgba(201,75,109,.1);color:#c94b6d;padding:2px 8px;border-radius:4px;font-size:11px;">&#9888; Platzhalter '+placeholders.join(' ')+' beibehalten!</span>':"";
 
     parts.push(
-      '<div style="padding:16px 0;border-bottom:1px solid var(--border);">' +
-        '<div style="font-size:12px;color:var(--muted2);margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
-          '<span style="background:var(--bg2);padding:2px 8px;border-radius:4px;font-size:11px;">📍 ' + item.context + '</span>' +
-          paramWarn + doneCheck +
-        '</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">' +
-          '<div>' +
-            '<div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;">Deutsch</div>' +
-            '<div style="font-size:14px;color:var(--muted2);background:var(--bg2);padding:10px 14px;border-radius:8px;min-height:40px;line-height:1.6;">' + deDisplay + '</div>' +
-          '</div>' +
-          '<div>' +
-            '<div class="tl-lang-label" style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;">✍ ' + langLabel + '</div>' +
-            inputEl +
-          '</div>' +
-        '</div>' +
+      '<div class="entry-card">'+
+      '<div style="font-size:12px;color:var(--muted2);margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">'+
+      '<span style="background:var(--bg2);padding:2px 8px;border-radius:4px;font-size:11px;">📍 '+item.context+'</span>'+
+      paramWarn+doneCheck+
+      '</div>'+
+      '<div class="entry-grid">'+
+      '<div>'+
+      '<div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">🇩🇪 Deutsch</div>'+
+      '<div style="font-size:14px;color:var(--muted2);background:var(--bg2);padding:10px 14px;border-radius:8px;min-height:40px;line-height:1.6;">'+deDisplay+'</div>'+
+      '</div>'+
+      '<div>'+
+      '<div class="tl-lang-label" style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">✍ '+langLabel+'</div>'+
+      inputEl+
+      '</div>'+
+      '</div>'+
       '</div>'
     );
   });
-  container.innerHTML = parts.join("");
+  container.innerHTML=parts.join("");
 }
 
 function tlRender() {
@@ -481,136 +566,203 @@ function tlRender() {
   tlRenderItems();
   tlRenderSectionTabs();
   tlRenderProgress();
+  // Activate "Alle" filter visually
+  var fa=el("tl-f-all");
+  if(fa&&state.filter==="all"){
+    fa.style.borderColor="var(--accent)"; fa.style.color="var(--accent)"; fa.style.background="rgba(61,189,177,.08)";
+  }
+}
+
+// ── INTERACTIONS ─────────────────────────────────────────
+function tlAutoSave() {
+  try {
+    localStorage.setItem("cp_tl_state", JSON.stringify({
+      name: state.langName,
+      code: state.langCode,
+      translations: state.translations
+    }));
+  } catch(e) {}
 }
 
 function tlSet(input) {
-  state.translations[input.dataset.key] = input.value;
-  input.style.borderColor = input.value.trim() ? "rgba(61,189,177,.4)" : "var(--border)";
+  state.translations[input.dataset.key]=input.value;
+  input.style.borderColor=input.value.trim()?"rgba(61,189,177,.4)":"var(--border)";
   tlRenderProgress();
   tlRenderSectionTabs();
   tlUpdateFilterCounts();
+  tlAutoSave();
 }
 
 function tlGoSection(i) {
-  state.section = i;
-  state.filter = "all";
-  ["all", "todo", "done"].forEach(function(id) {
-    var b = el("tl-f-" + id);
-    if (b) { b.style.borderColor = "var(--border)"; b.style.color = "var(--muted2)"; b.style.background = "transparent"; }
+  state.section=i; state.filter="all";
+  ["all","todo","done"].forEach(function(id){
+    var b=el("tl-f-"+id); if(!b) return;
+    b.style.borderColor="var(--border)"; b.style.color="var(--muted2)"; b.style.background="transparent";
   });
-  var fa = el("tl-f-all");
-  if (fa) { fa.style.borderColor = "var(--accent)"; fa.style.color = "var(--accent)"; fa.style.background = "rgba(61,189,177,.08)"; }
+  var fa=el("tl-f-all");
+  if(fa){ fa.style.borderColor="var(--accent)"; fa.style.color="var(--accent)"; fa.style.background="rgba(61,189,177,.08)"; }
   tlRender();
-  var s3 = el("tl-step3");
-  if (s3) s3.scrollIntoView({ behavior: "smooth", block: "start" });
+  var top=el("tl-screen-1"); if(top) top.scrollIntoView({behavior:"smooth",block:"start"});
+  // Fokus auf erstes Eingabefeld des neuen Bereichs
+  setTimeout(function(){
+    var first=document.querySelector("#tl-items input[type=text], #tl-items textarea");
+    if(first) first.focus();
+  }, 50);
 }
 
-function tlPrevSection() { if (state.section > 0) tlGoSection(state.section - 1); }
+function tlPrevSection() { if(state.section>0) tlGoSection(state.section-1); }
 function tlNextSection() {
-  if (state.section < SECTIONS.length - 1) tlGoSection(state.section + 1);
-  else tlShowToast("Super! Speichere jetzt deinen Stand und sende ihn ein. 🎉");
+  if(state.section<SECTIONS.length-1) tlGoSection(state.section+1);
+  else { tlShowToast("Alle Bereiche fertig! Jetzt einsenden."); tlWizardGo(2); }
 }
 
 function tlShowToast(msg) {
-  var t = el("tl-toast"); if (!t) return;
-  t.textContent = msg;
-  t.style.opacity = "1";
-  t.style.transform = "translateX(-50%) translateY(0)";
-  setTimeout(function() { t.style.opacity = "0"; t.style.transform = "translateX(-50%) translateY(20px)"; }, 3000);
+  var t=el("tl-toast"); if(!t) return;
+  t.textContent=msg; t.style.opacity="1"; t.style.transform="translateX(-50%) translateY(0)";
+  setTimeout(function(){ t.style.opacity="0"; t.style.transform="translateX(-50%) translateY(20px)"; },3000);
 }
 
+// ── SAVE / LOAD / SEND ───────────────────────────────────
 function tlSaveJson() {
-  var data = { language: state.langName, code: state.langCode, translations: state.translations };
-  var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-  var a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "uebersetzung_" + (state.langCode || "neu") + ".json";
+  var blob=new Blob([JSON.stringify({language:state.langName,code:state.langCode,translations:state.translations},null,2)],{type:"application/json"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="uebersetzung_"+(state.langCode||"neu")+".json";
   a.click();
   tlShowToast("Zwischenstand gespeichert!");
 }
 
 function tlLoadJson(e) {
-  var file = e.target.files[0]; if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    try {
-      var d = JSON.parse(ev.target.result);
-      if (d.translations) state.translations = d.translations;
-      if (d.language) { state.langName = d.language; if (el("tl-lang-name")) el("tl-lang-name").value = d.language; }
-      if (d.code)     { state.langCode = d.code;     if (el("tl-lang-code")) el("tl-lang-code").value = d.code; }
-      tlUpdate(); tlRender();
-      tlShowToast("Stand geladen: " + filled() + " Texte übernommen");
-    } catch(err) { tlShowToast("Datei konnte nicht geladen werden."); }
+  var file=e.target.files[0]; if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      var d=JSON.parse(ev.target.result);
+      if(d.translations) state.translations=d.translations;
+      if(d.language){ state.langName=d.language; if(el("tl-lang-name")) el("tl-lang-name").value=d.language; }
+      if(d.code){ state.langCode=d.code; if(el("tl-lang-code")) el("tl-lang-code").value=d.code; }
+      tlUpdate();
+      if(state.screen===1) tlRender();
+      tlShowToast("Stand geladen: "+filled()+" Texte");
+    }catch(err){ tlShowToast("Datei konnte nicht geladen werden."); }
   };
   reader.readAsText(file);
-  e.target.value = "";
+  e.target.value="";
 }
 
 function tlSendEmail() {
-  if (!state.langName || !state.langCode) return;
   tlSaveJson();
-  var f = filled();
-  var subject = encodeURIComponent("App-Übersetzung: " + state.langName);
-  var body = encodeURIComponent(
-    "Hallo C&P Aquaplants-Team,\n\n" +
-    "ich habe die App auf " + state.langName + " übersetzt.\n" +
-    "Übersetzte Texte: " + f + " von " + totalStrings + "\n\n" +
-    "Die Datei 'uebersetzung_" + state.langCode + ".json' habe ich gerade heruntergeladen " +
+  var f=filled();
+  var subject=encodeURIComponent("App-Übersetzung: "+state.langName);
+  var body=encodeURIComponent(
+    "Hallo C&P Aquaplants-Team,\n\n"+
+    "ich habe die App auf "+state.langName+" übersetzt.\n"+
+    "Übersetzte Texte: "+f+" von "+totalStrings+"\n\n"+
+    "Die Datei 'uebersetzung_"+state.langCode+".json' habe ich soeben gespeichert "+
     "und hänge sie an diese E-Mail an.\n\nViele Grüße"
   );
-  setTimeout(function() {
-  window.location.href =
-    "mailto:mail@cp-aquaplants.de" +
-    "?cc=info@xjrx98software.de" +
-    "&subject=" + encodeURIComponent(subject) +
-    "&body=" + encodeURIComponent(body);
-
-  tlShowToast("Datei gespeichert – bitte an die E-Mail anhängen!");
-}, 800);
+  setTimeout(function(){
+    window.location.href="mailto:mail@cp-aquaplants.de?cc=info@xjrx98software.de&subject="+subject+"&body="+body;
+    tlShowToast("Datei gespeichert – bitte anhängen und absenden!");
+  },800);
 }
 
-// Preset-Buttons
-(function() {
-  var c = el("tl-presets"); if (!c) return;
-  var names = ["Français","Español","Italiano","Nederlands","Polski","Português","Svenska","Norsk","Dansk","Suomi","Čeština","Magyar","Türkçe"];
-  var codes = ["fr","es","it","nl","pl","pt","sv","no","da","fi","cs","hu","tr"];
-  names.forEach(function(name, i) {
-    var btn = document.createElement("button");
-    btn.textContent = name;
-    btn.style.cssText = "padding:6px 16px;border:1px solid var(--border);border-radius:100px;background:transparent;color:var(--muted2);font-family:var(--sans);font-size:13px;cursor:pointer;transition:all .2s;";
-    btn.onmouseover = function() { if (state.langName !== name) { btn.style.borderColor = "var(--border-hi)"; btn.style.color = "var(--text)"; } };
-    btn.onmouseout  = function() { if (state.langName !== name) { btn.style.borderColor = "var(--border)";    btn.style.color = "var(--muted2)"; } };
-    btn.onclick = function() {
-      if (el("tl-lang-name")) el("tl-lang-name").value = name;
-      if (el("tl-lang-code")) el("tl-lang-code").value = codes[i];
-      state.langName = name; state.langCode = codes[i];
-      document.querySelectorAll("#tl-presets button").forEach(function(b) {
-        b.style.cssText = "padding:6px 16px;border:1px solid var(--border);border-radius:100px;background:transparent;color:var(--muted2);font-family:var(--sans);font-size:13px;cursor:pointer;transition:all .2s;";
+// ── PRESETS ──────────────────────────────────────────────
+(function(){
+  var c=el("tl-presets"); if(!c) return;
+  var names=["Français","Español","Italiano","Nederlands","Polski","Português","Svenska","Norsk","Dansk","Suomi","Čeština","Magyar","Türkçe","Русский","日本語","中文"];
+  var codes=["fr","es","it","nl","pl","pt","sv","no","da","fi","cs","hu","tr","ru","ja","zh"];
+  names.forEach(function(name,i){
+    var btn=document.createElement("button");
+    btn.textContent=name;
+    btn.className="btn btn-ghost";
+    btn.style.cssText="padding:6px 14px;border-radius:100px;font-size:13px;";
+    btn.onmouseover=function(){ if(state.langName!==name){ btn.style.borderColor="var(--border-hi)"; btn.style.color="var(--text)"; }};
+    btn.onmouseout=function(){ if(state.langName!==name){ btn.style.borderColor="var(--border)"; btn.style.color="var(--muted2)"; }};
+    btn.onclick=function(){
+      if(el("tl-lang-name")) el("tl-lang-name").value=name;
+      if(el("tl-lang-code")) el("tl-lang-code").value=codes[i];
+      state.langName=name; state.langCode=codes[i];
+      document.querySelectorAll("#tl-presets button").forEach(function(b){
+        b.style.borderColor="var(--border)"; b.style.color="var(--muted2)"; b.style.background="transparent";
       });
-      btn.style.borderColor = "var(--accent)"; btn.style.color = "var(--accent)"; btn.style.background = "rgba(61,189,177,.08)";
+      btn.style.borderColor="var(--accent)"; btn.style.color="var(--accent)"; btn.style.background="rgba(61,189,177,.08)";
       tlUpdate();
+      tlAutoSave();
     };
     c.appendChild(btn);
   });
 })();
 
-// Global exports
-window.tlSet         = tlSet;
-window.tlGoSection   = tlGoSection;
-window.tlPrevSection = tlPrevSection;
-window.tlNextSection = tlNextSection;
-window.tlSetFilter   = tlSetFilter;
-window.tlSaveJson    = tlSaveJson;
-window.tlLoadJson    = tlLoadJson;
-window.tlSendEmail   = tlSendEmail;
-window.tlUpdate      = tlUpdate;
-window.tlRender      = tlRender;
+// ── GLOBAL EXPORTS ────────────────────────────────────────
+window.tlSet=tlSet; window.tlGoSection=tlGoSection;
 
-// Init — filter "Alle" aktivieren und rendern
+// ── TAB-Tastaturnavigation ────────────────────────────────
+// Tab im letzten Eingabefeld eines Bereichs → nächster Bereich
+// Shift+Tab im ersten Eingabefeld → vorheriger Bereich
+document.addEventListener("keydown", function(e) {
+  if(e.key !== "Tab") return;
+  if(state.screen !== 1) return;
+
+  var inputs = Array.from(document.querySelectorAll("#tl-items input[type=text], #tl-items textarea"));
+  if(inputs.length === 0) return;
+
+  var active = document.activeElement;
+  var idx = inputs.indexOf(active);
+  if(idx === -1) return;
+
+  if(!e.shiftKey && idx === inputs.length - 1) {
+    // Tab auf letztem Feld → nächster Bereich
+    if(state.section < SECTIONS.length - 1) {
+      e.preventDefault();
+      tlGoSection(state.section + 1);
+    }
+  } else if(e.shiftKey && idx === 0) {
+    // Shift+Tab auf erstem Feld → vorheriger Bereich
+    if(state.section > 0) {
+      e.preventDefault();
+      tlGoSection(state.section - 1);
+      // Fokus auf letztes Feld des neuen Bereichs
+      setTimeout(function() {
+        var newInputs = document.querySelectorAll("#tl-items input[type=text], #tl-items textarea");
+        if(newInputs.length > 0) newInputs[newInputs.length - 1].focus();
+      }, 60);
+    }
+  }
+});
+window.tlPrevSection=tlPrevSection; window.tlNextSection=tlNextSection;
+window.tlSetFilter=tlSetFilter; window.tlSaveJson=tlSaveJson;
+window.tlLoadJson=tlLoadJson; window.tlSendEmail=tlSendEmail;
+window.tlUpdate=tlUpdate; window.tlWizardGo=tlWizardGo;
+
 document.addEventListener("DOMContentLoaded", function() {
-  var fa = el("tl-f-all");
-  if (fa) { fa.style.borderColor = "var(--accent)"; fa.style.color = "var(--accent)"; fa.style.background = "rgba(61,189,177,.08)"; }
-  tlRender();
+  try {
+    var saved = localStorage.getItem("cp_tl_state");
+    if(saved) {
+      var d = JSON.parse(saved);
+      if(d.translations && Object.keys(d.translations).length > 0) {
+        state.translations = d.translations;
+      }
+      if(d.name) {
+        state.langName = d.name;
+        state.langCode = d.code || "";
+        var nameEl = el("tl-lang-name"), codeEl = el("tl-lang-code");
+        if(nameEl) nameEl.value = d.name;
+        if(codeEl) codeEl.value = d.code || "";
+        // Preset-Button hervorheben
+        document.querySelectorAll("#tl-presets button").forEach(function(btn) {
+          if(btn.textContent === d.name) {
+            btn.style.borderColor="var(--accent)"; btn.style.color="var(--accent)"; btn.style.background="rgba(61,189,177,.08)";
+          }
+        });
+        var f = Object.keys(state.translations).filter(function(k){ return state.translations[k] && state.translations[k].trim(); }).length;
+        if(f > 0) {
+          setTimeout(function(){ tlShowToast("Fortschritt wiederhergestellt: " + f + " Texte"); }, 400);
+        }
+      }
+    }
+  } catch(e) {}
+  tlUpdate();
 });
 
 })();
