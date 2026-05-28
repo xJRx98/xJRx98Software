@@ -689,17 +689,6 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 #scroll-top:hover { background: rgba(61,189,177,.1); border-color: var(--accent); }
 #scroll-top svg { width: 16px; height: 16px; color: var(--accent); }
 
-/* --- COOKIE BANNER --- */
-#cookie-banner { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 999; width: calc(100% - 32px); max-width: 680px; background: var(--surface); border: 1px solid var(--border-hi); border-radius: 14px; padding: 20px 24px; display: none; align-items: center; gap: 20px; box-shadow: 0 16px 48px rgba(0,0,0,.6); animation: fadeUp .4s ease both; flex-wrap: wrap; }
-#cookie-banner p { font-size: 13px; color: var(--muted2); line-height: 1.6; flex: 1; min-width: 200px; margin: 0; }
-#cookie-banner p a { color: var(--accent); text-decoration: none; }
-#cookie-banner p a:hover { text-decoration: underline; }
-.cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
-.cookie-btn-accept { padding: 9px 20px; background: var(--accent); color: #000; border: none; border-radius: 6px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .06em; cursor: pointer; transition: background .2s; white-space: nowrap; }
-.cookie-btn-accept:hover { background: var(--accent2); }
-.cookie-btn-decline { padding: 9px 16px; background: transparent; color: var(--muted2); border: 1px solid var(--border); border-radius: 6px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all .2s; white-space: nowrap; }
-.cookie-btn-decline:hover { border-color: var(--muted2); color: var(--text); }
-
 /* --- DOWNLOAD MODAL --- */
 .modal-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,.65); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
 .modal-box { background: var(--surface); border: 1px solid var(--border-hi); border-radius: 16px; padding: 32px 24px; max-width: 480px; width: 100%; position: relative; margin: auto; }
@@ -772,10 +761,6 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
   .about-stats { grid-template-columns: 1fr 1fr; }
   #scroll-top { bottom: 80px; right: 16px; }
   .projects-grid { grid-template-columns: 1fr; }
-  #cookie-banner { padding: 16px; gap: 12px; }
-  .cookie-actions { width: 100%; }
-  .cookie-btn-accept, .cookie-btn-decline { flex: 1; text-align: center; }
-  .impressum-content { padding: 56px 16px; }
 }
 
 @media (max-width: 480px) {
@@ -832,15 +817,6 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Nach oben scrollen">
   <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
-
-<!-- COOKIE BANNER -->
-<div id="cookie-banner" role="dialog" aria-label="Cookie-Hinweis">
-  <p>Diese Website verwendet <strong style="color:var(--text)">Google Fonts</strong>, die von externen Servern geladen werden. Dadurch wird deine IP-Adresse an Google übermittelt. Mehr dazu im <button onclick="showPage('impressum')" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:13px;text-decoration:underline;">Impressum</button>.</p>
-  <div class="cookie-actions">
-    <button class="cookie-btn-decline" onclick="cookieDecline()">Ablehnen</button>
-    <button class="cookie-btn-accept" onclick="cookieAccept()">Verstanden</button>
-  </div>
-</div>
 
 <script>
 // ==========================================
@@ -913,14 +889,7 @@ window.addEventListener('DOMContentLoaded', () => {
   } catch(e) {}
   showPage(start, false);
 
-  // Cookie banner
-  if (!localStorage.getItem('cookie-ok')) {
-    setTimeout(() => {
-      const b = document.getElementById('cookie-banner');
-      b.style.display = 'flex';
-    }, 1500);
-  }
-});
+ });
 
 // ==========================================
 //  REVEAL OBSERVER
@@ -974,17 +943,6 @@ window.addEventListener('scroll', () => {
   if (!btn) return;
   btn.classList.toggle('visible', window.scrollY > 300);
 }, { passive: true });
-
-// ==========================================
-//  COOKIE
-// ==========================================
-function cookieAccept() {
-  localStorage.setItem('cookie-ok', '1');
-  document.getElementById('cookie-banner').style.display = 'none';
-}
-function cookieDecline() {
-  document.getElementById('cookie-banner').style.display = 'none';
-}
 
 // ==========================================
 //  MODAL HELPERS
