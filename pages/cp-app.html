@@ -130,6 +130,17 @@
   </div>
 </section>
 
+<!-- DATENSCHUTZ APP -->
+<section style="padding:40px 40px 0;"><div class="section-inner">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+    <div>
+      <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">// Rechtliches</p>
+      <p style="font-size:14px;color:var(--muted2);line-height:1.6;">Informationen zum Datenschutz der C&amp;P Aquaplants App — keine Datenerhebung, kein Tracking.</p>
+    </div>
+    <button onclick="showPage('cp-datenschutz'); window.scrollTo(0,0)" class="btn-primary" style="white-space:nowrap;padding:10px 20px;font-size:13px;">Datenschutzerklärung App &rarr;</button>
+  </div>
+</div></section>
+
 <!-- CTA -->
 <div class="cta-section"><div class="cta-inner" style="flex-direction:column;align-items:center;text-align:center;">
   <div><h2>Bereit für <em style="font-style:normal;color:var(--accent);">präzisere Aquaristik?</em></h2><p>Jetzt kostenlos herunterladen - für Android, iOS und Windows.</p></div>
@@ -166,4 +177,77 @@
       </a>
     </div>
   </div>
+</div>
+
+<!-- CP DATENSCHUTZ PAGE -->
+<div id="page-cp-datenschutz" class="page" style="display:none;">
+
+  <!-- STICKY BACK -->
+  <div class="sticky-back">
+    <button class="back-btn" onclick="showPage('cp-aquaplants'); window.scrollTo(0,0)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Zurück zur App-Seite
+    </button>
+  </div>
+
+  <!-- BANNER -->
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:28px 24px;">
+    <div style="max-width:800px;margin:0 auto;">
+      <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">// C&amp;P Aquaplants App</p>
+      <h1 style="font-family:var(--mono);font-size:clamp(20px,3vw,32px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:8px;line-height:1.1;">Datenschutzerklärung</h1>
+      <p style="font-size:14px;color:var(--muted2);">Datenschutzinformationen zur C&amp;P Aquaplants App</p>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <section style="padding:60px 40px;">
+    <div style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:32px;">
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// Übersicht</p>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.8;">Der Schutz Ihrer Daten ist uns wichtig. Diese App sammelt oder speichert keine personenbezogenen Daten.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// 01 — Verantwortliche Stelle</p>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.8;">Verantwortlich für die Datenverarbeitung im Sinne der DSGVO ist der Entwickler dieser App.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// 02 — Datenerhebung</p>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.8;">Diese App erhebt, speichert oder überträgt keine personenbezogenen Daten.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// 03 — Analyse und Tracking</p>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.8;">Es werden keine Analyse-Tools oder Tracking-Dienste verwendet.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// 04 — Externe Dienste</p>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.8;">Diese App nutzt keine externen Server oder Schnittstellen, die personenbezogene Daten übertragen oder verarbeiten.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// 05 — Ihre Rechte</p>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.8;">Da keine personenbezogenen Daten erhoben werden, ergeben sich im Rahmen dieser App keine spezifischen Rechte im Sinne der DSGVO.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// 06 — Kontakt</p>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.8;">Bei Fragen zum Datenschutz wenden Sie sich bitte an:
+          <a href="mailto:wasserwerte.app@gmx.de?subject=Anfrage%20zu%20Datenschutz&body=Hallo,%20ich%20habe%20Fragen%20zu%20..." style="color:var(--accent);text-decoration:none;">wasserwerte.app@gmx.de</a>
+        </p>
+      </div>
+
+      <p style="font-size:12px;color:var(--muted);font-family:var(--mono);">Stand: 24. August 2025</p>
+
+    </div>
+  </section>
+
+  <footer role="contentinfo">
+    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
+    <div class="footer-right"><p>&copy; 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button><button class="footer-impressum-link" onclick="showPage('cp-datenschutz')">Datenschutz App</button></div>
+  </footer>
+
 </div>
