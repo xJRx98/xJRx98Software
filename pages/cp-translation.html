@@ -694,7 +694,7 @@ function tlSaveJson() {
       }
     }
   });
-  var blob=new Blob([JSON.stringify({language:state.langName,code:state.langCode,confirmed_count:filled(),total_count:Object.keys(exportTranslations).length,translations:exportTranslations},null,2)],{type:"application/json"});
+  var blob=new Blob([JSON.stringify({language:state.langName,code:state.langCode,confirmed_count:filled(),total_count:Object.keys(exportTranslations).length,translations:exportTranslations,confirmed:state.confirmed},null,2)],{type:"application/json"});
   var a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
   a.download="uebersetzung_"+(state.langCode||"neu")+".json";
@@ -709,15 +709,24 @@ function tlLoadJson(e) {
     try{
       var d=JSON.parse(ev.target.result);
       if(d.translations) {
-        // Nur leere Felder füllen, bestätigte Einträge behalten
         Object.keys(d.translations).forEach(function(k) {
-          if(!state.translations[k] || !state.translations[k].trim()) {
-            state.translations[k] = d.translations[k];
+          var val = d.translations[k];
+          if(val) {
+            // [UNGEPRÜFT]-Prefix entfernen
+            var isUnreviewed = val.indexOf("[UNGEPRÜFT] ") === 0;
+            var cleanVal = isUnreviewed ? val.slice("[UNGEPRÜFT] ".length) : val;
+            if(!state.translations[k] || !state.translations[k].trim()) {
+              state.translations[k] = cleanVal;
+            }
+            // confirmed wiederherstellen: entweder aus confirmed-Objekt oder anhand fehlendem Prefix
+            if(!isUnreviewed) {
+              state.confirmed[k] = true;
+            }
           }
         });
       }
+      // Explizites confirmed-Objekt (neue Dateien) hat Vorrang
       if(d.confirmed) {
-        // Bestätigungen aus Datei zusammenführen
         Object.keys(d.confirmed).forEach(function(k) {
           if(d.confirmed[k]) state.confirmed[k] = true;
         });
