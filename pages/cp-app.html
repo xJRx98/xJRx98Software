@@ -1,3 +1,214 @@
+<!-- RESPONSIVE FIXES — cp-aquaplants page -->
+<!-- Füge diesen <style>-Block einmalig in deinen globalen CSS-Bereich ein (oder in den <head>). -->
+
+<style>
+/* ── Banner Grid ── */
+.pa-banner-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .pa-banner-grid {
+    grid-template-columns: 1fr;
+  }
+  .pa-banner-sidebar {
+    display: none; /* Tags/Details-Card im Banner auf Mobile ausblenden – erscheinen ohnehin weiter unten */
+  }
+}
+
+/* ── Globales Section-Padding ── */
+.section-pad {
+  padding: 80px 40px;
+}
+@media (max-width: 720px) {
+  .section-pad {
+    padding: 56px 20px;
+  }
+}
+
+/* ── Hero ── */
+.hero {
+  min-height: 70vh;
+  padding: 80px 40px;
+  box-sizing: border-box;
+}
+@media (max-width: 720px) {
+  .hero {
+    min-height: unset;
+    padding: 60px 20px 48px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 8vw, 48px) !important;
+  }
+  .hero-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* ── Stats Bar ── */
+.stats-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px 40px;
+}
+@media (max-width: 540px) {
+  .stats-inner {
+    gap: 16px 24px;
+  }
+  .stat-value {
+    font-size: 22px !important;
+  }
+}
+
+/* ── Problem Grid ── */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 32px;
+}
+@media (max-width: 640px) {
+  .problem-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Features Grid ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+@media (max-width: 900px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 540px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── How-It-Works Grid ── */
+.how-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: 40px;
+}
+/* Override des inline style="grid-template-columns:repeat(3,1fr)" */
+@media (max-width: 760px) {
+  .how-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .how-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .step-num {
+    flex-shrink: 0;
+    font-size: 28px !important;
+    line-height: 1;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* ── Platforms Grid ── */
+.platforms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+@media (max-width: 860px) {
+  .platforms-grid {
+    grid-template-columns: 1fr;
+  }
+  .platform-card {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .platform-icon-wrap {
+    flex-shrink: 0;
+  }
+}
+
+/* ── Community Section ── */
+@media (max-width: 680px) {
+  .community-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .community-aside {
+    display: none;
+  }
+}
+
+/* ── Datenschutz-Banner ── */
+@media (max-width: 600px) {
+  .datenschutz-banner {
+    flex-direction: column !important;
+    gap: 16px;
+  }
+  .datenschutz-banner .btn-primary {
+    align-self: flex-start;
+  }
+}
+
+/* ── CTA Section ── */
+.cta-inner {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+@media (max-width: 540px) {
+  .cta-section {
+    padding: 56px 20px;
+  }
+  .cta-inner h2 {
+    font-size: clamp(20px, 6vw, 32px);
+  }
+}
+
+/* ── Modal ── */
+@media (max-width: 480px) {
+  .modal-box {
+    max-width: 100% !important;
+    margin: 16px;
+    border-radius: 16px;
+  }
+}
+
+/* ── Footer ── */
+footer {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  .footer-right {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+</style>
+
+
+<!-- ═══════════════════════════════════════════════
+     AB HIER: Das angepasste HTML (geänderte Klassen
+     und entfernte inline-style-Overrides markiert)
+     ═══════════════════════════════════════════════ -->
+
 <!-- STICKY BACK -->
 <div class="sticky-back">
   <button class="back-btn" onclick="showPage('home'); scrollToSection('projekte')">
@@ -30,7 +241,7 @@
 </div>
 
 <!-- HERO -->
-<section class="hero" style="min-height:70vh;">
+<section class="hero">
   <div class="hero-grid"></div><div class="hero-glow"></div>
   <div class="hero-inner">
     <div class="hero-badge">Verfügbar . Android . iOS . Windows</div>
@@ -51,7 +262,7 @@
 </div></div>
 
 <!-- PROBLEM -->
-<section style="padding:80px 40px;"><div class="section-inner">
+<section class="section-pad"><div class="section-inner">
   <p class="section-label reveal">// Das Problem</p>
   <h2 class="section-title reveal">Düngen ohne<br><em>Rätselraten.</em></h2>
   <p class="section-body reveal">Wer C&amp;P Aquaplants Dünger in Kombination mit dem Wasserpantscher Photometer verwendet, weiß: die richtigen Mengen und Messwerte korrekt zu berechnen kostet Zeit und Nerven. Die App macht Schluss damit.</p>
@@ -62,7 +273,7 @@
 </div></section>
 
 <!-- FEATURES -->
-<section id="cp-funktionen" style="padding:0 40px 80px;"><div class="section-inner">
+<section id="cp-funktionen" class="section-pad" style="padding-top:0;"><div class="section-inner">
   <p class="section-label reveal">// Funktionen</p>
   <h2 class="section-title reveal">Alles was dein<br><em>Aquarium braucht.</em></h2>
   <div class="features-grid reveal">
@@ -76,10 +287,11 @@
 </div></section>
 
 <!-- HOW IT WORKS -->
-<section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 40px;"><div class="section-inner">
+<section class="section-pad" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);"><div class="section-inner">
   <p class="section-label reveal">// So funktioniert es</p>
   <h2 class="section-title reveal">In drei Schritten<br><em>zum Ergebnis.</em></h2>
-  <div class="how-grid reveal" style="grid-template-columns:repeat(3,1fr);">
+  <!-- grid-template-columns via CSS-Klasse, nicht inline -->
+  <div class="how-grid reveal">
     <div class="how-step"><div class="step-num">01</div><div class="step-title">App herunterladen</div><p class="step-desc">Kostenlos im Google Play Store, Apple App Store oder direkt als Windows-Version herunterladen.</p></div>
     <div class="how-step"><div class="step-num">02</div><div class="step-title">Parameter eingeben</div><p class="step-desc">Beckenvolumen, Wassertyp und Messwerte eingeben - die App übernimmt alle Berechnungen automatisch.</p></div>
     <div class="how-step"><div class="step-num">03</div><div class="step-title">Ergebnis ablesen</div><p class="step-desc">Exakte Dosierungsmengen und ausgewertete Messwerte auf einen Blick - präzise und ohne Rechenaufwand.</p></div>
@@ -87,7 +299,7 @@
 </div></section>
 
 <!-- PLATFORMS -->
-<section style="padding:80px 40px;"><div class="section-inner">
+<section class="section-pad"><div class="section-inner">
   <p class="section-label reveal">// Plattformen</p>
   <h2 class="section-title reveal">Auf jedem Gerät<br><em>zu Hause.</em></h2>
   <div class="platforms-grid reveal">
@@ -98,9 +310,10 @@
 </div></section>
 
 <!-- COMMUNITY ÜBERSETZUNG -->
-<section style="padding:80px 40px;border-top:1px solid var(--border);">
+<section class="section-pad" style="border-top:1px solid var(--border);">
   <div class="section-inner">
-    <div style="display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <!-- community-grid statt hardcoded inline grid -->
+    <div class="community-grid" style="display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
       <div>
         <p class="section-label">// Community</p>
         <h2 class="section-title" style="font-size:clamp(20px,2.8vw,36px);">
@@ -120,7 +333,7 @@
           </button>
         </div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:280px;">
+      <div class="community-aside" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:280px;">
         <div style="font-size:32px;margin-bottom:12px;">🌍</div>
         <p style="font-size:14px;color:var(--muted2);line-height:1.7;">
           Kein technisches Wissen nötig — du gibst einfach die Übersetzungen ein, wir kümmern uns um den Rest.
@@ -132,7 +345,7 @@
 
 <!-- DATENSCHUTZ APP -->
 <section style="padding:40px 40px 0;"><div class="section-inner">
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+  <div class="datenschutz-banner" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
     <div>
       <p style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">// Rechtliches</p>
       <p style="font-size:14px;color:var(--muted2);line-height:1.6;">Informationen zum Datenschutz der C&amp;P Aquaplants App — keine Datenerhebung, kein Tracking.</p>
@@ -142,11 +355,10 @@
 </div></section>
 
 <!-- CTA -->
-<div class="cta-section"><div class="cta-inner" style="flex-direction:column;align-items:center;text-align:center;">
+<div class="cta-section"><div class="cta-inner">
   <div><h2>Bereit für <em style="font-style:normal;color:var(--accent);">präzisere Aquaristik?</em></h2><p>Jetzt kostenlos herunterladen - für Android, iOS und Windows.</p></div>
   <a onclick="openModal('cp-download-modal')" href="javascript:void(0)" class="btn-primary" style="margin-top:8px;">App herunterladen</a>
 </div></div>
-
 
 <footer role="contentinfo">
   <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
@@ -177,13 +389,4 @@
       </a>
     </div>
   </div>
-</div>
-
-  </section>
-
-  <footer role="contentinfo">
-    <span onclick="showPage('home')" style="font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em;cursor:pointer;">xJRx98 Software</span>
-    <div class="footer-right"><p>&copy; 2026 xJRx98 Software</p><button class="footer-impressum-link" onclick="showPage('impressum')">Impressum</button><button class="footer-impressum-link" onclick="showPage('datenschutz')">Datenschutz</button></div>
-  </footer>
-
 </div>
