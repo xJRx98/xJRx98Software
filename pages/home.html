@@ -190,24 +190,23 @@ document.getElementById('contact-form').addEventListener('submit', async functio
   document.getElementById('cf-status').style.display = 'none';
 
   try {
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      body: JSON.stringify({ name, email, message, token: GAS_TOKEN, honeypot }),
-    });
-    const data = await res.json();
-    if (data.status === 'ok') {
-      showStatus('Nachricht gesendet! Du bekommst gleich eine Bestätigung per E-Mail.', 'var(--accent)');
-      btn.textContent = 'Gesendet ✓';
-      lastSubmit = Date.now();
-      document.getElementById('cf-name').value = '';
-      document.getElementById('cf-email').value = '';
-      document.getElementById('cf-message').value = '';
-    } else { throw new Error('Fehler'); }
-  } catch(err) {
-    showStatus('Fehler beim Senden - bitte versuche es erneut oder schreib direkt eine E-Mail.', '#c94b6d');
-    btn.textContent = 'Nachricht senden ->';
-    btn.disabled = false;
-  }
+  await fetch(GAS_URL, {
+    method: 'POST',
+    mode: 'no-cors',  // ← neu
+    body: JSON.stringify({ name, email, message, token: GAS_TOKEN, honeypot }),
+  });
+  // ← res.json() und data.status komplett weg
+  showStatus('Nachricht gesendet! Du bekommst gleich eine Bestätigung per E-Mail.', 'var(--accent)');
+  btn.textContent = 'Gesendet ✓';
+  lastSubmit = Date.now();
+  document.getElementById('cf-name').value = '';
+  document.getElementById('cf-email').value = '';
+  document.getElementById('cf-message').value = '';
+} catch(err) {
+  showStatus('Fehler beim Senden - bitte versuche es erneut oder schreib direkt eine E-Mail.', '#c94b6d');
+  btn.textContent = 'Nachricht senden ->';
+  btn.disabled = false;
+}
 });
 
 function showStatus(msg, color) {
