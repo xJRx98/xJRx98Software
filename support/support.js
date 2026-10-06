@@ -35,7 +35,10 @@
   // Verlässt man die Seite (der Router tauscht den Inhalt aus), wird alles
   // wiederhergestellt - siehe `restorePageMeta`.
   var PAGE_TITLE = 'Support';
-  var FAVICON_URL = 'support/cp-favicon.png';
+  // Das Icon (C&P-Blattlogo, 64x64) steckt direkt im Skript: Es braucht keine
+  // zusätzliche Datei auf dem Server und kann nicht an einem falschen Pfad (404)
+  // scheitern - dann würde der Browser nur das generische Weltkugel-Symbol zeigen.
+  var FAVICON_URL = 'data:image/png;base64,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';
   var savedMeta = null;     // Titel/Icon der Webseite, solange die Support-Seite aktiv ist
   var metaObserver = null;
 
@@ -187,27 +190,28 @@
     var root = $('root');
     if (!root) return;
     if (!savedMeta) {
-      // Originalwerte nur beim ERSTEN Mal merken (bei erneutem Einblenden sonst
-      // würde "Support" als Original gespeichert).
-      var link = document.querySelector('link[rel~="icon"]');
-      var created = false;
-      if (!link) {
-        link = document.createElement('link');
-        link.setAttribute('rel', 'icon');
-        document.head.appendChild(link);
-        created = true;
-      }
+      // Die vorhandenen Icon-Elemente der Webseite MERKEN (samt Position) und aus
+      // dem Dokument nehmen - nur beim ERSTEN Mal, damit bei erneutem Einblenden
+      // nicht unser eigenes Icon als "Original" gespeichert wird.
+      var olds = Array.prototype.slice.call(document.querySelectorAll('link[rel~="icon"]'));
       savedMeta = {
         title: document.title,
-        link: link,
-        href: link.getAttribute('href'),
-        type: link.getAttribute('type'),
-        created: created,
+        links: olds.map(function (l) { return { el: l, parent: l.parentNode, next: l.nextSibling }; }),
+        ours: null,
       };
+      olds.forEach(function (l) { if (l.parentNode) l.parentNode.removeChild(l); });
     }
     document.title = PAGE_TITLE;
-    savedMeta.link.setAttribute('type', 'image/png');
-    savedMeta.link.setAttribute('href', FAVICON_URL);
+
+    // Ein NEUES Icon-Element einfügen: Manche Browser (Safari, Firefox) reagieren
+    // nur auf neu eingefügte Elemente, nicht auf eine geänderte href.
+    if (savedMeta.ours && savedMeta.ours.parentNode) savedMeta.ours.parentNode.removeChild(savedMeta.ours);
+    var ours = document.createElement('link');
+    ours.setAttribute('rel', 'icon');
+    ours.setAttribute('type', 'image/png');
+    ours.setAttribute('href', FAVICON_URL);
+    document.head.appendChild(ours);
+    savedMeta.ours = ours;
     document.body.classList.add('cps-support-page');
 
     // Der Router ersetzt beim Seitenwechsel den Inhalt des Containers: Verschwindet
@@ -226,12 +230,12 @@
     var m = savedMeta;
     savedMeta = null;
     document.title = m.title;
-    if (m.created) {
-      if (m.link.parentNode) m.link.parentNode.removeChild(m.link);
-    } else {
-      if (m.href === null) m.link.removeAttribute('href'); else m.link.setAttribute('href', m.href);
-      if (m.type === null) m.link.removeAttribute('type'); else m.link.setAttribute('type', m.type);
-    }
+    if (m.ours && m.ours.parentNode) m.ours.parentNode.removeChild(m.ours);
+    m.links.forEach(function (x) {
+      var parent = x.parent && x.parent.isConnected !== false ? x.parent : document.head;
+      var next = x.next && x.next.parentNode === parent ? x.next : null;
+      parent.insertBefore(x.el, next);
+    });
   }
 
   /* ── Ansichten ────────────────────────────────────────────────────────── */
