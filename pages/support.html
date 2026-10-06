@@ -83,6 +83,30 @@
 #cps-root .cps-list li:last-child { border-bottom: none; }
 #cps-root .cps-sub { color: var(--cps-faint); font-size: 12px; }
 
+/* Fall-Verwaltung: Status, Team, Aktionen */
+#cps-root .cps-flash { margin: 0 0 16px; padding: 10px 14px; font-size: 14px; border: 1px solid var(--cps-accent); border-radius: 8px; color: var(--cps-accent); background: rgba(96,248,29,.08); }
+#cps-root .cps-flash.cps-flash-err { border-color: var(--cps-err); color: var(--cps-err); background: var(--cps-err-bg); }
+#cps-root .cps-list-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+#cps-root .cps-list-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+#cps-root .cps-team { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 18px; font-size: 13px; color: var(--cps-soft); }
+#cps-root .cps-chip { display: inline-flex; gap: 6px; align-items: center; padding: 4px 11px; border: 1px solid var(--cps-line); border-radius: 999px; background: var(--cps-card); font-size: 13px; color: var(--cps-ink); }
+#cps-root .cps-chip b { color: var(--cps-accent); }
+#cps-root .cps-chip-me { border-color: var(--cps-accent); }
+#cps-root .cps-status { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+#cps-root .cps-status-ausstehend { background: #3a2f12; color: var(--cps-warn); }
+#cps-root .cps-status-in_bearbeitung { background: rgba(96,248,29,.14); color: var(--cps-accent); }
+#cps-root .cps-status-abgeschlossen { background: rgba(255,255,255,.08); color: var(--cps-soft); }
+#cps-root .cps-casebar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin: 0 0 18px; padding: 14px 16px; background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; }
+#cps-root .cps-casebar-info { flex: 1 1 260px; font-size: 14px; line-height: 1.7; }
+#cps-root .cps-casebar-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#cps-root select { font: inherit; font-size: 13px; padding: 8px 10px; color: var(--cps-ink); background: var(--cps-bg); border: 1px solid var(--cps-line); border-radius: 8px; max-width: 100%; }
+#cps-root select:focus { outline: none; border-color: var(--cps-accent); }
+#cps-root .cps-btn-accent { color: #000; background: var(--cps-accent); border-color: var(--cps-accent); font-weight: 700; }
+#cps-root .cps-btn-accent:hover { color: #000; background: var(--cps-accent-dark); border-color: var(--cps-accent-dark); }
+#cps-root .cps-btn:disabled { opacity: .55; cursor: default; }
+#cps-root .cps-btn-small { padding: 4px 10px; font-size: 12px; }
+#cps-root .cps-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; white-space: nowrap; }
+
 /* Fotos */
 #cps-root .cps-photos { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
 #cps-root .cps-photo { margin: 0; background: #000; border: 1px solid var(--cps-line); border-radius: 10px; overflow: hidden; }
@@ -128,10 +152,14 @@
       </div>
       <div class="cps-session cps-hidden" id="cps-session">
         <span class="cps-session-mail" id="cps-sessionMail"></span>
+        <button type="button" class="cps-btn" id="cps-btnName" title="Name, der den Kolleginnen und Kollegen angezeigt wird">Name festlegen</button>
         <button type="button" class="cps-btn" id="cps-btnList">Übersicht</button>
         <button type="button" class="cps-btn" id="cps-btnLogout">Abmelden</button>
       </div>
     </div>
+
+    <!-- Rückmeldung zu Aktionen (Übernehmen, Abschließen, …) -->
+    <p class="cps-flash cps-hidden" id="cps-flash" role="status"></p>
 
     <!-- Lädt / Meldungen -->
     <div class="cps-card cps-center" id="cps-viewMessage">
@@ -153,19 +181,32 @@
       </form>
     </div>
 
-    <!-- Übersicht aller Snapshots -->
+    <!-- Übersicht aller Fälle: Ausstehend / In Bearbeitung / Abgeschlossen -->
     <div class="cps-hidden" id="cps-viewList">
-      <h1 class="cps-title">Support-Anfragen</h1>
-      <p class="cps-muted cps-desc">Aktuell gespeicherte Daten-Links. Sie werden nach 7 Tagen automatisch gelöscht.</p>
+      <div class="cps-list-head">
+        <div>
+          <h1 class="cps-title">Support-Fälle</h1>
+          <p class="cps-muted cps-desc">Neue Fälle erscheinen unter „Ausstehend“. Abgeschlossene Fälle werden bis zur automatischen Löschung (7 Tage nach Eingang) unter „Abgeschlossen“ aufbewahrt.</p>
+        </div>
+        <div class="cps-list-tools">
+          <button type="button" class="cps-btn cps-hidden" id="cps-btnMine">Nur meine Fälle</button>
+          <button type="button" class="cps-btn" id="cps-btnRefresh">Aktualisieren</button>
+        </div>
+      </div>
+      <div class="cps-team" id="cps-team"></div>
+      <div class="cps-tabs" role="tablist" aria-label="Fall-Status" id="cps-listTabs">
+        <button type="button" role="tab" class="cps-tab" data-list="ausstehend" id="cps-ltab-ausstehend">Ausstehend</button>
+        <button type="button" role="tab" class="cps-tab" data-list="in_bearbeitung" id="cps-ltab-in_bearbeitung">In Bearbeitung</button>
+        <button type="button" role="tab" class="cps-tab" data-list="abgeschlossen" id="cps-ltab-abgeschlossen">Abgeschlossen</button>
+      </div>
       <div class="cps-table-wrap">
         <table class="cps-table" id="cps-listTable">
-          <thead>
-            <tr><th>Aquarium</th><th>Erstellt</th><th>Gültig bis</th><th>App</th><th></th></tr>
-          </thead>
+          <thead></thead>
           <tbody></tbody>
         </table>
       </div>
-      <p class="cps-muted cps-hidden" id="cps-listEmpty">Keine Einträge vorhanden.</p>
+      <p class="cps-muted cps-hidden" id="cps-listEmpty"></p>
+      <p class="cps-note" id="cps-listUpdated"></p>
     </div>
 
     <!-- Detailansicht eines Snapshots -->
@@ -174,6 +215,7 @@
         <h1 class="cps-title" id="cps-detailTitle"></h1>
         <p id="cps-detailMeta"></p>
       </div>
+      <div class="cps-casebar" id="cps-casebar"></div>
       <div class="cps-tabs" role="tablist" aria-label="Bereiche" id="cps-tabs">
         <button type="button" role="tab" class="cps-tab" data-tab="aquarium" id="cps-tab-aquarium" aria-controls="cps-panel">Aquarium</button>
         <button type="button" role="tab" class="cps-tab" data-tab="messwerte" id="cps-tab-messwerte" aria-controls="cps-panel">Messwerte</button>
@@ -195,7 +237,7 @@
 // Reset-Seite), hier SUPABASE_JS entsprechend anpassen.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var SUPPORT_JS  = 'support/support.js?v=4';
+  var SUPPORT_JS  = 'support/support.js?v=5';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
