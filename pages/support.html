@@ -1,4 +1,4 @@
-<!-- Support-Seite (Unterseite von xjrx98software.de) -->
+<!-- Support-Seite (Unterseite von xjrx98software.de) im Farbschema der C&P-Aquaplants-App -->
 <!-- Wird wie `reset-password` vom Router in index.html als Fragment geladen:
        Adresse:  https://xjrx98software.de/#support            (Übersicht)
                  https://xjrx98software.de/#support/<ID>       (ein Daten-Link)
@@ -7,45 +7,57 @@
      Schriften kommen aus den CSS-Variablen von index.html (--accent, --surface, …). -->
 <style>
 #cps-root {
-  --cps-accent: var(--accent, #3dbdb1);
-  --cps-accent-dark: var(--accent2, #2aa89c);
-  --cps-card: var(--surface, #1a2233);
-  --cps-card-2: var(--bg2, #131a24);
-  --cps-bg: var(--bg, #0d1117);
-  --cps-line: var(--border, rgba(61,189,177,.12));
-  --cps-line-hi: var(--border-hi, rgba(61,189,177,.35));
-  --cps-ink: var(--text, #e8edf4);
-  --cps-soft: var(--muted2, #8a9ab0);
-  --cps-faint: var(--muted, #556070);
-  --cps-err: #ff6b5a;
-  --cps-err-bg: #2a1512;
-  --cps-warn: #ffc857;
+  /* Farbschema der C&P-Aquaplants-App: Schwarz, Dunkelgrau und Neon-Grün. */
+  --cps-accent: #60F81D;
+  --cps-accent-dark: #47C012;
+  --cps-bg: #0A0A0A;
+  --cps-card: #1A1A1A;
+  --cps-card-2: #141414;
+  --cps-line: #2A2A2A;
+  --cps-line-hi: #4A4A4A;
+  --cps-ink: #FFFFFF;
+  --cps-soft: #CCCCCC;
+  --cps-faint: #8A8A8A;
+  --cps-err: #FF6B5A;
+  --cps-err-bg: #2A1512;
+  --cps-warn: #FFC857;
+  background: var(--cps-bg);
+  color: var(--cps-ink);
+  min-height: 100vh;
 }
-#cps-root .wrap { max-width: 1100px; padding-top: 56px; padding-bottom: 80px; }
+#cps-root .wrap { max-width: 1100px; padding-top: 40px; padding-bottom: 80px; }
 #cps-root .cps-hidden { display: none !important; }
 #cps-root .cps-muted { color: var(--cps-faint); }
 #cps-root .cps-dash { color: var(--cps-faint); }
 
-/* Kopfzeile mit Anmeldung */
-#cps-root .cps-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+/* Kopfzeile: Logo/Name links, Anmeldung rechts */
+#cps-root .cps-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid var(--cps-line); }
+#cps-root .cps-brand { display: flex; align-items: center; gap: 12px; }
+#cps-root .cps-brand-logo { height: 40px; width: auto; display: block; }
+#cps-root .cps-brand-name { font-family: var(--mono, monospace); font-size: 18px; font-weight: 700; color: var(--cps-accent); letter-spacing: .02em; }
+#cps-root .cps-brand-sub { font-weight: 400; color: var(--cps-soft); margin-left: 6px; }
 #cps-root .cps-session { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 #cps-root .cps-session-mail { color: var(--cps-faint); font-size: 13px; font-family: var(--mono, monospace); }
 
+/* Überschriften */
+#cps-root .cps-title { font-family: var(--mono, monospace); font-size: clamp(22px, 3vw, 32px); font-weight: 700; line-height: 1.15; color: var(--cps-accent); margin-bottom: 8px; overflow-wrap: anywhere; }
+#cps-root .cps-desc { font-size: 15px; margin-bottom: 22px; }
+
 /* Karten, Formular */
-#cps-root .cps-card { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 14px; padding: 28px; }
+#cps-root .cps-card { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; padding: 28px; }
 #cps-root .cps-narrow { max-width: 420px; margin: 24px auto; }
 #cps-root .cps-center { text-align: center; max-width: 560px; margin: 40px auto; }
-#cps-root .cps-card h2 { font-family: var(--mono, monospace); font-size: 20px; margin-bottom: 6px; color: var(--cps-ink); }
+#cps-root .cps-card h2 { font-family: var(--mono, monospace); font-size: 20px; margin-bottom: 6px; color: var(--cps-accent); }
 #cps-root label { display: block; margin: 16px 0 8px; font-family: var(--mono, monospace); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--cps-faint); }
 #cps-root input { width: 100%; padding: 12px 16px; font-size: 16px; font-family: var(--sans, sans-serif); color: var(--cps-ink); background: var(--cps-bg); border: 1px solid var(--cps-line); border-radius: 8px; outline: none; }
-#cps-root input:focus { border-color: var(--cps-line-hi); box-shadow: 0 0 0 3px rgba(61,189,177,.12); }
+#cps-root input:focus { border-color: var(--cps-accent); box-shadow: 0 0 0 3px rgba(96,248,29,.18); }
 #cps-root .cps-error { margin-top: 16px; padding: 10px 14px; font-size: 14px; color: var(--cps-err); background: var(--cps-err-bg); border: 1px solid var(--cps-err); border-radius: 8px; }
 
 /* Buttons */
 #cps-root .cps-btn { font: inherit; font-size: 13px; cursor: pointer; padding: 8px 14px; color: var(--cps-soft); background: transparent; border: 1px solid var(--cps-line); border-radius: 8px; transition: color .2s, border-color .2s, background .2s; }
-#cps-root .cps-btn:hover { color: var(--cps-ink); border-color: var(--cps-line-hi); background: rgba(61,189,177,.05); }
-#cps-root .cps-btn-primary { width: 100%; margin-top: 20px; padding: 13px; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, var(--cps-accent-dark), #1e8f85); border: none; box-shadow: 0 0 24px rgba(61,189,177,.2); }
-#cps-root .cps-btn-primary:hover { color: #fff; opacity: .92; background: linear-gradient(135deg, var(--cps-accent-dark), #1e8f85); }
+#cps-root .cps-btn:hover { color: var(--cps-accent); border-color: var(--cps-accent); background: rgba(96,248,29,.06); }
+#cps-root .cps-btn-primary { width: 100%; margin-top: 20px; padding: 13px; font-size: 15px; font-weight: 700; color: #000; background: var(--cps-accent); border-color: var(--cps-accent); }
+#cps-root .cps-btn-primary:hover { color: #000; background: var(--cps-accent-dark); border-color: var(--cps-accent-dark); }
 #cps-root .cps-btn-primary:disabled { opacity: .55; cursor: default; }
 #cps-root .cps-link { font: inherit; color: var(--cps-accent); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
 
@@ -53,14 +65,15 @@
 #cps-root .cps-detail-head { margin-bottom: 18px; }
 #cps-root .cps-detail-head p { font-size: 13px; color: var(--cps-faint); font-family: var(--mono, monospace); line-height: 1.7; }
 #cps-root .cps-tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--cps-line); }
-#cps-root .cps-tab { font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; padding: 12px 22px; color: var(--cps-soft); background: transparent; border: none; border-bottom: 2px solid transparent; transition: color .2s; }
+#cps-root .cps-tab { font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; padding: 12px 22px; color: var(--cps-soft); background: transparent; border: none; border-bottom: 3px solid transparent; transition: color .2s; }
 #cps-root .cps-tab:hover { color: var(--cps-ink); }
-#cps-root .cps-tab[aria-selected="true"] { color: var(--cps-accent); border-bottom-color: var(--cps-accent); font-weight: 600; }
+#cps-root .cps-tab[aria-selected="true"] { color: var(--cps-accent); border-bottom-color: var(--cps-accent); font-weight: 700; }
 #cps-root .cps-panel { padding-top: 22px; outline: none; }
 
 /* Abschnitte, Schlüssel/Wert-Listen */
 #cps-root .cps-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
-#cps-root .cps-section { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 14px; padding: 20px 22px; min-width: 0; }
+#cps-root .cps-wide { grid-column: 1 / -1; }
+#cps-root .cps-section { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; padding: 20px 22px; min-width: 0; }
 #cps-root .cps-section h2 { font-family: var(--mono, monospace); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cps-accent); margin-bottom: 14px; }
 #cps-root .cps-kv { display: grid; grid-template-columns: minmax(120px, 42%) 1fr; gap: 8px 16px; margin: 0; font-size: 14px; }
 #cps-root .cps-kv dt { color: var(--cps-faint); }
@@ -70,12 +83,22 @@
 #cps-root .cps-list li:last-child { border-bottom: none; }
 #cps-root .cps-sub { color: var(--cps-faint); font-size: 12px; }
 
+/* Fotos */
+#cps-root .cps-photos { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+#cps-root .cps-photo { margin: 0; background: #000; border: 1px solid var(--cps-line); border-radius: 10px; overflow: hidden; }
+#cps-root .cps-photo a { display: block; }
+#cps-root .cps-photo img { display: block; width: 100%; max-height: 460px; object-fit: contain; background: #000; }
+#cps-root .cps-photo figcaption { padding: 8px 12px; font-size: 13px; color: var(--cps-soft); border-top: 1px solid var(--cps-line); }
+#cps-root .cps-photo-missing { padding: 36px 16px; text-align: center; color: var(--cps-faint); font-size: 14px; }
+
 /* Tabellen */
 #cps-root .cps-table-wrap { overflow-x: auto; border: 1px solid var(--cps-line); border-radius: 12px; background: var(--cps-card); }
 #cps-root .cps-table { border-collapse: collapse; width: 100%; font-size: 14px; }
 #cps-root .cps-table th, #cps-root .cps-table td { padding: 9px 14px; border-bottom: 1px solid var(--cps-line); text-align: left; vertical-align: top; }
 #cps-root .cps-table th { color: var(--cps-accent); font-family: var(--mono, monospace); font-size: 12px; font-weight: 700; background: var(--cps-card-2); white-space: nowrap; }
 #cps-root .cps-table tr:last-child td { border-bottom: none; }
+#cps-root .cps-table-fit th { white-space: normal; }
+#cps-root .cps-table-fit th, #cps-root .cps-table-fit td { padding: 9px 10px; }
 #cps-root .cps-table .cps-sticky { position: sticky; left: 0; background: var(--cps-card-2); z-index: 1; white-space: nowrap; }
 #cps-root .cps-table td.cps-sticky { color: var(--cps-soft); }
 #cps-root .cps-table .cps-comment { white-space: pre-wrap; min-width: 160px; }
@@ -85,7 +108,7 @@
 #cps-root .cps-foot { margin-top: 40px; font-size: 12px; color: var(--cps-faint); font-family: var(--mono, monospace); }
 
 @media (max-width: 768px) {
-  #cps-root .wrap { padding-top: 40px; padding-bottom: 56px; }
+  #cps-root .wrap { padding-top: 28px; padding-bottom: 56px; }
   #cps-root .cps-card { padding: 22px 18px; }
 }
 @media (max-width: 600px) {
@@ -99,8 +122,9 @@
   <div class="wrap">
 
     <div class="cps-head">
-      <div>
-        <div class="section-label">Support</div>
+      <div class="cps-brand">
+        <img class="cps-brand-logo" src="email-assets/cp-logo-email.png" alt="" onerror="this.style.display='none'">
+        <span class="cps-brand-name">C&amp;P Aquaplants<span class="cps-brand-sub">Support</span></span>
       </div>
       <div class="cps-session cps-hidden" id="cps-session">
         <span class="cps-session-mail" id="cps-sessionMail"></span>
@@ -131,8 +155,8 @@
 
     <!-- Übersicht aller Snapshots -->
     <div class="cps-hidden" id="cps-viewList">
-      <h1 class="section-title">Support-Anfragen</h1>
-      <p class="section-desc" style="margin-bottom:24px">Aktuell gespeicherte Daten-Links. Sie werden nach 7 Tagen automatisch gelöscht.</p>
+      <h1 class="cps-title">Support-Anfragen</h1>
+      <p class="cps-muted cps-desc">Aktuell gespeicherte Daten-Links. Sie werden nach 7 Tagen automatisch gelöscht.</p>
       <div class="cps-table-wrap">
         <table class="cps-table" id="cps-listTable">
           <thead>
@@ -141,13 +165,13 @@
           <tbody></tbody>
         </table>
       </div>
-      <p class="cps-muted cps-hidden" id="cps-listEmpty" style="margin-top:12px">Keine Einträge vorhanden.</p>
+      <p class="cps-muted cps-hidden" id="cps-listEmpty">Keine Einträge vorhanden.</p>
     </div>
 
     <!-- Detailansicht eines Snapshots -->
     <div class="cps-hidden" id="cps-viewDetail">
       <div class="cps-detail-head">
-        <h1 class="section-title" id="cps-detailTitle"></h1>
+        <h1 class="cps-title" id="cps-detailTitle"></h1>
         <p id="cps-detailMeta"></p>
       </div>
       <div class="cps-tabs" role="tablist" aria-label="Bereiche" id="cps-tabs">
@@ -171,7 +195,7 @@
 // Reset-Seite), hier SUPABASE_JS entsprechend anpassen.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var SUPPORT_JS  = 'support/support.js?v=1';
+  var SUPPORT_JS  = 'support/support.js?v=4';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
