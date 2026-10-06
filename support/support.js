@@ -28,6 +28,17 @@
 
   var client = null;
 
+  // ── Tab-Titel, Icon und Navigation der Webseite ──────────────────────────
+  // Solange die Support-Seite angezeigt wird, steht im Browser-Tab "Support"
+  // mit dem C&P-Aquaplants-Icon, und die Navigationsleiste der Webseite ist
+  // ausgeblendet (CSS in pages/support.html, Klasse `cps-support-page` auf <body>).
+  // Verlässt man die Seite (der Router tauscht den Inhalt aus), wird alles
+  // wiederhergestellt - siehe `restorePageMeta`.
+  var PAGE_TITLE = 'Support';
+  var FAVICON_URL = 'support/cp-favicon.png';
+  var savedMeta = null;     // Titel/Icon der Webseite, solange die Support-Seite aktiv ist
+  var metaObserver = null;
+
   // ── Fall-Verwaltung ──────────────────────────────────────────────────────
   var STATUS_LABEL = { ausstehend: 'Ausstehend', in_bearbeitung: 'In Bearbeitung', abgeschlossen: 'Abgeschlossen' };
   var CASE_COLS = 'id,aquarium_name,created_at,expires_at,app_version,status,assigned_to,assigned_at,closed_at,closed_by';
@@ -168,6 +179,59 @@
   /** Eine Karte; mit `wide` nimmt sie die volle Breite des Rasters ein. */
   function section(title, body, wide) {
     return h('div', { class: wide ? 'cps-section cps-wide' : 'cps-section' }, h('h2', { text: title }), body);
+  }
+
+  /* ── Tab-Titel & Icon ─────────────────────────────────────────────────── */
+
+  function applyPageMeta() {
+    var root = $('root');
+    if (!root) return;
+    if (!savedMeta) {
+      // Originalwerte nur beim ERSTEN Mal merken (bei erneutem Einblenden sonst
+      // würde "Support" als Original gespeichert).
+      var link = document.querySelector('link[rel~="icon"]');
+      var created = false;
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'icon');
+        document.head.appendChild(link);
+        created = true;
+      }
+      savedMeta = {
+        title: document.title,
+        link: link,
+        href: link.getAttribute('href'),
+        type: link.getAttribute('type'),
+        created: created,
+      };
+    }
+    document.title = PAGE_TITLE;
+    savedMeta.link.setAttribute('type', 'image/png');
+    savedMeta.link.setAttribute('href', FAVICON_URL);
+    document.body.classList.add('cps-support-page');
+
+    // Der Router ersetzt beim Seitenwechsel den Inhalt des Containers: Verschwindet
+    // die Support-Seite, wird alles zurückgesetzt.
+    if (metaObserver) metaObserver.disconnect();
+    if (root.parentNode && window.MutationObserver) {
+      metaObserver = new MutationObserver(function () { if (!alive()) restorePageMeta(); });
+      metaObserver.observe(root.parentNode, { childList: true });
+    }
+  }
+
+  function restorePageMeta() {
+    if (metaObserver) { metaObserver.disconnect(); metaObserver = null; }
+    document.body.classList.remove('cps-support-page');
+    if (!savedMeta) return;
+    var m = savedMeta;
+    savedMeta = null;
+    document.title = m.title;
+    if (m.created) {
+      if (m.link.parentNode) m.link.parentNode.removeChild(m.link);
+    } else {
+      if (m.href === null) m.link.removeAttribute('href'); else m.link.setAttribute('href', m.href);
+      if (m.type === null) m.link.removeAttribute('type'); else m.link.setAttribute('type', m.type);
+    }
   }
 
   /* ── Ansichten ────────────────────────────────────────────────────────── */
@@ -1057,6 +1121,7 @@
   function mount() {
     if (cleanup) { cleanup(); cleanup = null; }
     if (!alive()) return;
+    applyPageMeta();
     client = getClient();
     current = null;
     me = null;
