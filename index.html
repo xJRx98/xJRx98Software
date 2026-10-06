@@ -823,7 +823,7 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 //  PAGE ROUTER
 // ==========================================
 const pageCache = {};
-const VALID_PAGES = ['home','cp-app','wasserpantscher','patientenaufruf','impressum','datenschutz','ueber-mich', 'cp-translation', 'cp-datenschutz', 'reset-password'];
+const VALID_PAGES = ['home','cp-app','wasserpantscher','patientenaufruf','impressum','datenschutz','ueber-mich', 'cp-translation', 'cp-datenschutz', 'reset-password', 'support'];
 
 function tryHistory(fn) { try { fn(); } catch(e) {} }
 
@@ -878,14 +878,22 @@ function runPageScripts() {
   });
 }
 
-window.addEventListener('popstate', e => showPage(e.state?.page || 'home', false));
+// Seiten-ID aus dem Hash. Alles hinter dem ersten "/" ist ein Parameter der
+// Seite (z.B. #support/<ID>) und bleibt in der URL erhalten.
+function pageFromHash() {
+  const base = location.hash.replace('#', '').split('/')[0];
+  return VALID_PAGES.includes(base) ? base : null;
+}
+
+window.addEventListener('popstate', e => showPage(e.state?.page || pageFromHash() || 'home', false));
 
 window.addEventListener('DOMContentLoaded', () => {
   let start = 'home';
   try {
-    const hash = location.hash.replace('#', '');
-    if (VALID_PAGES.includes(hash)) start = hash;
-    tryHistory(() => history.replaceState({ page: start }, '', start === 'home' ? location.pathname : '#' + start));
+    const fromHash = pageFromHash();
+    if (fromHash) start = fromHash;
+    // Den vollständigen Hash behalten (inkl. Parameter wie #support/<ID>)
+    tryHistory(() => history.replaceState({ page: start }, '', start === 'home' ? location.pathname : location.hash));
   } catch(e) {}
   showPage(start, false);
 
