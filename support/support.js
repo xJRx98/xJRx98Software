@@ -10,6 +10,11 @@
  * aufgerufen werden darf (alte Listener werden vorher entfernt). Link-Format:
  * `https://xjrx98software.de/#support/<Snapshot-ID>`.
  *
+ * FÄLLE: Jeder Snapshot ist ein Fall mit Status (ausstehend / in Bearbeitung /
+ * abgeschlossen) und kann einer Support-Person zugeordnet werden (siehe
+ * supabase/schema_support_cases.sql und CLOUD_SETUP.md Abschnitt 171). Die
+ * Übersicht zeigt, wer welchen Fall bearbeitet, und lädt automatisch neu.
+ *
  * SICHERHEIT: Die Snapshot-Daten stammen von Kundinnen und Kunden und sind
  * nicht vertrauenswürdig. Darum wird NIE innerHTML verwendet - alles läuft
  * über textContent/createTextNode (siehe `h()`).
@@ -22,6 +27,20 @@
   var ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
   var client = null;
+
+  // ── Fall-Verwaltung ──────────────────────────────────────────────────────
+  var STATUS_LABEL = { ausstehend: 'Ausstehend', in_bearbeitung: 'In Bearbeitung', abgeschlossen: 'Abgeschlossen' };
+  var CASE_COLS = 'id,aquarium_name,created_at,expires_at,app_version,status,assigned_to,assigned_at,closed_at,closed_by';
+  var CASE_RET = 'id,expires_at,status,assigned_to,assigned_at,closed_at,closed_by';
+  var POLL_MS = 30000;   // Übersicht lädt so oft automatisch neu
+  var me = null;         // { id, email } der angemeldeten Person
+  var team = {};         // user_id -> Anzeigename ('' = noch keiner festgelegt)
+  var listCases = [];    // zuletzt geladene Fälle (ohne Nutzlast)
+  var listTab = 'ausstehend';
+  var onlyMine = false;
+  var listUpdated = null;
+  var pollTimer = null;
+  var flashTimer = null;
 
   /** sessionStorage, falls verfügbar - sonst ein Speicher im Arbeitsspeicher.
    *  Manche Browser/Modi sperren sessionStorage (der bloße Zugriff wirft dann
@@ -157,6 +176,7 @@
 
   function showView(id) {
     if (!alive()) return;
+    if (id !== 'viewList') stopPoll();
     VIEWS.forEach(function (v) { $(v).classList.toggle('cps-hidden', v !== id); });
   }
 
@@ -170,6 +190,7 @@
   function showLogin(errorText) {
     if (!alive()) return;
     $('session').classList.add('cps-hidden');
+    $('flash').classList.add('cps-hidden');
     var err = $('loginError');
     err.textContent = errorText || '';
     err.classList.toggle('cps-hidden', !errorText);
@@ -179,8 +200,11 @@
   }
 
   function setSession(session) {
-    $('sessionMail').textContent = session && session.user && session.user.email ? session.user.email : '';
+    var u = session && session.user ? session.user : null;
+    me = u ? { id: u.id, email: u.email || '' } : null;
+    $('sessionMail').textContent = u && u.email ? u.email : '';
     $('session').classList.remove('cps-hidden');
+    updateNameButton();
   }
 
   /* ── Anmeldung ────────────────────────────────────────────────────────── */
@@ -221,8 +245,12 @@
   }
 
   function onLogout() {
+    stopPoll();
     client.auth.signOut().then(function () {
       current = null;
+      me = null;
+      team = {};
+      listCases = [];
       history.replaceState({ page: 'support' }, '', '#support');
       showLogin();
     });
@@ -257,38 +285,373 @@
     loadDetail(id);
   }
 
-  function loadList() {
-    showMessage('Lade …');
-    client.from('support_snapshots')
-      .select('id,aquarium_name,created_at,expires_at,app_version')
-      .order('created_at', { ascending: false })
-      .limit(100)
-      .then(function (res) {
-        if (res.error) { showMessage('Fehler', 'Die Übersicht konnte nicht geladen werden.'); return; }
-        var body = $('listTable').querySelector('tbody');
-        clear(body);
-        var rows = res.data || [];
-        $('listEmpty').classList.toggle('cps-hidden', rows.length > 0);
-        rows.forEach(function (r) {
-          body.appendChild(h('tr', null,
-            h('td', { text: r.aquarium_name || '(ohne Namen)' }),
-            h('td', { text: fmtDateTime(r.created_at) }),
-            h('td', { text: fmtDateTime(r.expires_at) }),
-            h('td', { text: r.app_version || '' }),
-            h('td', null, h('button', {
-              type: 'button', class: 'cps-link', text: 'Öffnen',
-              onclick: function () { navigate(r.id); },
-            }))
-          ));
-        });
-        showView('viewList');
-      })
-      .catch(function () { showMessage('Fehler', 'Die Übersicht konnte nicht geladen werden.'); });
+  /** Meldet einen Datenbankfehler; fehlt die Migration, kommt ein klarer Hinweis. */
+  function dbError(error, fallback) {
+    var msg = (error && error.message) || '';
+    if (error && (String(error.code) === '42703' || /column .*(status|assigned_to)/i.test(msg))) {
+      showMessage('Datenbank-Update fehlt', 'Bitte supabase/schema_support_cases.sql im Supabase SQL-Editor ausführen.');
+    } else {
+      showMessage('Fehler', fallback);
+    }
   }
+
+  /** Kurze Rückmeldung zu einer Aktion (verschwindet nach 6 Sekunden). */
+  function flash(text, isErr) {
+    if (!alive()) return;
+    var el = $('flash');
+    el.textContent = text;
+    el.classList.toggle('cps-flash-err', !!isErr);
+    el.classList.remove('cps-hidden');
+    if (flashTimer) clearTimeout(flashTimer);
+    flashTimer = setTimeout(function () { if (alive()) $('flash').classList.add('cps-hidden'); }, 6000);
+  }
+
+  function statusOf(c) { return c && STATUS_LABEL[c.status] ? c.status : 'ausstehend'; }
+
+  /* ── Team & Anzeigename ───────────────────────────────────────────────── */
+
+  function loadTeam() {
+    return client.from('support_admins').select('user_id,display_name').then(function (res) {
+      if (res.error) return;
+      team = {};
+      (res.data || []).forEach(function (r) { if (r && r.user_id) team[r.user_id] = r.display_name || ''; });
+      updateNameButton();
+    });
+  }
+
+  function nameOf(id) {
+    if (!id) return '–';
+    if (team[id]) return team[id];
+    if (me && id === me.id && me.email) return me.email;
+    return 'Mitarbeiter ' + String(id).slice(0, 4);
+  }
+
+  function updateNameButton() {
+    var b = $('btnName');
+    if (!b) return;
+    var mine = !!(me && team[me.id]);
+    b.textContent = mine ? 'Mein Name' : 'Name festlegen';
+    b.classList.toggle('cps-btn-accent', !mine);
+  }
+
+  function onSetName() {
+    if (!me) return;
+    var input = window.prompt('Name, der den Kolleginnen und Kollegen angezeigt wird (max. 40 Zeichen):', team[me.id] || '');
+    if (input === null) return;
+    var name = String(input).trim().slice(0, 40);
+    if (!name) { flash('Der Name darf nicht leer sein.', true); return; }
+    client.from('support_admins').update({ display_name: name }).eq('user_id', me.id).select('user_id').then(function (res) {
+      if (res.error || !(res.data && res.data.length)) { flash('Der Name konnte nicht gespeichert werden.', true); return; }
+      team[me.id] = name;
+      updateNameButton();
+      flash('Name gespeichert.');
+      if (!$('viewList').classList.contains('cps-hidden')) renderList();
+      else if (current) renderCaseBar();
+    }).catch(function () { flash('Der Name konnte nicht gespeichert werden.', true); });
+  }
+
+  /* ── Übersicht: Ausstehend / In Bearbeitung / Abgeschlossen ───────────── */
+
+  function startPoll() {
+    if (pollTimer) return;
+    pollTimer = setInterval(function () {
+      if (!alive()) { stopPoll(); return; }
+      if ($('viewList').classList.contains('cps-hidden')) return;
+      loadList(true);
+    }, POLL_MS);
+  }
+
+  function stopPoll() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  }
+
+  /** `silent` = automatische Aktualisierung: keine "Lade …"-Anzeige, Fehler
+   *  werden ignoriert, und die Ansicht wird nicht gewechselt. */
+  function loadList(silent) {
+    if (!silent) showMessage('Lade …');
+    Promise.all([
+      loadTeam(),
+      client.from('support_snapshots').select(CASE_COLS)
+        .order('created_at', { ascending: false })
+        .limit(200),
+    ]).then(function (r) {
+      if (!alive()) return;
+      var res = r[1];
+      if (res.error) { if (!silent) dbError(res.error, 'Die Übersicht konnte nicht geladen werden.'); return; }
+      if (silent && $('viewList').classList.contains('cps-hidden')) return;
+      listCases = res.data || [];
+      listUpdated = new Date();
+      renderList();
+      showView('viewList');
+      startPoll();
+    }).catch(function () {
+      if (!silent) showMessage('Fehler', 'Die Übersicht konnte nicht geladen werden.');
+    });
+  }
+
+  var LIST_COLUMNS = {
+    ausstehend: ['Aquarium', 'Eingegangen', 'Gültig bis', 'App', ''],
+    in_bearbeitung: ['Aquarium', 'Bearbeiter', 'Seit', 'Eingegangen', 'Gültig bis', ''],
+    abgeschlossen: ['Aquarium', 'Bearbeiter', 'Abgeschlossen', 'Wird gelöscht am', ''],
+  };
+
+  var LIST_EMPTY = {
+    ausstehend: 'Keine ausstehenden Fälle – alles zugeordnet.',
+    in_bearbeitung: 'Zurzeit bearbeitet niemand einen Fall.',
+    abgeschlossen: 'Keine abgeschlossenen Fälle.',
+  };
+
+  function renderList() {
+    var groups = { ausstehend: [], in_bearbeitung: [], abgeschlossen: [] };
+    listCases.forEach(function (c) { groups[statusOf(c)].push(c); });
+
+    ['ausstehend', 'in_bearbeitung', 'abgeschlossen'].forEach(function (k) {
+      var b = $('ltab-' + k);
+      b.textContent = STATUS_LABEL[k] + ' (' + groups[k].length + ')';
+      b.setAttribute('aria-selected', k === listTab ? 'true' : 'false');
+    });
+    renderTeamSummary(groups);
+
+    var mineBtn = $('btnMine');
+    mineBtn.classList.toggle('cps-hidden', listTab !== 'in_bearbeitung');
+    mineBtn.textContent = onlyMine ? 'Alle Fälle zeigen' : 'Nur meine Fälle';
+
+    var rows = groups[listTab].slice();
+    if (listTab === 'in_bearbeitung' && onlyMine && me) {
+      rows = rows.filter(function (c) { return c.assigned_to === me.id; });
+    }
+    if (listTab === 'ausstehend') {
+      rows.sort(function (a, b) { return String(a.created_at).localeCompare(String(b.created_at)); }); // wartet am längsten zuerst
+    } else if (listTab === 'in_bearbeitung') {
+      rows.sort(function (a, b) {
+        return nameOf(a.assigned_to).localeCompare(nameOf(b.assigned_to), 'de') ||
+          String(a.created_at).localeCompare(String(b.created_at));
+      });
+    } else {
+      rows.sort(function (a, b) { return String(b.closed_at || '').localeCompare(String(a.closed_at || '')); });
+    }
+
+    var head = $('listTable').querySelector('thead');
+    var body = $('listTable').querySelector('tbody');
+    clear(head);
+    clear(body);
+    head.appendChild(h('tr', null, LIST_COLUMNS[listTab].map(function (t) { return h('th', { text: t }); })));
+    rows.forEach(function (c) { body.appendChild(caseRow(c)); });
+
+    $('listEmpty').textContent = LIST_EMPTY[listTab];
+    $('listEmpty').classList.toggle('cps-hidden', rows.length > 0);
+    $('listUpdated').textContent = listUpdated
+      ? 'Aktualisiert ' + listUpdated.toLocaleTimeString('de-DE') + ' · lädt automatisch alle ' + Math.round(POLL_MS / 1000) + ' Sekunden neu.'
+      : '';
+  }
+
+  /** Wer bearbeitet gerade wie viele Fälle? (Übersicht für das ganze Team) */
+  function renderTeamSummary(groups) {
+    var box = $('team');
+    clear(box);
+    box.appendChild(h('span', { class: 'cps-chip' }, 'Ausstehend ', h('b', { text: groups.ausstehend.length })));
+    var counts = {};
+    groups.in_bearbeitung.forEach(function (c) { var k = c.assigned_to || ''; counts[k] = (counts[k] || 0) + 1; });
+    var ids = Object.keys(counts).sort(function (a, b) { return nameOf(a).localeCompare(nameOf(b), 'de'); });
+    if (!ids.length) {
+      box.appendChild(h('span', { class: 'cps-muted', text: 'Niemand bearbeitet gerade einen Fall.' }));
+      return;
+    }
+    box.appendChild(h('span', { class: 'cps-muted', text: 'In Bearbeitung:' }));
+    ids.forEach(function (id) {
+      box.appendChild(h('span', { class: me && id === me.id ? 'cps-chip cps-chip-me' : 'cps-chip' },
+        nameOf(id) + ' ', h('b', { text: counts[id] })));
+    });
+  }
+
+  function td(text) { return h('td', { text: text }); }
+
+  /** Button, der während der Aktion gesperrt ist (kein Doppelklick). */
+  function actionBtn(label, fn, accent) {
+    return h('button', {
+      type: 'button',
+      class: accent ? 'cps-btn cps-btn-small cps-btn-accent' : 'cps-btn cps-btn-small',
+      text: label,
+      onclick: function (ev) {
+        var b = ev.currentTarget;
+        b.disabled = true;
+        var enable = function () { b.disabled = false; };
+        var r = fn();
+        if (r && r.then) r.then(enable, enable); else enable();
+      },
+    });
+  }
+
+  function caseRow(c) {
+    var st = statusOf(c);
+    var nameCell = td(c.aquarium_name || '(ohne Namen)');
+    var open = h('button', { type: 'button', class: 'cps-link', text: 'Öffnen', onclick: function () { navigate(c.id); } });
+    var actions = h('div', { class: 'cps-actions' });
+    var cells;
+    var mine = me && c.assigned_to === me.id;
+
+    if (st === 'ausstehend') {
+      actions.appendChild(actionBtn('Übernehmen', function () { return claimCase(c.id); }, true));
+      actions.appendChild(open);
+      cells = [nameCell, td(fmtDateTime(c.created_at)), td(fmtDateTime(c.expires_at)), td(c.app_version || '')];
+    } else if (st === 'in_bearbeitung') {
+      actions.appendChild(open);
+      actions.appendChild(actionBtn('Abschließen', function () { return closeCase(c.id); }));
+      cells = [nameCell, td(nameOf(c.assigned_to) + (mine ? ' (ich)' : '')), td(fmtDateTime(c.assigned_at)),
+        td(fmtDateTime(c.created_at)), td(fmtDateTime(c.expires_at))];
+    } else {
+      actions.appendChild(open);
+      actions.appendChild(actionBtn('Wieder öffnen', function () { return reopenCase(c.id); }));
+      cells = [nameCell, td(c.assigned_to ? nameOf(c.assigned_to) : '–'),
+        td((c.closed_at ? fmtDateTime(c.closed_at) : '') + (c.closed_by ? ' · ' + nameOf(c.closed_by) : '')),
+        td(fmtDateTime(c.expires_at))];
+    }
+    cells.push(h('td', null, actions));
+    return h('tr', null, cells);
+  }
+
+  /* ── Aktionen auf einem Fall ──────────────────────────────────────────── */
+
+  /** Ändert Status/Zuordnung; mit `onlyIfStatus` nur, wenn der Fall noch in diesem
+   *  Status ist (Übernehmen: nur wenn noch ausstehend - so gewinnt bei zwei
+   *  gleichzeitigen Klicks genau eine Person). Gibt die geänderten Zeilen zurück. */
+  function updateCase(id, patch, onlyIfStatus) {
+    var q = client.from('support_snapshots').update(patch).eq('id', id);
+    if (onlyIfStatus) q = q.eq('status', onlyIfStatus);
+    return q.select(CASE_RET).then(function (res) {
+      if (res.error) throw res.error;
+      return res.data || [];
+    });
+  }
+
+  function afterCaseChange(id) {
+    if (!alive()) return;
+    if (!$('viewList').classList.contains('cps-hidden')) { loadList(true); return; }
+    if (current && current.row.id === id) refreshCase(id);
+  }
+
+  function failed(e) {
+    flash('Aktion nicht möglich' + (e && e.message ? ': ' + e.message : '.'), true);
+  }
+
+  function claimCase(id) {
+    if (!me) return Promise.resolve();
+    return updateCase(id, { assigned_to: me.id, status: 'in_bearbeitung' }, 'ausstehend').then(function (rows) {
+      if (!rows.length) flash('Dieser Fall wurde inzwischen von jemand anderem übernommen oder geändert.', true);
+      else flash('Fall übernommen – du bearbeitest ihn jetzt.');
+      afterCaseChange(id);
+    }).catch(failed);
+  }
+
+  /** userId leer = Zuordnung entfernen (Fall wird wieder ausstehend). */
+  function assignCase(id, userId) {
+    var patch = userId ? { assigned_to: userId, status: 'in_bearbeitung' } : { assigned_to: null, status: 'ausstehend' };
+    return updateCase(id, patch).then(function (rows) {
+      if (!rows.length) flash('Der Fall konnte nicht geändert werden.', true);
+      else flash(userId ? 'Fall zugeordnet an ' + nameOf(userId) + '.' : 'Zuordnung entfernt – der Fall ist wieder ausstehend.');
+      afterCaseChange(id);
+    }).catch(failed);
+  }
+
+  function closeCase(id) {
+    if (!window.confirm('Fall abschließen?\n\nEr verschwindet aus der Übersicht und wird unter „Abgeschlossen“ aufbewahrt, bis er automatisch gelöscht wird (7 Tage nach Eingang).')) {
+      return Promise.resolve();
+    }
+    return updateCase(id, { status: 'abgeschlossen' }).then(function (rows) {
+      if (!rows.length) flash('Der Fall konnte nicht abgeschlossen werden.', true);
+      else flash('Fall abgeschlossen – er liegt jetzt unter „Abgeschlossen“.');
+      afterCaseChange(id);
+    }).catch(failed);
+  }
+
+  function reopenCase(id) {
+    return updateCase(id, { status: 'in_bearbeitung' }).then(function (rows) {
+      if (!rows.length) flash('Der Fall konnte nicht wieder geöffnet werden.', true);
+      else flash('Fall wieder geöffnet.');
+      afterCaseChange(id);
+    }).catch(failed);
+  }
+
+  /** Lädt Status/Zuordnung des geöffneten Falls neu (ohne die Nutzlast). */
+  function refreshCase(id) {
+    return client.from('support_snapshots').select(CASE_RET).eq('id', id).maybeSingle().then(function (res) {
+      if (!alive() || !current || current.row.id !== id || res.error || !res.data) return;
+      Object.keys(res.data).forEach(function (k) { current.row[k] = res.data[k]; });
+      renderDetailHead();
+      renderCaseBar();
+    });
+  }
+
+  /* ── Fall-Leiste im Detail ────────────────────────────────────────────── */
+
+  function teamSelect(selectedId) {
+    var sel = h('select', { 'aria-label': 'Zuordnen an' });
+    sel.appendChild(h('option', { value: '', text: '– niemand –' }));
+    Object.keys(team).sort(function (a, b) {
+      if (me && a === me.id) return -1;
+      if (me && b === me.id) return 1;
+      return nameOf(a).localeCompare(nameOf(b), 'de');
+    }).forEach(function (id) {
+      sel.appendChild(h('option', { value: id, text: nameOf(id) + (me && id === me.id ? ' (ich)' : '') }));
+    });
+    sel.value = selectedId || '';
+    return sel;
+  }
+
+  function caseInfo(row) {
+    var st = statusOf(row);
+    var parts = [h('span', { class: 'cps-status cps-status-' + st, text: STATUS_LABEL[st] }), ' '];
+    if (st === 'ausstehend') {
+      parts.push('Noch niemand zugeordnet.');
+    } else if (st === 'in_bearbeitung') {
+      parts.push('Bearbeiter: ', h('strong', { text: nameOf(row.assigned_to) }),
+        row.assigned_at ? ' · seit ' + fmtDateTime(row.assigned_at) : '');
+    } else {
+      parts.push((row.assigned_to ? 'Bearbeiter: ' + nameOf(row.assigned_to) + ' · ' : '') +
+        'abgeschlossen' + (row.closed_at ? ' am ' + fmtDateTime(row.closed_at) : '') +
+        (row.closed_by ? ' von ' + nameOf(row.closed_by) : '') +
+        ' · wird am ' + fmtDateTime(row.expires_at) + ' automatisch gelöscht.');
+    }
+    return parts;
+  }
+
+  function renderCaseBar() {
+    var bar = $('casebar');
+    if (!bar || !current) return;
+    clear(bar);
+    var row = current.row;
+    var st = statusOf(row);
+    var id = row.id;
+    var actions = h('div', { class: 'cps-casebar-actions' });
+
+    if (st === 'abgeschlossen') {
+      actions.appendChild(actionBtn('Wieder öffnen', function () { return reopenCase(id); }));
+    } else {
+      if (!me || row.assigned_to !== me.id) {
+        actions.appendChild(actionBtn(st === 'ausstehend' ? 'Übernehmen' : 'Mir zuweisen',
+          function () { return st === 'ausstehend' ? claimCase(id) : assignCase(id, me && me.id); }, true));
+      }
+      var sel = teamSelect(row.assigned_to);
+      actions.appendChild(sel);
+      actions.appendChild(actionBtn('Zuordnen', function () { return assignCase(id, sel.value); }));
+      if (st === 'in_bearbeitung') {
+        actions.appendChild(actionBtn('Abschließen', function () { return closeCase(id); }, true));
+      }
+    }
+    bar.appendChild(h('div', { class: 'cps-casebar-info' }, caseInfo(row)));
+    bar.appendChild(actions);
+  }
+
+  /* ── Detailansicht laden ──────────────────────────────────────────────── */
 
   function loadDetail(id) {
     showMessage('Lade …');
-    client.from('support_snapshots').select('*').eq('id', id).maybeSingle().then(function (res) {
+    Promise.all([
+      loadTeam(),
+      client.from('support_snapshots').select('*').eq('id', id).maybeSingle(),
+    ]).then(function (r) {
+      if (!alive()) return;
+      var res = r[1];
       if (res.error) { showMessage('Fehler', 'Die Daten konnten nicht geladen werden.'); return; }
       if (!res.data) {
         showMessage('Nicht gefunden', 'Diesen Eintrag gibt es nicht (mehr). Daten-Links werden nach 7 Tagen automatisch gelöscht.');
@@ -297,6 +660,7 @@
       current = { row: res.data, payload: res.data.payload || {} };
       activeTab = 'aquarium';
       renderDetailHead();
+      renderCaseBar();
       selectTab('aquarium');
       showView('viewDetail');
       window.scrollTo(0, 0);
@@ -695,10 +1059,25 @@
     if (!alive()) return;
     client = getClient();
     current = null;
+    me = null;
+    team = {};
+    listCases = [];
+    listTab = 'ausstehend';
+    onlyMine = false;
 
     $('loginForm').addEventListener('submit', onLogin);
     $('btnLogout').addEventListener('click', onLogout);
     $('btnList').addEventListener('click', function () { navigate(''); });
+    $('btnName').addEventListener('click', onSetName);
+    $('btnRefresh').addEventListener('click', function () { loadList(true); });
+    $('btnMine').addEventListener('click', function () { onlyMine = !onlyMine; renderList(); });
+    var listTabs = document.querySelectorAll('#cps-listTabs .cps-tab');
+    for (var j = 0; j < listTabs.length; j++) {
+      listTabs[j].addEventListener('click', function (ev) {
+        listTab = ev.currentTarget.getAttribute('data-list');
+        renderList();
+      });
+    }
     var tabs = document.querySelectorAll('#cps-tabs .cps-tab');
     for (var i = 0; i < tabs.length; i++) {
       tabs[i].addEventListener('click', function (ev) {
@@ -717,6 +1096,8 @@
       }
     });
     cleanup = function () {
+      stopPoll();
+      if (flashTimer) { clearTimeout(flashTimer); flashTimer = null; }
       window.removeEventListener('hashchange', onHashChange);
       var subscription = sub && sub.data && sub.data.subscription;
       if (subscription && subscription.unsubscribe) subscription.unsubscribe();
