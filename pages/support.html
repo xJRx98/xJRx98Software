@@ -1,0 +1,200 @@
+<!-- Support-Seite (Unterseite von xjrx98software.de) -->
+<!-- Wird wie `reset-password` vom Router in index.html als Fragment geladen:
+       Adresse:  https://xjrx98software.de/#support            (Übersicht)
+                 https://xjrx98software.de/#support/<ID>       (ein Daten-Link)
+     Das gesamte CSS ist auf #cps-root begrenzt (alle Klassen beginnen mit "cps-"),
+     damit es sich nicht mit dem CSS der restlichen Seite überschneidet. Farben und
+     Schriften kommen aus den CSS-Variablen von index.html (--accent, --surface, …). -->
+<style>
+#cps-root {
+  --cps-accent: var(--accent, #3dbdb1);
+  --cps-accent-dark: var(--accent2, #2aa89c);
+  --cps-card: var(--surface, #1a2233);
+  --cps-card-2: var(--bg2, #131a24);
+  --cps-bg: var(--bg, #0d1117);
+  --cps-line: var(--border, rgba(61,189,177,.12));
+  --cps-line-hi: var(--border-hi, rgba(61,189,177,.35));
+  --cps-ink: var(--text, #e8edf4);
+  --cps-soft: var(--muted2, #8a9ab0);
+  --cps-faint: var(--muted, #556070);
+  --cps-err: #ff6b5a;
+  --cps-err-bg: #2a1512;
+  --cps-warn: #ffc857;
+}
+#cps-root .wrap { max-width: 1100px; padding-top: 56px; padding-bottom: 80px; }
+#cps-root .cps-hidden { display: none !important; }
+#cps-root .cps-muted { color: var(--cps-faint); }
+#cps-root .cps-dash { color: var(--cps-faint); }
+
+/* Kopfzeile mit Anmeldung */
+#cps-root .cps-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+#cps-root .cps-session { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#cps-root .cps-session-mail { color: var(--cps-faint); font-size: 13px; font-family: var(--mono, monospace); }
+
+/* Karten, Formular */
+#cps-root .cps-card { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 14px; padding: 28px; }
+#cps-root .cps-narrow { max-width: 420px; margin: 24px auto; }
+#cps-root .cps-center { text-align: center; max-width: 560px; margin: 40px auto; }
+#cps-root .cps-card h2 { font-family: var(--mono, monospace); font-size: 20px; margin-bottom: 6px; color: var(--cps-ink); }
+#cps-root label { display: block; margin: 16px 0 8px; font-family: var(--mono, monospace); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--cps-faint); }
+#cps-root input { width: 100%; padding: 12px 16px; font-size: 16px; font-family: var(--sans, sans-serif); color: var(--cps-ink); background: var(--cps-bg); border: 1px solid var(--cps-line); border-radius: 8px; outline: none; }
+#cps-root input:focus { border-color: var(--cps-line-hi); box-shadow: 0 0 0 3px rgba(61,189,177,.12); }
+#cps-root .cps-error { margin-top: 16px; padding: 10px 14px; font-size: 14px; color: var(--cps-err); background: var(--cps-err-bg); border: 1px solid var(--cps-err); border-radius: 8px; }
+
+/* Buttons */
+#cps-root .cps-btn { font: inherit; font-size: 13px; cursor: pointer; padding: 8px 14px; color: var(--cps-soft); background: transparent; border: 1px solid var(--cps-line); border-radius: 8px; transition: color .2s, border-color .2s, background .2s; }
+#cps-root .cps-btn:hover { color: var(--cps-ink); border-color: var(--cps-line-hi); background: rgba(61,189,177,.05); }
+#cps-root .cps-btn-primary { width: 100%; margin-top: 20px; padding: 13px; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, var(--cps-accent-dark), #1e8f85); border: none; box-shadow: 0 0 24px rgba(61,189,177,.2); }
+#cps-root .cps-btn-primary:hover { color: #fff; opacity: .92; background: linear-gradient(135deg, var(--cps-accent-dark), #1e8f85); }
+#cps-root .cps-btn-primary:disabled { opacity: .55; cursor: default; }
+#cps-root .cps-link { font: inherit; color: var(--cps-accent); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
+
+/* Detail-Kopf & Tabs */
+#cps-root .cps-detail-head { margin-bottom: 18px; }
+#cps-root .cps-detail-head p { font-size: 13px; color: var(--cps-faint); font-family: var(--mono, monospace); line-height: 1.7; }
+#cps-root .cps-tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--cps-line); }
+#cps-root .cps-tab { font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; padding: 12px 22px; color: var(--cps-soft); background: transparent; border: none; border-bottom: 2px solid transparent; transition: color .2s; }
+#cps-root .cps-tab:hover { color: var(--cps-ink); }
+#cps-root .cps-tab[aria-selected="true"] { color: var(--cps-accent); border-bottom-color: var(--cps-accent); font-weight: 600; }
+#cps-root .cps-panel { padding-top: 22px; outline: none; }
+
+/* Abschnitte, Schlüssel/Wert-Listen */
+#cps-root .cps-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+#cps-root .cps-section { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 14px; padding: 20px 22px; min-width: 0; }
+#cps-root .cps-section h2 { font-family: var(--mono, monospace); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cps-accent); margin-bottom: 14px; }
+#cps-root .cps-kv { display: grid; grid-template-columns: minmax(120px, 42%) 1fr; gap: 8px 16px; margin: 0; font-size: 14px; }
+#cps-root .cps-kv dt { color: var(--cps-faint); }
+#cps-root .cps-kv dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; color: var(--cps-ink); }
+#cps-root .cps-list { margin: 0; padding: 0; list-style: none; font-size: 14px; }
+#cps-root .cps-list li { padding: 8px 0; border-bottom: 1px solid var(--cps-line); display: flex; justify-content: space-between; gap: 12px; }
+#cps-root .cps-list li:last-child { border-bottom: none; }
+#cps-root .cps-sub { color: var(--cps-faint); font-size: 12px; }
+
+/* Tabellen */
+#cps-root .cps-table-wrap { overflow-x: auto; border: 1px solid var(--cps-line); border-radius: 12px; background: var(--cps-card); }
+#cps-root .cps-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+#cps-root .cps-table th, #cps-root .cps-table td { padding: 9px 14px; border-bottom: 1px solid var(--cps-line); text-align: left; vertical-align: top; }
+#cps-root .cps-table th { color: var(--cps-accent); font-family: var(--mono, monospace); font-size: 12px; font-weight: 700; background: var(--cps-card-2); white-space: nowrap; }
+#cps-root .cps-table tr:last-child td { border-bottom: none; }
+#cps-root .cps-table .cps-sticky { position: sticky; left: 0; background: var(--cps-card-2); z-index: 1; white-space: nowrap; }
+#cps-root .cps-table td.cps-sticky { color: var(--cps-soft); }
+#cps-root .cps-table .cps-comment { white-space: pre-wrap; min-width: 160px; }
+#cps-root .cps-pill { display: inline-block; padding: 1px 9px; border-radius: 10px; font-size: 12px; background: rgba(255,255,255,.08); color: var(--cps-soft); }
+#cps-root .cps-pill.cps-warn { background: #3a2f12; color: var(--cps-warn); }
+#cps-root .cps-note { color: var(--cps-faint); font-size: 12px; margin: 10px 2px 0; font-family: var(--mono, monospace); }
+#cps-root .cps-foot { margin-top: 40px; font-size: 12px; color: var(--cps-faint); font-family: var(--mono, monospace); }
+
+@media (max-width: 768px) {
+  #cps-root .wrap { padding-top: 40px; padding-bottom: 56px; }
+  #cps-root .cps-card { padding: 22px 18px; }
+}
+@media (max-width: 600px) {
+  #cps-root .cps-kv { grid-template-columns: 1fr; gap: 0; }
+  #cps-root .cps-kv dd { margin-bottom: 10px; }
+  #cps-root .cps-tab { padding: 11px 14px; }
+}
+</style>
+
+<section id="cps-root" class="cps">
+  <div class="wrap">
+
+    <div class="cps-head">
+      <div>
+        <div class="section-label">Support</div>
+      </div>
+      <div class="cps-session cps-hidden" id="cps-session">
+        <span class="cps-session-mail" id="cps-sessionMail"></span>
+        <button type="button" class="cps-btn" id="cps-btnList">Übersicht</button>
+        <button type="button" class="cps-btn" id="cps-btnLogout">Abmelden</button>
+      </div>
+    </div>
+
+    <!-- Lädt / Meldungen -->
+    <div class="cps-card cps-center" id="cps-viewMessage">
+      <h2 id="cps-messageTitle">Lade …</h2>
+      <p class="cps-muted" id="cps-messageText"></p>
+    </div>
+
+    <!-- Anmeldung -->
+    <div class="cps-card cps-narrow cps-hidden" id="cps-viewLogin">
+      <h2>Anmeldung</h2>
+      <p class="cps-muted">Nur für das Support-Team.</p>
+      <form id="cps-loginForm" novalidate>
+        <label for="cps-email">E-Mail</label>
+        <input id="cps-email" type="email" autocomplete="username" required>
+        <label for="cps-password">Passwort</label>
+        <input id="cps-password" type="password" autocomplete="current-password" required>
+        <p class="cps-error cps-hidden" id="cps-loginError" role="alert"></p>
+        <button type="submit" class="cps-btn cps-btn-primary" id="cps-loginButton">Anmelden</button>
+      </form>
+    </div>
+
+    <!-- Übersicht aller Snapshots -->
+    <div class="cps-hidden" id="cps-viewList">
+      <h1 class="section-title">Support-Anfragen</h1>
+      <p class="section-desc" style="margin-bottom:24px">Aktuell gespeicherte Daten-Links. Sie werden nach 7 Tagen automatisch gelöscht.</p>
+      <div class="cps-table-wrap">
+        <table class="cps-table" id="cps-listTable">
+          <thead>
+            <tr><th>Aquarium</th><th>Erstellt</th><th>Gültig bis</th><th>App</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="cps-muted cps-hidden" id="cps-listEmpty" style="margin-top:12px">Keine Einträge vorhanden.</p>
+    </div>
+
+    <!-- Detailansicht eines Snapshots -->
+    <div class="cps-hidden" id="cps-viewDetail">
+      <div class="cps-detail-head">
+        <h1 class="section-title" id="cps-detailTitle"></h1>
+        <p id="cps-detailMeta"></p>
+      </div>
+      <div class="cps-tabs" role="tablist" aria-label="Bereiche" id="cps-tabs">
+        <button type="button" role="tab" class="cps-tab" data-tab="aquarium" id="cps-tab-aquarium" aria-controls="cps-panel">Aquarium</button>
+        <button type="button" role="tab" class="cps-tab" data-tab="messwerte" id="cps-tab-messwerte" aria-controls="cps-panel">Messwerte</button>
+        <button type="button" role="tab" class="cps-tab" data-tab="duengung" id="cps-tab-duengung" aria-controls="cps-panel">Düngung</button>
+        <button type="button" role="tab" class="cps-tab" data-tab="einstellungen" id="cps-tab-einstellungen" aria-controls="cps-panel">Einstellungen</button>
+      </div>
+      <div class="cps-panel" role="tabpanel" id="cps-panel" tabindex="0"></div>
+    </div>
+
+    <p class="cps-foot">Vertrauliche Kundendaten – nur zur Bearbeitung der Support-Anfrage verwenden.</p>
+  </div>
+</section>
+
+<script>
+// Lädt supabase-js und die Support-Logik nacheinander und startet die Seite.
+// Der Router führt Skripte aus Fragmenten erneut aus, jedes Mal wenn die Seite
+// geöffnet wird - darum wird nur nachgeladen, was noch fehlt. Pfade sind relativ
+// zur index.html. Liegt supabase.js bei dir schon an anderer Stelle (Passwort-
+// Reset-Seite), hier SUPABASE_JS entsprechend anpassen.
+(function () {
+  var SUPABASE_JS = 'support/supabase.js';
+  var SUPPORT_JS  = 'support/support.js?v=1';
+
+  function load(src) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.async = false;
+      s.onload = resolve;
+      s.onerror = function () { reject(new Error('Konnte ' + src + ' nicht laden')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  var chain = Promise.resolve();
+  if (!(window.supabase && window.supabase.createClient)) chain = chain.then(function () { return load(SUPABASE_JS); });
+  if (!window.CPSupport) chain = chain.then(function () { return load(SUPPORT_JS); });
+
+  chain.then(function () {
+    window.CPSupport.mount();
+  }).catch(function () {
+    var t = document.getElementById('cps-messageTitle');
+    var x = document.getElementById('cps-messageText');
+    if (t) t.textContent = 'Fehler';
+    if (x) x.textContent = 'Die Support-Seite konnte nicht geladen werden. Bitte später erneut versuchen.';
+  });
+})();
+</script>
