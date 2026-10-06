@@ -146,8 +146,9 @@
     return dl;
   }
 
-  function section(title, body) {
-    return h('div', { class: 'cps-section' }, h('h2', { text: title }), body);
+  /** Eine Karte; mit `wide` nimmt sie die volle Breite des Rasters ein. */
+  function section(title, body, wide) {
+    return h('div', { class: wide ? 'cps-section cps-wide' : 'cps-section' }, h('h2', { text: title }), body);
   }
 
   /* ── Ansichten ────────────────────────────────────────────────────────── */
@@ -358,11 +359,59 @@
     $('tab-' + order[i]).focus();
   }
 
+  /* ── Fotos ────────────────────────────────────────────────────────────── */
+
+  /** Nur Adressen des EIGENEN Supabase-Projekts werden geladen: die Adresse
+   *  stammt aus den Kundendaten (nicht vertrauenswürdig) und würde sonst
+   *  beliebige Fremdserver im Browser des Support-Teams aufrufen (IP-Leak,
+   *  Tracking-Pixel). Erlaubt sind die Kurz-Links der Edge Function `img` und
+   *  signierte Storage-Links. */
+  function safePhotoUrl(u) {
+    try {
+      var x = new URL(String(u));
+      if (x.protocol !== 'https:') return null;
+      if (x.host !== new URL(SUPABASE_URL).host) return null;
+      if (x.pathname.indexOf('/functions/v1/img/') !== 0 &&
+          x.pathname.indexOf('/storage/v1/object/sign/') !== 0) return null;
+      return x.href;
+    } catch (e) { return null; }
+  }
+
+  function photoFigure(label, url) {
+    var fig = h('figure', { class: 'cps-photo' });
+    var safe = safePhotoUrl(url);
+    if (!safe) {
+      fig.appendChild(h('div', { class: 'cps-photo-missing', text: 'Bild nicht angezeigt (ungültige Adresse).' }));
+    } else {
+      var img = h('img', { src: safe, alt: label, loading: 'lazy', referrerpolicy: 'no-referrer' });
+      var link = h('a', { href: safe, target: '_blank', rel: 'noopener noreferrer' }, img);
+      img.addEventListener('error', function () {
+        if (!link.parentNode) return;
+        link.parentNode.replaceChild(h('div', { class: 'cps-photo-missing',
+          text: 'Bild nicht (mehr) verfügbar – der Link ist abgelaufen oder das Bild wurde gelöscht.' }), link);
+      });
+      fig.appendChild(link);
+    }
+    fig.appendChild(h('figcaption', { text: label }));
+    return fig;
+  }
+
+  function renderPhotos(f) {
+    f = f || {};
+    var items = [['Aquarium', f.aquarium], ['Lampe / Einstellungen', f.lampe]]
+      .filter(function (x) { return !isEmpty(x[1]); });
+    if (!items.length) return h('p', { class: 'cps-muted', text: 'Es wurden keine Fotos mitgesendet.' });
+    return h('div', { class: 'cps-photos' }, items.map(function (x) { return photoFigure(x[0], x[1]); }));
+  }
+
   /* ── Tab 1: Aquarium ──────────────────────────────────────────────────── */
 
   function renderAquarium(p) {
     var a = p.aquarium || {};
     var grid = h('div', { class: 'cps-grid' });
+
+    // Fotos zuerst: genau die Bilder, die die Person per WhatsApp-Link mitgesendet hat.
+    grid.appendChild(section('Fotos', renderPhotos(p.fotos), true));
 
     var allgemein = [['Name', show(a.name)], ['Netto-Volumen', num(a.nettovolumen, 'L')]];
     if (a.auto === false) {
@@ -542,12 +591,14 @@
         h('td', { text: ist ? fmtDate(ist.zeit) : '' }),
         h('td', null, num(ziel))));
     });
+    // Volle Breite + umbrechende Überschriften (cps-table-fit): Ist, Messdatum und
+    // Ziel sollen ohne seitliches Scrollen sichtbar sein.
     grid.appendChild(section('Nährstoffe: Ist / Ziel (mg/l)', h('div', { class: 'cps-table-wrap' },
-      h('table', { class: 'cps-table' },
+      h('table', { class: 'cps-table cps-table-fit' },
         h('thead', null, h('tr', null,
           h('th', { text: 'Nährstoff' }), h('th', { text: 'Ist (letzte Messung)' }),
           h('th', { text: 'Messdatum' }), h('th', { text: 'Ziel' }))),
-        nb))));
+        nb)), true));
 
     var taeglich = Array.isArray(d.taegliche_duengung) ? d.taegliche_duengung : [];
     grid.appendChild(section('Tägliche Düngung', listOrEmpty(taeglich, function (x) {
@@ -557,7 +608,9 @@
 
     grid.appendChild(section('Düngekapseln', kv([
       ['Letzte Gabe', isEmpty(d.duengekapseln_datum) ? dash() : String(d.duengekapseln_datum)],
-      ['Intervall', isEmpty(d.duengekapseln_intervall) ? dash() : 'alle ' + d.duengekapseln_intervall + ' Tage'],
+      // Das Intervall wird in der App in WOCHEN angegeben (Standard 10, empfohlen 6-10).
+      ['Intervall', isEmpty(d.duengekapseln_intervall) ? dash() :
+        (Number(d.duengekapseln_intervall) === 1 ? 'jede Woche' : 'alle ' + d.duengekapseln_intervall + ' Wochen')],
     ])));
 
     grid.appendChild(section('Salzrechner', kv([
