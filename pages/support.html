@@ -6,6 +6,16 @@
      damit es sich nicht mit dem CSS der restlichen Seite überschneidet. Farben und
      Schriften kommen aus den CSS-Variablen von index.html (--accent, --surface, …). -->
 <style>
+/* Navigationsleiste der Webseite ausblenden, solange die Support-Seite angezeigt wird.
+   Zwei getrennte Regeln (eine ungültige Selektorliste würde sonst die ganze Regel verwerfen):
+   - `:has()` greift sofort mit dem Einfügen der Seite (kein Aufblitzen der Leiste),
+   - die Klasse `cps-support-page` setzt support.js (auch für ältere Browser ohne `:has`)
+     und entfernt sie wieder, sobald die Seite verlassen wird. */
+body:has(#cps-root) > nav { display: none !important; }
+body:has(#cps-root) > #nav-mobile-menu { display: none !important; }
+body.cps-support-page > nav { display: none !important; }
+body.cps-support-page > #nav-mobile-menu { display: none !important; }
+
 #cps-root {
   /* Farbschema der C&P-Aquaplants-App: Schwarz, Dunkelgrau und Neon-Grün. */
   --cps-accent: #60F81D;
@@ -237,7 +247,7 @@
 // Reset-Seite), hier SUPABASE_JS entsprechend anpassen.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var SUPPORT_JS  = 'support/support.js?v=5';
+  var SUPPORT_JS  = 'support/support.js?v=6';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
