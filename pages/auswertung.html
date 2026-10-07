@@ -163,6 +163,7 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
 #cpa-root .cpa-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 #cpa-root .cpa-actions .cpa-btn-primary { width: auto; margin: 0; padding: 11px 26px; }
 #cpa-root .cpa-downloads { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+#cpa-root .cpa-result-tabs { margin: 0 0 14px; }
 #cpa-root .cpa-frame { display: block; width: 100%; min-height: 360px; border: 0; border-radius: 12px; background: #eef0ec; }
 </style>
 
@@ -239,6 +240,7 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
 
       <div class="cpa-hidden" id="cpa-result">
         <p class="cpa-note" id="cpa-resultInfo"></p>
+        <div class="cpa-tabs cpa-result-tabs cpa-hidden" id="cpa-tabs" role="tablist" aria-label="Bereiche der Auswertung"></div>
         <div class="cpa-downloads" id="cpa-downloads"></div>
         <iframe id="cpa-frame" class="cpa-frame" title="Auswertung" sandbox="allow-same-origin"></iframe>
       </div>
@@ -254,7 +256,7 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
 // der Support-Seite geteilt (gleicher Speicherschlüssel): Wer dort angemeldet ist, ist es hier auch.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var AUSWERTUNG_JS = 'auswertung/auswertung.js?v=1';
+  var AUSWERTUNG_JS = 'auswertung/auswertung.js?v=2';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
