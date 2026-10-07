@@ -421,11 +421,12 @@
     if (running || !client || !alive()) return;
     var period = readPeriod();
     if (!period) return;
-    if (!window.confirm('Bericht für ' + fmtDay(period.von) + ' bis ' + fmtDay(period.bis) + ' jetzt per E-Mail senden?')) return;
+    var ziel = me && me.email ? ' an ' + me.email : ' an deine Anmelde-Adresse';
+    if (!window.confirm('Bericht für ' + fmtDay(period.von) + ' bis ' + fmtDay(period.bis) + ' jetzt per E-Mail' + ziel + ' senden?')) return;
     setBusy(true);
     invoke({ von: period.von, bis: period.bis, nurZeitraum: period.nurZeitraum })
       .then(function (data) {
-        if (data.ok) flash('Bericht gesendet an ' + (data.sentTo || 'die hinterlegte Adresse') + '.');
+        if (data.ok) flash('Bericht gesendet an ' + (data.sentTo || 'deine Anmelde-Adresse') + '.');
         else flash('Der Bericht wurde nicht gesendet.', true);
       })
       .catch(function (e) {
