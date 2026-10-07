@@ -1,0 +1,283 @@
+<!--
+  C&P Aquaplants – Seite "Auswertung" (Unterseite von xjrx98software.de, erreichbar unter #auswertung)
+  Nutzerzahlen und Auswertungen für einen frei wählbaren Zeitraum. Nur für Support-Konten mit
+  Berechtigung `darf_auswertung` (siehe supabase/schema_weekly_report.sql). CLOUD_SETUP.md Abschnitt 174.
+-->
+<style>
+/* Navigationsleiste der Webseite ausblenden, solange die Seite "Auswertung" angezeigt wird
+   (zwei getrennte Regeln: `:has()` greift sofort, die Klasse `cpa-page` setzt auswertung.js
+   für ältere Browser und entfernt sie beim Verlassen der Seite). */
+body:has(#cpa-root) > nav { display: none !important; }
+body:has(#cpa-root) > #nav-mobile-menu { display: none !important; }
+body.cpa-page > nav { display: none !important; }
+body.cpa-page > #nav-mobile-menu { display: none !important; }
+
+#cpa-root {
+  /* Farbschema der C&P-Aquaplants-App: Schwarz, Dunkelgrau und Neon-Grün. */
+  --cpa-accent: #60F81D;
+  --cpa-accent-dark: #47C012;
+  --cpa-bg: #0A0A0A;
+  --cpa-card: #1A1A1A;
+  --cpa-card-2: #141414;
+  --cpa-line: #2A2A2A;
+  --cpa-line-hi: #4A4A4A;
+  --cpa-ink: #FFFFFF;
+  --cpa-soft: #CCCCCC;
+  --cpa-faint: #8A8A8A;
+  --cpa-err: #FF6B5A;
+  --cpa-err-bg: #2A1512;
+  --cpa-warn: #FFC857;
+  background: var(--cpa-bg);
+  color: var(--cpa-ink);
+  min-height: 100vh;
+}
+#cpa-root .wrap { max-width: 1100px; padding-top: 40px; padding-bottom: 80px; }
+#cpa-root .cpa-hidden { display: none !important; }
+#cpa-root .cpa-muted { color: var(--cpa-faint); }
+#cpa-root .cpa-dash { color: var(--cpa-faint); }
+
+/* Kopfzeile: Logo/Name links, Anmeldung rechts */
+#cpa-root .cpa-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid var(--cpa-line); }
+#cpa-root .cpa-brand { display: flex; align-items: center; gap: 12px; }
+#cpa-root .cpa-brand-logo { height: 40px; width: auto; display: block; }
+#cpa-root .cpa-brand-name { font-family: var(--mono, monospace); font-size: 18px; font-weight: 700; color: var(--cpa-accent); letter-spacing: .02em; }
+#cpa-root .cpa-brand-sub { font-weight: 400; color: var(--cpa-soft); margin-left: 6px; }
+#cpa-root .cpa-session { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#cpa-root .cpa-session-mail { color: var(--cpa-faint); font-size: 13px; font-family: var(--mono, monospace); }
+
+/* Überschriften */
+#cpa-root .cpa-title { font-family: var(--mono, monospace); font-size: clamp(22px, 3vw, 32px); font-weight: 700; line-height: 1.15; color: var(--cpa-accent); margin-bottom: 8px; overflow-wrap: anywhere; }
+#cpa-root .cpa-desc { font-size: 15px; margin-bottom: 22px; }
+
+/* Karten, Formular */
+#cpa-root .cpa-card { background: var(--cpa-card); border: 1px solid var(--cpa-line); border-radius: 12px; padding: 28px; }
+#cpa-root .cpa-narrow { max-width: 420px; margin: 24px auto; }
+#cpa-root .cpa-center { text-align: center; max-width: 560px; margin: 40px auto; }
+#cpa-root .cpa-card h2 { font-family: var(--mono, monospace); font-size: 20px; margin-bottom: 6px; color: var(--cpa-accent); }
+#cpa-root label { display: block; margin: 16px 0 8px; font-family: var(--mono, monospace); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--cpa-faint); }
+#cpa-root input { width: 100%; padding: 12px 16px; font-size: 16px; font-family: var(--sans, sans-serif); color: var(--cpa-ink); background: var(--cpa-bg); border: 1px solid var(--cpa-line); border-radius: 8px; outline: none; }
+#cpa-root input:focus { border-color: var(--cpa-accent); box-shadow: 0 0 0 3px rgba(96,248,29,.18); }
+#cpa-root .cpa-error { margin-top: 16px; padding: 10px 14px; font-size: 14px; color: var(--cpa-err); background: var(--cpa-err-bg); border: 1px solid var(--cpa-err); border-radius: 8px; }
+
+/* Buttons */
+#cpa-root .cpa-btn { font: inherit; font-size: 13px; cursor: pointer; padding: 8px 14px; color: var(--cpa-soft); background: transparent; border: 1px solid var(--cpa-line); border-radius: 8px; transition: color .2s, border-color .2s, background .2s; }
+#cpa-root .cpa-btn:hover { color: var(--cpa-accent); border-color: var(--cpa-accent); background: rgba(96,248,29,.06); }
+#cpa-root .cpa-btn-primary { width: 100%; margin-top: 20px; padding: 13px; font-size: 15px; font-weight: 700; color: #000; background: var(--cpa-accent); border-color: var(--cpa-accent); }
+#cpa-root .cpa-btn-primary:hover { color: #000; background: var(--cpa-accent-dark); border-color: var(--cpa-accent-dark); }
+#cpa-root .cpa-btn-primary:disabled { opacity: .55; cursor: default; }
+#cpa-root .cpa-link { font: inherit; color: var(--cpa-accent); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
+
+/* Detail-Kopf & Tabs */
+#cpa-root .cpa-detail-head { margin-bottom: 18px; }
+#cpa-root .cpa-detail-head p { font-size: 13px; color: var(--cpa-faint); font-family: var(--mono, monospace); line-height: 1.7; }
+#cpa-root .cpa-tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--cpa-line); }
+#cpa-root .cpa-tab { font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; padding: 12px 22px; color: var(--cpa-soft); background: transparent; border: none; border-bottom: 3px solid transparent; transition: color .2s; }
+#cpa-root .cpa-tab:hover { color: var(--cpa-ink); }
+#cpa-root .cpa-tab[aria-selected="true"] { color: var(--cpa-accent); border-bottom-color: var(--cpa-accent); font-weight: 700; }
+#cpa-root .cpa-panel { padding-top: 22px; outline: none; }
+
+/* Abschnitte, Schlüssel/Wert-Listen */
+#cpa-root .cpa-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+#cpa-root .cpa-wide { grid-column: 1 / -1; }
+#cpa-root .cpa-section { background: var(--cpa-card); border: 1px solid var(--cpa-line); border-radius: 12px; padding: 20px 22px; min-width: 0; }
+#cpa-root .cpa-section h2 { font-family: var(--mono, monospace); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cpa-accent); margin-bottom: 14px; }
+#cpa-root .cpa-kv { display: grid; grid-template-columns: minmax(120px, 42%) 1fr; gap: 8px 16px; margin: 0; font-size: 14px; }
+#cpa-root .cpa-kv dt { color: var(--cpa-faint); }
+#cpa-root .cpa-kv dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; color: var(--cpa-ink); }
+#cpa-root .cpa-list { margin: 0; padding: 0; list-style: none; font-size: 14px; }
+#cpa-root .cpa-list li { padding: 8px 0; border-bottom: 1px solid var(--cpa-line); display: flex; justify-content: space-between; gap: 12px; }
+#cpa-root .cpa-list li:last-child { border-bottom: none; }
+#cpa-root .cpa-sub { color: var(--cpa-faint); font-size: 12px; }
+
+/* Fall-Verwaltung: Status, Team, Aktionen */
+#cpa-root .cpa-flash { margin: 0 0 16px; padding: 10px 14px; font-size: 14px; border: 1px solid var(--cpa-accent); border-radius: 8px; color: var(--cpa-accent); background: rgba(96,248,29,.08); }
+#cpa-root .cpa-flash.cpa-flash-err { border-color: var(--cpa-err); color: var(--cpa-err); background: var(--cpa-err-bg); }
+#cpa-root .cpa-list-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+#cpa-root .cpa-list-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+#cpa-root .cpa-team { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 18px; font-size: 13px; color: var(--cpa-soft); }
+#cpa-root .cpa-chip { display: inline-flex; gap: 6px; align-items: center; padding: 4px 11px; border: 1px solid var(--cpa-line); border-radius: 999px; background: var(--cpa-card); font-size: 13px; color: var(--cpa-ink); }
+#cpa-root .cpa-chip b { color: var(--cpa-accent); }
+#cpa-root .cpa-chip-me { border-color: var(--cpa-accent); }
+#cpa-root .cpa-status { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+#cpa-root .cpa-status-ausstehend { background: #3a2f12; color: var(--cpa-warn); }
+#cpa-root .cpa-status-in_bearbeitung { background: rgba(96,248,29,.14); color: var(--cpa-accent); }
+#cpa-root .cpa-status-abgeschlossen { background: rgba(255,255,255,.08); color: var(--cpa-soft); }
+#cpa-root .cpa-casebar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin: 0 0 18px; padding: 14px 16px; background: var(--cpa-card); border: 1px solid var(--cpa-line); border-radius: 12px; }
+#cpa-root .cpa-casebar-info { flex: 1 1 260px; font-size: 14px; line-height: 1.7; }
+#cpa-root .cpa-casebar-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#cpa-root select { font: inherit; font-size: 13px; padding: 8px 10px; color: var(--cpa-ink); background: var(--cpa-bg); border: 1px solid var(--cpa-line); border-radius: 8px; max-width: 100%; }
+#cpa-root select:focus { outline: none; border-color: var(--cpa-accent); }
+#cpa-root .cpa-btn-accent { color: #000; background: var(--cpa-accent); border-color: var(--cpa-accent); font-weight: 700; }
+#cpa-root .cpa-btn-accent:hover { color: #000; background: var(--cpa-accent-dark); border-color: var(--cpa-accent-dark); }
+#cpa-root .cpa-btn:disabled { opacity: .55; cursor: default; }
+#cpa-root .cpa-btn-small { padding: 4px 10px; font-size: 12px; }
+#cpa-root .cpa-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; white-space: nowrap; }
+
+/* Fotos */
+#cpa-root .cpa-photos { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+#cpa-root .cpa-photo { margin: 0; background: #000; border: 1px solid var(--cpa-line); border-radius: 10px; overflow: hidden; }
+#cpa-root .cpa-photo a { display: block; }
+#cpa-root .cpa-photo img { display: block; width: 100%; max-height: 460px; object-fit: contain; background: #000; }
+#cpa-root .cpa-photo figcaption { padding: 8px 12px; font-size: 13px; color: var(--cpa-soft); border-top: 1px solid var(--cpa-line); }
+#cpa-root .cpa-photo-missing { padding: 36px 16px; text-align: center; color: var(--cpa-faint); font-size: 14px; }
+
+/* Tabellen */
+#cpa-root .cpa-table-wrap { overflow-x: auto; border: 1px solid var(--cpa-line); border-radius: 12px; background: var(--cpa-card); }
+#cpa-root .cpa-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+#cpa-root .cpa-table th, #cpa-root .cpa-table td { padding: 9px 14px; border-bottom: 1px solid var(--cpa-line); text-align: left; vertical-align: top; }
+#cpa-root .cpa-table th { color: var(--cpa-accent); font-family: var(--mono, monospace); font-size: 12px; font-weight: 700; background: var(--cpa-card-2); white-space: nowrap; }
+#cpa-root .cpa-table tr:last-child td { border-bottom: none; }
+#cpa-root .cpa-table-fit th { white-space: normal; }
+#cpa-root .cpa-table-fit th, #cpa-root .cpa-table-fit td { padding: 9px 10px; }
+#cpa-root .cpa-table .cpa-sticky { position: sticky; left: 0; background: var(--cpa-card-2); z-index: 1; white-space: nowrap; }
+#cpa-root .cpa-table td.cpa-sticky { color: var(--cpa-soft); }
+#cpa-root .cpa-table .cpa-comment { white-space: pre-wrap; min-width: 160px; }
+#cpa-root .cpa-pill { display: inline-block; padding: 1px 9px; border-radius: 10px; font-size: 12px; background: rgba(255,255,255,.08); color: var(--cpa-soft); }
+#cpa-root .cpa-pill.cpa-warn { background: #3a2f12; color: var(--cpa-warn); }
+#cpa-root .cpa-note { color: var(--cpa-faint); font-size: 12px; margin: 10px 2px 0; font-family: var(--mono, monospace); }
+#cpa-root .cpa-foot { margin-top: 40px; font-size: 12px; color: var(--cpa-faint); font-family: var(--mono, monospace); }
+
+@media (max-width: 768px) {
+  #cpa-root .wrap { padding-top: 28px; padding-bottom: 56px; }
+  #cpa-root .cpa-card { padding: 22px 18px; }
+}
+@media (max-width: 600px) {
+  #cpa-root .cpa-kv { grid-template-columns: 1fr; gap: 0; }
+  #cpa-root .cpa-kv dd { margin-bottom: 10px; }
+  #cpa-root .cpa-tab { padding: 11px 14px; }
+}
+
+/* Seite "Auswertung": Zeitraum-Auswahl und Ergebnis */
+#cpa-root .cpa-panel { background: var(--cpa-card); border: 1px solid var(--cpa-line); border-radius: 12px; padding: 20px 22px; margin: 0 0 22px; }
+#cpa-root .cpa-panel-title { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--cpa-soft); margin: 0 0 12px; }
+#cpa-root .cpa-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+#cpa-root .cpa-preset { font: inherit; font-size: 13px; padding: 7px 13px; color: var(--cpa-ink); background: var(--cpa-bg); border: 1px solid var(--cpa-line); border-radius: 999px; cursor: pointer; }
+#cpa-root .cpa-preset:hover { border-color: var(--cpa-accent); }
+#cpa-root .cpa-preset[aria-pressed="true"] { color: #000; background: var(--cpa-accent); border-color: var(--cpa-accent); font-weight: 700; }
+#cpa-root .cpa-range { display: flex; flex-wrap: wrap; gap: 16px; margin: 0 0 14px; }
+#cpa-root .cpa-range label { display: flex; flex-direction: column; gap: 5px; margin: 0; font-size: 13px; color: var(--cpa-soft); }
+#cpa-root input[type="date"] { width: auto; min-width: 170px; padding: 9px 12px; font-size: 15px; color-scheme: dark; }
+#cpa-root .cpa-check { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 16px; font-size: 14px; color: var(--cpa-ink); cursor: pointer; }
+#cpa-root .cpa-check input { width: auto; margin: 3px 0 0; accent-color: var(--cpa-accent); flex: 0 0 auto; }
+#cpa-root .cpa-check small { display: block; margin-top: 3px; font-size: 12px; color: var(--cpa-soft); }
+#cpa-root .cpa-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+#cpa-root .cpa-actions .cpa-btn-primary { width: auto; margin: 0; padding: 11px 26px; }
+#cpa-root .cpa-downloads { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+#cpa-root .cpa-frame { display: block; width: 100%; min-height: 360px; border: 0; border-radius: 12px; background: #eef0ec; }
+</style>
+
+<section id="cpa-root" class="cpa">
+  <div class="wrap">
+
+    <div class="cpa-head">
+      <div class="cpa-brand">
+        <img class="cpa-brand-logo" src="email-assets/cp-logo-email.png" alt="" onerror="this.style.display='none'">
+        <span class="cpa-brand-name">C&amp;P Aquaplants<span class="cpa-brand-sub">Auswertung</span></span>
+      </div>
+      <div class="cpa-session cpa-hidden" id="cpa-session">
+        <span class="cpa-session-mail" id="cpa-sessionMail"></span>
+        <button type="button" class="cpa-btn" id="cpa-btnSupport">Support-Seite</button>
+        <button type="button" class="cpa-btn" id="cpa-btnLogout">Abmelden</button>
+      </div>
+    </div>
+
+    <!-- Rückmeldung zu Aktionen -->
+    <p class="cpa-flash cpa-hidden" id="cpa-flash" role="status"></p>
+
+    <!-- Lädt / Meldungen -->
+    <div class="cpa-card cpa-center" id="cpa-viewMessage">
+      <h2 id="cpa-messageTitle">Lade …</h2>
+      <p class="cpa-muted" id="cpa-messageText"></p>
+      <p class="cpa-hidden" id="cpa-messageAction"><button type="button" class="cpa-btn" id="cpa-btnToSupport">Zur Support-Seite</button></p>
+    </div>
+
+    <!-- Anmeldung -->
+    <div class="cpa-card cpa-narrow cpa-hidden" id="cpa-viewLogin">
+      <h2>Anmeldung</h2>
+      <p class="cpa-muted">Nur für Konten mit Zugang zur Auswertung.</p>
+      <form id="cpa-loginForm" novalidate>
+        <label for="cpa-email">E-Mail</label>
+        <input id="cpa-email" type="email" autocomplete="username" required>
+        <label for="cpa-password">Passwort</label>
+        <input id="cpa-password" type="password" autocomplete="current-password" required>
+        <p class="cpa-error cpa-hidden" id="cpa-loginError" role="alert"></p>
+        <button type="submit" class="cpa-btn cpa-btn-primary" id="cpa-loginButton">Anmelden</button>
+      </form>
+    </div>
+
+    <!-- Auswertung -->
+    <div class="cpa-hidden" id="cpa-viewMain">
+      <h1 class="cpa-title">Datenauswertung</h1>
+      <p class="cpa-muted cpa-desc">Nutzerzahlen (ohne anonyme Konten) und Auswertungen der Aquariendaten für einen frei wählbaren Zeitraum. Die Tage gelten nach deutscher Zeit.</p>
+
+      <div class="cpa-panel">
+        <div class="cpa-panel-title">Zeitraum</div>
+        <div class="cpa-presets" id="cpa-presets" role="group" aria-label="Schnellauswahl">
+          <button type="button" class="cpa-preset" data-preset="7" aria-pressed="false">Letzte 7 Tage</button>
+          <button type="button" class="cpa-preset" data-preset="30" aria-pressed="false">Letzte 30 Tage</button>
+          <button type="button" class="cpa-preset" data-preset="90" aria-pressed="false">Letzte 90 Tage</button>
+          <button type="button" class="cpa-preset" data-preset="kw" aria-pressed="false">Letzte Kalenderwoche</button>
+          <button type="button" class="cpa-preset" data-preset="monat" aria-pressed="false">Dieser Monat</button>
+          <button type="button" class="cpa-preset" data-preset="letzter-monat" aria-pressed="false">Letzter Monat</button>
+          <button type="button" class="cpa-preset" data-preset="jahr" aria-pressed="false">Dieses Jahr</button>
+          <button type="button" class="cpa-preset" data-preset="alles" aria-pressed="false">Seit Beginn</button>
+        </div>
+        <div class="cpa-range">
+          <label for="cpa-von">Von<input id="cpa-von" type="date"></label>
+          <label for="cpa-bis">Bis (einschließlich)<input id="cpa-bis" type="date"></label>
+        </div>
+        <label class="cpa-check" for="cpa-nur">
+          <input id="cpa-nur" type="checkbox">
+          <span>Wasserwert- und Düngeauswertungen nur mit Messungen aus diesem Zeitraum
+            <small>Aus (Standard): Die Auswertungen nutzen alle Messungen. Die Nutzerzahlen (aktiv, neu) gelten immer für den gewählten Zeitraum.</small></span>
+        </label>
+        <div class="cpa-actions">
+          <button type="button" class="cpa-btn cpa-btn-primary" id="cpa-btnRun">Auswerten</button>
+          <button type="button" class="cpa-btn" id="cpa-btnMail" title="Den Bericht für diesen Zeitraum per E-Mail an die hinterlegte Adresse senden">Per E-Mail senden</button>
+        </div>
+      </div>
+
+      <div class="cpa-hidden" id="cpa-result">
+        <p class="cpa-note" id="cpa-resultInfo"></p>
+        <div class="cpa-downloads" id="cpa-downloads"></div>
+        <iframe id="cpa-frame" class="cpa-frame" title="Auswertung" sandbox="allow-same-origin"></iframe>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// Lädt supabase-js und die Logik der Auswertungsseite nacheinander und startet die Seite.
+// Der Router führt Skripte aus Fragmenten bei jedem Öffnen erneut aus - darum wird nur
+// nachgeladen, was noch fehlt. Pfade sind relativ zur index.html. Die Anmeldung wird mit
+// der Support-Seite geteilt (gleicher Speicherschlüssel): Wer dort angemeldet ist, ist es hier auch.
+(function () {
+  var SUPABASE_JS = 'support/supabase.js';
+  var AUSWERTUNG_JS = 'auswertung/auswertung.js?v=1';
+
+  function load(src) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.async = false;
+      s.onload = resolve;
+      s.onerror = function () { reject(new Error('Konnte ' + src + ' nicht laden')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  var chain = Promise.resolve();
+  if (!(window.supabase && window.supabase.createClient)) chain = chain.then(function () { return load(SUPABASE_JS); });
+  if (!window.CPAuswertung) chain = chain.then(function () { return load(AUSWERTUNG_JS); });
+
+  chain.then(function () {
+    window.CPAuswertung.mount();
+  }).catch(function () {
+    var t = document.getElementById('cpa-messageTitle');
+    var x = document.getElementById('cpa-messageText');
+    if (t) t.textContent = 'Fehler';
+    if (x) x.textContent = 'Die Auswertungsseite konnte nicht geladen werden. Bitte später erneut versuchen.';
+  });
+})();
+</script>
