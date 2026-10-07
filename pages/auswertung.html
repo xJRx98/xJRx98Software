@@ -234,7 +234,7 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
         </label>
         <div class="cpa-actions">
           <button type="button" class="cpa-btn cpa-btn-primary" id="cpa-btnRun">Auswerten</button>
-          <button type="button" class="cpa-btn" id="cpa-btnMail" title="Den Bericht für diesen Zeitraum per E-Mail an die hinterlegte Adresse senden">Per E-Mail senden</button>
+          <button type="button" class="cpa-btn" id="cpa-btnMail" title="Den Bericht für diesen Zeitraum per E-Mail an die Adresse senden, mit der du angemeldet bist">Per E-Mail senden</button>
         </div>
       </div>
 
@@ -256,7 +256,7 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
 // der Support-Seite geteilt (gleicher Speicherschlüssel): Wer dort angemeldet ist, ist es hier auch.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var AUSWERTUNG_JS = 'auswertung/auswertung.js?v=2';
+  var AUSWERTUNG_JS = 'auswertung/auswertung.js?v=3';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
