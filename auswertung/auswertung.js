@@ -300,10 +300,86 @@
     } catch (e) { /* Rahmen nicht lesbar: Standardhöhe bleibt */ }
   }
 
-  function renderResult(data, period) {
+  /* ── Ergebnis mit Tabs ────────────────────────────────────────────────── */
+
+  var current = null;      // { data, period, sections }
+  var activeTab = null;
+
+  function findSection(id) {
+    if (!current || !current.sections) return null;
+    for (var i = 0; i < current.sections.length; i++) if (current.sections[i].id === id) return current.sections[i];
+    return null;
+  }
+
+  /** CSV-Knöpfe: im Tab-Modus nur die Dateien des gezeigten Tabs, sonst alle. */
+  function renderDownloads(files) {
+    var box = $('downloads');
+    clear(box);
+    var all = (current && current.data.attachments) || [];
+    all.forEach(function (att) {
+      if (files && files.indexOf(att.filename) < 0) return;
+      box.appendChild(h('button', {
+        type: 'button', class: 'cpa-btn cpa-btn-small', title: 'Als CSV-Datei herunterladen (öffnet in Excel)',
+        text: '⬇ ' + String(att.filename || 'Datei').replace(/^CP_Aquaplants_/, ''),
+        onclick: function () { downloadFile(att); },
+      }));
+    });
+  }
+
+  function showDoc(html) {
     var frame = $('frame');
     frame.onload = function () { fitFrame(frame); };
-    frame.srcdoc = String(data.html || '');
+    frame.srcdoc = String(html || '');
+  }
+
+  function selectTab(id) {
+    var sec = findSection(id);
+    if (!sec) return;
+    activeTab = id;
+    var tabs = document.querySelectorAll('#cpa-tabs .cpa-tab');
+    for (var i = 0; i < tabs.length; i++) {
+      var on = tabs[i].getAttribute('data-tab') === id;
+      tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[i].setAttribute('tabindex', on ? '0' : '-1');
+    }
+    showDoc(sec.html);
+    renderDownloads(sec.files || []);
+  }
+
+  function onTabKey(ev) {
+    if (!current || !current.sections) return;
+    var ids = current.sections.map(function (x) { return x.id; });
+    var i = ids.indexOf(activeTab);
+    if (ev.key === 'ArrowRight') i = (i + 1) % ids.length;
+    else if (ev.key === 'ArrowLeft') i = (i + ids.length - 1) % ids.length;
+    else if (ev.key === 'Home') i = 0;
+    else if (ev.key === 'End') i = ids.length - 1;
+    else return;
+    ev.preventDefault();
+    selectTab(ids[i]);
+    var el = document.getElementById('cpa-tab-' + ids[i]);
+    if (el) el.focus();
+  }
+
+  function buildTabs() {
+    var bar = $('tabs');
+    clear(bar);
+    var sections = current.sections;
+    bar.classList.toggle('cpa-hidden', !sections);
+    if (!sections) return;
+    sections.forEach(function (sec) {
+      bar.appendChild(h('button', {
+        type: 'button', role: 'tab', class: 'cpa-tab', id: 'cpa-tab-' + sec.id,
+        'data-tab': sec.id, 'aria-selected': 'false', tabindex: '-1', title: sec.title, text: sec.tab,
+        onclick: function () { selectTab(sec.id); },
+        onkeydown: onTabKey,
+      }));
+    });
+  }
+
+  function renderResult(data, period) {
+    var sections = Array.isArray(data.sections) && data.sections.length ? data.sections : null;
+    current = { data: data, period: period, sections: sections };
     $('result').classList.remove('cpa-hidden');
 
     var sum = data.summary || {};
@@ -313,15 +389,15 @@
       (period.nurZeitraum ? 'Auswertungen nur mit Messungen aus dem Zeitraum' : 'Auswertungen mit allen Messungen') +
       (n.gesamt !== undefined ? ' · ' + n.gesamt + ' Nutzer, ' + n.aktiv + ' aktiv, ' + n.neu + ' neu' : '');
 
-    var box = $('downloads');
-    clear(box);
-    (data.attachments || []).forEach(function (att) {
-      box.appendChild(h('button', {
-        type: 'button', class: 'cpa-btn cpa-btn-small', title: 'Als CSV-Datei herunterladen (öffnet in Excel)',
-        text: '⬇ ' + String(att.filename || 'Datei').replace(/^CP_Aquaplants_/, ''),
-        onclick: function () { downloadFile(att); },
-      }));
-    });
+    buildTabs();
+    if (sections) {
+      // gewählten Tab beibehalten, wenn der Zeitraum gewechselt wird
+      selectTab(findSection(activeTab) ? activeTab : sections[0].id);
+    } else {
+      activeTab = null;
+      showDoc(data.html);
+      renderDownloads(null);
+    }
   }
 
   function onRun() {
@@ -424,6 +500,8 @@
     client.auth.signOut().then(function () {
       me = null;
       $('result').classList.add('cpa-hidden');
+      current = null;
+      activeTab = null;
       $('von').value = '';
       $('bis').value = '';
       showLogin();
