@@ -245,6 +245,7 @@
       if (!data || data.ok !== true) {
         var err = new Error((data && data.error) || 'server');
         err.code = (data && data.error) || 'server';
+        err.detail = (data && data.detail) || '';
         throw err;
       }
 
@@ -254,6 +255,7 @@
       form.reset();
       setTimeout(function () { btn.disabled = false; btn.textContent = LABEL; }, COOLDOWN_MS);
     } catch (err) {
+      console.error('Kontaktformular:', (err && err.code) || err, (err && err.detail) || '');
       showStatus(ERRORS[err && err.code] || GENERIC, '#c94b6d');
       btn.disabled = false;
       btn.textContent = LABEL;
