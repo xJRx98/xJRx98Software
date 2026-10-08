@@ -131,11 +131,11 @@
           </div>
         </div>
         <div class="contact-form reveal">
-          <form id="contact-form">
-            <div style="display:none" aria-hidden="true"><label>Nicht ausfuellen</label><input type="text" id="cf-honeypot" name="honeypot" tabindex="-1" autocomplete="off"></div>
-            <div class="form-group"><label for="cf-name">Name</label><input type="text" id="cf-name" name="name" placeholder="Max Mustermann" required autocomplete="name"></div>
-            <div class="form-group"><label for="cf-email">E-Mail</label><input type="email" id="cf-email" name="email" placeholder="max@beispiel.de" required autocomplete="email"></div>
-            <div class="form-group"><label for="cf-message">Nachricht</label><textarea id="cf-message" name="message" placeholder="Beschreib dein Projekt..." required></textarea></div>
+          <form id="contact-form" novalidate>
+            <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true"><label for="cf-honeypot">Nicht ausfüllen</label><input type="text" id="cf-honeypot" name="website" tabindex="-1" autocomplete="off"></div>
+            <div class="form-group"><label for="cf-name">Name</label><input type="text" id="cf-name" name="name" placeholder="Max Mustermann" required maxlength="100" autocomplete="name"></div>
+            <div class="form-group"><label for="cf-email">E-Mail</label><input type="email" id="cf-email" name="email" placeholder="max@beispiel.de" required maxlength="200" autocomplete="email"></div>
+            <div class="form-group"><label for="cf-message">Nachricht</label><textarea id="cf-message" name="message" placeholder="Beschreib dein Projekt..." required maxlength="5000"></textarea></div>
             <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-top:8px;">
               <input type="checkbox" id="cf-privacy" name="privacy" required style="margin-top:2px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer;">
               <label for="cf-privacy" style="font-size:11px;color:var(--muted);line-height:1.6;font-family:var(--mono);cursor:pointer;">
@@ -143,7 +143,7 @@
               </label>
             </div>
             <button type="submit" class="form-submit" id="cf-btn">Nachricht senden -></button>
-            <p id="cf-status" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
+            <p id="cf-status" role="status" aria-live="polite" style="margin-top:12px;font-size:13px;color:var(--accent);display:none;font-family:var(--mono);letter-spacing:.04em;"></p>
           </form>
         </div>
       </div>
@@ -164,55 +164,102 @@
 </footer>
 
 <script>
-let lastSubmit = 0;
-const SUBMIT_COOLDOWN = 30000;
-const GAS_URL   = 'https://script.google.com/macros/s/AKfycbxpfHG8Z8NuViT_oFmPioMxNmLiZ907zMB4eoqdGntwshkuzF1IoMC-G2IXsElEC709dg/exec';
-const GAS_TOKEN = 'xJRx98secret2026';
+(function () {
+  // URL der Apps-Script-Web-App (Bereitstellung "Web-App", Zugriff "Jeder").
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbyFD9_iz4ZIN2gaHI9InMtuTj7bYwl6lbWEsR_R8wUqn9xzR-SDKiHVbbbeRqqVjTBtqw/exec';
+  var COOLDOWN_MS = 30000;
+  var TIMEOUT_MS = 20000;
+  var LABEL = 'Nachricht senden ->';
 
-document.getElementById('contact-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const now = Date.now();
-  if (now - lastSubmit < SUBMIT_COOLDOWN) {
-    const wait = Math.ceil((SUBMIT_COOLDOWN - (now - lastSubmit)) / 1000);
-    showStatus('Bitte warte noch ' + wait + ' Sekunden.', '#c94b6d');
-    return;
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+  var btn = document.getElementById('cf-btn');
+  var statusEl = document.getElementById('cf-status');
+  var renderedAt = Date.now();
+  var lastSubmit = 0;
+
+  function showStatus(msg, color) {
+    statusEl.textContent = msg;
+    statusEl.style.color = color;
+    statusEl.style.display = 'block';
   }
-  const honeypot = document.getElementById('cf-honeypot').value;
-  if (honeypot) return;
 
-  const btn = document.getElementById('cf-btn');
-  const name    = document.getElementById('cf-name').value.trim();
-  const email   = document.getElementById('cf-email').value.trim();
-  const message = document.getElementById('cf-message').value.trim();
+  var ERRORS = {
+    invalid: 'Bitte prüfe deine Eingaben und bestätige die Datenschutzerklärung.',
+    toofast: 'Das ging etwas zu schnell - bitte versuche es in ein paar Sekunden erneut.',
+    rate: 'Es wurden zu viele Anfragen gesendet. Bitte versuche es später erneut.'
+  };
+  var GENERIC = 'Die Nachricht konnte gerade nicht gesendet werden. Bitte versuche es später erneut oder nutze die Kontaktdaten im Impressum.';
 
-  btn.textContent = 'Wird gesendet...';
-  btn.disabled = true;
-  document.getElementById('cf-status').style.display = 'none';
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-  try {
-  await fetch(GAS_URL, {
-    method: 'POST',
-    mode: 'no-cors',  // ← neu
-    body: JSON.stringify({ name, email, message, token: GAS_TOKEN, honeypot }),
+    // Honeypot: Bots füllen das versteckte Feld aus.
+    if (document.getElementById('cf-honeypot').value) return;
+
+    var now = Date.now();
+    if (now - lastSubmit < COOLDOWN_MS) {
+      showStatus('Bitte warte noch ' + Math.ceil((COOLDOWN_MS - (now - lastSubmit)) / 1000) + ' Sekunden.', '#c94b6d');
+      return;
+    }
+
+    var name = document.getElementById('cf-name').value.trim();
+    var email = document.getElementById('cf-email').value.trim();
+    var message = document.getElementById('cf-message').value.trim();
+    var privacy = document.getElementById('cf-privacy').checked;
+
+    if (!name || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      showStatus(ERRORS.invalid, '#c94b6d');
+      return;
+    }
+    if (!privacy) {
+      showStatus('Bitte bestätige die Datenschutzerklärung.', '#c94b6d');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Wird gesendet...';
+    statusEl.style.display = 'none';
+
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, TIMEOUT_MS);
+
+    try {
+      // Kein eigener Content-Type-Header: so bleibt es ein "einfacher" Request
+      // (text/plain) ohne CORS-Preflight, und die Antwort ist lesbar.
+      var res = await fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          message: message,
+          privacy: true,
+          honeypot: '',
+          elapsed: Date.now() - renderedAt
+        }),
+        signal: ctrl.signal,
+        redirect: 'follow'
+      });
+      var data = await res.json();
+
+      if (!data || data.ok !== true) {
+        var err = new Error((data && data.error) || 'server');
+        err.code = (data && data.error) || 'server';
+        throw err;
+      }
+
+      showStatus('Nachricht gesendet! Du bekommst gleich eine Bestätigung per E-Mail.', 'var(--accent)');
+      btn.textContent = 'Gesendet ✓';
+      lastSubmit = Date.now();
+      form.reset();
+      setTimeout(function () { btn.disabled = false; btn.textContent = LABEL; }, COOLDOWN_MS);
+    } catch (err) {
+      showStatus(ERRORS[err && err.code] || GENERIC, '#c94b6d');
+      btn.disabled = false;
+      btn.textContent = LABEL;
+    } finally {
+      clearTimeout(timer);
+    }
   });
-  // ← res.json() und data.status komplett weg
-  showStatus('Nachricht gesendet! Du bekommst gleich eine Bestätigung per E-Mail.', 'var(--accent)');
-  btn.textContent = 'Gesendet ✓';
-  lastSubmit = Date.now();
-  document.getElementById('cf-name').value = '';
-  document.getElementById('cf-email').value = '';
-  document.getElementById('cf-message').value = '';
-} catch(err) {
-  showStatus('Fehler beim Senden - bitte versuche es erneut oder schreib direkt eine E-Mail.', '#c94b6d');
-  btn.textContent = 'Nachricht senden ->';
-  btn.disabled = false;
-}
-});
-
-function showStatus(msg, color) {
-  const s = document.getElementById('cf-status');
-  s.textContent = msg;
-  s.style.color = color;
-  s.style.display = 'block';
-}
+})();
 </script>
