@@ -332,6 +332,21 @@
     frame.srcdoc = String(html || '');
   }
 
+  /** Feste Tabs, die nicht vom Server kommen: Ihr Inhalt steht fertig in auswertung.html
+   *  (`panel` = Element-ID ohne `cpa-`) und gilt unabhängig vom gewählten Zeitraum. */
+  var STATIC_TABS = [
+    { id: 'gh-karte', tab: 'GH-Karte', title: 'Gesamthärte des Leitungswassers je Kreis (Deutschlandkarte)', panel: 'ghkarte', files: [] },
+  ];
+
+  /** Zeigt entweder den Rahmen mit dem Bericht oder den Bereich eines festen Tabs. */
+  function showPanel(panel) {
+    $('frame').classList.toggle('cpa-hidden', !!panel);
+    STATIC_TABS.forEach(function (t) {
+      var el = $(t.panel);
+      if (el) el.classList.toggle('cpa-hidden', t.panel !== panel);
+    });
+  }
+
   function selectTab(id) {
     var sec = findSection(id);
     if (!sec) return;
@@ -342,7 +357,8 @@
       tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
       tabs[i].setAttribute('tabindex', on ? '0' : '-1');
     }
-    showDoc(sec.html);
+    showPanel(sec.panel || null);
+    if (!sec.panel) showDoc(sec.html);
     renderDownloads(sec.files || []);
   }
 
@@ -378,7 +394,7 @@
   }
 
   function renderResult(data, period) {
-    var sections = Array.isArray(data.sections) && data.sections.length ? data.sections : null;
+    var sections = Array.isArray(data.sections) && data.sections.length ? data.sections.concat(STATIC_TABS) : null;
     current = { data: data, period: period, sections: sections };
     $('result').classList.remove('cpa-hidden');
 
@@ -395,6 +411,7 @@
       selectTab(findSection(activeTab) ? activeTab : sections[0].id);
     } else {
       activeTab = null;
+      showPanel(null);
       showDoc(data.html);
       renderDownloads(null);
     }
