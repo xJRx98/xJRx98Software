@@ -165,6 +165,39 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
 #cpa-root .cpa-downloads { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
 #cpa-root .cpa-result-tabs { margin: 0 0 14px; }
 #cpa-root .cpa-frame { display: block; width: 100%; min-height: 360px; border: 0; border-radius: 12px; background: #eef0ec; }
+
+/* Tab "GH-Karte": Gesamthärte des Leitungswassers je Kreis (Inhalt erzeugt aus GH.xlsx, siehe Marken GH-KARTE) */
+#cpa-root .cpa-gh .cpa-section { margin: 0 0 18px; }
+#cpa-root .cpa-gh-kpis { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+#cpa-root .cpa-gh-kpi { text-align: center; }
+#cpa-root .cpa-gh-kpi-value { font-family: var(--mono, monospace); font-size: 28px; font-weight: 700; line-height: 1.1; color: var(--cpa-accent); }
+#cpa-root .cpa-gh-kpi-label { margin-top: 6px; font-size: 14px; color: var(--cpa-ink); }
+#cpa-root .cpa-gh-intro { margin: 0 0 16px; font-size: 13px; line-height: 1.5; color: var(--cpa-soft); }
+#cpa-root .cpa-gh-layout { display: grid; gap: 24px; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); align-items: start; }
+#cpa-root .cpa-gh-svg { display: block; width: 100%; height: auto; }
+#cpa-root .cpa-gh-h3 { margin: 20px 0 6px; font-family: var(--mono, monospace); font-size: 12px; font-weight: 700; color: var(--cpa-soft); }
+#cpa-root .cpa-gh .cpa-table th, #cpa-root .cpa-gh .cpa-table td { padding: 7px 10px; }
+#cpa-root .cpa-gh-side .cpa-table th { background: transparent; }
+#cpa-root .cpa-table .cpa-num { text-align: right; white-space: nowrap; }
+#cpa-root .cpa-gh-scroll { max-height: 560px; overflow: auto; }
+#cpa-root .cpa-gh-sticky th { position: sticky; top: 0; z-index: 1; }
+#cpa-root .cpa-gh-sw { display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; border-radius: 3px; border: 1px solid var(--cpa-line-hi); }
+#cpa-root .cpa-gh-sw0 { background: repeating-linear-gradient(45deg, #5A5A5A 0 2.5px, #1A1A1A 2.5px 6px); }
+/* Farbstufen: ein Farbton (C&P-Grün), dunkel = weich, hell = hart; für Flächen (fill) und Legenden-Kästchen (background) */
+#cpa-root .cpa-gh-k1 { fill: #173A0B; background: #173A0B; }
+#cpa-root .cpa-gh-k2 { fill: #20520D; background: #20520D; }
+#cpa-root .cpa-gh-k3 { fill: #2A6D10; background: #2A6D10; }
+#cpa-root .cpa-gh-k4 { fill: #358A13; background: #358A13; }
+#cpa-root .cpa-gh-k5 { fill: #42AC16; background: #42AC16; }
+#cpa-root .cpa-gh-k6 { fill: #51D219; background: #51D219; }
+#cpa-root .cpa-gh-k7 { fill: #60F81D; background: #60F81D; }
+#cpa-root .cpa-gh-k0 { fill: url(#cpa-gh-na); }
+#cpa-root .cpa-gh-kreise path { stroke: var(--cpa-bg); stroke-width: .6; stroke-linejoin: round; }
+#cpa-root .cpa-gh-kreise path:hover { stroke: #FFFFFF; stroke-width: 1.8; }
+#cpa-root .cpa-gh-laender path { fill: none; stroke: #FFFFFF; stroke-width: 1; stroke-linejoin: round; pointer-events: none; }
+@media (max-width: 768px) {
+  #cpa-root .cpa-gh-layout { grid-template-columns: 1fr; }
+}
 </style>
 
 <section id="cpa-root" class="cpa">
@@ -209,7 +242,7 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
     <!-- Auswertung -->
     <div class="cpa-hidden" id="cpa-viewMain">
       <h1 class="cpa-title">Datenauswertung</h1>
-      <p class="cpa-muted cpa-desc">Zahlen zu Nutzern, Aquarien und Messreihen sowie sieben Auswertungen (Komplex A/B, Magnesium, Wasserarten, Soil, Wasserart) für einen frei wählbaren Zeitraum. Anonyme Konten zählen nicht mit; die Tage gelten nach deutscher Zeit.</p>
+      <p class="cpa-muted cpa-desc">Zahlen zu Nutzern, Aquarien und Messreihen sowie sieben Auswertungen (Komplex A/B, Magnesium, Wasserarten, Soil, Wasserart) für einen frei wählbaren Zeitraum, dazu eine Deutschlandkarte zur Gesamthärte des Leitungswassers je Kreis. Anonyme Konten zählen nicht mit; die Tage gelten nach deutscher Zeit.</p>
 
       <div class="cpa-panel">
         <div class="cpa-panel-title">Zeitraum</div>
@@ -243,6 +276,906 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
         <div class="cpa-tabs cpa-result-tabs cpa-hidden" id="cpa-tabs" role="tablist" aria-label="Bereiche der Auswertung"></div>
         <div class="cpa-downloads" id="cpa-downloads"></div>
         <iframe id="cpa-frame" class="cpa-frame" title="Auswertung" sandbox="allow-same-origin"></iframe>
+<!-- GH-KARTE:START (erzeugt aus GH.xlsx - nicht von Hand ändern) -->
+<div class="cpa-hidden cpa-gh" id="cpa-ghkarte" role="tabpanel" aria-labelledby="cpa-tab-gh-karte">
+  <div class="cpa-gh-kpis">
+    <div class="cpa-section cpa-gh-kpi"><div class="cpa-gh-kpi-value">399</div><div class="cpa-gh-kpi-label">Kreise mit Wert</div><div class="cpa-sub">von 400 Kreisen und kreisfreien Städten</div></div>
+    <div class="cpa-section cpa-gh-kpi"><div class="cpa-gh-kpi-value">14,7 °dH</div><div class="cpa-gh-kpi-label">Median</div><div class="cpa-sub">Härtebereich hart</div></div>
+    <div class="cpa-section cpa-gh-kpi"><div class="cpa-gh-kpi-value">2,0 °dH</div><div class="cpa-gh-kpi-label">Weichstes Wasser</div><div class="cpa-sub">Suhl</div></div>
+    <div class="cpa-section cpa-gh-kpi"><div class="cpa-gh-kpi-value">41,0 °dH</div><div class="cpa-gh-kpi-label">Härtestes Wasser</div><div class="cpa-sub">Würzburg</div></div>
+  </div>
+  <div class="cpa-section">
+    <h2>Gesamthärte des Leitungswassers nach Region</h2>
+    <p class="cpa-gh-intro">Durchschnittliche Gesamthärte (GH) in °dH je Landkreis bzw. kreisfreier Stadt. Je heller das Grün, desto härter das Wasser. 38 Kreise weich, 145 mittel, 216 hart.</p>
+    <div class="cpa-gh-layout">
+      <div class="cpa-gh-map"><svg class="cpa-gh-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 850" role="img" aria-label="Deutschlandkarte: Gesamthärte des Leitungswassers je Kreis">
+<defs><pattern id="cpa-gh-na" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#1A1A1A"/><rect width="2.5" height="6" fill="#5A5A5A"/></pattern></defs>
+<g class="cpa-gh-kreise">
+<path class="cpa-gh-k2" d="M251.5 18.5l-4 0-4 4.5 1 3 8-2.5z"><title>Flensburg (Stadt, Schleswig-Holstein): 8,0 °dH – weich</title></path>
+<path class="cpa-gh-k6" d="M296 70l-0.5-9.5-3.5 7-4.5 3 1 6 4.5 3.5 5.5-2.5z"><title>Kiel (Stadt, Schleswig-Holstein): 19,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M344 112l-4-4-2 6.5-8.5 3.5-6.5 1 2 5-1.5 5 1.5 3 10.5-4-1.5-4.5 7.5-7z"><title>Lübeck (Stadt, Schleswig-Holstein): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M287.5 94l-2.5-2-5 6 1.5 8 7.5-4z"><title>Neumünster (Stadt, Schleswig-Holstein): 13,9 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M232 72l-5.5-4-4.5-0.5-2 4.5-9.5 7.5-2 10.5 2.5 5 5-0.5 3 6.5-1.5 4-4.5-1.5-3 2.5 4.5 10 7.5 6 11.5 0 0.5-5.5 6-6.5 1-8.5-0.5-6.5 8.5-5.5-0.5-7-2.5-5.5-7 1.5-1.5-3.5z"><title>Dithmarschen (Landkreis, Schleswig-Holstein): 11,1 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M323.5 129l-3 4.5-4 0-4 3.5-0.5 7 3.5 4-4 6-6.5 4.5-3.5 5 5 6.5 4.5 1 6.5 4.5 8 2 2-10 4-0.5 5.5-4.5 5.5-7.5 3-1 2.5-8.5-2-5.5-6.5-1-3.5-4-0.5-7-10.5 4z"><title>Herzogtum Lauenburg (Landkreis, Schleswig-Holstein): 13,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M232 72l9.5-12.5-3-7.5 2-4-9-14.5-4.5-1-1.5-6.5 2.5-13-4.5 0-6-3.5-7.5-0.5-3.5 1.5-6-1.5-5.5 2.5-11 0.5-6-8-2.5 8 7.5 3.5 7.5-3.5 4.5 0 1 5 4.5 5.5 4.5 11.5 5 3.5 4 5.5-1.5 7.5-4.5 4 5 4 4-6 3.5 5.5-7 5.5-14.5 1.5 2 5-7.5 5.5 5 4 4-2.5 7 0 1 2.5 9.5-7.5 2-4.5 4.5 0.5zM181.5 39.5l-3-8-3 3.5zM199 54.5l1.5-7-5.5 2.5zM193 34l1.5-6.5-4-2-5.5 1-2.5 5.5z"><title>Nordfriesland (Landkreis, Schleswig-Holstein): 11,2 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M340 108l-6-4.5 3-5.5 5.5-1 4.5-5.5 8.5-6.5-2-15.5-3-3-6-1.5-9 8-5 1 0.5 10-9-2-5.5 7 3 5.5-7.5 4 2.5 2 7-0.5-2 9.5 0.5 7 3 2.5 6.5-1 8.5-3.5zM364.5 54.5l-1.5-3-10.5-3.5-3.5 6 0 4.5 5.5-0.5 0.5 4 6-1.5 7.5 1.5z"><title>Ostholstein (Landkreis, Schleswig-Holstein): 17,6 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M282.5 146.5l-4.5-17-8.5-9-5.5 0 0.5 5-2 8-5 2.5 1 3-6 2 4 10 8 5 4 1 2-7.5 4.5 4.5 4.5-7.5z"><title>Pinneberg (Landkreis, Schleswig-Holstein): 13,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M293 80l-0.5 14-5 0 1.5 8 6.5 0 8-5 4.5-1 4 2.5 7.5-4-3-5.5 5.5-7 9 2-0.5-10-5-5-10-4-6.5-4-5-0.5-5.5 3-2.5 6.5 2.5 7.5z"><title>Plön (Landkreis, Schleswig-Holstein): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M295.5 60.5l-2.5-5.5-11 2 0-4 4-5 0.5-9.5-8.5 2-13 10.5-3.5 7.5-5.5 3 0 8-10 3.5 0 4 2.5 5.5 0.5 7-8.5 5.5 0.5 6.5 7 0.5 2-3 7.5-0.5 2 4.5 13 0 4 4 5-1-1.5-8 5-6 2.5 2 5 0 0.5-14-4.5-3.5-1-6 4.5-3z"><title>Rendsburg-Eckernförde (Landkreis, Schleswig-Holstein): 14,1 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M247.5 18.5l-5 2-6-0.5-0.5-4.5-8-2.5-2.5 13 1.5 6.5 4.5 1 9 14.5-2 4 3 7.5-9.5 12.5 5.5 3 1.5 3.5 7-1.5 0-4 10-3.5 0-8 5.5-3 3.5-7.5 13-10.5 8.5-2 0-5.5-4-8-4.5-4-1.5 5-7-5-11-4.5-7 2 1 5-8 2.5-1-3z"><title>Schleswig-Flensburg (Landkreis, Schleswig-Holstein): 13,6 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M281.5 106l-5 1-7 9.5 0 4 8.5 9 4.5 17 8-6-1.5-6 5.5-1.5 12.5-11 13-5.5-0.5-7 2-9.5-7 0.5-2.5-2-4-2.5-4.5 1-8 5-6.5 0z"><title>Segeberg (Landkreis, Schleswig-Holstein): 13,3 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M233.5 122l6 1.5 5 6 3 6.5 5 5 6-2-1-3 5-2.5 2-8-0.5-5 5.5 0 0-4 7-9.5-4-4-13 0-2-4.5-7.5 0.5-2 3-7-0.5-1 8.5-6 6.5z"><title>Steinburg (Landkreis, Schleswig-Holstein): 10,6 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M323 119l-3-2.5-13 5.5-12.5 11-5.5 1.5 1.5 6 10 8-4.5 6 1 6 4.5 3 3.5-5 6.5-4.5 4-6-3.5-4 0.5-7 4-3.5 4 0 3-4.5 1.5-5z"><title>Stormarn (Landkreis, Schleswig-Holstein): 13,0 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M301.5 163.5l-4.5-3-1-6 4.5-6-10-8-8 6-3 0-4.5 7.5-4.5-4.5-2 7.5 2.5 6 5.5 7 8 2.5 5-4 7.5 5.5 4.5 0.5 5-4.5z"><title>Hamburg (Stadt, Hamburg): 10,2 °dH – mittel</title></path>
+<path class="cpa-gh-k1" d="M329 289.5l-6-1.5-6.5 3 0.5 12 5.5 3.5 6-4 2.5-8z"><title>Braunschweig (Stadt, Niedersachsen): 2,8 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M317 303l-5.5 5-6-0.5-1.5 1.5 1.5 6.5 4 1 2 5-4 2 5 2 5.5-4.5 2 1-2.5-7 5-8.5z"><title>Salzgitter (Stadt, Niedersachsen): 7,3 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M347.5 276l-6.5-2.5-10 4.5 2 7.5 12 6.5z"><title>Wolfsburg (Stadt, Niedersachsen): 8,0 °dH – weich</title></path>
+<path class="cpa-gh-k5" d="M329 289.5l4-4-2-7.5 10-4.5 6.5 2.5 2.5-1 5-3-4-5.5-0.5-4.5-13-22.5-6 3-7.5-6.5-7.5 2-5 10.5 4 12.5-9.5 10.5 1.5 7 3.5 1.5 5.5 11 6.5-3z"><title>Gifhorn (Landkreis, Niedersachsen): 17,5 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M307.5 323.5l-5 3-1 6-7-0.5-1.5 3.5 2.5 3 1 6 2.5 6 5-4.5 4 6 6.5-1.5 7 2.5 2 11 6.5-1.5 5 4 2-0.5-2.5-5.5-6.5-9.5 0-6.5 4.5-5.5-2-7.5-4-5-5.5 1.5-1-6-2-1-5.5 4.5z"><title>Goslar (Landkreis, Niedersachsen): 11,4 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M331 294.5l5-1 2 6.5 7 7.5 1.5 6-4.5 5 0.5 3 11-1.5 1.5-6 3-2.5 2.5-9-5.5-13 5-4.5-7-6-3-4-2.5 1-2.5 16-12-6.5-4 4z"><title>Helmstedt (Landkreis, Niedersachsen): 19,5 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M293 335.5l-6.5 3.5-5-1-6.5 2.5-6.5 1-3 5-5.5 5-2.5 5-7 5-1.5 5.5 1.5-0.5 5.5 2.5 8 0 3.5 5 3-3.5 14 1 12-2 3.5-3.5-1.5-6.5 0.5-9-2.5-6-1-6z"><title>Northeim (Landkreis, Niedersachsen): 10,9 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M316.5 291l-5.5-11-3.5-1.5-4.5 2-12.5 16-2.5 6 12.5-0.5 5 5.5 6 0.5 5.5-5z"><title>Peine (Landkreis, Niedersachsen): 8,2 °dH – weich</title></path>
+<path class="cpa-gh-k4" d="M322.5 306.5l-5 8.5 2.5 7 1 6 5.5-1.5 5.5-4 10.5-1-0.5-3 4.5-5-1.5-6-7-7.5-2-6.5-5 1-2.5 8zM304 309l-3.5 2 2 15.5 5-3 4-2-2-5-4-1z"><title>Wolfenbüttel (Landkreis, Niedersachsen): 12,6 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M299 350.5l-0.5 9 1.5 6.5-3.5 3.5-12 2-14-1-3 3.5-6.5 7 3.5 11-4 2-1.5 5 0.5 1.5 11.5 5-2-8 7.5-5 6.5-1 1.5 5 7.5-6 8-0.5 1.5-4.5 8-2.5 4.5-5.5 0.5-4.5 8 1 5 1.5 5-3 2.5-6-5-4-6.5 1.5-2-11-7-2.5-6.5 1.5-4-6z"><title>Göttingen (Landkreis, Niedersachsen): 14,8 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M306 271.5l-9 1.5-4-3.5-5.5-0.5-3-6-4-0.5-11-4.5-2 4-3.5-0.5-4-7.5-3.5 1.5-7.5 5-5.5 1.5 0.5 5.5-5 0.5 0 10.5 5 7.5 3.5-2.5 2.5 6-2 6 3 2.5 4 6-0.5 6.5 4-0.5 4.5 3.5 4.5-0.5 8-10-1.5-2.5 9-3.5 7.5-0.5 12.5-16 4.5-2z"><title>Region Hannover (Landkreis, Niedersachsen): 10,2 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M215 217.5l-13.5-4-3.5 4-1 2 3.5 7-3.5 1.5-0.5 7-12 5 1 5.5-11 7-1 4 3 9-2 8-1 4.5 9 1 2-5 6.5-1 6.5-3 3.5 3.5 4.5-3.5 8.5-3-1-8 3 0 6-4 2.5-8-0.5-9.5 4-4 0.5-3.5-7.5-3.5-3.5 4-3-8z"><title>Diepholz (Landkreis, Niedersachsen): 12,6 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M251 298l-5.5 6-5.5 0-8.5 4.5 2 4-2.5 5 2.5 3 0 11.5 8 4.5 4-5.5 5-1 8-6.5 6 8.5 1-13.5-2.5-5-4.5-3.5-4 0.5 0.5-6.5z"><title>Hameln-Pyrmont (Landkreis, Niedersachsen): 19,7 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M305.5 307.5l-5-5.5-12.5 0.5 2.5-6-7.5 0.5-9 3.5 1.5 2.5-8 10-4.5 0.5 2.5 5-1 13.5 8-2 4.5 5.5 4.5 2.5 5 1 6.5-3.5 1.5-3.5 7 0.5 1-6-2-15.5 3.5-2z"><title>Hildesheim (Landkreis, Niedersachsen): 9,9 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M281.5 338l-4.5-2.5-4.5-5.5-8 2-6-8.5-8 6.5-5 1-4 5.5 1 7.5 8.5 1 0 5.5-4.5 6 2.5 10.5 1.5-5.5 7-5 2.5-5 5.5-5 3-5 6.5-1z"><title>Holzminden (Landkreis, Niedersachsen): 15,9 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M256.5 255.5l-4-7-8.5 0-1.5-4.5-2.5-5.5-6.5 0.5 1-7-6-2-0.5 3.5-4 4 0.5 9.5-2.5 8-6 4-3 0 1 8-8.5 3-4.5 3.5 0 11.5 10 0.5 5.5-1.5 8-10.5 4.5 9.5 5-0.5 5-4 0-10.5 5-0.5-0.5-5.5 5.5-1.5z"><title>Nienburg (Weser) (Landkreis, Niedersachsen): 12,7 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M239 278.5l-5 4-5 0.5-4.5 8-4 1.5-1 7 6 3-2 5.5-4-1 2.5 5 9.5 3-0.5 2.5 2.5-5-2-4 8.5-4.5 5.5 0 5.5-6-3-2.5 2-6-2.5-6-3.5 2.5z"><title>Schaumburg (Landkreis, Niedersachsen): 19,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M316.5 238l-7.5-3-6.5-10-4.5 0-3 4-8 3-9-3-1.5 3-0.5 14-5.5 1.5-1 10.5 11 4.5 4 0.5 3 6 5.5 0.5 4 3.5 9-1.5 9.5-10.5-4-12.5z"><title>Celle (Landkreis, Niedersachsen): 16,1 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M222 127l-15 0-7-6.5-7.5 5-5.5 16.5 2.5 10 4.5 1.5 4 9-3 2.5-7.5 1.5 0.5 11.5 0 8.5 8 1 8.5-4 2.5-7 8 0.5 2.5-3.5 1-13 2-3 10-4 8.5-5.5-4-5.5 5-4-8-6.5-9-2.5z"><title>Cuxhaven (Landkreis, Niedersachsen): 11,3 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M306.5 170l-5 4.5-4.5-0.5-7.5-5.5-5 4-8-2.5-5.5-7 1 6.5-10.5 6-4 5.5 3 4.5 0 6 5 3 8 3 3-2.5 4.5 4 4.5-0.5 6 5.5 4-5 6.5-2.5-2.5-4.5 4-2.5-2-6.5 9.5-5.5 4 1 2.5-3-6.5-4.5z"><title>Harburg (Landkreis, Niedersachsen): 10,0 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M364 199l-6 2-15-11.5 3.5 11-7 0.5-3 2.5 5.5 5 3.5 6.5-3 4.5 1 4.5-3 4.5 2.5 4.5 6.5 0 4-6.5 6.5-0.5 8 1.5 5 2.5 13.5-8 0.5-7 5.5-3.5-6-1-4.5-3.5-6 3-5.5-7z"><title>Lüchow-Dannenberg (Landkreis, Niedersachsen): 13,3 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M317.5 175.5l-2.5 3-4-1-9.5 5.5 2 6.5-4 2.5 2.5 4.5-6.5 2.5-4 5 3 2.5-3 7 9.5-3 7.5-5 11.5-10.5 2 3.5 4.5-2 10 7 3-2.5 7-0.5-3.5-11 15 11.5 6-2-5.5-6-7.5-13-4.5-1.5-5.5 5-9-7-6.5 1z"><title>Lüneburg (Landkreis, Niedersachsen): 10,7 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M188 178l-1.5 15.5 8 1.5 3.5 3 11.5 3 2.5 3 7.5 0.5 6-2.5-3-5-1-11.5-6.5-8.5-8-0.5-2.5 7-8.5 4-8-1z"><title>Osterholz (Landkreis, Niedersachsen): 9,3 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M215 177l6.5 8.5 1 11.5 3 5 2.5 0.5 6 12 15.5 3.5 1.5 9.5 5.5-3.5 3 2.5 5.5-5.5 0.5-5-4-2 2-5.5-1.5-2.5 7.5-6-4-5.5-5-3 0-6-3-4.5-3.5-4.5-4 4-6-4.5-0.5-6.5-7-2 1.5-8.5-6 0-1.5-5.5-10 4-2 3-1 13z"><title>Rotenburg (Wümme) (Landkreis, Niedersachsen): 11,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M269.5 258l1-10.5 5.5-1.5 0.5-14 1.5-3 9 3 8-3 3-4 4.5 0-1.5-14.5-9.5 3 3-7-3-2.5-6-5.5-4.5 0.5-4.5-4-3 2.5-8-3 4 5.5-7.5 6 1.5 2.5-2 5.5 4 2-0.5 5-5.5 5.5-3-2.5-5.5 3.5-5.5 7.5-3 9 1.5 4.5 8.5 0 4 7 3.5-1.5 4 7.5 3.5 0.5z"><title>Heidekreis (Landkreis, Niedersachsen): 11,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M222 122l0 5 1 2.5 9 2.5 8 6.5-5 4 4 5.5-8.5 5.5 1.5 5.5 6 0-1.5 8.5 7 2 0.5 6.5 6 4.5 4-4 3.5 4.5 4-5.5 10.5-6-1-6.5-2.5-6-4-1-8-5-4-10-5-5-3-6.5-5-6-6-1.5z"><title>Stade (Landkreis, Niedersachsen): 12,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M337.5 239.5l1-4.5 4.5-2-2.5-4.5 3-4.5-1-4.5 3-4.5-3.5-6.5-5.5-5-10-7-4.5 2-2-3.5-11.5 10.5-7.5 5 1.5 14.5 6.5 10 7.5 3 7.5-2 7.5 6.5z"><title>Uelzen (Landkreis, Niedersachsen): 13,2 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M228.5 230l6 2-1 7 6.5-0.5 2.5 5.5 3-9 5.5-7.5-1.5-9.5-15.5-3.5-6-12-2.5-0.5-6 2.5-0.5 9.5-4 3.5-0.5 5 3 8 3.5-4z"><title>Verden (Landkreis, Niedersachsen): 10,7 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M201.5 213.5l-3.5-7-1.5 1-3.5 5 0.5 7.5 4.5-2.5z"><title>Delmenhorst (Stadt, Niedersachsen): 8,0 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M109.5 179l-4.5-5-9 0.5-6.5 2.5 1 2.5 16.5 2z"><title>Emden (Stadt, Niedersachsen): 6,3 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M174.5 197.5l-6.5-1.5-3 3-1.5 7.5 5.5 3 4-2 2.5-6.5z"><title>Oldenburg (Oldb) (Stadt, Niedersachsen): 7,6 °dH – weich</title></path>
+<path class="cpa-gh-k4" d="M150.5 298l5 5 10-6.5-5.5-3-9-1.5z"><title>Osnabrück (Stadt, Niedersachsen): 13,8 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M159 162.5l6.5-1 1-3-5-10.5-6.5 3.5z"><title>Wilhelmshaven (Stadt, Niedersachsen): 5,0 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M174.5 197.5l-0.5-6-2.5-6.5-5.5-2 0.5-3.5-7 1-6.5 4-5.5-5-2.5 6-10 8 1.5 4.5 6.5 1 4 7 11 5.5 5.5-5 1.5-7.5 3-3z"><title>Ammerland (Landkreis, Niedersachsen): 7,2 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M109.5 179l7 0 5-2 7 4 14.5-4-3-4.5-2-6.5-6-6 0.5-4-15 1 0-7.5 9-6-17-1-9 5.5-7.5 10-3.5 19 6.5-2.5 9-0.5z"><title>Aurich (Landkreis, Niedersachsen): 6,4 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M136.5 198l-5 0-2.5 13.5 6 4 2.5 8 5.5 2.5-2.5 5.5-5.5 2.5-2 6 2 3-5.5 4.5 3.5 5.5 5.5 0 6-3 4 3 6.5 0 3-8 3.5-2 6 1.5 3-5.5 1-7-7-3.5-2-4 0-6.5-4.5-6.5-11-5.5-4-7z"><title>Cloppenburg (Landkreis, Niedersachsen): 7,5 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M129 211.5l-4 2-4.5-5.5-12.5-3.5-6 0 0.5 11-2.5 8-6.5 9.5-1 5.5-1.5 17.5-3.5 0.5 12 11 4.5 0 1 8-4 2.5 2.5 11.5 4 6.5 12.5-8.5 4-0.5 1-7 2.5-4.5 0.5-17 5-5.5-3.5-5.5 5.5-4.5-2-3 2-6 5.5-2.5 2.5-5.5-5.5-2.5-2.5-8z"><title>Emsland (Landkreis, Niedersachsen): 9,4 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M161.5 148l-3-0.5-2-7.5-13 0 2.5 10-3 10.5 5.5 1 4.5 7.5-7 5 0.5 2.5 1 3 5.5 5 6.5-4 7-1 1.5-6-3-4.5-3.5 0.5-2.5-7-4-11z"><title>Friesland (Landkreis, Niedersachsen): 6,8 °dH – weich</title></path>
+<path class="cpa-gh-k5" d="M87.5 256.5l-15-2-3.5 2-2.5 16 5 3 5.5 0 5.5 3 3.5-3 5 12.5-3 6.5 2.5 5.5 2 0 4-2.5 9.5 0.5 1.5-2-4-6.5-2.5-11.5 4-2.5-1-8-4.5 0z"><title>Grafschaft Bentheim (Landkreis, Niedersachsen): 17,7 °dH – hart</title></path>
+<path class="cpa-gh-k2" d="M107 181.5l-4.5 9 1.5 7-3.5 4.5 1.5 2.5 6 0 12.5 3.5 4.5 5.5 4-2 2.5-13.5 5 0-1.5-4.5 10-8 2.5-6-1-3-3.5 0.5-14.5 4-7-4-5 2-7 0z"><title>Leer (Landkreis, Niedersachsen): 6,6 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M198 217.5l-4.5 2.5-0.5-7.5 3.5-5-11.5-4.5-5-3.5-4.5 1.5-2.5 6.5-4 2-5.5-3-5.5 5 4.5 6.5 0 6.5 2 4 7 3.5 5-1 4 6.5 4 2.5 12-5 0.5-7 3.5-1.5-3.5-7z"><title>Oldenburg (Landkreis, Niedersachsen): 8,8 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M174.5 273.5l-7 1.5-3.5 5.5-6-1.5 0-6.5-2.5-3 3-12-3.5-4.5-6.5 0-4-3-6 3-5.5 0-5 5.5-0.5 17 5 1.5 2 6.5 6 3.5 5.5-1 5 6 9 1.5 5.5 3-10 6.5-5-5-3.5 7 2 3.5 4.5 0 0 6.5-8.5 3.5 6.5 5 3.5-3 4.5 1 5-1.5 6.5-6.5 10 2 5.5-5.5-3-4 1-7-1-10.5-8-4.5-2-6z"><title>Osnabrück (Landkreis, Niedersachsen): 14,8 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M184.5 240l-4-2.5-4-6.5-5 1-1 7-3 5.5-6-1.5-3.5 2-3 8 3.5 4.5-3 12 2.5 3 0 6.5 6 1.5 3.5-5.5 7-1.5 2-8-3-9 1-4 11-7z"><title>Vechta (Landkreis, Niedersachsen): 11,2 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M187.5 166.5l4-4.5-0.5-3-10.5-3.5-5.5-5-3.5 2.5-1 8 4.5-0.5 1 7-4.5 7-3.5-1-1.5 6-0.5 3.5 5.5 2 2.5 6.5 0.5 6 1 3.5 4.5-1.5 5 3.5 11.5 4.5 1.5-1-2-6-6.5-3-3-4 1.5-15.5z"><title>Wesermarsch (Landkreis, Niedersachsen): 7,6 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M143 177l3.5-0.5-0.5-2.5 7-5-4.5-7.5-5.5-1 3-10.5-2.5-10-8.5 0.5-8.5 3-9 6 0 7.5 15-1-0.5 4 6 6 2 6.5z"><title>Wittmund (Landkreis, Niedersachsen): 6,8 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M215 217.5l4-3.5 0.5-9.5-7.5-0.5-2.5-3-11.5-3-3.5-3-8-1.5 3 4 6.5 3 2 6 3.5 7z"><title>Bremen (Stadt, Bremen): 6,3 °dH – weich</title></path>
+<path class="cpa-gh-k0" d="M189.5 152l0.5 1 2.5 5.5-1 3.5-4 4.5 7.5-1.5 3-2.5-4-9z"><title>Bremerhaven: keine Angabe</title></path>
+<path class="cpa-gh-k4" d="M70 397.5l-6.5 1.5-1 7 2 9 8 7 3 0 2-7-3-2.5 2-5.5-7-1.5z"><title>Düsseldorf (Stadt, Nordrhein-Westfalen): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M70 397.5l1.5-0.5-1-11 1.5-5-3-3.5-6.5-3.5-2 8.5 1 3.5-3 6.5 4.5 6 0.5 0.5z"><title>Duisburg (Stadt, Nordrhein-Westfalen): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M84.5 377.5l-1 0-4.5 4-2 2.5 3.5 3-1 6-3 2.5 2 2 13-3 1.5-5-2-6z"><title>Essen (Stadt, Nordrhein-Westfalen): 10,3 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M58.5 392.5l-7-2-4 2.5 2.5 5.5-1 4.5 5.5 0.5 8.5-5z"><title>Krefeld (Stadt, Nordrhein-Westfalen): 13,8 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M50 410.5l-4.5-2.5-3 3-5.5-1-3 5.5 4 5.5 0 2.5 6 1.5 3.5-6.5z"><title>Mönchengladbach (Stadt, Nordrhein-Westfalen): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M71.5 397l5-1.5 3-2.5 1-6-3.5-3-6.5 2z"><title>Mülheim an der Ruhr (Stadt, Nordrhein-Westfalen): 11,3 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M70.5 386l6.5-2 2-2.5-6.5-9.5-3.5 5.5 3 3.5z"><title>Oberhausen (Stadt, Nordrhein-Westfalen): 12,2 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M103.5 414l-3.5-2-6 1.5-2 4.5 2 1.5 7 1z"><title>Remscheid (Stadt, Nordrhein-Westfalen): 5,6 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M92 418l-2-5-4 0.5-5.5 4.5 2 5 11.5-3.5z"><title>Solingen (Stadt, Nordrhein-Westfalen): 6,0 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M103.5 414l0.5-3.5-2.5-2-0.5-7-6.5 0.5-4 1.5-5.5 6.5 1 3.5 4-0.5 2 5 2-4.5 6-1.5z"><title>Wuppertal (Stadt, Nordrhein-Westfalen): 6,8 °dH – weich</title></path>
+<path class="cpa-gh-k4" d="M44.5 344l-8.5-5.5-8 3.5-7.5-1.5-7.5 2.5 6 17 5 2-2 5.5 8 10.5-1 12.5 1 3.5 6 1 5.5-3.5 9-3-1-4.5-3.5-6 3.5-5.5-8.5 0-3.5-5.5 7-10.5 4.5-0.5 2.5-6-1.5-4z"><title>Kleve (Landkreis, Nordrhein-Westfalen): 13,7 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M72.5 422l0 4.5 3 2.5 6.5-2.5 0.5-3.5-2-5 5.5-4.5-1-3.5 5.5-6.5 4-1.5 0-5.5-3-2-13 3-2-2-5 1.5-1.5 0.5-0.5 8 7 1.5-2 5.5 3 2.5-2 7z"><title>Mettmann (Landkreis, Nordrhein-Westfalen): 14,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M63.5 399l-0.5-0.5-8.5 5 0.5 3-5 4-2.5 8-3.5 6.5 1 5 1.5 1 5.5 2 10.5 1 4.5-5.5 5.5-2 0-4.5-8-7-2-9z"><title>Rhein-Kreis Neuss (Landkreis, Nordrhein-Westfalen): 15,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M51.5 390.5l-1-2-9 3-5.5 3.5-6-1-4 3.5-3 6.5-4 3.5 0 6.5 7 0 8 1.5 3-5.5 5.5 1 3-3 4.5 2.5 5-4-0.5-3-5.5-0.5 1-4.5-2.5-5.5z"><title>Viersen (Landkreis, Nordrhein-Westfalen): 13,9 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M69 377.5l3.5-5.5 5-6 2.5-7.5-1.5-4.5-3.5 1.5-6.5-4-13.5-3-5-2.5 1.5 4-2.5 6-4.5 0.5-7 10.5 3.5 5.5 8.5 0-3.5 5.5 3.5 6 1 4.5 1 2 7 2 3-6.5-1-3.5 2-8.5z"><title>Wesel (Landkreis, Nordrhein-Westfalen): 13,4 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M96 475l-3-6 3-3.5-5.5-4.5-6.5 2-1 5.5 2 8 3.5-3 6.5 2z"><title>Bonn (Stadt, Nordrhein-Westfalen): 6,0 °dH – weich</title></path>
+<path class="cpa-gh-k6" d="M72.5 426.5l-5.5 2 4.5 4.5-2.5 8.5 3.5 5 4 1.5 0.5 5.5 3.5 0 7.5 1 5-3.5-1.5-7-3.5-3-1-7-6.5 0-5-5z"><title>Köln (Stadt, Nordrhein-Westfalen): 22,0 °dH – hart</title></path>
+<path class="cpa-gh-k2" d="M75.5 429l5 5 6.5 0 2.5-5-4-3.5-3.5 1z"><title>Leverkusen (Stadt, Nordrhein-Westfalen): 8,1 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M40.5 477.5l-0.5-4-5-1-3.5-3.5 5-8.5-3.5-13.5-4.5 2-2-9.5-4.5 5.5-3.5-1.5 0 4.5-4.5 2.5-2 6.5 3 7.5 5 0.5 4.5 10 3.5 4.5-4.5 3 3 6.5 6.5 0.5 3.5-1.5 0-5.5z"><title>Städteregion Aachen (Landkreis, Nordrhein-Westfalen): 10,0 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M45 430l-12 3.5-6.5 6 2 9.5 4.5-2 3.5 13.5-5 8.5 3.5 3.5 5 1 0.5 4 9 1.5 1.5-6 4-7 5-3.5 1.5-9-6.5 1-6.5-8 0-3.5-3.5-8 1.5-4z"><title>Düren (Landkreis, Nordrhein-Westfalen): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M46.5 431l-1.5 4 3.5 8 0 3.5 6.5 8 6.5-1-1.5 9 6 3.5 6-6.5 8.5-6-3.5 0-0.5-5.5-4-1.5-3.5-5 2.5-8.5-4.5-4.5-4.5 5.5-10.5-1z"><title>Rhein-Erft-Kreis (Landkreis, Nordrhein-Westfalen): 17,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M33 489.5l3.5 5-2.5 8 4.5 6.5 1.5 0 7.5-4.5 5-2 3.5 4.5 10.5-1.5-1-6.5-3-5 4.5-2.5 3.5 4.5 3-2 0.5-6.5 2-3-2.5-2 2-6-4-2.5 2-10.5-1.5-4-6 6.5-6-3.5-5 3.5-4 7-1.5 6-9-1.5-4 5 0 5.5z"><title>Euskirchen (Landkreis, Nordrhein-Westfalen): 16,1 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M34 415.5l-8-1.5-1 4-4.5 1-8.5 7-8 1.5 3.5 8.5 7-0.5-0.5 5.5 4.5 2.5 3.5 1.5 4.5-5.5 6.5-6 12-3.5-1-5-6-1.5 0-2.5z"><title>Heinsberg (Landkreis, Nordrhein-Westfalen): 12,7 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M101 420.5l0.5 7 4.5 1.5-4.5 7.5 8.5 6 5 4-1 3 6 6 7.5 1.5 6-3 0.5-8 2.5-2-0.5-4.5-3.5-2-0.5-8.5-6 0.5-3.5-4-5.5-0.5-4-6.5-0.5-5.5-2-2.5-6.5 0-0.5 3.5z"><title>Oberbergischer Kreis (Landkreis, Nordrhein-Westfalen): 7,9 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M94 419.5l-11.5 3.5-0.5 3.5 3.5-1 4 3.5-2.5 5 1 7 3.5 3 1.5 7 6.5-6.5 6.5 2 4-4-8.5-6 4.5-7.5-4.5-1.5-0.5-7z"><title>Rheinisch-Bergischer Kreis (Landkreis, Nordrhein-Westfalen): 9,1 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M96 475l0 2.5 10.5-2.5 0.5-7 5 0.5 12.5-6 3-5.5-7.5-1.5-6-6 1-3-5-4-4 4-6.5-2-6.5 6.5-5 3.5-7.5-1-8.5 6 1.5 4-2 10.5 4 2.5-2 6 2.5 2 5-0.5 3.5-4.5 8.5-0.5 2-3.5-6.5-2-3.5 3-2-8 1-5.5 6.5-2 5.5 4.5-3 3.5z"><title>Rhein-Sieg-Kreis (Landkreis, Nordrhein-Westfalen): 8,8 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M83.5 377.5l-5-3.5 4-4.5-5-3.5-5 6 6.5 9.5z"><title>Bottrop (Stadt, Nordrhein-Westfalen): 8,3 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M91 383.5l2-2.5 1-5-5.5-7.5-4.5-0.5 0.5 9.5z"><title>Gelsenkirchen (Stadt, Nordrhein-Westfalen): 10,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M133 323.5l-7-2.5-4.5 2.5-1.5 4-2.5 6.5 6.5 10 2.5 1 0-2 11-6.5z"><title>Münster (Stadt, Nordrhein-Westfalen): 16,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M90.5 300l-5.5 1.5-2.5 5-3 0.5-3.5 6-6.5 0-1 3.5-4.5 5 9.5 5.5-4 8-6.5 0-18.5 9 5.5 2 5 2.5 13.5 3 6.5 4 3.5-1.5 4.5-5.5 4 2 5.5-0.5 4-3.5-6-3.5-1.5-4 2.5-9.5 5.5-8 6.5-1 0-4-7.5-5-3.5-6.5 0-5z"><title>Borken (Landkreis, Nordrhein-Westfalen): 16,1 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M120 327.5l-2.5 0-4.5-5-9.5-2-6.5 1-5.5 8-2.5 9.5 1.5 4 6 3.5 5 2 3.5 10.5 7 5 3-3 6.5 1 4.5-3.5 6 0.5 2.5-3-5-9.5-3-1.5-2.5-1-6.5-10z"><title>Coesfeld (Landkreis, Nordrhein-Westfalen): 13,4 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M84.5 377.5l-0.5-9.5 4.5 0.5 5.5 7.5 8-2 2 4 1.5 1.5 7-8.5 3-1.5-3.5-5.5-7-5-3.5-10.5-5-2-4 3.5-5.5 0.5-4-2-4.5 5.5 1.5 4.5-2.5 7.5 5 3.5-4 4.5 5 3.5z"><title>Recklinghausen (Landkreis, Nordrhein-Westfalen): 10,3 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M151 292l-5-6-5.5 1-6-3.5-2-6.5-5-1.5-2.5 4.5-1 7-4 0.5-12.5 8.5-1.5 2-9.5-0.5-4 2.5 0 5 3.5 6.5 7.5 5 0 4 9.5 2 4.5 5 2.5 0 1.5-4 4.5-2.5 7 2.5 3.5-6.5 8.5 1.5 8.5-3.5 0-6.5-4.5 0-2-3.5 3.5-7z"><title>Steinfurt (Landkreis, Nordrhein-Westfalen): 17,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M145 318.5l-8.5-1.5-3.5 6.5 4.5 13-11 6.5 0 2 3 1.5 5 9.5 6 0 8.5 4.5 2-2 8.5 2 2.5-1.5 10.5 4.5 2-5.5-9-15-1.5-7.5-6-9 1.5-5-4.5-1-3.5 3z"><title>Warendorf (Landkreis, Nordrhein-Westfalen): 15,6 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M197 321.5l-5.5-1.5 0-3.5-6.5 0.5-3.5 6 2.5 3-2.5 5 5.5 5.5 7-0.5 3-3.5z"><title>Bielefeld (Stadt, Nordrhein-Westfalen): 9,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M159.5 321.5l-1.5 5 6 9 1.5 7.5 9 15 5.5 1 1-4.5 14.5-11.5 8 0.5-4.5-6-5-1.5-7 0.5-5.5-5.5 2.5-5-2.5-3 3.5-6-4-1.5-10-2-6.5 6.5z"><title>Gütersloh (Landkreis, Nordrhein-Westfalen): 17,3 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M181 315.5l4 1.5 6.5-0.5 0 3.5 5.5 1.5 6.5-6.5 7.5 2 3-3 2-6-6 1-6-6.5-8-3-11.5-0.5-1 7 3 4z"><title>Herford (Landkreis, Nordrhein-Westfalen): 21,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M249 367l-2.5-10.5 4.5-6 0-5.5-8.5-1-21-2.5-3.5 9.5 2 9-1 3.5 1 8.5 2 3-8 4.5 4.5 3 3.5-1 5 2 0 5.5 4.5 0.5 1-2.5 9.5-7.5 8.5-13z"><title>Höxter (Landkreis, Nordrhein-Westfalen): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M231 317.5l0.5-2.5-9.5-3-2.5-5-3.5 1-2 6-3 3-7.5-2-6.5 6.5 0 11-3 3.5 5 1.5 4.5 6 3 7 8.5-0.5 3 1 3.5-9.5 21 2.5-1-7.5-8-4.5 0-11.5z"><title>Lippe (Landkreis, Nordrhein-Westfalen): 17,1 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M173.5 278l2 6 8 4.5 1 10.5 11.5 0.5 8 3 6 6.5 6-1 3.5-1 4 1 2-5.5-6-3 1-7 4-1.5 4.5-8-4.5-9.5-8 10.5-5.5 1.5-10-0.5 0-11.5-3.5-3.5-6.5 3-6.5 1-2 5z"><title>Minden-Lübbecke (Landkreis, Nordrhein-Westfalen): 22,3 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M180 359l5 0.5 0.5 3.5 6 2.5 0.5 4.5-7.5 6 5.5 10.5 3.5-1.5 11 3.5 5-5-1.5-4.5 6 0.5 8-4.5-2-3-1-8.5 1-3.5-2-9-3-1-8.5 0.5-3-7-8-0.5-14.5 11.5z"><title>Paderborn (Landkreis, Nordrhein-Westfalen): 14,1 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M93 389.5l8 1.5 6.5-7.5-2-4-1.5-1.5-11 3-2 2.5z"><title>Bochum (Stadt, Nordrhein-Westfalen): 9,3 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M105.5 379.5l2 4 8 7.5 2.5 0 3-5 6-6-2.5-7-10 0-2-2z"><title>Dortmund (Stadt, Nordrhein-Westfalen): 7,0 °dH – weich</title></path>
+<path class="cpa-gh-k2" d="M115.5 391l-3.5 2-3 5.5 3 4 3.5-0.5 3 6 4.5-3.5 0.5-10.5-5.5-3z"><title>Hagen (Stadt, Nordrhein-Westfalen): 8,2 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M132 359l-1.5 5.5 0.5 5.5 5-1 4.5 5 8-6.5 0.5-7-8.5-4.5-6 0z"><title>Hamm (Stadt, Nordrhein-Westfalen): 10,0 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M93 381l11-3-2-4-8 2z"><title>Herne (Stadt, Nordrhein-Westfalen): 9,6 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M91.5 394.5l3 2 0 5.5 6.5-0.5 0.5 7 2.5 2 6.5 0 2 2.5 6-5-3-6-3.5 0.5-3-4 3-5.5 3.5-2-8-7.5-6.5 7.5-8-1.5z"><title>Ennepe-Ruhr-Kreis (Landkreis, Nordrhein-Westfalen): 7,3 °dH – weich</title></path>
+<path class="cpa-gh-k4" d="M214 379.5l-6-0.5 1.5 4.5-5 5-11-3.5-3.5 1.5-9 6.5-8.5 2-12.5-6-14.5-5.5-2.5 3.5 1.5 3.5 0.5 16.5 2.5 4.5 12-0.5 1 11 7.5 4.5 7 1 4-3.5 6.5-2.5 4 5.5 8 0 6.5-8.5-2.5-10.5-7.5 3-4-3.5 4.5-6.5 6-4 6.5-2 3.5 1.5 6.5-4-3.5-8 5-2z"><title>Hochsauerlandkreis (Landkreis, Nordrhein-Westfalen): 11,3 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M132 429l6.5 0.5 1.5-6.5 7.5-5 0-6.5-2.5-4.5-0.5-16.5-1.5-3.5-2-2-12 1-5.5 8-0.5 10.5-4.5 3.5-6 5 0.5 5.5 4 6.5 5.5 0.5 3.5 4z"><title>Märkischer Kreis (Landkreis, Nordrhein-Westfalen): 9,7 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M136.5 444l4.5 1.5 4.5 0 2.5-11 4-0.5 11 3 5-5 0-5.5-7.5-4.5-1-11-12 0.5 0 6.5-7.5 5-1.5 6.5-6.5-0.5 0.5 8.5 3.5 2z"><title>Olpe (Landkreis, Nordrhein-Westfalen): 8,1 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M168 426.5l0 5.5-5 5-11-3-4 0.5-2.5 11-4.5 0-1.5 4.5 10 6-0.5 6 5 5.5 0 3 6 1.5 2.5-5.5-2.5-5.5 10-10.5 6 2.5 8.5-12 4.5-5.5 0.5-8.5-4-5.5-6.5 2.5-4 3.5z"><title>Siegen-Wittgenstein (Landkreis, Nordrhein-Westfalen): 8,7 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M149 360.5l-0.5 7-8 6.5 0.5 11 2 2 2.5-3.5 14.5 5.5 12.5 6 8.5-2 9-6.5-5.5-10.5 7.5-6-0.5-4.5-6-2.5-0.5-3.5-5-0.5-5.5-1-2 5.5-10.5-4.5-2.5 1.5-8.5-2z"><title>Soest (Landkreis, Nordrhein-Westfalen): 12,5 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M112 364l3.5 5.5-3 1.5 2 2 10 0 2.5 7-6 6-3 5 5.5 3 5.5-8 12-1-0.5-11-4.5-5-5 1-0.5-5.5 1.5-5.5-6-0.5-4.5 3.5-6.5-1z"><title>Unna (Landkreis, Nordrhein-Westfalen): 9,3 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M197.5 553l-3 1-1 6-3.5 4.5 4 4.5 4-0.5 5-10-2-6z"><title>Darmstadt (Stadt, Hessen): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M206 528.5l-5 1-0.5-6.5-5 2-3.5 5-0.5 2.5-7.5 5 3 3.5 4.5 4.5 2.5-4 7-0.5 4.5-8.5z"><title>Frankfurt am Main (Stadt, Hessen): 13,3 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M201 541l8-1-1-7-2.5-0.5z"><title>Offenbach am Main (Stadt, Hessen): 15,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M173.5 531.5l-3.5-1-12 7.5 4.5 5.5 1 0 7 4.5 3-0.5 4-9z"><title>Wiesbaden (Stadt, Hessen): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M213.5 604l-5 1.5 2 8.5 6.5-6.5-1-1.5zM206.5 576.5l-4.5 1-12.5 0-8-1 0 0.5-6 3.5 1.5 8 2 3.5 0.5 1 3-0.5 8.5 7.5 2.5-2.5-2-7 6.5-2 0 6 3 5.5 8.5 2.5 4-0.5-2.5-16.5-4-3z"><title>Bergstraße (Landkreis, Hessen): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M197.5 553l-3.5-2-5 5-2.5 6.5 2 4-1 5 2 6 12.5 0 4.5-1 5-5.5 7-1 5-5.5 0.5-2-2-13-5.5-1.5-3 3.5-6 2-6.5-1 2 6-5 10-4 0.5-4-4.5 3.5-4.5 1-6z"><title>Darmstadt-Dieburg (Landkreis, Hessen): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M187 541l-8 6.5-5.5 0-3 0.5 3.5 6 1 8 3 7 3.5 7.5 8 1-2-6 1-5-2-4 2.5-6.5 5-5-2.5-5.5z"><title>Groß-Gerau (Landkreis, Hessen): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M200.5 523l-4-6.5-0.5-4.5-7-5-2.5-3.5-3.5-1.5-8 4.5-1.5 4.5 2 4.5 3.5 2.5 0 5-4 2.5 11 4.5 6 0 3.5-5z"><title>Hochtaunuskreis (Landkreis, Hessen): 12,2 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M205.5 532.5l2.5 0.5 4.5 5.5 7.5 2 2-5 7-1.5 3 2.5 3.5-5 11.5 2 2 4.5 8-1 0-15 7.5 0.5 3-5 5.5-4.5-1-4.5-8.5-4-4 1-5.5-6.5-5.5 6-4-7-4 1.5-1.5 4.5 0.5 6.5-8.5 9.5-9.5 1-7-3.5-7 5-1.5 6z"><title>Main-Kinzig-Kreis (Landkreis, Hessen): 13,9 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M192 530l-6 0-11-4.5-1.5 6 4 7-4 9 5.5 0 8-6.5-3-3.5 7.5-5z"><title>Main-Taunus-Kreis (Landkreis, Hessen): 19,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M216 606l1.5-4 6 0.5 3-3 1.5-5.5-2.5-3 2.5-4-1-6 4.5-5-3.5-2-2.5-8-2-1.5-5 5.5-7 1-5 5.5 0.5 6 4 3 2.5 16.5 0 2z"><title>Odenwaldkreis (Landkreis, Hessen): 14,8 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M201 552.5l6.5 1 6-2 3-3.5 5.5 1.5 1-6-3-3-7.5-2-4.5-5.5 1 7-8 1-7 0.5-2.5 4 2.5 5.5 3.5 2z"><title>Offenbach (Landkreis, Hessen): 12,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M173.5 531.5l1.5-6 4-2.5 0-5-3.5-2.5-7 3-2.5-3-7 1.5-7 2-10 8 3 4.5-5 1.5-2 5-4 1.5 8 10.5 6.5-1 14-5.5-4.5-5.5 12-7.5z"><title>Rheingau-Taunus-Kreis (Landkreis, Hessen): 17,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M206 528.5l1.5-6 7-5 7 3.5 9.5-1 8.5-9.5-0.5-6.5 1.5-4.5-2-2.5-7 2.5-5 0-3-6.5-3.5 2-3 5.5-9-0.5-2.5-4.5-9.5-1-5 4 0 3.5-4.5 1.5 2.5 3.5 7 5 0.5 4.5 4 6.5 0.5 6.5z"><title>Wetteraukreis (Landkreis, Hessen): 17,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M223.5 493l4-3-0.5-4.5-6-6.5-2.5-5.5-3.5-3.5-5.5 0-9.5 3-3.5-2.5-5.5 0.5-4 7.5 5.5 3.5 1.5 4-1.5 6.5-5 4 3.5 5.5 0-3.5 5-4 9.5 1 2.5 4.5 9 0.5 3-5.5z"><title>Gießen (Landkreis, Hessen): 14,9 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M160 472l-1.5 3 3 6.5 3.5 4 3.5-1 4 6 10.5 11.5 3.5 1.5 4.5-1.5-3.5-5.5 5-4 1.5-6.5-1.5-4-5.5-3.5 4-7.5-5-4.5-4 1-3-6.5 0-6.5-3-1.5-6-2.5-10 10.5 2.5 5.5z"><title>Lahn-Dill-Kreis (Landkreis, Hessen): 12,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M183 502l-10.5-11.5-4-6-3.5 1-3.5-4-2 6.5-6.5-1-3.5 4 1 5.5-2 6 3.5 1 6 8.5 1 5 7-1.5 2.5 3 7-3-2-4.5 1.5-4.5z"><title>Limburg-Weilburg (Landkreis, Hessen): 17,5 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M176 453l3 1.5 0 6.5 3 6.5 4-1 5 4.5 5.5-0.5 3.5 2.5 9.5-3 5.5 0-0.5-2 7.5-7 9-5-3-9.5-6.5 0.5-2.5-2-2.5-3.5-10.5 1.5-8-4.5-5 5-8.5-2.5z"><title>Marburg-Biedenkopf (Landkreis, Hessen): 12,5 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M254 499l-3.5-4 4.5-13.5-1.5-6.5 8 6 4-2.5 0.5-5-3-6.5-3.5-3.5-3.5 3.5-5-4 0.5-2.5-11.5-1-9-3.5-9 5-7.5 7 0.5 2 3.5 3.5 2.5 5.5 6 6.5 0.5 4.5-4 3 3 6.5 5 0 7-2.5 2 2.5 4-1.5 4 7z"><title>Vogelsbergkreis (Landkreis, Hessen): 12,2 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M259 399l-1 2-12-1.5 1 7.5 7 2 5-4 0.5-4.5z"><title>Kassel (Stadt, Hessen): 15,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M272 508.5l2.5-8 6.5 3 5-2.5 6-5 1.5-5.5 1-4-1.5-6.5 1-6.5-12 0.5 4.5-8-1.5-3-3-3-11 0.5 0 5-3.5 3-4.5-1.5 3 6.5-0.5 5-4 2.5-8-6 1.5 6.5-4.5 13.5 3.5 4 5.5 6.5 4-1z"><title>Fulda (Landkreis, Hessen): 14,1 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M263 467l4.5 1.5 3.5-3 0-5 11-0.5 3 3 2-6 5-1 2-6.5 0.5-6-3-5.5-5.5-6-5.5 0-6.5-3-5.5 0.5-7.5 7-7 12.5 1.5 9-4 2.5-0.5 2.5 5 4 3.5-3.5z"><title>Hersfeld-Rotenburg (Landkreis, Hessen): 13,2 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M250.5 366.5l-8.5 13-9.5 7.5-1 2.5 1 7.5-4.5 1 1 9-1.5 3 6.5 9 5-3.5 1.5-5.5 5 2 12.5 2 2.5 4 4-0.5 0.5-3 6-9-11.5-5-0.5 4.5-5 4-7-2-1-7.5 12 1.5 1-2 1.5-5 4-2-3.5-11 6.5-7-3.5-5-8 0z"><title>Kassel (Landkreis, Hessen): 14,9 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M231 456l9 3.5 11.5 1 4-2.5-1.5-9 7-12.5 7.5-7 5.5-0.5 0-7.5-5.5-4-4 0-4 0.5-2.5-4-12.5-2-5-2-1.5 5.5-5 3.5 2 5-5.5 8-9 9-2.5 4 2.5 2 6.5-0.5z"><title>Schwalm-Eder-Kreis (Landkreis, Hessen): 13,6 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M218.5 382.5l-5 2 3.5 8-6.5 4-3.5-1.5-6.5 2-6 4-4.5 6.5 4 3.5 7.5-3 2.5 10.5-6.5 8.5-8 0-0.5 8.5-4.5 5.5 8.5 2.5 5-5 8 4.5 10.5-1.5 2.5 3.5 2.5-4 9-9 5.5-8-2-5-6.5-9 1.5-3-1-9 4.5-1-1-7.5-4.5-0.5 0-5.5-5-2z"><title>Waldeck-Frankenberg (Landkreis, Hessen): 14,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M271 405.5l-6 9-0.5 3 4 0 5.5 4 0 7.5 6.5 3 5.5 0 5.5 6 1-2 7.5 2 5-3.5-5.5-3.5 4.5-9.5 0-5-10-4-1-5.5-5.5-1-3-9.5-1.5-5-6.5 1-7.5 5z"><title>Werra-Meißner-Kreis (Landkreis, Hessen): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M127 505l-6.5-3.5-6 5 3 8.5 5-0.5 6.5-7z"><title>Koblenz (Stadt, Rheinland-Pfalz): 13,1 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M95 475.5l-2 3.5-8.5 0.5-3.5 4.5-5 0.5-2 3-0.5 6.5-3 2-3.5-4.5-4.5 2.5 3 5 1 6.5-0.5 4 8.5 2.5 4.5-4.5 6.5-5.5 7.5-1 7.5 0.5 1-5.5 3.5-2-9-16.5 0-2.5z"><title>Ahrweiler (Landkreis, Rheinland-Pfalz): 12,6 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M127.5 457l-3 5.5-12.5 6 3 7-1 7 4.5 2 0.5-7 3.5-2.5 7.5 3.5 0-9 3.5-3.5 9 5 5-1.5 3 3.5 3.5-2.5 0-3-5-5.5 0.5-6-10-6 1.5-4.5-4.5-1.5-2.5 2-0.5 8z"><title>Altenkirchen (Westerwald) (Landkreis, Rheinland-Pfalz): 10,7 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M147 565.5l-4.5-11-11.5-7.5-5.5 5.5-11.5 9.5-7 0 0.5 5.5 8 11 5.5 3.5 5-1 2.5 4 4.5-10 7-2.5 3 1.5 1.5-6z"><title>Bad Kreuznach (Landkreis, Rheinland-Pfalz): 16,6 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M107 562l0-4-12.5 0.5 3 3.5-10 8.5 0 3-6 6.5-1.5 5.5 4.5 4 6 2 7 4 6.5-5 4 1 0.5-6 7-7-8-11z"><title>Birkenfeld (Landkreis, Rheinland-Pfalz): 10,1 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M106.5 529l-7.5-10.5-7.5-3-6.5-0.5-1.5 4.5-7 3.5 1.5 12 8.5 4 3 8 4 3 6-0.5 5-4.5-2-5 1-8z"><title>Cochem-Zell (Landkreis, Rheinland-Pfalz): 11,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M127 505l0-5-4.5-4-7.5 5.5-10-7.5-3.5 2-1 5.5-7.5-0.5-7.5 1-6.5 5.5-0.5 5 6.5 2.5 6.5 0.5 7.5 3 7.5 10.5 6.5-4.5 4-6.5 8 2-2.5-5.5-5 0.5-3-8.5 6-5z"><title>Mayen-Koblenz (Landkreis, Rheinland-Pfalz): 14,5 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M96 477.5l9 16.5 10 7.5 7.5-5.5 5-3 2.5-7.5 0-7-7.5-3.5-3.5 2.5-0.5 7-4.5-2 1-7-3-7-5-0.5-0.5 7z"><title>Neuwied (Landkreis, Rheinland-Pfalz): 12,6 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M131 547l-4.5-3.5 7-5.5-4.5-9.5-4-1.5 0-7-8-2-4 6.5-6.5 4.5-3 3-1 8 2 5-5 4.5-6 0.5 3.5 2.5-2.5 6 12.5-0.5 0 4 7 0 11.5-9.5z"><title>Rhein-Hunsrück-Kreis (Landkreis, Rheinland-Pfalz): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M159 517l-1-5-6-8.5-3.5-1-6 0.5-1.5 6-7-2.5-5 1-6.5 7 2.5 5.5 0 7 4 1.5 4.5 9.5 0.5 1.5 4-1.5 2-5 5-1.5-3-4.5 10-8z"><title>Rhein-Lahn-Kreis (Landkreis, Rheinland-Pfalz): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M154 470.5l-3.5 2.5-3-3.5-5 1.5-9-5-3.5 3.5 0 9 0 7-2.5 7.5-5 3 4.5 4 0 5 2 2.5 5-1 7 2.5 1.5-6 6-0.5 2-6-1-5.5 3.5-4 6.5 1 2-6.5-3-6.5 1.5-3z"><title>Westerwaldkreis (Landkreis, Rheinland-Pfalz): 7,6 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M46.5 574.5l4.5 3.5 6-1 3-8-2-7z"><title>Trier (Stadt, Rheinland-Pfalz): 8,4 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M94.5 558.5l2.5-6-3.5-2.5-4-3-3-8-8.5-4-5 2.5-3.5-6.5-11 5 0.5 11-0.5 8.5 6 5 6.5 0.5 1.5 5.5-1.5 3.5 4.5 6 1 5 5-1 6-6.5 0-3 10-8.5z"><title>Bernkastel-Wittlich (Landkreis, Rheinland-Pfalz): 9,2 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M38.5 509l-7 0-1.5 4-8.5 6.5-1.5 9-3 8 4 12.5 3 0.5 1 5.5 6 5.5 7.5 4.5 3-1 5-4 12-4.5 0.5-8.5-0.5-11-8.5-3-1.5-8.5 2.5-4-5-7-6-4.5z"><title>Eifelkreis Bitburg-Prüm (Landkreis, Rheinland-Pfalz): 13,9 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M40 509l6 4.5 5 7-2.5 4 1.5 8.5 8.5 3 11-5 3.5 6.5 5-2.5-1.5-12 7-3.5 1.5-4.5-6.5-2.5 0.5-5-4.5 4.5-8.5-2.5 0.5-4-10.5 1.5-3.5-4.5-5 2z"><title>Vulkaneifel (Landkreis, Rheinland-Pfalz): 10,9 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M81.5 580l-5 1-1-5-4.5-6 1.5-3.5-1.5-5.5-6.5-0.5-6-5-12 4.5-5 4 3 6-1.5 6.5-5.5 4.5-0.5 5.5-4.5 4.5 1.5 2.5 10 3 16-3 10.5-5.5 3.5-2.5 6 0zM46.5 574.5l11.5-12.5 2 7-3 8-6 1z"><title>Trier-Saarburg (Landkreis, Rheinland-Pfalz): 8,6 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M179.5 594.5l-8 2.5 0 7 8-6.5z"><title>Frankenthal (Pfalz) (Stadt, Rheinland-Pfalz): 15,0 °dH – hart</title></path>
+<path class="cpa-gh-k1" d="M138.5 616.5l1.5-6-2-5-4.5-3-7 0.5-3.5 4.5 4.5 6.5 5-1 5 4.5z"><title>Kaiserslautern (Stadt, Rheinland-Pfalz): 4,0 °dH – weich</title></path>
+<path class="cpa-gh-k4" d="M139.5 626l5-3-5-1zM158 632l-5 0.5 0.5 7.5 5.5-2z"><title>Landau in der Pfalz (Stadt, Rheinland-Pfalz): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M171.5 604l6 6 5.5-1.5-3.5-11z"><title>Ludwigshafen am Rhein (Stadt, Rheinland-Pfalz): 18,3 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M163.5 543.5l-2.5 3.5 1.5 4 7 3 4.5 0-3.5-6z"><title>Mainz (Stadt, Rheinland-Pfalz): 19,6 °dH – hart</title></path>
+<path class="cpa-gh-k2" d="M171.5 623l-5-1.5-2.5-6-3-1.5-4.5 3-7 2 2 2 15.5 3.5 5-1.5z"><title>Neustadt an der Weinstraße (Stadt, Rheinland-Pfalz): 7,9 °dH – weich</title></path>
+<path class="cpa-gh-k1" d="M114 633l5 7 3.5-1.5 3-7-7.5-1z"><title>Pirmasens (Stadt, Rheinland-Pfalz): 4,0 °dH – weich</title></path>
+<path class="cpa-gh-k5" d="M182.5 620l-4-4-2.5 3.5 6.5 6.5 1.5-0.5z"><title>Speyer (Stadt, Rheinland-Pfalz): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M181.5 577l-7 0-0.5 5.5-6.5 0 0 9.5 2 0.5 5-2 4.5 1.5-2-3.5-1.5-8z"><title>Worms (Stadt, Rheinland-Pfalz): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M100 635.5l6.5-3.5 1-5-2-5.5-1.5 4-6 5z"><title>Zweibrücken (Stadt, Rheinland-Pfalz): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M181.5 576.5l-3.5-7.5-11.5 3.5 0-5.5-4-8.5-8 1-7.5 6-2.5 2.5-1.5 6 5.5 6.5 8.5 0 3.5 4.5 0 3 7 4 0-9.5 6.5 0 0.5-5.5 7 0z"><title>Alzey-Worms (Landkreis, Rheinland-Pfalz): 20,3 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M137.5 617.5l-0.5 3.5 2.5 1 5 1 5-4 7-2 4.5-3 3 1.5 2.5 6 5 1.5-1.5-7-2.5-5 2-3-1-9 1-6.5-2-0.5-7-4-10.5 14-3 1.5-0.5 9.5-8 3.5z"><title>Bad Dürkheim (Landkreis, Rheinland-Pfalz): 13,3 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M128.5 585l-0.5 7 5.5 2.5-0.5 3.5 12.5 1 1.5 4.5 3-1.5 10.5-14 0-3-3.5-4.5-8.5 0-5.5-6.5-3-1.5-7 2.5z"><title>Donnersbergkreis (Landkreis, Rheinland-Pfalz): 16,1 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M179 629.5l-7-4.5-5.5 2-0.5 7 1.5 9-10 2.5-3 2.5-1 9 12 3.5 2-1.5 1-1 4.5-9.5 2.5-10z"><title>Germersheim (Landkreis, Rheinland-Pfalz): 13,9 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M138.5 616.5l8-3.5 0.5-9.5-1.5-4.5-12.5-1 0.5-3.5-5.5-2.5-4.5 5.5-11 4-1.5 6.5-3.5 1.5-2 6 1 0 8.5 4 3.5-4 4.5 3.5 8.5 0 5.5 2 0.5-3.5-5-4.5-5 1-4.5-6.5 3.5-4.5 7-0.5 4.5 3 2 5z"><title>Kaiserslautern (Landkreis, Rheinland-Pfalz): 12,2 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M115.5 578.5l-7 7-0.5 6-4-1-6.5 5 0.5 10.5-2 2.5 2.5 2.5 7 4.5 2-6 3.5-1.5 1.5-6.5 11-4 4.5-5.5 0.5-7-2.5-4-5 1z"><title>Kusel (Landkreis, Rheinland-Pfalz): 11,5 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M139.5 626l3 8 0 4-3.5 6 3 8 2.5-1.5 9 6.5 1-9 3-2.5 10-2.5-1.5-9 0.5-7 5.5-2 0-2-5 1.5-15.5-3.5-2-2-5 4zM158 632l1 6-5.5 2-0.5-7.5z"><title>Südliche Weinstraße (Landkreis, Rheinland-Pfalz): 10,1 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M179 592l-4.5-1.5-5 2-1 6.5 1 9-2 3 2.5 5 1.5 7 0.5 0 0 2 7 4.5 3.5-3.5-6.5-6.5 2.5-3.5 4 4 2-8-1.5-3.5-5.5 1.5-6-6 0-7 8-2.5 0-1.5z"><title>Rhein-Pfalz-Kreis (Landkreis, Rheinland-Pfalz): 13,5 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M162.5 543.5l-14 5.5-6.5 1-8-10.5-0.5-1.5-7 5.5 4.5 3.5 11.5 7.5 4.5 11 7.5-6 8-1 4 8.5 0 5.5 11.5-3.5-3-7-1-8-4.5 0-7-3-1.5-4 2.5-3.5z"><title>Mainz-Bingen (Landkreis, Rheinland-Pfalz): 19,0 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M139.5 622l-2.5-1-5.5-2-8.5 0-4.5-3.5-3.5 4-8.5-4-1 6 2 5.5-1 5-6.5 3.5 3 3 6-2.5 8 11.5 3 0 5 4 13 1.5 4-1-3-8 3.5-6 0-4-3-8zM114 633l4-2.5 7.5 1-3 7-3.5 1.5z"><title>Südwestpfalz (Landkreis, Rheinland-Pfalz): 9,3 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M238.5 674l-6-1-5.5 2.5-1.5 8.5 2.5 5.5 10.5 1.5-2.5-4.5 7.5-4.5-4-2.5z"><title>Stuttgart (Stadt, Baden-Württemberg): 11,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M225.5 684l-2-7.5-5.5-1-2.5-3.5-4.5 8-4.5 1.5 5 6-5.5 7.5-0.5 6.5-3 0 1.5 8 5.5 3 3-7.5 4.5-2.5 5 1 8.5-2.5 1-0.5 2-3-5.5-8z"><title>Böblingen (Landkreis, Baden-Württemberg): 14,2 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M228 689.5l5.5 8-2 3 5.5 4.5 5 0 5.5 3.5 6-1.5 6 3 3.5-2.5 1-7.5-3-5-5-3 1-7.5-13.5-2.5-7.5 4.5 2.5 4.5z"><title>Esslingen (Landkreis, Baden-Württemberg): 15,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M263 707.5l0.5 0.5 6.5 1.5 4-4.5 5.5 0.5 6-7 3.5-1 3.5-11-7.5-2.5 0 4-5.5-0.5-5-5.5-8.5 0-5 3-4-0.5-1 7.5 5 3 3 5z"><title>Göppingen (Landkreis, Baden-Württemberg): 14,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M238.5 674l3.5-1.5 3.5-14.5 4-5-4.5-0.5-7.5 2.5-8-5-8 5-10-2 4 5 1.5 5.5-3.5 2 2 6.5 2.5 3.5 5.5 1 2 7.5 1.5-8.5 5.5-2.5z"><title>Ludwigsburg (Landkreis, Baden-Württemberg): 14,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M243.5 682l13.5 2.5 4 0.5 5-3 2.5-5.5 4.5 1 3.5-2.5-2-7-5.5-4.5 2-2.5-6.5-6 0.5-3.5-8-3-6.5 3.5-1 0.5 0 0.5-4 5-3.5 14.5-3.5 1.5 1 5.5z"><title>Rems-Murr-Kreis (Landkreis, Baden-Württemberg): 15,6 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M224 635.5l8 5.5 1.5 6 7.5-2.5-2-5-7-5z"><title>Heilbronn (Stadt, Baden-Württemberg): 9,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M257 648.5l1.5-3-5.5-1.5-2.5-8 1.5-10.5 2.5-3.5-2-4.5-7.5-2.5-7 9-5.5-2.5-1 6-7.5-2.5-6.5 9-9.5 2 0.5 7.5 3-1 0.5 8.5-0.5 2 10 2 8-5 8 5 7.5-2.5 4.5 0.5 0-0.5 1-0.5zM224 635.5l8-1 7 5 2 5-7.5 2.5-1.5-6z"><title>Heilbronn (Landkreis, Baden-Württemberg): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M258.5 645.5l2.5-3 7-0.5 3-6 3.5-0.5 1-6 3.5-0.5 3-12.5-2-2.5-13.5-2-2.5-1.5-2.5 5.5-9 1.5 2 4.5-2.5 3.5-1.5 10.5 2.5 8z"><title>Hohenlohekreis (Landkreis, Baden-Württemberg): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M271 661l3 0 10 4.5 3-5 6.5-2-2.5-6 14-2.5 6.5 0-1-9.5-9-6-0.5-5 2.5-3.5-3-11.5-4.5-0.5-8.5 4.5-5.5-2-3 12.5-3.5 0.5-1 6-3.5 0.5-3 6-7 0.5-2.5 3-1.5 3 8 3-0.5 3.5z"><title>Schwäbisch Hall (Landkreis, Baden-Württemberg): 14,5 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M282 616.5l5.5 2 8.5-4.5 4.5 0.5 3.5-1-3.5-8.5-2.5-8-4.5 6.5-7-2-1-9-3-2-5.5-13.5-6 0.5-6 2.5 1.5-9.5-8.5 3.5-4.5-1-10.5 0.5-1.5 2.5 8.5 8.5 10 4.5-3.5 4 1.5 5.5-2 5 8 7 2.5 1.5 13.5 2z"><title>Main-Tauber-Kreis (Landkreis, Baden-Württemberg): 23,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M289 697.5l2 4 5.5-1.5 6 5 4.5 0 3.5 5.5 3-1 3-1 0.5-9-5-6 1-4.5 8.5 4 5.5-0.5 1.5-3-4.5-5-5 1.5-10-5.5-5.5 1-11 5z"><title>Heidenheim (Landkreis, Baden-Württemberg): 18,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M292.5 686.5l11-5 5.5-1 10 5.5 5-1.5 1.5-7.5 0.5-11.5-3.5-6.5-4.5-5.5-6.5-3.5-6.5 0-14 2.5 2.5 6-6.5 2-3 5-10-4.5-3 0-2 2.5 5.5 4.5 2 7-3.5 2.5-4.5-1-2.5 5.5 8.5 0 5 5.5 5.5 0.5 0-4z"><title>Ostalbkreis (Landkreis, Baden-Württemberg): 14,3 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M160 675l2.5 8-0.5 5 3 5 6.5-3.5-2.5-7.5-3-4z"><title>Baden-Baden (Stadt, Baden-Württemberg): 13,4 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M168.5 658l7.5 2 4 3 7.5-0.5-1.5-8.5-6.5-4.5-6.5-1z"><title>Karlsruhe (Stadt, Baden-Württemberg): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M182.5 626l-3.5 3.5-3.5 9-2.5 10 6.5 1 6.5 4.5 1.5 8.5 3-4 11-0.5 1.5-5.5 6 0.5 3-2-0.5-8.5-3 1-0.5-7.5-15-5-9-5.5zM167.5 659l3.5 13.5 6.5 0 1 2.5 5.5 2 4.5-11-1-3.5-7.5 0.5-4-3-7.5-2z"><title>Karlsruhe (Landkreis, Baden-Württemberg): 18,2 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M165.5 660.5l-3 1.5-5 8.5-1.5 6.5-11 10.5 1.5 3.5 12 3.5 5.5 6 3 1.5 7-1 4-4.5 2.5-2.5 3-10-4-2.5-1-6.5-1-2.5-6.5 0-3.5-13.5zM160 675l6 3 3 4 2.5 7.5-6.5 3.5-3-5 0.5-5z"><title>Rastatt (Landkreis, Baden-Württemberg): 13,4 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M190 611.5l3.5 1 1 6 6.5-0.5 5-5-3.5-5.5-11.5 3z"><title>Heidelberg (Stadt, Baden-Württemberg): 19,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M179.5 593l0 1.5 0 3 3.5 11 1.5 3.5 5.5-0.5 1-1-2.5-5.5 2.5-5-8.5-7.5z"><title>Mannheim (Stadt, Baden-Württemberg): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M226.5 599.5l-4 6 1.5 3-7 5.5 1.5 5 5.5 3.5 0 2.5 7.5 2.5 1-6 5.5 2.5 7-9 7.5 2.5 9-1.5 2.5-5.5-8-7 2-5-1.5-5.5 3.5-4-10-4.5-6.5 1.5-5 7-10.5 1z"><title>Neckar-Odenwald-Kreis (Landkreis, Baden-Württemberg): 11,9 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M213.5 604l0-2-4 0.5-8.5-2.5-3-5.5 0-6-6.5 2 2 7-2.5 2.5-2.5 5 2.5 5.5 11.5-3 3.5 5.5-5 5-6.5 0.5-1-6-3.5-1-5.5 0.5-2 8 1.5 5.5 9 5.5 15 5 9.5-2 6.5-9 0-2.5-5.5-3.5-1.5-5 7-5.5-1.5-3 4-6-3 3-6-0.5-1.5 4 1 1.5-6.5 6.5-2-8.5z"><title>Rhein-Neckar-Kreis (Landkreis, Baden-Württemberg): 18,9 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M199 675l3 1.5 4-6.5-3.5-5-7.5 1 0.5 6 3 3.5z"><title>Pforzheim (Stadt, Baden-Württemberg): 13,9 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M206.5 681.5l-6-2.5-1.5-4-0.5 0.5-9.5 2.5-5-1-5.5-2 1 6.5 4 2.5-3 10-2.5 2.5 4 4 7.5 3.5 6 7.5 3.5 2 4-2 1-2-1.5-8 3 0 0.5-6.5 5.5-7.5z"><title>Calw (Landkreis, Baden-Württemberg): 8,8 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M215.5 672l-2-6.5 3.5-2-1.5-5.5-4-5 0.5-2-3 2-6-0.5-1.5 5.5-11 0.5-3 4 1 3.5-4.5 11 5 1 9.5-2.5-3-3.5-0.5-6 7.5-1 3.5 5-4 6.5-3-1.5 1.5 4 6 2.5 4.5-1.5z"><title>Enzkreis (Landkreis, Baden-Württemberg): 14,3 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M164 700.5l-0.5 9 4 4-2 10 4.5 5 9.5 4 4 0-0.5-7.5 2.5-2 11.5 0 4.5 2.5 2.5-4 1.5-4-2.5-6-4 2-3.5-2-6-7.5-7.5-3.5-4-4-4 4.5-7 1z"><title>Freudenstadt (Landkreis, Baden-Württemberg): 10,5 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M134.5 758.5l-7.5 10 8 1 6.5 3.5 0-8-5.5-4.5z"><title>Freiburg im Breisgau (Stadt, Baden-Württemberg): 9,0 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M134.5 758.5l-5.5-4.5-12.5-0.5-1 9 3.5 6.5-5 10.5-1.5 9.5 0.5 5 2-3 15-2 7.5-6 2-3.5 9 2.5-0.5 2 4.5-1.5 1.5 5.5 7 4.5 4.5-9 10 0.5 4-1-2.5-5.5-8-6.5 1.5-3-13.5-2.5-5-6-16 1 5.5 4.5 0 8-6.5-3.5-8-1z"><title>Breisgau-Hochschwarzwald (Landkreis, Baden-Württemberg): 11,4 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M136 760.5l16-1 5 6-1-5 2.5-4.5-2-4 4-5.5-12-5.5-2.5 3.5-9.5-4-2.5 1-10-3.5-7.5 15.5 12.5 0.5 5.5 4.5z"><title>Emmendingen (Landkreis, Baden-Württemberg): 10,5 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M145 687.5l-8.5 8-3 6.5 0 7.5-2.5 3-2.5 9.5-0.5 9.5-3 2-1 4.5 10 3.5 2.5-1 9.5 4 2.5-3.5 12 5.5 3.5 3 4-1.5 2-2.5-1.5-11 1.5-6-4.5-5 2-10-4-4 0.5-9-5.5-6-12-3.5z"><title>Ortenaukreis (Landkreis, Baden-Württemberg): 10,9 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M170 728.5l-1.5 6 1.5 11-2 2.5 3.5 1 8-2 5.5 1.5 4 9.5 2.5 0.5 1-2 10-7-2-1.5-3.5-12 3-3.5 1.5-7-4.5-2.5-11.5 0-2.5 2 0.5 7.5-4 0z"><title>Rottweil (Landkreis, Baden-Württemberg): 14,9 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M179.5 783l4.5 2.5 0.5 6 7.5-3 2-5.5-3.5-5.5 4.5-10-3.5-9-2.5-0.5-4-9.5-5.5-1.5-8 2-3.5-1-4 1.5-3.5-3-4 5.5 2 4-2.5 4.5 1 5 13.5 2.5-1.5 3 8 6.5z"><title>Schwarzwald-Baar-Kreis (Landkreis, Baden-Württemberg): 11,9 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M191.5 758.5l3.5 9-4.5 10 3.5 5.5 4 0 2-4 6-0.5 15.5-4.5-1-15-3-4-5.5-0.5-5.5-8-4 3-10 7z"><title>Tuttlingen (Landkreis, Baden-Württemberg): 15,7 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M192 788.5l7.5 8 1.5 4 4.5-4.5 7.5 9.5 9-4 11 3 3.5-1-3-7-7-4.5-0.5-4 4-4 2-5.5-7.5-4.5-3 0-15.5 4.5-6 0.5-2 4-4 0z"><title>Konstanz (Landkreis, Baden-Württemberg): 19,1 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M113 794l-2.5 5 0.5 4 6.5 9.5 4.5-1.5 2 6 7.5-2.5 2-3 5 0.5-1.5-6.5 7.5-5 0-7.5 2.5-1.5 1-7.5 0.5-2-9-2.5-2 3.5-7.5 6-15 2z"><title>Lörrach (Landkreis, Baden-Württemberg): 9,4 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M148 784l-1 7.5-2.5 1.5 0 7.5-7.5 5 1.5 6.5 1.5 3.5 13-0.5 2-3 7.5-3.5 6 1.5 2 3.5 8.5 1 6-7.5 6 2.5 0.5-6.5-10 3.5-4.5-3 3-8 4.5-4-0.5-6-4.5-2.5-4 1-10-0.5-4.5 9-7-4.5-1.5-5.5z"><title>Waldshut (Landkreis, Baden-Württemberg): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M230.5 701l2.5 6-3 7 1.5 7.5-1.5 4.5 6.5 4-2 6 7.5 0.5 4 4 3 4.5 7.5-3.5 3.5-9.5 3-1 4-11-3-6-0.5-6-0.5-0.5-3.5 2.5-6-3-6 1.5-5.5-3.5-5 0-5.5-4.5z"><title>Reutlingen (Landkreis, Baden-Württemberg): 15,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M204 709.5l-1 2 2.5 6-1.5 4 7.5 1 14.5 4.5 4-1 1.5-4.5-1.5-7.5 3-7-2.5-6-8.5 2.5-5-1-4.5 2.5-3 7.5z"><title>Tübingen (Landkreis, Baden-Württemberg): 14,3 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M201.5 725.5l-1.5 7-3 3.5 3.5 12 2 1.5 4-3 5.5 8 5.5 0.5 4-5.5 10.5 3 2-9-5-2.5 5.5-5 2-6-6.5-4-4 1-14.5-4.5-7.5-1z"><title>Zollernalbkreis (Landkreis, Baden-Württemberg): 15,6 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M296 716l-4 0-9.5 12 6 1 5-1-2-3 4-5z"><title>Ulm (Stadt, Baden-Württemberg): 16,2 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M263.5 708l0.5 6 3 6-4 11-3 1-3.5 9.5 4 4 6-0.5 3.5 3 4.5 0 4-8 4-0.5 2.5-4.5 6.5 2.5 5.5 4 1 9.5 3-2.5-2.5-11.5-5-9-5 1-6-1 9.5-12 4 0 7.5 0.5 7.5-4-0.5-2-3.5-5.5-4.5 0-6-5-5.5 1.5-2-4-3.5 1-6 7-5.5-0.5-4 4.5z"><title>Alb-Donau-Kreis (Landkreis, Baden-Württemberg): 17,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M246 740.5l-5.5 10 6 6 11 2 7.5 8 1.5 4 9-1 7 2.5 2.5-3.5 7.5 1.5 4.5 2.5 5-3.5 1 0 1-4 0.5-1-0.5-9.5-3-6-3 2.5-1-9.5-5.5-4-6.5-2.5-2.5 4.5-4 0.5-4 8-4.5 0-3.5-3-6 0.5-4-4-7.5 3.5z"><title>Biberach (Landkreis, Baden-Württemberg): 17,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M226 788l10.5 7 2 4 8.5 5 3-0.5 7.5 2 4 6.5 4 0.5 6.5-3 4-5-1.5-3-5.5-1-4-3.5-7.5-1-4-3 1.5-5-4-1.5-5.5-4.5-7-1-3.5 3.5-5-0.5z"><title>Bodenseekreis (Landkreis, Baden-Württemberg): 16,5 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M265 766.5l-6 1.5-3 3.5-4-0.5-3.5 9 2.5 6.5 4 1.5-1.5 5 4 3 7.5 1 4 3.5 5.5 1 1.5 3-4 5 4 0.5 8-8 5.5 2.5 7-3.5 4 5 4-4-1-9.5-4-3 5-3.5-4-5.5 2-7.5-0.5-4-5 3.5-4.5-2.5-7.5-1.5-2.5 3.5-7-2.5-9 1z"><title>Ravensburg (Landkreis, Baden-Württemberg): 17,7 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M221.5 774l3 0 7.5 4.5-2 5.5 5 0.5 3.5-3.5 7 1 5.5 4.5-2.5-6.5 3.5-9 4 0.5 3-3.5 6-1.5-7.5-8-11-2-6-6 5.5-10-4-4-7.5-0.5-5.5 5 5 2.5-2 9-10.5-3-4 5.5 3 4z"><title>Sigmaringen (Landkreis, Baden-Württemberg): 18,4 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M401 682.5l0.5-5-7.5-3.5-0.5 4.5-9.5 0.5 10.5 10 3-1.5z"><title>Ingolstadt (Stadt, Bayern): 18,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M398 750l3.5 0 3 7 6-3.5 7.5 1.5 2.5-6.5-7.5-4.5-3-4.5-6.5-2.5-0.5 2.5-6 2.5-3 4.5z"><title>München (Stadt, Bayern): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M446.5 781.5l5.5 1.5 1.5-3-4-4.5z"><title>Rosenheim (Stadt, Bayern): 20,3 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M509 737l-9-11.5-13.5-2-2-1.5-3 2.5 2.5 7-2 12-1.5 2.5 3 7 8 2.5 1-6.5 3.5-1 6-5 2-4.5z"><title>Altötting (Landkreis, Bayern): 18,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M494.5 795.5l9.5 7-1.5 6 8.5 6.5 7.5 3 3-3-0.5-10.5 3.5-5-2-6-4.5-4-6.5 2-0.5-7 5-9-6.5-11-3.5-0.5-1.5 5.5-8 5-0.5 4.5 4.5 8-3.5 2.5z"><title>Berchtesgadener Land (Landkreis, Bayern): 17,2 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M414 772.5l-6-3.5-8.5-2.5-1.5 5.5-5.5 1.5 0 10.5 5 2.5 2 5.5-5.5 6-4 3-1.5 9.5 5 5.5 6.5 3.5 11.5-2.5 4.5-8.5 3-4.5-0.5-7.5-2-8 0.5-5-3.5-1.5 3-5.5z"><title>Bad Tölz-Wolfratshausen (Landkreis, Bayern): 17,6 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M403.5 737l6-6-0.5-4-5-2-1.5-9.5-5.5 4-4.5-4.5-3 0-9 4-1.5 8-3.5 4 0 4.5 5-3 9.5 6.5 5-0.5 2 3.5 6-2.5z"><title>Dachau (Landkreis, Bayern): 13,7 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M444 747l-3.5-3.5-4 1-4.5-4-9.5-1.5 2 6.5-2 3 3 7-1 8 6 5 6 2-0.5-5.5 5.5 2 7-4-3-11.5 1.5-2.5z"><title>Ebersberg (Landkreis, Bayern): 17,8 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M401 682.5l5 0 3-7.5 5.5 3.5 3.5-1-1.5-5.5 2-6-1.5-3.5-8.5-3-6-8.5-1.5-5-8.5 0 1.5 4.5-5.5 4.5-9-5-4.5 9-5 1.5 0.5 4.5-9.5 5.5 5 4.5 3.5 3 4.5-2.5 8 4.5 2-1 9.5-0.5 0.5-4.5 7.5 3.5z"><title>Eichstätt (Landkreis, Bayern): 19,2 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M444 747l12-10 2.5-10.5-4.5-5-2.5-5.5-10.5-0.5-4.5-2.5-7 4.5-5.5 6.5-3 9 1.5 6 9.5 1.5 4.5 4 4-1z"><title>Erding (Landkreis, Bayern): 18,6 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M409.5 731l4 3 7.5-1 3-9 5.5-6.5 7-4.5 4.5 2.5-4-8-1-8-3.5-0.5-8.5-3-6.5 0-3.5 6 0.5 6.5-3 4.5-4.5-3-4.5 5.5 1.5 9.5 5 2z"><title>Freising (Landkreis, Bayern): 15,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M397 742l-2-3.5-5 0.5-9.5-6.5-5 3-3.5 1.5-2 7-2 4 4 2-0.5 3.5 6 0.5 8.5-4.5 10 2.5 2-2-4-3.5z"><title>Fürstenfeldbruck (Landkreis, Bayern): 17,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M394 798l-4-2.5-11.5-2-11.5 3 1 4-2.5 6.5-6 5 1 4 2 6 5.5 5.5 1.5 4 8.5-0.5 6.5-4.5 5 4 5-5.5 6 0-0.5-5.5-6.5-3.5-5-5.5 1.5-9.5z"><title>Garmisch-Partenkirchen (Landkreis, Bayern): 16,5 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M370 744l-5-1-5-4-0.5 5.5-6.5 9.5-3 6.5 4 1.5 1 4-3.5 7-0.5 9.5 6.5-3 9-0.5 1.5-3.5 5 0.5 6-6-1.5-10 0-6-6-0.5 0.5-3.5-4-2z"><title>Landsberg am Lech (Landkreis, Bayern): 18,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M416 808.5l16 0.5 1-2.5 14.5-2-4-13-6-12.5-6-1-4-6.5-13.5 1 2.5 4-3 5.5 3.5 1.5-0.5 5 2 8 0.5 7.5z"><title>Miesbach (Landkreis, Bayern): 16,9 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M484.5 722l-1.5-3.5-8-4.5-5 8-7.5 5-4-0.5-2.5 10.5-12 10 3 2 6 4 3.5-6 6 3 7-1.5 4 0.5 3-5 5.5-0.5 2-12-2.5-7z"><title>Mühldorf a.Inn (Landkreis, Bayern): 19,3 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M398 750l-2 2 3.5 10.5 0 4 8.5 2.5 6 3.5 13.5-1 3-3-6-5 1-8-3-7 2-3-2-6.5-1.5-6-7.5 1-4-3-6 6 6.5 2.5 3 4.5 7.5 4.5-2.5 6.5-7.5-1.5-6 3.5-3-7z"><title>München (Landkreis, Bayern): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M384 679l-2 1-8-4.5-4.5 2.5-3.5-3-2 1.5 0.5 12.5 3 8 2.5 2 7.5 0.5 0.5 5.5 7.5 8 2.5-0.5 3-9.5 0-5 7-5-0.5-5.5-3 1.5z"><title>Neuburg-Schrobenhausen (Landkreis, Bayern): 16,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M397.5 687.5l0.5 5.5-7 5 0 5-3 9.5 1.5 2.5 3 0 4.5 4.5 5.5-4 4.5-5.5 4.5 3 3-4.5-0.5-6.5 3.5-6-1-7.5-3.5-6.5 5-4.5-3.5 1-5.5-3.5-3 7.5-5 0z"><title>Pfaffenhofen a.d.Ilm (Landkreis, Bayern): 15,2 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M430.5 768.5l-3 3 4 6.5 6 1 6 12.5 4 13 6 1 5-1-3.5-9.5 7.5 2 5-2 4-14-2-2 5-9-2-3.5-6.5-1.5 1.5-8-2.5-2.5 4.5-6-7 1.5-6-3-3.5 6-6-4-1.5 2.5 3 11.5-7 4-5.5-2 0.5 5.5zM446.5 781.5l3-6 4 4.5-1.5 3z"><title>Rosenheim (Landkreis, Bayern): 19,4 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M399.5 766.5l0-4-3.5-10.5-10-2.5-8.5 4.5 0 6 1.5 10 6.5 3 3.5 4 1 6 2.5 1 0-10.5 5.5-1.5z"><title>Starnberg (Landkreis, Bayern): 18,5 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M482 743.5l-5.5 0.5-3 5-4-0.5-4.5 6 2.5 2.5-1.5 8 6.5 1.5 2 3.5-5 9 2 2-4 14 7-0.5 5.5 7.5 5.5-1 2-4.5 7-1 2.5-6 3.5-2.5-4.5-8 0.5-4.5 8-5 1.5-5.5-1.5-5-7-6.5-1.5-4.5-3.5 1-1 6.5-8-2.5-3-7z"><title>Traunstein (Landkreis, Bayern): 17,6 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M392.5 784l-2.5-1-1-6-3.5-4-6.5-3-6 6-5-0.5-1.5 3.5-9 0.5-6.5 3-2 14 5 6.5 6.5 0 5 4 2.5-6.5-1-4 11.5-3 11.5 2 4 2.5 5.5-6-2-5.5z"><title>Weilheim-Schongau (Landkreis, Bayern): 19,2 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M440.5 706.5l12-1 6.5-7.5-2-1-6 5-4 0.5z"><title>Landshut (Stadt, Bayern): 18,8 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M549 692.5l-1-1.5-11 0-3 2.5 7.5 5 2.5-1z"><title>Passau (Stadt, Bayern): 11,5 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M472.5 665.5l4.5 3 9-4.5-9.5-4z"><title>Straubing (Stadt, Bayern): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M524 664l-10-2-4-6.5-4 2.5-4.5-3-3.5 7.5 1 5.5-5.5 4.5 2.5 9 3 4 8.5 2.5 2 4.5 1.5 1 6.5-3 1-5 3-4 4 0.5 4-5-1.5-6.5-4-1.5z"><title>Deggendorf (Landkreis, Bayern): 11,9 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M529.5 677l11.5-2.5 14.5 7.5 7-1.5 1.5-3 4.5 0.5 2.5-5.5-1.5-4-7.5-8.5-3 0-4.5-6-3.5-3-11.5-1-6 4-3.5 0.5 0.5 8-6.5 1.5 0 5 4 1.5z"><title>Freyung-Grafenau (Landkreis, Bayern): 8,4 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M418 677.5l-5 4.5 3.5 6.5 1 7.5 6.5 0 8.5 3-2.5-7.5 0.5-5 7-6 7.5-3 0-7.5 2.5-4-5-7-9 0-4.5-7-16.5 0-3 1-1 6.5 8.5 3 1.5 3.5-2 6z"><title>Kelheim (Landkreis, Bayern): 16,9 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M458.5 726.5l4 0.5 7.5-5 5-8-1.5-6 3-2-1.5-6-7 1-3.5-3 2.5-10.5-5-5-5 0-9-4-3-1-7.5 3-7 6-0.5 5 2.5 7.5 3.5 0.5 1 8 4 8 10.5 0.5 2.5 5.5zM440.5 706.5l6.5-4 4-0.5 6-5 2 1-6.5 7.5z"><title>Landshut (Landkreis, Bayern): 18,6 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M549 692.5l16 7.5 5-7 1.5-5-3-10-4.5-0.5-1.5 3-7 1.5-14.5-7.5-11.5 2.5-4 5-4-0.5-3 4-1 5-6.5 3 4 5.5 4 1-0.5 5.5 7 7.5-6 3.5 7 10 5.5-0.5 10.5-9 2-6.5 1-9-1.5-4-2.5 1-7.5-5 3-2.5 11 0z"><title>Passau (Landkreis, Bayern): 12,8 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M524 664l6.5-1.5-0.5-8 3.5-0.5 6-4-1.5-7-8.5-7.5-4 1-5-3.5 0-3-4.5 6.5-4-4-6-1-1.5 3-12.5 3.5 3.5 8 6 9 4.5 3 4-2.5 4 6.5z"><title>Regen (Landkreis, Bayern): 10,8 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M509 737l5.5-5.5 12-5-7-10 6-3.5-7-7.5 0.5-5.5-4-1-4-5.5-1.5-1-14 2-1.5 7-8.5 6.5-2-4-7 2-3 2 1.5 6 8 4.5 1.5 3.5 2 1.5 13.5 2z"><title>Rottal-Inn (Landkreis, Bayern): 17,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M501.5 655l-6-9-3.5-8-12 2-4 2.5-4.5 5.5 0.5 4.5-3.5 2.5 2 5.5-5 7.5-5-0.5-12.5 11 9 4 5 0 5-4 7-1 7.5 4 7.5-4 4.5-5 5.5-4.5-1-5.5zM472.5 665.5l4-5.5 9.5 4-9 4.5z"><title>Straubing-Bogen (Landkreis, Bayern): 14,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M493.5 672.5l-4.5 5-7.5 4-7.5-4-7 1-5 4 5 5-2.5 10.5 3.5 3 7-1 1.5 6 7-2 2 4 8.5-6.5 1.5-7 14-2-2-4.5-8.5-2.5-3-4z"><title>Dingolfing-Landau (Landkreis, Bayern): 16,6 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M419 605l4.5 3.5 5.5-4-3-5.5z"><title>Amberg (Stadt, Bayern): 13,3 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M439 652l3.5 3.5 7.5 0-1-8.5-9.5 2.5z"><title>Regensburg (Stadt, Bayern): 17,9 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M439 579l4.5 6 3.5-9.5-3.5-1z"><title>Weiden i.d.OPf. (Stadt, Bayern): 9,2 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M443 592.5l-3.5-3-6-0.5-1-6-7 0.5-4.5-1.5-5.5 3.5-6.5-1 1-8.5-2.5-5.5-4.5 5 0.5 6 2.5 4-4.5 12.5 4.5 4-2.5 6 5.5 3 0.5 6 5.5-0.5 6.5 5.5 8.5 2 1.5 5.5 0.5-6.5 8-12.5-3-1 0-10.5zM419 605l7-6 3 5.5-5.5 4z"><title>Amberg-Sulzbach (Landkreis, Bayern): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M520.5 630l-4.5-3-6-6.5-0.5-4.5-6-3.5-5 1-7-1-2-5-7.5-4-1.5-4.5-7.5 3.5 2 3-5 3 0.5 13.5-7 1-5 12 1.5 7 7.5-0.5 4 6.5 4.5-5.5 4-2.5 12-2 12.5-3.5 1.5-3 6 1 4 4z"><title>Cham (Landkreis, Bayern): 12,3 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M408.5 659.5l1-6.5 3-1 1-6.5 5.5-3.5 3-7 3 2 6.5-5 0-2.5-1.5-5.5-8.5-2-6.5-5.5-5.5 0.5-0.5-6-5.5-3-6.5 0-9 13.5-6.5-2.5-2.5 6 5 0 4 17 4.5 4 8.5 0 1.5 5z"><title>Neumarkt i.d.OPf. (Landkreis, Bayern): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M443 592.5l8.5-3.5 1.5 4.5 6.5 3 9.5-5 8 0-2.5-8-3-1.5-0.5-6-5-1.5-3.5-6-11-0.5-5-8.5-10 7-3.5-4-6 3-4-5-8.5 1-7 5 0 4 2.5 5.5-1 8.5 6.5 1 5.5-3.5 4.5 1.5 7-0.5 1 6 6 0.5zM439 579l4.5-4.5 3.5 1-3.5 9.5z"><title>Neustadt a.d.Waldnaab (Landkreis, Bayern): 9,2 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M445 677.5l3 1 12.5-11 5 0.5 5-7.5-2-5.5 3.5-2.5-0.5-4.5-4-6.5-7.5 0.5-1.5-7-5.5-0.5-2.5-2.5-6.5 3.5-7.5-1-5-2.5-6.5 5-3-2-3 7-5.5 3.5-1 6.5 16.5 0 4.5 7 9 0 5 7-2.5 4zM439 652l0.5-2.5 9.5-2.5 1 8.5-7.5 0z"><title>Regensburg (Landkreis, Bayern): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M431.5 629.5l0 2.5 5 2.5 7.5 1 6.5-3.5 2.5 2.5 5.5 0.5 5-12 7-1-0.5-13.5 5-3-2-3 7.5-3.5 0.5-5-4-2.5-8 0-9.5 5-6.5-3-1.5-4.5-8.5 3.5-6 6.5 0 10.5 3 1-8 12.5z"><title>Schwandorf (Landkreis, Bayern): 12,5 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M462.5 568.5l4.5-3 5-12.5-5-4 1-4-17-9-4.5 3-0.5 4-5.5 2-14.5 1-6 2 3 7.5 0 5 4 5 6-3 3.5 4 10-7 5 8.5z"><title>Tirschenreuth (Landkreis, Bayern): 8,8 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M350 557l7 6 2-7-2-2z"><title>Bamberg (Stadt, Bayern): 16,2 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M401 548.5l2 8.5 7-6-2.5-3.5z"><title>Bayreuth (Stadt, Bayern): 12,2 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M353.5 515l6 5 2.5-3.5-4.5-3.5z"><title>Coburg (Stadt, Bayern): 20,9 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M423.5 505l-5 5 7 4.5 4-5.5z"><title>Hof (Stadt, Bayern): 9,7 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M379.5 546.5l-7-3.5-2-3-8 4-2-2.5-5.5-0.5-1.5-5-1.5 0-2 5-4 0.5-1 8-4 7-5.5 5-8-1.5-3.5 0-0.5 6 1.5 4 4.5-0.5 1.5 4 7.5 3.5 4-7.5 8 4.5 7-2.5 12-4.5 0.5-4 8 0.5 1.5-4-3.5-1zM350 557l7-3 2 2-2 7z"><title>Bamberg (Landkreis, Bayern): 16,7 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M407.5 570.5l0-4 7-5 8.5-1 0-5-3-7.5 6-2-3-7-5.5-6.5-1-2.5-7 0.5 1 4-2.5 5.5-5 3.5-8 3-3.5 0-2 5.5-9.5-7-0.5 1.5-3.5 12 3.5 1 4.5 7 4.5 0 1.5 5.5-1.5 5.5 1 4 2 4.5 8-3 3.5 1 0-8.5zM401 548.5l6.5-1 2.5 3.5-7 6z"><title>Bayreuth (Landkreis, Bayern): 11,2 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M353.5 536l7.5-9.5 0-4 14.5 0.5-1-7.5-3-1.5 0.5-5-3-3.5-5 2.5-7-4.5-11 0.5-5 7 6.5 4.5 2 4.5-7 1 3.5 4 0 4.5 7 1-1 5.5zM353.5 515l4-2 4.5 3.5-2.5 3.5z"><title>Coburg (Landkreis, Bayern): 20,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M357.5 571.5l1 7.5 7.5 2.5 3.5 8 6.5 1 7-2 6.5-7-1-4 1.5-5.5-1.5-5.5-4.5 0-4.5-7-1.5 4-8-0.5-0.5 4z"><title>Forchheim (Landkreis, Bayern): 14,3 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M417.5 532.5l9-7 1-4 6.5 1.5 3.5-4.5 5.5 0.5-3.5-2 2-4.5-3-4.5-7.5-3.5-5.5-7.5-7 4-2-3-11.5 4-2-1-5 7.5 1.5 7 9.5 7 0.5 8 7-0.5zM423.5 505l6 4-4 5.5-7-4.5z"><title>Hof (Landkreis, Bayern): 9,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M375.5 523l6 4.5 4 0 11-10.5 3-1.5-1.5-7 5-7.5-5.5 2-3-5.5-4.5-1.5 0-7.5-5.5-0.5-5.5 4.5 2 13-1.5 9.5-5 0.5z"><title>Kronach (Landkreis, Bayern): 12,7 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M409.5 530.5l-0.5-8-9.5-7-3 1.5-11 10.5-1.5 5-0.5 8.5-3.5 4 9.5 7 2-5.5 3.5 0 8-3 5-3.5 2.5-5.5z"><title>Kulmbach (Landkreis, Bayern): 11,7 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M379.5 546.5l0.5-1.5 3.5-4 0.5-8.5 1.5-5-4 0-6-4.5-14.5-0.5 0 4-7.5 9.5 1.5 5 5.5 0.5 2 2.5 8-4 2 3z"><title>Lichtenfels (Landkreis, Bayern): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M451 536l-4.5-5 0.5-6.5-4-5.5-5.5-0.5-3.5 4.5-6.5-1.5-1 4-9 7 5.5 6.5 3 7 14.5-1 5.5-2 0.5-4z"><title>Wunsiedel i.Fichtelgebirge (Landkreis, Bayern): 9,5 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M325 625l13.5 5.5 0.5-10-7.5-1.5-5 1.5z"><title>Ansbach (Stadt, Bayern): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M365.5 596.5l0.5-8.5-8.5-2.5 1 11 0 0.5 4-0.5z"><title>Erlangen (Stadt, Bayern): 11,8 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M358.5 597l-2 5.5 6.5 5 2.5-4-3-7z"><title>Fürth (Stadt, Bayern): 18,5 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M362.5 596.5l3 7-2.5 4 0.5 6 0 0.5 6.5 4 2-5.5 4.5 0-3.5-5 3-4.5-4-4-4 1-2.5-3.5z"><title>Nürnberg (Stadt, Bayern): 15,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M363.5 614l-1.5 3 3 6 5-5z"><title>Schwabach (Stadt, Bayern): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M311.5 650l6.5 3.5 4.5 5.5 4-4 6-2.5 6.5 1.5 3-6-3-2 1-4.5 6-7 6.5-0.5 5.5-5.5-3.5-12-9-4.5-3.5-4-13.5-1-11.5 4.5-4-0.5-4-8-8.5 2 3.5 8.5-3.5 1 3 11.5-2.5 3.5 0.5 5 9 6zM325 625l1.5-4.5 5-1.5 7.5 1.5-0.5 10z"><title>Ansbach (Landkreis, Bayern): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M338.5 577l-3.5 4.5 9-1 4 4-2 7.5 4.5 5 8-0.5-1-11 8.5 2.5-0.5 8.5 2.5 3.5 4-1 4 4 1-9.5 5-1 1-4-7 2-6.5-1-3.5-8-7.5-2.5-1-7.5-7 2.5-8-4.5z"><title>Erlangen-Höchstadt (Landkreis, Bayern): 15,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M358.5 596.5l-8 0.5-10 4.5 1.5 6.5 3.5 4 9 4.5 9-3-0.5-6-6.5-5 2-5.5z"><title>Fürth (Landkreis, Bayern): 18,3 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M403 575.5l0 8.5-3.5-1-8 3-2-4.5-6.5 7-1 4-5 1-1 9.5-3 4.5 3.5 5 5 6.5 6.5 2.5 9-13.5 6.5 0 2.5-6-4.5-4 4.5-12.5-2.5-4z"><title>Nürnberger Land (Landkreis, Bayern): 15,6 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M300.5 605l8.5-2 4 8 4 0.5 11.5-4.5 13.5 1-1.5-6.5 10-4.5-4.5-5 2-7.5-4-4-9 1 3.5-4.5-7.5-3.5-8.5 0.5-5.5 5.5 2.5 7.5-3 1-9-1-1.5 3.5-6-2-3 3 1 5.5z"><title>Neustadt a.d.Aisch-Bad Windsheim (Landkreis, Bayern): 23,3 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M392.5 646l-4.5-4-4-17-5 0 2.5-6-5-6.5-4.5 0-2 5.5-5 5-3-6 1.5-3 0-0.5-9 3 3.5 12-5.5 5.5 1.5 4 5.5 3 4-3 16 12 9 5 5.5-4.5z"><title>Roth (Landkreis, Bayern): 15,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M379.5 650l-16-12-4 3-5.5-3-1.5-4-6.5 0.5-6 7-1 4.5 3 2-3 6 5.5 13 7.5-5.5 4 8 5 1 9.5-5.5-0.5-4.5 5-1.5z"><title>Weißenburg-Gunzenhausen (Landkreis, Bayern): 17,5 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M237.5 554.5l-3-4.5-5.5-3.5-2.5 6 1.5 2.5z"><title>Aschaffenburg (Stadt, Bayern): 11,2 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M303 543.5l6 1.5 1-7.5-5 2.5z"><title>Schweinfurt (Stadt, Bayern): 22,0 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M282.5 567.5l0.5 7 5.5-1.5 4-3.5-2-4.5-5.5-0.5z"><title>Würzburg (Stadt, Bayern): 41,0 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M224 562.5l3.5-1.5 0.5-6-1.5-2.5 2.5-6 5.5 3.5 3 4.5 2 1 4 10.5 8-5.5 1-7.5-4-5 0.5-10-2-4.5-11.5-2-3.5 5-3-2.5-7 1.5-2 5 3 3-1 6z"><title>Aschaffenburg (Landkreis, Bayern): 10,6 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M264.5 522.5l4 0 1.5 5 9.5 10.5-1.5 4 8 2 3-3 3-5.5 9-1 1.5-3.5 8-0.5 4.5-2.5 2-6.5-3-6.5-5.5 3-10.5-1 1-3-9-1-3.5-3 1.5-5-2-4-5 2.5-6.5-3-2.5 8 1 4.5-5.5 4.5z"><title>Bad Kissingen (Landkreis, Bayern): 19,7 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M286 501l2 4-1.5 5 3.5 3 9 1-1 3 10.5 1 5.5-3 3 6.5 6 3.5 4.5-4.5 4 3.5 2.5-2.5-1.5-5 0.5-6.5-6-2-4.5-5.5-4-3-4.5-7-6.5-2-2.5-4.5-8 1-3.5 3.5-1.5 5.5z"><title>Rhön-Grabfeld (Landkreis, Bayern): 22,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M352 536l1-5.5-7-1 0-4.5-3.5-4-8.5 0.5-2.5 2.5-4-3.5-4.5 4.5-5 12 4 1.5-4 5 5 8 4.5 3.5 0 5 8 1.5 5.5-5 4-7 1-8 4-0.5z"><title>Haßberge (Landkreis, Bayern): 20,3 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M323.5 566l-3.5-3-6 0-2-4-7 0-8.5 7-1 11 3 1 3 5.5-1.5 5 6 2 1.5-3.5 9 1 3-1-2.5-7.5 5.5-5.5 8.5-0.5-1.5-4-4.5 0.5z"><title>Kitzingen (Landkreis, Bayern): 29,1 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M223.5 564.5l2 1.5 2.5 8 3.5 2-4.5 5 1 6-2.5 4 2.5 3 10.5-1 5-7 6.5-1.5-8.5-8.5 1.5-2.5 10.5-0.5 0.5-3.5-2.5-9-8 5.5-4-10.5-2-1-9.5 0.5-0.5 6-3.5 1.5z"><title>Miltenberg (Landkreis, Bayern): 9,6 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M249 538l-0.5 10 4 5-1 7.5 2.5 9-0.5 3.5 4.5 1 8.5-3.5 2-5 5-1 2.5-4 10-1.5-0.5-4.5 8-2 0.5-9-5-2.5-3 3-8-2 1.5-4-9.5-10.5-1.5-5-4 0-7.5-0.5 0 15z"><title>Main-Spessart (Landkreis, Bayern): 17,6 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M327.5 560l0-5-4.5-3.5-5-8 4-5-4-1.5 5-12-6-3.5-2 6.5-4.5 2.5-8 0.5-1.5 3.5-9 1-3 5.5 5 2.5-0.5 9 10.5 4 1 2.5 7 0 2 4 6 0 3.5 3 0.5-6zM303 543.5l2-3.5 5-2.5-1 7.5z"><title>Schweinfurt (Landkreis, Bayern): 23,2 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M298 597l-1-5.5 3-3 1.5-5-3-5.5-3-1 1-11 8.5-7-1-2.5-10.5-4-8 2 0.5 4.5-10 1.5-2.5 4-5 1-2 5-1.5 9.5 6-2.5 6-0.5 5.5 13.5 3 2 1 9 7 2zM282.5 567.5l2.5-3 5.5 0.5 2 4.5-4 3.5-5.5 1.5z"><title>Würzburg (Landkreis, Bayern): 29,2 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M360.5 737l2-1 1-13-5.5-8-2.5 5.5 1 7-5 1-2 3.5 10.5 1z"><title>Augsburg (Stadt, Bayern): 14,3 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M335 779l2.5 3 6 0.5-1-7.5z"><title>Kaufbeuren (Stadt, Bayern): 20,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M312 792.5l1 5 5 2 3-2-0.5-6z"><title>Kempten (Allgäu) (Stadt, Bayern): 19,0 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M302 769l0.5 4 3.5 2.5 3-4.5 2-10-6.5 3-0.5 1-1 4z"><title>Memmingen (Stadt, Bayern): 19,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M389.5 715l-1.5-2.5-2.5 0.5-7.5-8-0.5-5.5-7.5-0.5-2.5-2-7 4 4.5 4.5-8 1.5 1 8 5.5 8-1 13-2 1-0.5 2 5 4 5 1 2-7 3.5-1.5 0-4.5 3.5-4 1.5-8z"><title>Aichach-Friedberg (Landkreis, Bayern): 15,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M360 739l0.5-2-0.5-4-10.5-1 2-3.5 5-1-1-7 2.5-5.5-1-8 8-1.5-4.5-4.5-3-5.5-7.5 2 0 9.5-5.5 6-6-2-6.5 3 1 7.5-3 9.5 6.5 0-0.5 11.5 2 5 5-1 2.5 8.5 7.5-1 6.5-9.5z"><title>Augsburg (Landkreis, Bayern): 15,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M313.5 709.5l4 4 4.5-1.5 10 2 6.5-3 6 2 5.5-6 0-9.5-11-6.5 1.5-6-7.5-2-4.5 6.5-1.5 3-5.5 0.5-8.5-4-1 4.5 5 6-0.5 9z"><title>Dillingen a.d.Donau (Landkreis, Bayern): 17,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M310.5 710.5l0.5 2-7.5 4 3 1-0.5 6 7 5.5 2 6-1 6 2 5 5.5 2 7.5-6 7 0.5 0.5-11.5-6.5 0 3-9.5-1-7.5-10-2-4.5 1.5-4-4z"><title>Günzburg (Landkreis, Bayern): 16,5 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M293.5 728l5 9 2.5 11.5 3 6 4-1.5 6-12 1-6-2-6-7-5.5 0.5-6-3-1-7.5-0.5-0.5 4-4 5z"><title>Neu-Ulm (Landkreis, Bayern): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M265.5 812.5l8 3.5 4.5-5 4 1 1 5 6 1 3.5-1.5 6-4 2-6.5-4-5-7 3.5-5.5-2.5-8 8-4-0.5z"><title>Lindau (Bodensee) (Landkreis, Bayern): 15,3 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M365.5 807l-5-4-6.5 0-5-6.5 2-14 0.5-9.5 3.5-7-1-4-4-1.5 3-6.5-7.5 1 0 7.5-3.5 6.5-9-1-1 4-10 4.5-3.5 5 8 6.5 5 12 0.5 5.5-2 5.5-1.5 3.5 9 2.5 3-4 13.5 5 6.5-2-1-4zM335 779l7.5-4 1 7.5-6-0.5z"><title>Ostallgäu (Landkreis, Bayern): 18,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M304.5 764l6.5-3-2 10-3 4.5-3.5-2.5-2 7.5 4 5.5 4-2 10-2.5 3.5-5 10-4.5 1-4 9 1 3.5-6.5 0-7.5-2.5-8.5-5 1-2-5-7-0.5-7.5 6-5.5-2-2-5-6 12-4 1.5z"><title>Unterallgäu (Landkreis, Bayern): 17,2 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M328.5 689.5l4.5-6.5 7.5 2-1.5 6 11 6.5 7.5-2 3 5.5 7-4-3-8-0.5-12.5 2-1.5-5-4.5-5-1-4-8-7.5 5.5-5.5-13-6.5-1.5-6 2.5-4 4 3.5 6.5-0.5 11.5-1.5 7.5z"><title>Donau-Ries (Landkreis, Bayern): 16,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M300.5 806l-2 6.5-6 4 2 6.5 4-0.5 4.5 6.5 1 6 8.5 0-4 11.5 8-2.5 4.5-3.5 9.5-12.5-3.5-7.5 1.5-6 1.5-3.5 2-5.5-0.5-5.5-5-12-8-6.5-10 2.5-4 2-5 3.5 4 3 1 9.5zM312 792.5l8.5-1 0.5 6-3 2-5-2z"><title>Oberallgäu (Landkreis, Bayern): 17,0 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M85.5 621.5l-0.5-2.5-11.5-5-5 3 0 5-5 6.5-6.5 2.5 1 6 6.5 1.5 6.5-7 4.5 1 3.5 4 5 2 2.5-9.5-5-2z"><title>Regionalverband Saarbrücken (Landkreis, Saarland): 11,2 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M34 593.5l-1.5 9 4.5-0.5 9 6.5 6.5 1 3 4.5 7.5-4.5 1.5-6.5 7-3 3-1 0.5-9-4.5-2-10.5 5.5-16 3z"><title>Merzig-Wadern (Landkreis, Saarland): 8,1 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M96 608.5l-3.5-1-9 3-6.5-3-5.5 2.5 2 4 11.5 5 0.5 2.5 5.5 2.5 3.5-1.5 0-8 4-3.5z"><title>Neunkirchen (Landkreis, Saarland): 9,7 °dH – mittel</title></path>
+<path class="cpa-gh-k3" d="M73.5 614l-2-4 5.5-2.5-1.5-5.5-4-2-7 3-1.5 6.5-7.5 4.5-3-4.5-6.5-1 3 6-1 5 5.5 4.5 3.5 7 6.5-2.5 5-6.5 0-5z"><title>Saarlouis (Landkreis, Saarland): 9,5 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M105.5 621.5l1-6-1 0-7-4.5-4 3.5 0 8-3.5 1.5-5.5-2.5-4 5.5 5 2-2.5 9.5 4 4 10 0.5 5-4.5-3-3-2-5 6-5z"><title>Saarpfalz-Kreis (Landkreis, Saarland): 12,7 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M80 585.5l-6 0-3.5 2.5 4.5 2-0.5 9-3 1 4 2 1.5 5.5 6.5 3 9-3 3.5 1 2-2.5-0.5-10.5-7-4-6-2z"><title>St. Wendel (Landkreis, Saarland): 6,8 °dH – weich</title></path>
+<path class="cpa-gh-k6" d="M529 259l-8-6.5 1-5-3-1.5-5 2-1.5 2.5-10 0.5-3.5 3.5-3 9 3 1.5-4 9.5 5.5 2.5 3.5-3 6 2 7.5 2 4-2.5 14.5 0.5 3.5-7-6-3z"><title>Berlin (Stadt, Berlin): 18,4 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M446 274.5l4.5 14 11.5-4.5 1-5 5-3-4.5-4.5 4-4 2-3.5-0.5-2-0.5 3.5-9 4.5-9 2.5z"><title>Brandenburg an der Havel (Stadt, Brandenburg): 11,0 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M588 336l-1.5-5-7.5 6.5 1 6.5 4.5 4.5 7.5-1.5 2-11z"><title>Cottbus (Stadt, Brandenburg): 12,4 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M592 270.5l-7 3-1 12 6.5 1 7-2.5-2-2z"><title>Frankfurt (Oder) (Stadt, Brandenburg): 16,3 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M499 265l-6.5 5-4-6-4.5 2-2.5 4.5 3 0.5 0.5 7 6 4.5 7.5-2 2-3.5-5.5-2.5z"><title>Potsdam (Stadt, Brandenburg): 19,6 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M529 259l7.5-8.5 7-2-4-4-3.5-7 8-3.5 7.5-10.5 7.5-1 3.5-5-1-7-7.5 1-14-2.5-1-7.5-8.5 2-1 3.5-9.5 3-8 7 4.5 4.5 3.5 8.5-5.5 1 1 10-1.5 7 5-2 3 1.5-1 5z"><title>Barnim (Landkreis, Brandenburg): 14,6 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M517.5 278l4.5 5.5 2 9 3.5 0.5 0 15 6 2.5 0.5 6.5-9 5.5-5-0.5 0 5 9.5 0 1 12.5-3 2 3 5 17 0 2.5-6-1.5-7.5 2-4 4-1.5 11.5 2 6 2 4.5-6 5-3.5 5 0-2.5-7.5 5-3-7-4.5-4.5 5-9-2-4-4.5-8.5-3.5-6.5 2.5-4-14 2.5-3.5-2-4-6 0 0-3.5-4-3.5-14.5-0.5z"><title>Dahme-Spreewald (Landkreis, Brandenburg): 14,6 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M527.5 341.5l-11-3.5-8 1-0.5-5.5-5 2 0 10 3 5.5-9 8.5 2.5 3.5 9 9-0.5 11 1.5 2 5 0.5 3-3.5 5.5-2 8 4.5 1.5 3 10-1 2-6.5-2.5-5.5-4-2 11.5-5 4.5-4 0-8-3-1.5-3.5-7.5-17 0z"><title>Elbe-Elster (Landkreis, Brandenburg): 13,7 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M499 254.5l-5.5-7-5-0.5-6-5.5-6.5 4-4 0-5-7-10.5-5 0.5 6.5-9.5 0 0-3.5-10.5 0-3 7.5 2.5 6-4 4.5 0.5 5.5-2 4.5 2 3.5 7 1.5 3 4 3 1 4.5-2-0.5-10.5 9.5 2.5 9.5-2.5 0.5 2 3 7.5 9-1 2.5-4.5 4.5-2 4 6 6.5-5-3-1.5z"><title>Havelland (Landkreis, Brandenburg): 18,7 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M533.5 266l2.5-3 4 5.5 4 0.5 5-4 13 0.5 11.5-1 1.5 6 5 3.5 5-0.5 7-3 0.5-3.5 5-7-2-5 2-4.5-5-5-7-3.5-8.5-9.5-5-2-4.5-4.5-6-1 1-7.5-3.5 5-7.5 1-7.5 10.5-8 3.5 3.5 7 4 4-7 2-7.5 8.5z"><title>Märkisch-Oderland (Landkreis, Brandenburg): 19,2 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M514 248l1.5-7-1-10 5.5-1-3.5-8.5-4.5-4.5 8-7-8-3.5-1-3.5-7.5-8 1-4.5-4.5-5.5-4-2-12.5 10-3 7 6 3-0.5 8 2.5 2.5 0.5 6.5-4 11-3.5 3 0.5 5.5-6 6 6.5-4 6 5.5 5 0.5 5.5 7 3.5-3.5 10-0.5z"><title>Oberhavel (Landkreis, Brandenburg): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M547.5 346.5l3.5 7.5 3 1.5 0 8-4.5 4-11.5 5 4 2 2.5 5.5-2 6.5 6 1 4-2 7.5-2 4 1 3.5-7.5 2.5-8.5 4-2.5-1-5.5-5-8.5 2.5-7.5-1.5-6.5-3.5-3.5 0.5-5-11.5-2-4 1.5-2 4 1.5 7.5z"><title>Oberspreewald-Lausitz (Landkreis, Brandenburg): 11,3 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M536 276l4 3.5 0 3.5 6 0 2 4-2.5 3.5 4 14 6.5-2.5 8.5 3.5 4 4.5 9 2 4.5-5 7 4.5 8 2 1.5-3.5 9 3 2-3.5-0.5-5.5-4.5-3.5 1-13-8-3.5-7 2.5-6.5-1 1-12-5 0.5-5-3.5-1.5-6-11.5 1-13-0.5-5 4-4-0.5-4-5.5-2.5 3 6 3z"><title>Oder-Spree (Landkreis, Brandenburg): 17,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M476 245.5l6-6-0.5-5.5 3.5-3 4-11-0.5-6.5-2.5-2.5 0.5-8-6-3 3-7-9.5-3.5-4.5 2-4-4-12.5-4-5.5 2-8-7-0.5-0.5 0 5.5 2.5 4-3.5 3.5 2.5 4.5-2.5 4.5 0.5 7.5 4 6.5-4 8.5-10.5 3.5 7 4 2 6.5 10.5 0 0 3.5 9.5 0-0.5-6.5 10.5 5 5 7z"><title>Ostprignitz-Ruppin (Landkreis, Brandenburg): 17,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M500.5 277l-2 3.5-7.5 2-6-4.5-0.5-7-3-0.5-9 1-3-7.5-2 3.5-4 4 4.5 4.5-5 3-1 5-11.5 4.5-4.5-14-3-1-1.5 3.5 1.5 8-3 5.5-0.5 10-2 4 4.5 7.5 7 6.5 6 0.5 5.5 5 5 0 4.5-2.5 6 2.5 9-6.5 3.5 0.5 1.5-7.5-0.5-5.5 6.5-6 5-9-0.5-4.5 6-2 3.5-7.5-6-2zM469 262l-9.5 2.5-9.5-2.5 0.5 10.5 9-2.5 9-4.5z"><title>Potsdam-Mittelmark (Landkreis, Brandenburg): 16,5 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M392.5 211.5l16.5 8.5-0.5 4.5 10 3.5 9.5-2 10.5-3.5 4-8.5-4-6.5-0.5-7.5 2.5-4.5-2.5-4.5 3.5-3.5-2.5-4 0-5.5-4.5 0-2-3.5-14 3 0.5 4-8 3-4.5 5.5-13-1-4.5 4-1 9-9.5-1.5-1.5 2.5-6.5 0 5.5 7 6-3 4.5 3.5z"><title>Prignitz (Landkreis, Brandenburg): 14,4 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M566 329.5l-0.5 5 3.5 3.5 1.5 6.5-2.5 7.5 5 8.5 1 5.5 13 1.5 6-3 6.5-2.5 9 0.5 3.5-3.5 2.5-3.5-3-8.5-5.5-5.5-1-4.5-4.5-3.5 1-4 5.5-5.5 0.5-11-9-3-1.5 3.5-8-2-5 3 2.5 7.5-5 0-5 3.5-4.5 6zM588 336l6 0-2 11-7.5 1.5-4.5-4.5-1-6.5 7.5-6.5z"><title>Spree-Neiße (Landkreis, Brandenburg): 12,8 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M510 276l-3.5 7.5-6 2 0.5 4.5-5 9-6.5 6 0.5 5.5-1.5 7.5-3.5-0.5-9 6.5 5 1 1 3.5 7-0.5 6 7 8 0.5 5-2 0.5 5.5 8-1 11 3.5 3-2-1-12.5-9.5 0 0-5 5 0.5 9-5.5-0.5-6.5-6-2.5 0-15-3.5-0.5-2-9-4.5-5.5z"><title>Teltow-Fläming (Landkreis, Brandenburg): 18,6 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M561.5 210.5l7.5-5.5 4.5-5 2.5-10.5-1-6.5 4-6.5-3-7.5-6 3.5-6.5 5.5-7.5-2 7.5-9.5 0.5-7-12.5 2-7-1.5-8-7-7.5 3-6 7.5-4 1.5-3.5 12-12 2-3.5 6 4.5 5.5-1 4.5 7.5 8 1 3.5 8 3.5 9.5-3 1-3.5 8.5-2 1 7.5 14 2.5z"><title>Uckermark (Landkreis, Brandenburg): 19,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M413.5 85.5l2.5 1 2.5 9.5 2 2.5 6-2-1-10 7-4.5-3-4.5-3.5 0-5.5 7z"><title>Rostock (Stadt, Mecklenburg-Vorpommern): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M380.5 141l-7 0.5-3 3 3 2 3 9.5 5-0.5 2.5-8z"><title>Schwerin (Stadt, Mecklenburg-Vorpommern): 15,1 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M500 185l3.5-6 12-2 3.5-12 4-1.5 6-7.5-3-3.5 3-4-1-5 3.5-3-5-3.5 4.5-4-8-1.5-5.5 1-4-5-7.5-1-2.5-3-11-5 1-7.5-13.5-7-2-3.5-6.5 4.5-5-3.5-2 11.5-0.5 8.5-3 1.5 0 4.5-4.5 2.5 0.5 12-7-1-3-4.5-5 3.5 0.5 7-6 4.5-0.5 4.5 3.5 7-1.5 7.5-2.5 1.5 4 6.5 8 7 5.5-2 12.5 4 4 4 4.5-2 9.5 3.5 12.5-10z"><title>Mecklenburgische Seenplatte (Landkreis, Mecklenburg-Vorpommern): 18,4 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M413.5 85.5l-9.5 3.5-10.5-0.5-4 5 0.5 3.5-4 5.5 6.5 5 9.5 1.5-2.5 10 0 5.5 3 5.5 7 4 5-1 4 3.5 1 4.5 17 10.5 6-4.5-0.5-7 5-3.5 3 4.5 7 1-0.5-12 4.5-2.5 0-4.5 3-1.5 0.5-8.5 2-11.5-7-3-9.5-6-5.5 0.5-5.5-2.5-2-10-5.5-7-5.5 4 3.5 0 3 4.5-7 4.5 1 10-6 2-2-2.5-2.5-9.5z"><title>Rostock (Landkreis, Mecklenburg-Vorpommern): 18,9 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M478 100.5l6.5-3.5 8 0 2.5-4-2.5-5.5 4.5-2 1.5-6.5-2-4.5-10.5-3-7.5-13.5-1-5-7.5 4.5-3 6-12.5-3-6.5 2-1 3.5-10.5 8.5-0.5-4 3.5-4 1-4.5 8.5-2 6.5-6-11.5-2-2.5 7-2.5 3-4 9-3.5 2.5 5.5 7 2 10 5.5 2.5 5.5-0.5 9.5 6 7 3 5 3.5zM499.5 29.5l-6-3 0 6.5 4.5 0 6 6 4-0.5 1 8.5-6.5-1-11-6.5-6 2 2 4 5.5 2.5-5.5 3 6 7-8 2-1 4.5 3 5 15.5 5.5-1.5-5.5 8-7.5 14.5-2-4.5-5.5-3 0.5-3.5-8 5.5-5 0.5-5-3-2-11 2-4.5-2.5z"><title>Vorpommern-Rügen (Landkreis, Mecklenburg-Vorpommern): 21,4 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M335.5 128l0.5 7 3.5 4 6.5 1 2 5.5 4 5 4.5 0 6 3 4-3.5 4.5 0.5-0.5-6 3-3 7-0.5 3-5.5-0.5-4.5 11 1 3.5-4.5 5 2.5-3-5.5 0-5.5 2.5-10-9.5-1.5-6.5-5-2.5 0.5-2 9-2.5 3.5-6-3-4 1.5-7.5-9-9 1-8.5 6-2.5 4.5-7.5 7z"><title>Nordwestmecklenburg (Landkreis, Mecklenburg-Vorpommern): 16,3 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M576 169l-5.5-18-3.5-6 0.5-7-2.5-2-2-10.5-10.5 0-8.5-3-11.5-9 6.5-7-1.5-2.5-10.5-8.5 3.5-8-7.5-7.5-4.5 3.5-8 2.5-12-7-1.5 6.5-4.5 2 2.5 5.5-2.5 4-8 0-6.5 3.5 2 3.5 13.5 7-1 7.5 11 5 2.5 3 7.5 1 4 5 5.5-1 8 1.5-4.5 4 5 3.5-3.5 3 1 5-3 4 3 3.5 7.5-3 8 7 7 1.5 12.5-2-0.5 7-7.5 9.5 7.5 2 6.5-5.5zM533 85l-2.5-5.5-4 2 4 5-1.5 9.5 9-5 3.5 0 5.5 6.5 0 5.5-9.5-1 3 5.5-2 8 7.5-4 11.5-1 1.5-6.5-14.5-12.5z"><title>Vorpommern-Greifswald (Landkreis, Mecklenburg-Vorpommern): 19,1 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M325.5 177.5l6.5-1 9 7 5.5-5 4.5 1.5 7.5 13 5.5 6 6.5 4 6.5 0 1.5-2.5 9.5 1.5 1-9 4.5-4 13 1 4.5-5.5 8-3-0.5-4 14-3 2 3.5 4.5 0 0.5 0.5-4-6.5 2.5-1.5 1.5-7.5-3.5-7 0.5-4.5-17-10.5-1-4.5-4-3.5-5 1-7-4-5-2.5-3.5 4.5-11-1 0.5 4.5-3 5.5 3.5 6.5-2.5 8-5 0.5-3-9.5-3-2 0.5 6-4.5-0.5-4 3.5-6-3-4.5 0-4-5-2.5 8.5-3 1-5.5 7.5-5.5 4.5-4 0.5z"><title>Ludwigslust-Parchim (Landkreis, Mecklenburg-Vorpommern): 13,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M502 451.5l0-4-4.5-1-3.5-3.5-6.5-1-3 4-1 8.5 4-1.5 7 6 6-4z"><title>Chemnitz (Stadt, Sachsen): 12,0 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M483.5 454.5l-8.5 4.5-0.5 4 5.5 2.5-0.5 5.5-4.5 0-4 3.5-3.5 7.5-5 5 9.5 10 7.5 0.5 8.5-7 9 5 4.5-3.5 1-7.5 11.5-0.5 3.5-10 5 1 3-4 7 1 2-3-9.5-9-0.5-4-12-2.5-5 0.5-5.5-2.5-1.5 3.5-6 4-7-6z"><title>Erzgebirgskreis (Landkreis, Sachsen): 7,4 °dH – weich</title></path>
+<path class="cpa-gh-k6" d="M502 451.5l5.5 2.5 5-0.5 12 2.5 0.5 4 9.5 9 3-5.5 7-6-10.5-11.5-6-12.5-1.5-8.5-2.5-1.5-7.5 2.5-3-14-4-8-12 3.5-6.5-0.5-5 7 3 1.5-0.5 5-9-1-1 7.5-2.5 6-5 1 3 6 10.5 6 3-4 6.5 1 3.5 3.5 4.5 1z"><title>Mittelsachsen (Landkreis, Sachsen): 19,7 °dH – hart</title></path>
+<path class="cpa-gh-k2" d="M438.5 508l6-0.5 1 5.5 9 6.5 5-12.5 6-4.5 1.5-4 5-1.5-9.5-10 5-5-7-2 0-4.5-4.5-6.5-4-1-3.5 5.5-6 2-2-1.5-5 8.5-9-4-5 6 6.5 6-2.5 6.5 5.5 7.5z"><title>Vogtlandkreis (Landkreis, Sachsen): 8,2 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M484.5 446l-10.5-6-1 2.5-10.5 1.5-3 5-6.5 3-6.5 1 1.5 6-3 2 4 6.5 3 0.5 4 1 4.5 6.5 0 4.5 7 2 3.5-7.5 4-3.5 4.5 0 0.5-5.5-5.5-2.5 0.5-4 8.5-4.5z"><title>Zwickau (Landkreis, Sachsen): 10,3 °dH – mittel</title></path>
+<path class="cpa-gh-k2" d="M549 408l-4.5 7.5-4.5 1-3 4.5 2.5 3.5 9 2 4 3 6.5-1 5-5.5-0.5-3.5-9-9z"><title>Dresden (Stadt, Sachsen): 8,0 °dH – weich</title></path>
+<path class="cpa-gh-k3" d="M552.5 385.5l-3.5 22.5 5.5 2.5 9 9 9.5-2 2-2 13.5 1.5 0 2 6 3 6-3 13-16-6-5-1.5-8.5-5-3-5.5-0.5 4-10-4-4.5-2.5-7-6 3-13-1.5-4 2.5-2.5 8.5-3.5 7.5-4-1z"><title>Bautzen (Landkreis, Sachsen): 10,6 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M593 364.5l2.5 7 4 4.5-4 10 5.5 0.5 5 3 1.5 8.5 6 5-13 16 7.5 5.5-2 7 6-1-1.5 8 13 3 1-7 4-5.5 5-16.5 2.5-21.5-5-7.5-1-9.5-2-4.5-15-4.5-1-6-3.5 3.5-9-0.5z"><title>Görlitz (Landkreis, Sachsen): 12,2 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M509.5 385l-1.5 3.5 3 12-1.5 3.5 4 8 3 14 7.5-2.5 2.5 1.5 0-2 10.5-2 3-4.5 4.5-1 4.5-7.5 3.5-22.5-4 2-6-1-10 1-1.5-3-8-4.5-5.5 2-3 3.5z"><title>Meißen (Landkreis, Sachsen): 17,3 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M544.5 457.5l8.5-1.5 3.5 1 5-2 0-5.5 6-3.5 5 0.5 10.5-6 1.5-3 9.5-2 1-3-10.5-6.5 4-7 0-2-13.5-1.5-2 2-9.5 2 0.5 3.5-5 5.5-6.5 1-4-3-9-2-2.5-3.5-10.5 2 0 2 1.5 8.5 6 12.5z"><title>Sächsische Schweiz-Osterzgebirge (Landkreis, Sachsen): 9,9 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M461 392.5l-3.5-5-12 0-2 7 1 12 7.5-5.5 6 0.5 2 2.5 4-9z"><title>Leipzig (Stadt, Sachsen): 16,8 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M491 407l0-5.5-4-3.5 4-12.5-10.5-5.5-8.5 2.5-3.5 7.5-7.5 2.5 3 2.5-4 9-2-2.5-6-0.5-7.5 5.5-1-12-3.5 2-1.5 6.5 5.5 18.5 3.5 1 12.5 2.5 11 9 5-1 2.5-6 1-7.5 9 1 0.5-5-3-1.5z"><title>Leipzig (Landkreis, Sachsen): 18,9 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M497 359.5l-2.5-2-6.5 2.5-5.5-4-4.5 4-5.5-1-2 3.5-5.5 1-2.5 2-6.5 0-7.5 3-9 6-0.5 11 1 11 3.5-2 2-7 12 0 3.5 5 7.5-2.5 3.5-7.5 8.5-2.5 10.5 5.5-4 12.5 4 3.5 0 5.5 6.5 0.5 12-3.5 1.5-3.5-3-12 1.5-3.5-1.5-2 0.5-11-9-9z"><title>Nordsachsen (Landkreis, Sachsen): 16,5 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M443 326.5l-5 1-5.5 7.5 1.5 3-1 9.5 7.5 2.5 3-5 4.5 7 0-6-4.5-9 2.5-1.5z"><title>Dessau-Roßlau (Stadt, Sachsen-Anhalt): 16,0 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M428 387.5l2-6-4-7.5-8.5 1.5-0.5 6 4 2 2.5 5.5z"><title>Halle (Saale) (Stadt, Sachsen-Anhalt): 8,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M403 303l-9 3-2.5 10.5 5 1 2.5 4.5 8.5-5.5-3-2.5-2.5-9.5z"><title>Magdeburg (Stadt, Sachsen-Anhalt): 14,0 °dH – mittel</title></path>
+<path class="cpa-gh-k5" d="M355 272l9.5 6.5 16 0 4.5 2.5 7.5-1 1.5-5-1.5-8 1-9.5-8 1.5 5.5-18-6.5-7.5 11-3-0.5-3-8.5-5.5-13.5 8-5-2.5-8-1.5-6.5 0.5-4 6.5-6.5 0-4.5 2-1 4.5 13 22.5 0.5 4.5z"><title>Altmarkkreis Salzwedel (Landkreis, Sachsen-Anhalt): 16,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M442 312l-6 3-7.5 0.5-8 8-4 0.5-0.5 3 9.5 9.5-6.5 1-4 5 0.5 7-1 9 1.5 1.5 3.5 3 8.5 0 0 6 9 0.5 2.5 5 9-6 7.5-3 6.5 0 2.5-2-10.5-8.5-5.5 2.5-1-5.5-4.5-7-3 5-7.5-2.5 1-9.5-1.5-3 5.5-7.5 5-1 6-8z"><title>Anhalt-Bitterfeld (Landkreis, Sachsen-Anhalt): 15,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M350 275l3 4 7 6-5 4.5 5.5 13-2.5 9-3 2.5-1.5 6 13 6 0.5 7 8 3 4.5 0.5 0-6.5 4.5-4.5 7 3.5 6-0.5 2-6.5-2.5-4.5-5-1 2.5-10.5 9-3-0.5-4.5 7-10.5 0.5 0 2.5 0-5-7-4.5-1-1.5-5-7.5 0-1.5 5-7.5 1-4.5-2.5-16 0-9.5-6.5z"><title>Börde (Landkreis, Sachsen-Anhalt): 16,2 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M438.5 403l-6 2-2-3-8.5 2 0 4-9.5-1-2-4-4 2.5-6-6-3.5 5-6-2-6 6 7 8 0.5 7 6-1.5 6.5 0.5 2 2.5 7.5 4 5-1.5 7 4 3 5.5 5.5-1 5 2 4 1.5 4.5-8.5-3-2 2-6.5-3.5-1z"><title>Burgenlandkreis (Landkreis, Sachsen-Anhalt): 23,0 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M337 366l4-0.5 10.5 3 3.5-2 3 4.5 5-1 9 1 1-4.5 11-8 0.5-3.5-0.5-4-6.5 1-5-5 7-5 0-5.5-4.5-0.5-8-3-0.5-7-13-6-11 1.5-10.5 1-5.5 4 4 5 2 7.5-4.5 5.5 0 6.5 6.5 9.5z"><title>Harz (Landkreis, Sachsen-Anhalt): 14,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M433 268l-4 0-2.5-3.5-7 4 2.5 5-2.5 6.5-7 8-2.5 0-0.5 0-7 10.5 0.5 4.5-1 1.5 2.5 9.5 3 2.5 6 2 3 5.5 4-0.5 8-8 7.5-0.5 6-3-4.5-7.5 2-4 0.5-10 3-5.5-1.5-8 1.5-3.5-3-4z"><title>Jerichower Land (Landkreis, Sachsen-Anhalt): 16,3 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M351.5 368.5l-2.5 4 7 11 0.5 5.5 5 0 7 2.5 8 0 8.5 2.5 2.5 3.5 7.5-10.5 6-2.5 4.5 3.5 5-4.5-4.5-4-1.5-7 4-7.5-8-2-2-5-4.5 2-3-3.5-6.5-1.5-0.5 3.5-11 8-1 4.5-9-1-5 1-3-4.5z"><title>Mansfeld-Südharz (Landkreis, Sachsen-Anhalt): 27,0 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M440 396.5l-1-11 0.5-11-2.5-5-9-0.5 0-6-8.5 0-3.5-3-0.5 3-7 2-4 7.5 1.5 7 4.5 4-5 4.5-4.5-3.5-6 2.5-7.5 10.5 3.5 5 6 2 3.5-5 6 6 4-2.5 2 4 9.5 1 0-4 8.5-2 2 3 6-2zM428 387.5l-4.5 1.5-2.5-5.5-4-2 0.5-6 8.5-1.5 4 7.5z"><title>Saalekreis (Landkreis, Sachsen-Anhalt): 29,3 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M399 322l-2 6.5-6 0.5-7-3.5-4.5 4.5 0 6.5 0 5.5-7 5 5 5 6.5-1 0.5 4 6.5 1.5 3 3.5 4.5-2 2 5 8 2 7-2 0.5-3-1.5-1.5 1-9-0.5-7 4-5 6.5-1-9.5-9.5 0.5-3-3-5.5-6-2z"><title>Salzlandkreis (Landkreis, Sachsen-Anhalt): 15,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M386.5 222l8.5 5.5 0.5 3-11 3 6.5 7.5-5.5 18 8-1.5-1 9.5 1.5 8 7.5 0 1.5 5 4.5 1 5 7 7-8 2.5-6.5-2.5-5 7-4 2.5 3.5 4 0-2-3.5 2-4.5-0.5-5.5 4-4.5-2.5-6 3-7.5-2-6.5-7-4-9.5 2-10-3.5 0.5-4.5-16.5-8.5-5.5 3.5z"><title>Stendal (Landkreis, Sachsen-Anhalt): 17,7 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M503 335.5l-8-0.5-6-7-7 0.5-1-3.5-5-1-6-2.5-4.5 2.5-5 0-5.5-5-6-0.5-6 8 3 9-2.5 1.5 4.5 9 0 6 1 5.5 5.5-2.5 10.5 8.5 5.5-1 2-3.5 5.5 1 4.5-4 5.5 4 6.5-2.5 2.5 2 9-8.5-3-5.5z"><title>Wittenberg (Landkreis, Sachsen-Anhalt): 16,1 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M371 433.5l-3.5 1.5-3-7-6.5 3.5-8.5 2 0.5 7 7 4.5-2 2.5 12-2.5z"><title>Erfurt (Stadt, Thüringen): 30,0 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M429.5 437l0.5 2.5-1 10.5 3.5 3.5 6-1 1.5-5.5-2-5.5 2-3.5-5-2z"><title>Gera (Stadt, Thüringen): 22,3 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M394.5 445l10.5 3 1-8-9-4-3 4z"><title>Jena (Stadt, Thüringen): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k1" d="M348.5 482.5l0-7-6-4.5-5.5 5.5-5 2-1 3.5 5.5 2.5 6-5.5z"><title>Suhl (Stadt, Thüringen): 2,0 °dH – weich</title></path>
+<path class="cpa-gh-k6" d="M375.5 433.5l2 1.5 2.5 9.5 7-4.5-0.5-4-7-4z"><title>Weimar (Stadt, Thüringen): 18,9 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M284.5 396.5l3 9.5 5.5 1 1 5.5 10 4 3.5-3.5 8-3.5-1-3 8-7.5 2.5-2.5-2.5-5.5 3-11-3-6-8-1-0.5 4.5-4.5 5.5-8 2.5-1.5 4.5-8 0.5z"><title>Eichsfeld (Landkreis, Thüringen): 18,7 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M335 366.5l-2.5 6-5 3-5-1.5 3 6-3 11 2.5 5.5 2.5-3.5 11-0.5 3 1.5 4.5-4 6 2 4.5-3-0.5-5.5-7-11 2.5-4-10.5-3-4 0.5z"><title>Nordhausen (Landkreis, Thüringen): 21,1 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M294 473.5l2.5 2.5 6-2.5 0.5-5.5 10-7.5 4 0 1.5-7 2-6.5 3-1.5 2-5-2.5-3 9.5-5-1.5-1.5-14-2.5-5-7-8 0-4.5 9.5 5.5 3.5-5 3.5-7.5-2-1 2 3 5.5-0.5 6-2 6.5-5 1-2 6 1.5 3-4.5 8z"><title>Wartburgkreis (Landkreis, Thüringen): 18,0 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M304 421.5l8 0 5 7 14 2.5 1.5 1.5 4.5 0 3-8 10.5 1 2-4 0.5-8-6-1.5-8.5 1-2.5-7-4.5-4-6 1.5-3-4.5-8 7.5 1 3-8 3.5-3.5 3.5z"><title>Unstrut-Hainich-Kreis (Landkreis, Thüringen): 30,4 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M391 402.5l-3.5-5-2.5-3.5-8.5-2.5-8 0-7-2.5-5 0-4.5 3-6-2-4.5 4-3-1.5-11 0.5-2.5 3.5-2.5 2.5 3 4.5 6-1.5 4.5 4 2.5 7 8.5-1 6 1.5 6-3-1-3.5 7.5-5.5 7.5 7.5 8-2.5 4 2z"><title>Kyffhäuserkreis (Landkreis, Thüringen): 26,5 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M293.5 490.5l3.5-3.5 8-1 2.5 4.5 6.5 2 4.5 7 4 3 9-5.5-2.5-5 2-10 1-3.5 5-2 5.5-5.5 0-3.5-4 0.5-7.5-2-3.5-10-9-2.5-1.5 7-4 0-10 7.5-0.5 5.5-6 2.5-2.5-2.5-1 6.5 1.5 6.5z"><title>Schmalkalden-Meiningen (Landkreis, Thüringen): 15,2 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M349.5 433.5l1-8-10.5-1-3 8-4.5 0-9.5 5 2.5 3-2 5-3 1.5-2 6.5 9 2.5 3.5 10 7.5 2 4-0.5 1-5.5 4-1.5 5.5-13 2 0 2-2.5-7-4.5z"><title>Gotha (Landkreis, Thüringen): 18,4 °dH – hart</title></path>
+<path class="cpa-gh-k7" d="M385 408.5l-4-2-8 2.5-7.5-7.5-7.5 5.5 1 3.5-6 3-0.5 8-2 4-1 8 8.5-2 6.5-3.5 3 7 3.5-1.5 1.5-9.5 8.5 0.5 11.5-1-0.5-7z"><title>Sömmerda (Landkreis, Thüringen): 24,8 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M357 503.5l0.5-3.5 5.5-5-4-4 1-3-2-3-5-6-4.5 3.5-6-3.5-6 5.5-5.5-2.5-2 10 2.5 5-9 5.5 4.5 5.5 6 2-0.5 6.5 1.5 5 8.5-0.5 7-1-2-4.5-6.5-4.5 5-7z"><title>Hildburghausen (Landkreis, Thüringen): 15,5 °dH – hart</title></path>
+<path class="cpa-gh-k4" d="M355 447.5l-2 0-5.5 13-4 1.5-1 5.5 0 3.5 6 4.5 0 7 4.5-3.5 5 6 6 0 2.5-6-2-7.5 3-6.5 4.5 0.5 0-4.5 3-4-4.5-2.5-3.5-9.5z"><title>Ilm-Kreis (Landkreis, Thüringen): 11,9 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M392.5 423.5l-11.5 1-8.5-0.5-1.5 9.5-4 11.5 3.5 9.5 4.5 2.5 2-3 5 4 7-2 5.5-11-0.5-5 3-4 8.5-5.5 1.5-5.5-2-2.5-6.5-0.5zM375.5 433.5l4-1.5 7 4 0.5 4-7 4.5-2.5-9.5z"><title>Weimarer Land (Landkreis, Thüringen): 19,0 °dH – hart</title></path>
+<path class="cpa-gh-k3" d="M374.5 515.5l5-0.5 1.5-9.5-2-13-4.5-8-9.5 4.5-5-1-1 3 4 4-5.5 5-0.5 3.5 7 4.5 5-2.5 3 3.5-0.5 5z"><title>Sonneberg (Landkreis, Thüringen): 9,4 °dH – mittel</title></path>
+<path class="cpa-gh-k4" d="M394.5 497.5l0.5-12.5 5.5-1 4-4.5-7-1.5-2.5-5-1-8 3.5-2.5-8.5-6.5-7 2-5-4-2 3-3 4 0 4.5-4.5-0.5-3 6.5 2 7.5-2.5 6-6 0 2 3 5 1 9.5-4.5 4.5 8 5.5-4.5 5.5 0.5 0 7.5z"><title>Saalfeld-Rudolstadt (Landkreis, Thüringen): 11,5 °dH – mittel</title></path>
+<path class="cpa-gh-k6" d="M407 425l-1.5 5.5-8.5 5.5 9 4-1 8-10.5-3-5.5 11 8.5 6.5 10-2 2.5-2 10-1 3.5-8-3.5-2.5 10-7.5-0.5-2.5-3-5.5-7-4-5 1.5z"><title>Saale-Holzland-Kreis (Landkreis, Thüringen): 18,2 °dH – hart</title></path>
+<path class="cpa-gh-k5" d="M425.5 497l2.5-6.5-6.5-6 5-6-3.5-1.5-2.5-6 0-5.5 5-5-5.5-3-10 1-2.5 2-10 2-3.5 2.5 1 8 2.5 5 7 1.5-4 4.5-5.5 1-0.5 12.5 3 5.5 5.5-2 2 1 11.5-4 2 3z"><title>Saale-Orla-Kreis (Landkreis, Thüringen): 15,5 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M452 468l-3-0.5-4-6.5 3-2-1.5-6-3-6.5 0.5-7-4-1.5-2 3.5 2 5.5-1.5 5.5-6 1-3.5-3.5 1-10.5-10 7.5 3.5 2.5-3.5 8 5.5 3-5 5 0 5.5 2.5 6 3.5 1.5 9 4 5-8.5 2 1.5 6-2z"><title>Greiz (Landkreis, Thüringen): 18,9 °dH – hart</title></path>
+<path class="cpa-gh-k6" d="M471 434l-11-9-12.5-2.5-2 6.5 3 2-4.5 8.5-0.5 7 3 6.5 6.5-1 6.5-3 3-5 10.5-1.5 1-2.5z"><title>Altenburger Land (Landkreis, Thüringen): 20,2 °dH – hart</title></path>
+</g>
+<g class="cpa-gh-laender">
+<path d="M247.5 18.5l-5 2-6-0.5-0.5-4.5-8-2.5-4.5 0-6-3.5-7.5-0.5-3.5 1.5-6-1.5-5.5 2.5-11 0.5-6-8-2.5 8 7.5 3.5 7.5-3.5 4.5 0 1 5 4.5 5.5 4.5 11.5 5 3.5 4 5.5-1.5 7.5-4.5 4 5 4 4-6 3.5 5.5-7 5.5-14.5 1.5 2 5-7.5 5.5 5 4 4-2.5 7 0 1 2.5-2 10.5 2.5 5 5-0.5 3 6.5-1.5 4-4.5-1.5-3 2.5 4.5 10 7.5 6 11.5 0 6 1.5 5 6 3 6.5 5 5 4 10 8 5 4 1 2-7.5 4.5 4.5 4.5-7.5 3 0 8-6 10 8-4.5 6 1 6 4.5 3 5 6.5 4.5 1 6.5 4.5 8 2 2-10 4-0.5 5.5-4.5 5.5-7.5 3-1 2.5-8.5-2-5.5-6.5-1-3.5-4-0.5-7-1.5-4.5 7.5-7 2.5-4.5-4-4-6-4.5 3-5.5 5.5-1 4.5-5.5 8.5-6.5-2-15.5-3-3-6-1.5-9 8-5 1-5-5-10-4-6.5-4-5-0.5-5.5 3-2.5 6.5-0.5-9.5-2.5-5.5-11 2 0-4 4-5 0.5-9.5 0-5.5-4-8-4.5-4-1.5 5-7-5-11-4.5-7 2zM181.5 39.5l-3-8-3 3.5zM199 54.5l1.5-7-5.5 2.5zM193 34l1.5-6.5-4-2-5.5 1-2.5 5.5zM364.5 54.5l-1.5-3-10.5-3.5-3.5 6 0 4.5 5.5-0.5 0.5 4 6-1.5 7.5 1.5z"/>
+<path d="M301.5 163.5l-4.5-3-1-6 4.5-6-10-8-8 6-3 0-4.5 7.5-4.5-4.5-2 7.5 2.5 6 5.5 7 8 2.5 5-4 7.5 5.5 4.5 0.5 5-4.5z"/>
+<path d="M337.5 239.5l1-4.5 4.5-2 6.5 0 4-6.5 6.5-0.5 8 1.5 5 2.5 13.5-8 0.5-7 5.5-3.5-6-1-4.5-3.5-6 3-5.5-7-6.5-4-5.5-6-7.5-13-4.5-1.5-5.5 5-9-7-6.5 1-8-2-6.5-4.5-4.5-1-5 4.5-4.5-0.5-7.5-5.5-5 4-8-2.5-5.5-7-2.5-6-4-1-8-5-4-10-5-5-3-6.5-5-6-6-1.5-11.5 0 0 5-15 0-7-6.5-7.5 5-5.5 16.5 2.5 10 4.5 1.5 4 9-3 2.5-7.5 1.5 4-4.5-0.5-3-10.5-3.5-5.5-5-3.5 2.5-1 8 4.5-0.5 1 7-4.5 7-3.5-1-3-4.5-3.5 0.5-2.5-7 6.5-1 1-3-5-10.5-3-0.5-2-7.5-13 0-8.5 0.5-8.5 3-17-1-9 5.5-7.5 10-3.5 19 1 2.5 16.5 2-4.5 9 1.5 7-3.5 4.5 1.5 2.5 0.5 11-2.5 8-6.5 9.5-1 5.5-1.5 17.5-3.5 0.5-15-2-3.5 2-2.5 16 5 3 5.5 0 5.5 3 3.5-3 5 12.5-3 6.5 2.5 5.5 2 0 4-2.5 9.5 0.5 1.5-2 12.5-8.5 4-0.5 1-7 2.5-4.5 5 1.5 2 6.5 6 3.5 5.5-1 5 6-0.5 6-3.5 7 2 3.5 4.5 0 0 6.5-8.5 3.5 6.5 5 3.5-3 4.5 1 5-1.5 6.5-6.5 10 2 5.5-5.5-3-4 1-7-1-10.5-8-4.5-2-6 9 1 2-5 6.5-1 6.5-3 3.5 3.5 0 11.5 10 0.5 5.5-1.5 8-10.5 4.5 9.5-4.5 8-4 1.5-1 7 6 3-2 5.5-4-1 2.5 5 9.5 3-0.5 2.5 2.5 3 0 11.5 8 4.5 1 7.5 8.5 1 0 5.5-4.5 6 2.5 10.5 1.5-0.5 5.5 2.5 8 0 3.5 5-6.5 7 3.5 11-4 2-1.5 5 0.5 1.5 11.5 5-2-8 7.5-5 6.5-1 1.5 5 7.5-6 8-0.5 1.5-4.5 8-2.5 4.5-5.5 0.5-4.5 8 1 5 1.5 5-3 2.5-6 2-0.5-2.5-5.5-6.5-9.5 0-6.5 4.5-5.5-2-7.5-4-5 5.5-4 10.5-1 11-1.5 1.5-6 3-2.5 2.5-9-5.5-13 5-4.5-7-6-3-4 5-3-4-5.5-0.5-4.5zM201.5 213.5l-3.5-7-2-6-6.5-3-3-4 8 1.5 3.5 3 11.5 3 2.5 3 7.5 0.5-0.5 9.5-4 3.5z"/>
+<path d="M215 217.5l4-3.5 0.5-9.5-7.5-0.5-2.5-3-11.5-3-3.5-3-8-1.5 3 4 6.5 3 2 6 3.5 7zM189.5 152l0.5 1 2.5 5.5-1 3.5-4 4.5 7.5-1.5 3-2.5-4-9z"/>
+<path d="M30 394l-4 3.5-3 6.5-4 3.5 0 6.5 7 0-1 4-4.5 1-8.5 7-8 1.5 3.5 8.5 7-0.5-0.5 5.5 4.5 2.5 0 4.5-4.5 2.5-2 6.5 3 7.5 5 0.5 4.5 10 3.5 4.5-4.5 3 3 6.5 6.5 0.5 3.5 5-2.5 8 4.5 6.5 1.5 0 7.5-4.5 5-2 3.5 4.5 10.5-1.5-1-6.5-3-5 4.5-2.5 3.5 4.5 3-2 0.5-6.5 2-3 5-0.5 3.5-4.5 8.5-0.5 2-3.5 1-0.5 0 2.5 10.5-2.5 0.5-7 5 0.5 12.5-6 3-5.5 6-3 0.5-8 2.5-2 4.5 1.5-1.5 4.5 10 6-0.5 6 5 5.5 0 3 6 1.5 2.5-5.5-2.5-5.5 10-10.5 6 2.5 8.5-12 4.5-5.5 0.5-8.5 8 0 6.5-8.5-2.5-10.5-7.5 3-4-3.5 4.5-6.5 6-4 6.5-2 3.5 1.5 6.5-4-3.5-8 5-2 3.5-1 5 2 0 5.5 4.5 0.5 1-2.5 9.5-7.5 8.5-13-1.5 0.5-2.5-10.5 4.5-6 0-5.5-8.5-1-1-7.5-8-4.5 0-11.5-2.5-3 0.5-2.5-9.5-3-2.5-5 4 1 2-5.5-6-3 1-7 4-1.5 4.5-8-4.5-9.5-8 10.5-5.5 1.5-10-0.5 0-11.5-3.5-3.5-6.5 3-6.5 1-2 5-9-1 2 6 8 4.5 1 10.5-1 7 3 4-5.5 5.5-10-2-6.5 6.5-5 1.5-4.5-1-3.5 3-6.5-5 8.5-3.5 0-6.5-4.5 0-2-3.5 3.5-7 0.5-6-5-6-5.5 1-6-3.5-2-6.5-5-1.5-2.5 4.5-1 7-4 0.5-12.5 8.5-1.5 2-9.5-0.5-4 2.5-2 0-5.5 1.5-2.5 5-3 0.5-3.5 6-6.5 0-1 3.5-4.5 5 9.5 5.5-4 8-6.5 0-18.5 9-8.5-5.5-8 3.5-7.5-1.5-7.5 2.5 6 17 5 2-2 5.5 8 10.5-1 12.5z"/>
+<path d="M170.5 548l3.5 6 1 8 3 7 3.5 7.5 0 0.5-6 3.5 1.5 8 2 3.5 0.5 1 3-0.5 8.5 7.5 2.5-2.5-2-7 6.5-2 0 6 3 5.5 8.5 2.5 4-0.5 0 2-5 1.5 2 8.5 6.5-6.5-1-1.5 1.5-4 6 0.5 3-3 1.5-5.5-2.5-3 2.5-4-1-6 4.5-5-3.5-2-2.5-8-2-1.5 0.5-2-2-13 1-6-3-3 2-5 7-1.5 3 2.5 3.5-5 11.5 2 2 4.5 8-1 0-15 7.5 0.5 3-5 5.5-4.5-1-4.5 2.5-8 6.5 3 5-2.5 6-5 1.5-5.5 1-4-1.5-6.5 1-6.5-12 0.5 4.5-8-1.5-3 2-6 5-1 2-6.5 0.5-6-3-5.5 1-2 7.5 2 5-3.5-5.5-3.5 4.5-9.5 0-5-10-4-1-5.5-5.5-1-3-9.5-1.5-5-6.5 1-7.5 5 2 8-11.5-5-0.5-1.5 1.5-5 4-2-3.5-11 6.5-7-3.5-5-8 0-5.5-2.5-8.5 13-9.5 7.5-1 2.5-4.5-0.5 0-5.5-5-2-3.5 1-5 2 3.5 8-6.5 4-3.5-1.5-6.5 2-6 4-4.5 6.5 4 3.5 7.5-3 2.5 10.5-6.5 8.5-8 0-0.5 8.5-4.5 5.5-8.5 12-6-2.5-10 10.5 2.5 5.5-2.5 5.5-1.5 3 3 6.5-2 6.5-6.5-1-3.5 4 1 5.5-2 6 3.5 1 6 8.5 1 5-7 2-10 8 3 4.5-5 1.5-2 5-4 1.5 8 10.5 6.5-1 14-5.5 1 0z"/>
+<path d="M95 475.5l-2 3.5-8.5 0.5-3.5 4.5-5 0.5-2 3-0.5 6.5-3 2-3.5-4.5-4.5 2.5 3 5 1 6.5-10.5 1.5-3.5-4.5-5 2-7.5 4.5-1.5 0-7 0-1.5 4-8.5 6.5-1.5 9-3 8 4 12.5 3 0.5 1 5.5 6 5.5 7.5 4.5 3-1 3 6-1.5 6.5-5.5 4.5-0.5 5.5-4.5 4.5 1.5 2.5 10 3 16-3 10.5-5.5 3.5-2.5 6 0 4.5 4 6 2 7 4 0.5 10.5-2 2.5 2.5 2.5 7 4.5 1 0-1 6-1.5 4-6 5 2 5 3 3 6-2.5 8 11.5 3 0 5 4 13 1.5 4-1 2.5-1.5 9 6.5 12 3.5 2-1.5 1-1 4.5-9.5 2.5-10 3.5-9 3.5-3.5 1.5-0.5-1.5-5.5 2-8-1.5-3.5-3.5-11 0-3 0-1.5-0.5-1-2-3.5-1.5-8 6-3.5 0-0.5-3.5-7.5-3-7-1-8-3.5-6-7-4.5-1 0-14 5.5-6.5 1-8-10.5 4-1.5 2-5 5-1.5-3-4.5 10-8 7-2-1-5-6-8.5-3.5-1 2-6-1-5.5 3.5-4 6.5 1 2-6.5-3-6.5 1.5-3-6-1.5 0-3-5-5.5 0.5-6-10-6 1.5-4.5-4.5-1.5-2.5 2-0.5 8-6 3-3 5.5-12.5 6-5-0.5-0.5 7-10.5 2.5 0-2.5z"/>
+<path d="M300.5 614.5l3.5-1-3.5-8.5-2.5-8-4.5 6.5-7-2-1-9-3-2-5.5-13.5-6 0.5-6 2.5 1.5-9.5-8.5 3.5-4.5-1-10.5 0.5-1.5 2.5 8.5 8.5-6.5 1.5-5 7-10.5 1-1.5 5.5-3 3-6-0.5-1.5 4 1 1.5-6.5 6.5-2-8.5 5-1.5 0-2-4 0.5-8.5-2.5-3-5.5 0-6-6.5 2 2 7-2.5 2.5-8.5-7.5-3 0.5 0 1.5 0 3 3.5 11 1.5 3.5-2 8 1.5 5.5-1.5 0.5-3.5 3.5-3.5 9-2.5 10-4.5 9.5-1 1-2 1.5-3 1.5-5 8.5-1.5 6.5-11 10.5-8.5 8-3 6.5 0 7.5-2.5 3-2.5 9.5-0.5 9.5-3 2-1 4.5-7.5 15.5-1 9 3.5 6.5-5 10.5-1.5 9.5 0.5 5-2.5 5 0.5 4 6.5 9.5 4.5-1.5 2 6 7.5-2.5 2-3 5 0.5 1.5 3.5 13-0.5 2-3 7.5-3.5 6 1.5 2 3.5 8.5 1 6-7.5 6 2.5 0.5-6.5-10 3.5-4.5-3 3-8 4.5-4 7.5-3 7.5 8 1.5 4 4.5-4.5 7.5 9.5 9-4 11 3 3.5-1-3-7-7-4.5-0.5-4 10.5 7 2 4 8.5 5 3-0.5 7.5 2 4 6.5 4 0.5 6.5-3 4 0.5 8-8 5.5 2.5 7-3.5 4 5 4-4-1-9.5-4-3 5-3.5-4-5.5 2-7.5-0.5-4 1 0 1-4 0.5-1-0.5-9.5-3-6-2.5-11.5-5-9-2-3 4-5 0.5-4 7.5 0.5 7.5-4-0.5-2 3-1 3-1 0.5-9-5-6 1-4.5 8.5 4 5.5-0.5 1.5-3-4.5-5 1.5-7.5 0.5-11.5-3.5-6.5-4.5-5.5-6.5-3.5-1-9.5-9-6-0.5-5 2.5-3.5z"/>
+<path d="M509 737l5.5-5.5 12-5 5.5-0.5 10.5-9 2-6.5 1-9-1.5-4 5-5 16 7.5 5-7 1.5-5-3-10 2.5-5.5-1.5-4-7.5-8.5-3 0-4.5-6-3.5-3-11.5-1-1.5-7-8.5-7.5-4 1-5-3.5 0-3-4.5-3-6-6.5-0.5-4.5-6-3.5-5 1-7-1-2-5-7.5-4-1.5-4.5 0.5-5-4-2.5-2.5-8-3-1.5-0.5-6-5-1.5-3.5-6 4.5-3 5-12.5-5-4 1-4-17-9-4.5-5 0.5-6.5-4-5.5-3.5-2 2-4.5-3-4.5-7.5-3.5-5.5-7.5-7 4-2-3-11.5 4-2-1-5.5 2-3-5.5-4.5-1.5 0-7.5-5.5-0.5-5.5 4.5 2 13-1.5 9.5-5 0.5-3-1.5 0.5-5-3-3.5-5 2.5-7-4.5-11 0.5-5 7 6.5 4.5 2 4.5-7 1-8.5 0.5-1.5-5 0.5-6.5-6-2-4.5-5.5-4-3-4.5-7-6.5-2-2.5-4.5-8 1-3.5 3.5-1.5 5.5-6 5-5 2.5-6.5-3-2.5 8 1 4.5-5.5 4.5-3 5-7.5-0.5 0 15-8 1-2-4.5-11.5-2-3.5 5-3-2.5-7 1.5-2 5 3 3-1 6 2 13-0.5 2 2 1.5 2.5 8 3.5 2-4.5 5 1 6-2.5 4 2.5 3 10.5-1 5-7 6.5-1.5-8.5-8.5 1.5-2.5 10.5-0.5 4.5 1 8.5-3.5-1.5 9.5 6-2.5 6-0.5 5.5 13.5 3 2 1 9 7 2 4.5-6.5 2.5 8 3.5 8.5-3.5 1 3 11.5-2.5 3.5 0.5 5 9 6 1 9.5 6.5 3.5 4.5 5.5 3.5 6.5-0.5 11.5-1.5 7.5 4.5 5-1.5 3-5.5 0.5-8.5-4-1 4.5 5 6-0.5 9-3 1-3 1 0.5 2-7.5 4-7.5-0.5-0.5 4-4 5 2 3 5 9 2.5 11.5 3 6 0.5 9.5-0.5 1-1 4-1 0 0.5 4-2 7.5 4 5.5-5 3.5 4 3 1 9.5-4 4-4-5-7 3.5-5.5-2.5-8 8-4-0.5-6.5 3 8 3.5 4.5-5 4 1 1 5 6 1 3.5-1.5 2 6.5 4-0.5 4.5 6.5 1 6 8.5 0-4 11.5 8-2.5 4.5-3.5 9.5-12.5-3.5-7.5 1.5-6 9 2.5 3-4 13.5 5 6.5-2 2 6 5.5 5.5 1.5 4 8.5-0.5 6.5-4.5 5 4 5-5.5 6 0-0.5-5.5 11.5-2.5 4.5-8.5 16 0.5 1-2.5 14.5-2 6 1 5-1-3.5-9.5 7.5 2 5-2 7-0.5 5.5 7.5 5.5-1 2-4.5 7-1 9.5 7-1.5 6 8.5 6.5 7.5 3 3-3-0.5-10.5 3.5-5-2-6-4.5-4-6.5 2-0.5-7 5-9-6.5-11-3.5-0.5-1.5-5-7-6.5-1.5-4.5 6-5 2-4.5z"/>
+<path d="M84 638.5l4 4 10 0.5 5-4.5-3-3-2-5 6-5 1.5-4 1-6-1 0-7-4.5-2.5-2.5 2-2.5-0.5-10.5-7-4-6-2-4.5-4-6 0-3.5 2.5-10.5 5.5-16 3-10-3-1.5 9 4.5-0.5 9 6.5 3 6-1 5 5.5 4.5 3.5 7 1 6 6.5 1.5 6.5-7 4.5 1 3.5 4z"/>
+<path d="M529 259l-8-6.5 1-5-3-1.5-5 2-1.5 2.5-10 0.5-3.5 3.5-3 9 3 1.5-4 9.5 5.5 2.5 3.5-3 6 2 7.5 2 4-2.5 14.5 0.5 3.5-7-6-3z"/>
+<path d="M592 270.5l0.5-3.5 5-7-2-5 2-4.5-5-5-7-3.5-8.5-9.5-5-2-4.5-4.5-6-1 1-7.5-1-7 7.5-5.5 4.5-5 2.5-10.5-1-6.5 4-6.5-3-7.5-6 3.5-6.5 5.5-7.5-2 7.5-9.5 0.5-7-12.5 2-7-1.5-8-7-7.5 3-6 7.5-4 1.5-3.5 12-12 2-3.5 6-4-2-12.5 10-9.5-3.5-4.5 2-4-4-12.5-4-5.5 2-8-7-0.5-0.5-4.5 0-2-3.5-14 3 0.5 4-8 3-4.5 5.5-13-1-4.5 4-1 9-9.5-1.5-1.5 2.5-6.5 0 5.5 7 6-3 4.5 3.5 6 1 16.5 8.5-0.5 4.5 10 3.5 9.5-2 7 4 2 6.5-3 7.5 2.5 6-4 4.5 0.5 5.5-2 4.5 2 3.5 7 1.5 3 4-1.5 3.5 1.5 8-3 5.5-0.5 10-2 4 4.5 7.5 7 6.5 6 0.5 5.5 5 5 0 4.5-2.5 6 2.5 5 1 1 3.5 7-0.5 6 7 8 0.5 0 10 3 5.5-9 8.5 2.5 3.5 9 9-0.5 11 1.5 2 5 0.5 3-3.5 5.5-2 8 4.5 1.5 3 10-1 6 1 4-2 7.5-2 4 1 3.5-7.5 2.5-8.5 4-2.5 13 1.5 6-3 6.5-2.5 9 0.5 3.5-3.5 2.5-3.5-3-8.5-5.5-5.5-1-4.5-4.5-3.5 1-4 5.5-5.5 0.5-11 2-3.5-0.5-5.5-4.5-3.5 1-13-8-3.5-2-2zM499 265l-3-1.5 3-9 3.5-3.5 10-0.5 1.5-2.5 5-2 3 1.5-1 5 8 6.5 4.5 7 6 3-3.5 7-14.5-0.5-4 2.5-7.5-2-6-2-3.5 3-5.5-2.5z"/>
+<path d="M413.5 85.5l-9.5 3.5-10.5-0.5-4 5 0.5 3.5-4 5.5-2.5 0.5-2 9-2.5 3.5-6-3-4 1.5-7.5-9-9 1-8.5 6-2.5 4.5-7.5 7 1.5 4.5 0.5 7 3.5 4 6.5 1 2 5.5-2.5 8.5-3 1-5.5 7.5-5.5 4.5-4 0.5-2 10 6.5-1 9 7 5.5-5 4.5 1.5 7.5 13 5.5 6 6.5 4 6.5 0 1.5-2.5 9.5 1.5 1-9 4.5-4 13 1 4.5-5.5 8-3-0.5-4 14-3 2 3.5 4.5 0 0.5 0.5 8 7 5.5-2 12.5 4 4 4 4.5-2 9.5 3.5 12.5-10 4 2 3.5-6 12-2 3.5-12 4-1.5 6-7.5 7.5-3 8 7 7 1.5 12.5-2-0.5 7-7.5 9.5 7.5 2 6.5-5.5 6-3.5-5.5-18-3.5-6 0.5-7-2.5-2-2-10.5-10.5 0-8.5-3-11.5-9 6.5-7-1.5-2.5-10.5-8.5 3.5-8-7.5-7.5-4.5 3.5-8 2.5-12-7-2-4.5-10.5-3-7.5-13.5-1-5-7.5 4.5-3 6-12.5-3-6.5 2-1 3.5-10.5 8.5-0.5-4 3.5-4 1-4.5 8.5-2 6.5-6-11.5-2-2.5 7-2.5 3-4 9-3.5 2.5-5.5 4-5.5 7zM499.5 29.5l-6-3 0 6.5 4.5 0 6 6 4-0.5 1 8.5-6.5-1-11-6.5-6 2 2 4 5.5 2.5-5.5 3 6 7-8 2-1 4.5 3 5 15.5 5.5-1.5-5.5 8-7.5 14.5-2-4.5-5.5-3 0.5-3.5-8 5.5-5 0.5-5-3-2-11 2-4.5-2.5zM533 85l-2.5-5.5-4 2 4 5-1.5 9.5 9-5 3.5 0 5.5 6.5 0 5.5-9.5-1 3 5.5-2 8 7.5-4 11.5-1 1.5-6.5-14.5-12.5z"/>
+<path d="M534.5 469l3-5.5 7-6 8.5-1.5 3.5 1 5-2 0-5.5 6-3.5 5 0.5 10.5-6 1.5-3 9.5-2 1-3-10.5-6.5 4-7 6 3 6-3 7.5 5.5-2 7 6-1-1.5 8 13 3 1-7 4-5.5 5-16.5 2.5-21.5-5-7.5-1-9.5-2-4.5-15-4.5-1-6-3.5 3.5-9-0.5-6.5 2.5-6 3-13-1.5-4 2.5-2.5 8.5-3.5 7.5-4-1-7.5 2-4 2-6-1-10 1-1.5-3-8-4.5-5.5 2-3 3.5-5-0.5-1.5-2 0.5-11-9-9-2.5-3.5-2.5-2-6.5 2.5-5.5-4-4.5 4-5.5-1-2 3.5-5.5 1-2.5 2-6.5 0-7.5 3-9 6-0.5 11 1 11-1.5 6.5 5.5 18.5 3.5 1 12.5 2.5 11 9 3 6-1 2.5-10.5 1.5-3 5-6.5 3-6.5 1 1.5 6-3 2 4 6.5 3 0.5-3.5 5.5-6 2-2-1.5-5 8.5-9-4-5 6 6.5 6-2.5 6.5 5.5 7.5 7.5 3.5 6-0.5 1 5.5 9 6.5 5-12.5 6-4.5 1.5-4 5-1.5 7.5 0.5 8.5-7 9 5 4.5-3.5 1-7.5 11.5-0.5 3.5-10 5 1 3-4 7 1z"/>
+<path d="M355 272l-5 3 3 4 7 6-5 4.5 5.5 13-2.5 9-3 2.5-1.5 6-11 1.5-10.5 1-5.5 4 4 5 2 7.5-4.5 5.5 0 6.5 6.5 9.5 2.5 5.5 4-0.5 10.5 3-2.5 4 7 11 0.5 5.5 5 0 7 2.5 8 0 8.5 2.5 2.5 3.5 3.5 5-6 6 7 8 0.5 7 6-1.5 6.5 0.5 2 2.5 7.5 4 5-1.5 7 4 3 5.5 5.5-1 5 2 4 1.5 4.5-8.5-3-2 2-6.5-3.5-1-5.5-18.5 1.5-6.5-1-11 0.5-11 9-6 7.5-3 6.5 0 2.5-2 5.5-1 2-3.5 5.5 1 4.5-4 5.5 4 6.5-2.5 2.5 2 9-8.5-3-5.5 0-10-8-0.5-6-7-7 0.5-1-3.5-5-1-6-2.5-4.5 2.5-5 0-5.5-5-6-0.5-7-6.5-4.5-7.5 2-4 0.5-10 3-5.5-1.5-8 1.5-3.5-3-4-7-1.5-2-3.5 2-4.5-0.5-5.5 4-4.5-2.5-6 3-7.5-2-6.5-7-4-9.5 2-10-3.5 0.5-4.5-16.5-8.5-5.5 3.5-0.5 7-13.5 8-5-2.5-8-1.5-6.5 0.5-4 6.5-6.5 0-4.5 2-1 4.5 13 22.5 0.5 4.5z"/>
+<path d="M429.5 437l-3-5.5-7-4-5 1.5-7.5-4-2-2.5-6.5-0.5-6 1.5-0.5-7-7-8 6-6-3.5-5-2.5-3.5-8.5-2.5-8 0-7-2.5-5 0-0.5-5.5-7-11 2.5-4-10.5-3-4 0.5-2 0.5-2.5 6-5 3-5-1.5-8-1-0.5 4.5-4.5 5.5-8 2.5-1.5 4.5-8 0.5-7.5 6 3 9.5 5.5 1 1 5.5 10 4 0 5-4.5 9.5 5.5 3.5-5 3.5-7.5-2-1 2 3 5.5-0.5 6-2 6.5-5 1-2 6 1.5 3-4.5 8 12-0.5-1 6.5 1.5 6.5-1 4 3.5-3.5 8-1 2.5 4.5 6.5 2 4.5 7 4 3 4.5 5.5 6 2-0.5 6.5 1.5 5 8.5-0.5 7-1-2-4.5-6.5-4.5 5-7 11-0.5 7 4.5 5-2.5 3 3.5-0.5 5 3 1.5 5-0.5 1.5-9.5-2-13 5.5-4.5 5.5 0.5 0 7.5 4.5 1.5 3 5.5 5.5-2 2 1 11.5-4 2 3 7-4 2.5-6.5-6.5-6 5-6 9 4 5-8.5 2 1.5 6-2 3.5-5.5-3-0.5-4-6.5 3-2-1.5-6 6.5-1 6.5-3 3-5 10.5-1.5 1-2.5-3-6-11-9-12.5-2.5-2 6.5 3 2-4.5 8.5-4-1.5-5-2z"/>
+</g>
+</svg><p class="cpa-note">Mauszeiger auf einen Kreis: Name und Wert. Weiße Linien = Ländergrenzen.</p></div>
+      <div class="cpa-gh-side"><table class="cpa-table"><thead><tr><th>Gesamthärte (°dH)</th><th>Härtebereich</th><th class="cpa-num">Kreise</th></tr></thead>
+<tbody>
+<tr><td><span class="cpa-gh-sw cpa-gh-k1"></span>unter 5</td><td>weich</td><td class="cpa-num">4</td></tr>
+<tr><td><span class="cpa-gh-sw cpa-gh-k2"></span>5 bis unter 8,4</td><td>weich</td><td class="cpa-num">34</td></tr>
+<tr><td><span class="cpa-gh-sw cpa-gh-k3"></span>8,4 bis unter 11</td><td>mittel</td><td class="cpa-num">56</td></tr>
+<tr><td><span class="cpa-gh-sw cpa-gh-k4"></span>11 bis 14</td><td>mittel</td><td class="cpa-num">89</td></tr>
+<tr><td><span class="cpa-gh-sw cpa-gh-k5"></span>über 14 bis 18</td><td>hart</td><td class="cpa-num">140</td></tr>
+<tr><td><span class="cpa-gh-sw cpa-gh-k6"></span>über 18 bis 22</td><td>hart</td><td class="cpa-num">61</td></tr>
+<tr><td><span class="cpa-gh-sw cpa-gh-k7"></span>über 22</td><td>hart</td><td class="cpa-num">15</td></tr>
+<tr><td><span class="cpa-gh-sw cpa-gh-sw0"></span>keine Angabe</td><td>–</td><td class="cpa-num">1</td></tr>
+</tbody></table><h3 class="cpa-gh-h3">Die 8 weichsten Kreise</h3><table class="cpa-table"><thead><tr><th>Kreis</th><th class="cpa-num">°dH</th></tr></thead>
+<tbody>
+<tr><td>Suhl (Stadt)</td><td class="cpa-num">2,0</td></tr>
+<tr><td>Braunschweig (Stadt)</td><td class="cpa-num">2,8</td></tr>
+<tr><td>Kaiserslautern (Stadt)</td><td class="cpa-num">4,0</td></tr>
+<tr><td>Pirmasens (Stadt)</td><td class="cpa-num">4,0</td></tr>
+<tr><td>Wilhelmshaven (Stadt)</td><td class="cpa-num">5,0</td></tr>
+<tr><td>Remscheid (Stadt)</td><td class="cpa-num">5,6</td></tr>
+<tr><td>Bonn (Stadt)</td><td class="cpa-num">6,0</td></tr>
+<tr><td>Solingen (Stadt)</td><td class="cpa-num">6,0</td></tr>
+</tbody></table><h3 class="cpa-gh-h3">Die 8 härtesten Kreise</h3><table class="cpa-table"><thead><tr><th>Kreis</th><th class="cpa-num">°dH</th></tr></thead>
+<tbody>
+<tr><td>Würzburg (Stadt)</td><td class="cpa-num">41,0</td></tr>
+<tr><td>Unstrut-Hainich-Kreis</td><td class="cpa-num">30,4</td></tr>
+<tr><td>Erfurt (Stadt)</td><td class="cpa-num">30,0</td></tr>
+<tr><td>Saalekreis</td><td class="cpa-num">29,3</td></tr>
+<tr><td>Würzburg</td><td class="cpa-num">29,2</td></tr>
+<tr><td>Kitzingen</td><td class="cpa-num">29,1</td></tr>
+<tr><td>Mansfeld-Südharz</td><td class="cpa-num">27,0</td></tr>
+<tr><td>Kyffhäuserkreis</td><td class="cpa-num">26,5</td></tr>
+</tbody></table></div>
+    </div>
+  </div>
+  <div class="cpa-section">
+    <h2>Bundesländer</h2>
+    <p class="cpa-gh-intro">Median der Kreiswerte sowie der nach Anzahl der Gemeinden gewichtete Durchschnitt; sortiert von weich nach hart.</p>
+    <div class="cpa-table-wrap"><table class="cpa-table"><thead><tr><th>Bundesland</th><th class="cpa-num">Kreise</th><th class="cpa-num">Median °dH</th><th class="cpa-num">Ø nach Gemeinden</th><th>Niedrigster Kreis</th><th>Höchster Kreis</th></tr></thead>
+<tbody>
+<tr><td>Bremen</td><td class="cpa-num">1</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,3</td><td class="cpa-num">6,3</td><td>Bremen (6,3)</td><td>Bremen (6,3)</td></tr>
+<tr><td>Saarland</td><td class="cpa-num">6</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,6</td><td class="cpa-num">9,7</td><td>St. Wendel (6,8)</td><td>Saarpfalz-Kreis (12,7)</td></tr>
+<tr><td>Hamburg</td><td class="cpa-num">1</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,2</td><td class="cpa-num">10,2</td><td>Hamburg (10,2)</td><td>Hamburg (10,2)</td></tr>
+<tr><td>Niedersachsen</td><td class="cpa-num">45</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,7</td><td class="cpa-num">12,4</td><td>Braunschweig (2,8)</td><td>Hameln-Pyrmont (19,7)</td></tr>
+<tr><td>Sachsen</td><td class="cpa-num">13</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,0</td><td class="cpa-num">12,7</td><td>Erzgebirgskreis (7,4)</td><td>Mittelsachsen (19,7)</td></tr>
+<tr><td>Nordrhein-Westfalen</td><td class="cpa-num">53</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,2</td><td class="cpa-num">13,4</td><td>Remscheid (5,6)</td><td>Minden-Lübbecke (22,3)</td></tr>
+<tr><td>Rheinland-Pfalz</td><td class="cpa-num">36</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,2</td><td class="cpa-num">12,4</td><td>Kaiserslautern (4,0)</td><td>Alzey-Worms (20,3)</td></tr>
+<tr><td>Schleswig-Holstein</td><td class="cpa-num">15</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,4</td><td class="cpa-num">13,1</td><td>Flensburg (8,0)</td><td>Kiel (19,4)</td></tr>
+<tr><td>Hessen</td><td class="cpa-num">26</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,9</td><td class="cpa-num">14,9</td><td>Lahn-Dill-Kreis (12,0)</td><td>Main-Taunus-Kreis (19,9)</td></tr>
+<tr><td>Baden-Württemberg</td><td class="cpa-num">44</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,0</td><td class="cpa-num">15,1</td><td>Calw (8,8)</td><td>Main-Tauber-Kreis (23,0)</td></tr>
+<tr><td>Sachsen-Anhalt</td><td class="cpa-num">14</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td class="cpa-num">19,4</td><td>Halle (Saale) (8,4)</td><td>Saalekreis (29,3)</td></tr>
+<tr><td>Brandenburg</td><td class="cpa-num">18</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,4</td><td class="cpa-num">16,1</td><td>Brandenburg an der Havel (11,0)</td><td>Potsdam (19,6)</td></tr>
+<tr><td>Bayern</td><td class="cpa-num">96</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td class="cpa-num">16,6</td><td>Freyung-Grafenau (8,4)</td><td>Würzburg (41,0)</td></tr>
+<tr><td>Mecklenburg-Vorpommern</td><td class="cpa-num">8</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,4</td><td class="cpa-num">17,8</td><td>Ludwigslust-Parchim (13,4)</td><td>Vorpommern-Rügen (21,4)</td></tr>
+<tr><td>Berlin</td><td class="cpa-num">1</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,4</td><td class="cpa-num">18,4</td><td>Berlin (18,4)</td><td>Berlin (18,4)</td></tr>
+<tr><td>Thüringen</td><td class="cpa-num">22</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,5</td><td class="cpa-num">18,6</td><td>Suhl (2,0)</td><td>Unstrut-Hainich-Kreis (30,4)</td></tr>
+</tbody></table></div>
+  </div>
+  <div class="cpa-section">
+    <h2>Alle Kreise</h2>
+    <p class="cpa-gh-intro">Sortiert nach Bundesland und Name. „Gemeinden“ = Anzahl der Gemeinden, aus denen der Durchschnitt gebildet wurde.</p>
+    <div class="cpa-table-wrap cpa-gh-scroll"><table class="cpa-table cpa-gh-sticky"><thead><tr><th>Kreis</th><th>Art</th><th>Bundesland</th><th class="cpa-num">°dH</th><th>Bereich</th><th class="cpa-num">Gemeinden</th></tr></thead>
+<tbody>
+<tr><td>Alb-Donau-Kreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,7</td><td>hart</td><td class="cpa-num">55</td></tr>
+<tr><td>Baden-Baden</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,4</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Biberach</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,8</td><td>hart</td><td class="cpa-num">45</td></tr>
+<tr><td>Böblingen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,2</td><td>hart</td><td class="cpa-num">26</td></tr>
+<tr><td>Bodenseekreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,5</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Breisgau-Hochschwarzwald</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,4</td><td>mittel</td><td class="cpa-num">50</td></tr>
+<tr><td>Calw</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,8</td><td>mittel</td><td class="cpa-num">25</td></tr>
+<tr><td>Emmendingen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,5</td><td>mittel</td><td class="cpa-num">24</td></tr>
+<tr><td>Enzkreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,3</td><td>hart</td><td class="cpa-num">28</td></tr>
+<tr><td>Esslingen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,1</td><td>hart</td><td class="cpa-num">44</td></tr>
+<tr><td>Freiburg im Breisgau</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Freudenstadt</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,5</td><td>mittel</td><td class="cpa-num">16</td></tr>
+<tr><td>Göppingen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,8</td><td>hart</td><td class="cpa-num">38</td></tr>
+<tr><td>Heidelberg</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,4</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Heidenheim</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,1</td><td>hart</td><td class="cpa-num">11</td></tr>
+<tr><td>Heilbronn</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">46</td></tr>
+<tr><td>Heilbronn</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Hohenlohekreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">16</td></tr>
+<tr><td>Karlsruhe</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,2</td><td>hart</td><td class="cpa-num">32</td></tr>
+<tr><td>Karlsruhe</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Konstanz</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,1</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Lörrach</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,4</td><td>mittel</td><td class="cpa-num">35</td></tr>
+<tr><td>Ludwigsburg</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,8</td><td>hart</td><td class="cpa-num">39</td></tr>
+<tr><td>Main-Tauber-Kreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>23,0</td><td>hart</td><td class="cpa-num">18</td></tr>
+<tr><td>Mannheim</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Neckar-Odenwald-Kreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,9</td><td>mittel</td><td class="cpa-num">27</td></tr>
+<tr><td>Ortenaukreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,9</td><td>mittel</td><td class="cpa-num">52</td></tr>
+<tr><td>Ostalbkreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,3</td><td>hart</td><td class="cpa-num">42</td></tr>
+<tr><td>Pforzheim</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,9</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Rastatt</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,4</td><td>mittel</td><td class="cpa-num">23</td></tr>
+<tr><td>Ravensburg</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,7</td><td>hart</td><td class="cpa-num">39</td></tr>
+<tr><td>Rems-Murr-Kreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,6</td><td>hart</td><td class="cpa-num">31</td></tr>
+<tr><td>Reutlingen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,7</td><td>hart</td><td class="cpa-num">27</td></tr>
+<tr><td>Rhein-Neckar-Kreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,9</td><td>hart</td><td class="cpa-num">54</td></tr>
+<tr><td>Rottweil</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,9</td><td>hart</td><td class="cpa-num">21</td></tr>
+<tr><td>Schwäbisch Hall</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,5</td><td>hart</td><td class="cpa-num">30</td></tr>
+<tr><td>Schwarzwald-Baar-Kreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,9</td><td>mittel</td><td class="cpa-num">20</td></tr>
+<tr><td>Sigmaringen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,4</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Stuttgart</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Tübingen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,3</td><td>hart</td><td class="cpa-num">15</td></tr>
+<tr><td>Tuttlingen</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,7</td><td>hart</td><td class="cpa-num">35</td></tr>
+<tr><td>Ulm</td><td>Stadt</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,2</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Waldshut</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">32</td></tr>
+<tr><td>Zollernalbkreis</td><td>Landkreis</td><td>Baden-Württemberg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,6</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Aichach-Friedberg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,4</td><td>hart</td><td class="cpa-num">24</td></tr>
+<tr><td>Altötting</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,8</td><td>hart</td><td class="cpa-num">24</td></tr>
+<tr><td>Amberg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,3</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Amberg-Sulzbach</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">28</td></tr>
+<tr><td>Ansbach</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Ansbach</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">59</td></tr>
+<tr><td>Aschaffenburg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,2</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Aschaffenburg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,6</td><td>mittel</td><td class="cpa-num">40</td></tr>
+<tr><td>Augsburg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,3</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Augsburg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,9</td><td>hart</td><td class="cpa-num">47</td></tr>
+<tr><td>Bad Kissingen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,7</td><td>hart</td><td class="cpa-num">38</td></tr>
+<tr><td>Bad Tölz-Wolfratshausen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,6</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Bamberg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,2</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Bamberg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,7</td><td>hart</td><td class="cpa-num">46</td></tr>
+<tr><td>Bayreuth</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,2</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Bayreuth</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,2</td><td>mittel</td><td class="cpa-num">43</td></tr>
+<tr><td>Berchtesgadener Land</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,2</td><td>hart</td><td class="cpa-num">17</td></tr>
+<tr><td>Cham</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,3</td><td>mittel</td><td class="cpa-num">39</td></tr>
+<tr><td>Coburg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>20,9</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Coburg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>20,8</td><td>hart</td><td class="cpa-num">19</td></tr>
+<tr><td>Dachau</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,7</td><td>mittel</td><td class="cpa-num">17</td></tr>
+<tr><td>Deggendorf</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,9</td><td>mittel</td><td class="cpa-num">26</td></tr>
+<tr><td>Dillingen a.d.Donau</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,8</td><td>hart</td><td class="cpa-num">27</td></tr>
+<tr><td>Dingolfing-Landau</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,6</td><td>hart</td><td class="cpa-num">15</td></tr>
+<tr><td>Donau-Ries</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,9</td><td>hart</td><td class="cpa-num">46</td></tr>
+<tr><td>Ebersberg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,8</td><td>hart</td><td class="cpa-num">24</td></tr>
+<tr><td>Eichstätt</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,2</td><td>hart</td><td class="cpa-num">31</td></tr>
+<tr><td>Erding</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,6</td><td>hart</td><td class="cpa-num">26</td></tr>
+<tr><td>Erlangen</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,8</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Erlangen-Höchstadt</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,0</td><td>hart</td><td class="cpa-num">35</td></tr>
+<tr><td>Forchheim</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,3</td><td>hart</td><td class="cpa-num">29</td></tr>
+<tr><td>Freising</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,9</td><td>hart</td><td class="cpa-num">24</td></tr>
+<tr><td>Freyung-Grafenau</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,4</td><td>mittel</td><td class="cpa-num">36</td></tr>
+<tr><td>Fürstenfeldbruck</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,7</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Fürth</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,5</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Fürth</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,3</td><td>hart</td><td class="cpa-num">14</td></tr>
+<tr><td>Garmisch-Partenkirchen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,5</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Günzburg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,5</td><td>hart</td><td class="cpa-num">36</td></tr>
+<tr><td>Haßberge</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>20,3</td><td>hart</td><td class="cpa-num">26</td></tr>
+<tr><td>Hof</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,7</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Hof</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,4</td><td>mittel</td><td class="cpa-num">30</td></tr>
+<tr><td>Ingolstadt</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,4</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Kaufbeuren</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>20,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Kelheim</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,9</td><td>hart</td><td class="cpa-num">27</td></tr>
+<tr><td>Kempten (Allgäu)</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Kitzingen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>29,1</td><td>hart</td><td class="cpa-num">31</td></tr>
+<tr><td>Kronach</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,7</td><td>mittel</td><td class="cpa-num">20</td></tr>
+<tr><td>Kulmbach</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,7</td><td>mittel</td><td class="cpa-num">22</td></tr>
+<tr><td>Landsberg am Lech</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,9</td><td>hart</td><td class="cpa-num">32</td></tr>
+<tr><td>Landshut</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,8</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Landshut</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,6</td><td>hart</td><td class="cpa-num">35</td></tr>
+<tr><td>Lichtenfels</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">13</td></tr>
+<tr><td>Lindau (Bodensee)</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,3</td><td>hart</td><td class="cpa-num">19</td></tr>
+<tr><td>Main-Spessart</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,6</td><td>hart</td><td class="cpa-num">50</td></tr>
+<tr><td>Memmingen</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Miesbach</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,9</td><td>hart</td><td class="cpa-num">17</td></tr>
+<tr><td>Miltenberg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,6</td><td>mittel</td><td class="cpa-num">34</td></tr>
+<tr><td>Mühldorf a.Inn</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,3</td><td>hart</td><td class="cpa-num">32</td></tr>
+<tr><td>München</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>München</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">32</td></tr>
+<tr><td>Neu-Ulm</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">21</td></tr>
+<tr><td>Neuburg-Schrobenhausen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td>hart</td><td class="cpa-num">18</td></tr>
+<tr><td>Neumarkt i.d.OPf.</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">19</td></tr>
+<tr><td>Neustadt a.d.Aisch-Bad Windsheim</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>23,3</td><td>hart</td><td class="cpa-num">39</td></tr>
+<tr><td>Neustadt a.d.Waldnaab</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,2</td><td>mittel</td><td class="cpa-num">40</td></tr>
+<tr><td>Nürnberg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,8</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Nürnberger Land</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,6</td><td>hart</td><td class="cpa-num">41</td></tr>
+<tr><td>Oberallgäu</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">29</td></tr>
+<tr><td>Ostallgäu</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,9</td><td>hart</td><td class="cpa-num">45</td></tr>
+<tr><td>Passau</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,5</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Passau</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,8</td><td>mittel</td><td class="cpa-num">38</td></tr>
+<tr><td>Pfaffenhofen a.d.Ilm</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,2</td><td>hart</td><td class="cpa-num">19</td></tr>
+<tr><td>Regen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,8</td><td>mittel</td><td class="cpa-num">24</td></tr>
+<tr><td>Regensburg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,9</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Regensburg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">43</td></tr>
+<tr><td>Rhön-Grabfeld</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>22,0</td><td>hart</td><td class="cpa-num">45</td></tr>
+<tr><td>Rosenheim</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>20,3</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Rosenheim</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,4</td><td>hart</td><td class="cpa-num">48</td></tr>
+<tr><td>Roth</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,9</td><td>hart</td><td class="cpa-num">21</td></tr>
+<tr><td>Rottal-Inn</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,4</td><td>hart</td><td class="cpa-num">31</td></tr>
+<tr><td>Schwabach</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Schwandorf</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,5</td><td>mittel</td><td class="cpa-num">34</td></tr>
+<tr><td>Schweinfurt</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>22,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Schweinfurt</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>23,2</td><td>hart</td><td class="cpa-num">36</td></tr>
+<tr><td>Starnberg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,5</td><td>hart</td><td class="cpa-num">15</td></tr>
+<tr><td>Straubing</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Straubing-Bogen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,8</td><td>hart</td><td class="cpa-num">37</td></tr>
+<tr><td>Tirschenreuth</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,8</td><td>mittel</td><td class="cpa-num">26</td></tr>
+<tr><td>Traunstein</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,6</td><td>hart</td><td class="cpa-num">37</td></tr>
+<tr><td>Unterallgäu</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,2</td><td>hart</td><td class="cpa-num">53</td></tr>
+<tr><td>Weiden i.d.OPf.</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,2</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Weilheim-Schongau</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,2</td><td>hart</td><td class="cpa-num">34</td></tr>
+<tr><td>Weißenburg-Gunzenhausen</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,5</td><td>hart</td><td class="cpa-num">27</td></tr>
+<tr><td>Wunsiedel i.Fichtelgebirge</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,5</td><td>mittel</td><td class="cpa-num">22</td></tr>
+<tr><td>Würzburg</td><td>Stadt</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>41,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Würzburg</td><td>Landkreis</td><td>Bayern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>29,2</td><td>hart</td><td class="cpa-num">55</td></tr>
+<tr><td>Berlin</td><td>Stadt</td><td>Berlin</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,4</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Barnim</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,6</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Brandenburg an der Havel</td><td>Stadt</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Cottbus</td><td>Stadt</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,4</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Dahme-Spreewald</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,6</td><td>hart</td><td class="cpa-num">37</td></tr>
+<tr><td>Elbe-Elster</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,7</td><td>mittel</td><td class="cpa-num">33</td></tr>
+<tr><td>Frankfurt (Oder)</td><td>Stadt</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,3</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Havelland</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,7</td><td>hart</td><td class="cpa-num">26</td></tr>
+<tr><td>Märkisch-Oderland</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,2</td><td>hart</td><td class="cpa-num">45</td></tr>
+<tr><td>Oberhavel</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">19</td></tr>
+<tr><td>Oberspreewald-Lausitz</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,3</td><td>mittel</td><td class="cpa-num">25</td></tr>
+<tr><td>Oder-Spree</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,1</td><td>hart</td><td class="cpa-num">37</td></tr>
+<tr><td>Ostprignitz-Ruppin</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,7</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Potsdam</td><td>Stadt</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,6</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Potsdam-Mittelmark</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,5</td><td>hart</td><td class="cpa-num">38</td></tr>
+<tr><td>Prignitz</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,4</td><td>hart</td><td class="cpa-num">26</td></tr>
+<tr><td>Spree-Neiße</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,8</td><td>mittel</td><td class="cpa-num">29</td></tr>
+<tr><td>Teltow-Fläming</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,6</td><td>hart</td><td class="cpa-num">16</td></tr>
+<tr><td>Uckermark</td><td>Landkreis</td><td>Brandenburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,0</td><td>hart</td><td class="cpa-num">30</td></tr>
+<tr><td>Bremen</td><td>Stadt</td><td>Bremen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,3</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Hamburg</td><td>Stadt</td><td>Hamburg</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,2</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Bergstraße</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Darmstadt</td><td>Stadt</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Darmstadt-Dieburg</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Frankfurt am Main</td><td>Stadt</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,3</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Fulda</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,1</td><td>hart</td><td class="cpa-num">23</td></tr>
+<tr><td>Gießen</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,9</td><td>hart</td><td class="cpa-num">18</td></tr>
+<tr><td>Groß-Gerau</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">14</td></tr>
+<tr><td>Hersfeld-Rotenburg</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,2</td><td>mittel</td><td class="cpa-num">20</td></tr>
+<tr><td>Hochtaunuskreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,2</td><td>mittel</td><td class="cpa-num">13</td></tr>
+<tr><td>Kassel</td><td>Stadt</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,1</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Kassel</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,9</td><td>hart</td><td class="cpa-num">29</td></tr>
+<tr><td>Lahn-Dill-Kreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,0</td><td>mittel</td><td class="cpa-num">23</td></tr>
+<tr><td>Limburg-Weilburg</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,5</td><td>hart</td><td class="cpa-num">19</td></tr>
+<tr><td>Main-Kinzig-Kreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,9</td><td>mittel</td><td class="cpa-num">30</td></tr>
+<tr><td>Main-Taunus-Kreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,9</td><td>hart</td><td class="cpa-num">12</td></tr>
+<tr><td>Marburg-Biedenkopf</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,5</td><td>mittel</td><td class="cpa-num">22</td></tr>
+<tr><td>Odenwaldkreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,8</td><td>hart</td><td class="cpa-num">12</td></tr>
+<tr><td>Offenbach</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,0</td><td>mittel</td><td class="cpa-num">13</td></tr>
+<tr><td>Offenbach am Main</td><td>Stadt</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Rheingau-Taunus-Kreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,8</td><td>hart</td><td class="cpa-num">17</td></tr>
+<tr><td>Schwalm-Eder-Kreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,6</td><td>mittel</td><td class="cpa-num">27</td></tr>
+<tr><td>Vogelsbergkreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,2</td><td>mittel</td><td class="cpa-num">19</td></tr>
+<tr><td>Waldeck-Frankenberg</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,7</td><td>hart</td><td class="cpa-num">21</td></tr>
+<tr><td>Werra-Meißner-Kreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">17</td></tr>
+<tr><td>Wetteraukreis</td><td>Landkreis</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,1</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Wiesbaden</td><td>Stadt</td><td>Hessen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Ludwigslust-Parchim</td><td>Landkreis</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,4</td><td>mittel</td><td class="cpa-num">142</td></tr>
+<tr><td>Mecklenburgische Seenplatte</td><td>Landkreis</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,4</td><td>hart</td><td class="cpa-num">146</td></tr>
+<tr><td>Nordwestmecklenburg</td><td>Landkreis</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,3</td><td>hart</td><td class="cpa-num">83</td></tr>
+<tr><td>Rostock</td><td>Stadt</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Rostock</td><td>Landkreis</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,9</td><td>hart</td><td class="cpa-num">112</td></tr>
+<tr><td>Schwerin</td><td>Stadt</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,1</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Vorpommern-Greifswald</td><td>Landkreis</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,1</td><td>hart</td><td class="cpa-num">138</td></tr>
+<tr><td>Vorpommern-Rügen</td><td>Landkreis</td><td>Mecklenburg-Vorpommern</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>21,4</td><td>hart</td><td class="cpa-num">101</td></tr>
+<tr><td>Ammerland</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,2</td><td>weich</td><td class="cpa-num">6</td></tr>
+<tr><td>Aurich</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,4</td><td>weich</td><td class="cpa-num">25</td></tr>
+<tr><td>Braunschweig</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k1"></span>2,8</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Celle</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td>hart</td><td class="cpa-num">21</td></tr>
+<tr><td>Cloppenburg</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,5</td><td>weich</td><td class="cpa-num">13</td></tr>
+<tr><td>Cuxhaven</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,3</td><td>mittel</td><td class="cpa-num">29</td></tr>
+<tr><td>Delmenhorst</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Diepholz</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,6</td><td>mittel</td><td class="cpa-num">45</td></tr>
+<tr><td>Emden</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,3</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Emsland</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,4</td><td>mittel</td><td class="cpa-num">60</td></tr>
+<tr><td>Friesland</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,8</td><td>weich</td><td class="cpa-num">8</td></tr>
+<tr><td>Gifhorn</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,5</td><td>hart</td><td class="cpa-num">42</td></tr>
+<tr><td>Goslar</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,4</td><td>mittel</td><td class="cpa-num">8</td></tr>
+<tr><td>Göttingen</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,8</td><td>hart</td><td class="cpa-num">40</td></tr>
+<tr><td>Grafschaft Bentheim</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,7</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Hameln-Pyrmont</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,7</td><td>hart</td><td class="cpa-num">8</td></tr>
+<tr><td>Harburg</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,0</td><td>mittel</td><td class="cpa-num">42</td></tr>
+<tr><td>Heidekreis</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,4</td><td>mittel</td><td class="cpa-num">23</td></tr>
+<tr><td>Helmstedt</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,5</td><td>hart</td><td class="cpa-num">28</td></tr>
+<tr><td>Hildesheim</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,9</td><td>mittel</td><td class="cpa-num">20</td></tr>
+<tr><td>Holzminden</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,9</td><td>hart</td><td class="cpa-num">39</td></tr>
+<tr><td>Leer</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,6</td><td>weich</td><td class="cpa-num">20</td></tr>
+<tr><td>Lüchow-Dannenberg</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,3</td><td>mittel</td><td class="cpa-num">29</td></tr>
+<tr><td>Lüneburg</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,7</td><td>mittel</td><td class="cpa-num">43</td></tr>
+<tr><td>Nienburg (Weser)</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,7</td><td>mittel</td><td class="cpa-num">36</td></tr>
+<tr><td>Northeim</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,9</td><td>mittel</td><td class="cpa-num">12</td></tr>
+<tr><td>Oldenburg</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,8</td><td>mittel</td><td class="cpa-num">15</td></tr>
+<tr><td>Oldenburg (Oldb)</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,6</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Osnabrück</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,8</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Osnabrück</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,8</td><td>hart</td><td class="cpa-num">34</td></tr>
+<tr><td>Osterholz</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,3</td><td>mittel</td><td class="cpa-num">11</td></tr>
+<tr><td>Peine</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,2</td><td>weich</td><td class="cpa-num">7</td></tr>
+<tr><td>Region Hannover</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,2</td><td>mittel</td><td class="cpa-num">21</td></tr>
+<tr><td>Rotenburg (Wümme)</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,4</td><td>mittel</td><td class="cpa-num">57</td></tr>
+<tr><td>Salzgitter</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,3</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Schaumburg</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,7</td><td>hart</td><td class="cpa-num">38</td></tr>
+<tr><td>Stade</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,4</td><td>mittel</td><td class="cpa-num">40</td></tr>
+<tr><td>Uelzen</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,2</td><td>mittel</td><td class="cpa-num">27</td></tr>
+<tr><td>Vechta</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,2</td><td>mittel</td><td class="cpa-num">10</td></tr>
+<tr><td>Verden</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,7</td><td>mittel</td><td class="cpa-num">11</td></tr>
+<tr><td>Wesermarsch</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,6</td><td>weich</td><td class="cpa-num">9</td></tr>
+<tr><td>Wilhelmshaven</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>5,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Wittmund</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,8</td><td>weich</td><td class="cpa-num">19</td></tr>
+<tr><td>Wolfenbüttel</td><td>Landkreis</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,6</td><td>mittel</td><td class="cpa-num">35</td></tr>
+<tr><td>Wolfsburg</td><td>Stadt</td><td>Niedersachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Bielefeld</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Bochum</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,3</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Bonn</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Borken</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td>hart</td><td class="cpa-num">17</td></tr>
+<tr><td>Bottrop</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,3</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Coesfeld</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,4</td><td>mittel</td><td class="cpa-num">11</td></tr>
+<tr><td>Dortmund</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Duisburg</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Düren</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">15</td></tr>
+<tr><td>Düsseldorf</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Ennepe-Ruhr-Kreis</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,3</td><td>weich</td><td class="cpa-num">9</td></tr>
+<tr><td>Essen</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,3</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Euskirchen</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td>hart</td><td class="cpa-num">11</td></tr>
+<tr><td>Gelsenkirchen</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Gütersloh</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,3</td><td>hart</td><td class="cpa-num">13</td></tr>
+<tr><td>Hagen</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,2</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Hamm</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Heinsberg</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,7</td><td>mittel</td><td class="cpa-num">10</td></tr>
+<tr><td>Herford</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>21,8</td><td>hart</td><td class="cpa-num">9</td></tr>
+<tr><td>Herne</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,6</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Hochsauerlandkreis</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,3</td><td>mittel</td><td class="cpa-num">12</td></tr>
+<tr><td>Höxter</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">10</td></tr>
+<tr><td>Kleve</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,7</td><td>mittel</td><td class="cpa-num">16</td></tr>
+<tr><td>Köln</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>22,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Krefeld</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,8</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Leverkusen</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,1</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Lippe</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,1</td><td>hart</td><td class="cpa-num">16</td></tr>
+<tr><td>Märkischer Kreis</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,7</td><td>mittel</td><td class="cpa-num">15</td></tr>
+<tr><td>Mettmann</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,1</td><td>hart</td><td class="cpa-num">10</td></tr>
+<tr><td>Minden-Lübbecke</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>22,3</td><td>hart</td><td class="cpa-num">11</td></tr>
+<tr><td>Mönchengladbach</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Mülheim an der Ruhr</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,3</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Münster</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,9</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Oberbergischer Kreis</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,9</td><td>weich</td><td class="cpa-num">13</td></tr>
+<tr><td>Oberhausen</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,2</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Olpe</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,1</td><td>weich</td><td class="cpa-num">7</td></tr>
+<tr><td>Paderborn</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,1</td><td>hart</td><td class="cpa-num">10</td></tr>
+<tr><td>Recklinghausen</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,3</td><td>mittel</td><td class="cpa-num">10</td></tr>
+<tr><td>Remscheid</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>5,6</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Rhein-Erft-Kreis</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,4</td><td>hart</td><td class="cpa-num">10</td></tr>
+<tr><td>Rhein-Kreis Neuss</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,0</td><td>hart</td><td class="cpa-num">8</td></tr>
+<tr><td>Rhein-Sieg-Kreis</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,8</td><td>mittel</td><td class="cpa-num">19</td></tr>
+<tr><td>Rheinisch-Bergischer Kreis</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,1</td><td>mittel</td><td class="cpa-num">8</td></tr>
+<tr><td>Siegen-Wittgenstein</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,7</td><td>mittel</td><td class="cpa-num">11</td></tr>
+<tr><td>Soest</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,5</td><td>mittel</td><td class="cpa-num">14</td></tr>
+<tr><td>Solingen</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Städteregion Aachen</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,0</td><td>mittel</td><td class="cpa-num">10</td></tr>
+<tr><td>Steinfurt</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,4</td><td>hart</td><td class="cpa-num">24</td></tr>
+<tr><td>Unna</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,3</td><td>mittel</td><td class="cpa-num">10</td></tr>
+<tr><td>Viersen</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,9</td><td>mittel</td><td class="cpa-num">9</td></tr>
+<tr><td>Warendorf</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,6</td><td>hart</td><td class="cpa-num">13</td></tr>
+<tr><td>Wesel</td><td>Landkreis</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,4</td><td>mittel</td><td class="cpa-num">13</td></tr>
+<tr><td>Wuppertal</td><td>Stadt</td><td>Nordrhein-Westfalen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,8</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Ahrweiler</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,6</td><td>mittel</td><td class="cpa-num">74</td></tr>
+<tr><td>Altenkirchen (Westerwald)</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,7</td><td>mittel</td><td class="cpa-num">118</td></tr>
+<tr><td>Alzey-Worms</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>20,3</td><td>hart</td><td class="cpa-num">69</td></tr>
+<tr><td>Bad Dürkheim</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,3</td><td>mittel</td><td class="cpa-num">48</td></tr>
+<tr><td>Bad Kreuznach</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,6</td><td>hart</td><td class="cpa-num">118</td></tr>
+<tr><td>Bernkastel-Wittlich</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,2</td><td>mittel</td><td class="cpa-num">107</td></tr>
+<tr><td>Birkenfeld</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,1</td><td>mittel</td><td class="cpa-num">96</td></tr>
+<tr><td>Cochem-Zell</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,0</td><td>mittel</td><td class="cpa-num">89</td></tr>
+<tr><td>Donnersbergkreis</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td>hart</td><td class="cpa-num">81</td></tr>
+<tr><td>Eifelkreis Bitburg-Prüm</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,9</td><td>mittel</td><td class="cpa-num">233</td></tr>
+<tr><td>Frankenthal (Pfalz)</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Germersheim</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,9</td><td>mittel</td><td class="cpa-num">31</td></tr>
+<tr><td>Kaiserslautern</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k1"></span>4,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Kaiserslautern</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,2</td><td>mittel</td><td class="cpa-num">50</td></tr>
+<tr><td>Koblenz</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,1</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Kusel</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,5</td><td>mittel</td><td class="cpa-num">98</td></tr>
+<tr><td>Landau in der Pfalz</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Ludwigshafen am Rhein</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,3</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Mainz</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,6</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Mainz-Bingen</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,0</td><td>hart</td><td class="cpa-num">64</td></tr>
+<tr><td>Mayen-Koblenz</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,5</td><td>hart</td><td class="cpa-num">87</td></tr>
+<tr><td>Neustadt an der Weinstraße</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,9</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Neuwied</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,6</td><td>mittel</td><td class="cpa-num">62</td></tr>
+<tr><td>Pirmasens</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k1"></span>4,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Rhein-Hunsrück-Kreis</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">137</td></tr>
+<tr><td>Rhein-Lahn-Kreis</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">137</td></tr>
+<tr><td>Rhein-Pfalz-Kreis</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,5</td><td>mittel</td><td class="cpa-num">25</td></tr>
+<tr><td>Speyer</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Südliche Weinstraße</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,1</td><td>mittel</td><td class="cpa-num">75</td></tr>
+<tr><td>Südwestpfalz</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,3</td><td>mittel</td><td class="cpa-num">84</td></tr>
+<tr><td>Trier</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,4</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Trier-Saarburg</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,6</td><td>mittel</td><td class="cpa-num">104</td></tr>
+<tr><td>Vulkaneifel</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,9</td><td>mittel</td><td class="cpa-num">109</td></tr>
+<tr><td>Westerwaldkreis</td><td>Landkreis</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,6</td><td>weich</td><td class="cpa-num">192</td></tr>
+<tr><td>Worms</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Zweibrücken</td><td>Stadt</td><td>Rheinland-Pfalz</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Merzig-Wadern</td><td>Landkreis</td><td>Saarland</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,1</td><td>weich</td><td class="cpa-num">8</td></tr>
+<tr><td>Neunkirchen</td><td>Landkreis</td><td>Saarland</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,7</td><td>mittel</td><td class="cpa-num">7</td></tr>
+<tr><td>Regionalverband Saarbrücken</td><td>Landkreis</td><td>Saarland</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,2</td><td>mittel</td><td class="cpa-num">10</td></tr>
+<tr><td>Saarlouis</td><td>Landkreis</td><td>Saarland</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,5</td><td>mittel</td><td class="cpa-num">13</td></tr>
+<tr><td>Saarpfalz-Kreis</td><td>Landkreis</td><td>Saarland</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,7</td><td>mittel</td><td class="cpa-num">7</td></tr>
+<tr><td>St. Wendel</td><td>Landkreis</td><td>Saarland</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>6,8</td><td>weich</td><td class="cpa-num">8</td></tr>
+<tr><td>Bautzen</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,6</td><td>mittel</td><td class="cpa-num">57</td></tr>
+<tr><td>Chemnitz</td><td>Stadt</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Dresden</td><td>Stadt</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Erzgebirgskreis</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>7,4</td><td>weich</td><td class="cpa-num">59</td></tr>
+<tr><td>Görlitz</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>12,2</td><td>mittel</td><td class="cpa-num">53</td></tr>
+<tr><td>Leipzig</td><td>Stadt</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,8</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Leipzig</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,9</td><td>hart</td><td class="cpa-num">30</td></tr>
+<tr><td>Meißen</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,3</td><td>hart</td><td class="cpa-num">28</td></tr>
+<tr><td>Mittelsachsen</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,7</td><td>hart</td><td class="cpa-num">52</td></tr>
+<tr><td>Nordsachsen</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,5</td><td>hart</td><td class="cpa-num">30</td></tr>
+<tr><td>Sächsische Schweiz-Osterzgebirge</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,9</td><td>mittel</td><td class="cpa-num">36</td></tr>
+<tr><td>Vogtlandkreis</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,2</td><td>weich</td><td class="cpa-num">37</td></tr>
+<tr><td>Zwickau</td><td>Landkreis</td><td>Sachsen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,3</td><td>mittel</td><td class="cpa-num">33</td></tr>
+<tr><td>Altmarkkreis Salzwedel</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td>hart</td><td class="cpa-num">13</td></tr>
+<tr><td>Anhalt-Bitterfeld</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,8</td><td>hart</td><td class="cpa-num">10</td></tr>
+<tr><td>Börde</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,2</td><td>hart</td><td class="cpa-num">34</td></tr>
+<tr><td>Burgenlandkreis</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>23,0</td><td>hart</td><td class="cpa-num">33</td></tr>
+<tr><td>Dessau-Roßlau</td><td>Stadt</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Halle (Saale)</td><td>Stadt</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>8,4</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Harz</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,7</td><td>hart</td><td class="cpa-num">20</td></tr>
+<tr><td>Jerichower Land</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,3</td><td>hart</td><td class="cpa-num">8</td></tr>
+<tr><td>Magdeburg</td><td>Stadt</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>14,0</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Mansfeld-Südharz</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>27,0</td><td>hart</td><td class="cpa-num">22</td></tr>
+<tr><td>Saalekreis</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>29,3</td><td>hart</td><td class="cpa-num">20</td></tr>
+<tr><td>Salzlandkreis</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,1</td><td>hart</td><td class="cpa-num">21</td></tr>
+<tr><td>Stendal</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,7</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Wittenberg</td><td>Landkreis</td><td>Sachsen-Anhalt</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,1</td><td>hart</td><td class="cpa-num">9</td></tr>
+<tr><td>Dithmarschen</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,1</td><td>mittel</td><td class="cpa-num">116</td></tr>
+<tr><td>Flensburg</td><td>Stadt</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k2"></span>8,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Herzogtum Lauenburg</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,4</td><td>mittel</td><td class="cpa-num">133</td></tr>
+<tr><td>Kiel</td><td>Stadt</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,4</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Lübeck</td><td>Stadt</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>16,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Neumünster</td><td>Stadt</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,9</td><td>mittel</td><td class="cpa-num">1</td></tr>
+<tr><td>Nordfriesland</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,2</td><td>mittel</td><td class="cpa-num">133</td></tr>
+<tr><td>Ostholstein</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,6</td><td>hart</td><td class="cpa-num">36</td></tr>
+<tr><td>Pinneberg</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,0</td><td>mittel</td><td class="cpa-num">49</td></tr>
+<tr><td>Plön</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>17,0</td><td>hart</td><td class="cpa-num">85</td></tr>
+<tr><td>Rendsburg-Eckernförde</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>14,1</td><td>hart</td><td class="cpa-num">165</td></tr>
+<tr><td>Schleswig-Flensburg</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,6</td><td>mittel</td><td class="cpa-num">123</td></tr>
+<tr><td>Segeberg</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,3</td><td>mittel</td><td class="cpa-num">96</td></tr>
+<tr><td>Steinburg</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>10,6</td><td>mittel</td><td class="cpa-num">111</td></tr>
+<tr><td>Stormarn</td><td>Landkreis</td><td>Schleswig-Holstein</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>13,0</td><td>mittel</td><td class="cpa-num">55</td></tr>
+<tr><td>Altenburger Land</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>20,2</td><td>hart</td><td class="cpa-num">30</td></tr>
+<tr><td>Eichsfeld</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,7</td><td>hart</td><td class="cpa-num">56</td></tr>
+<tr><td>Erfurt</td><td>Stadt</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>30,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Gera</td><td>Stadt</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>22,3</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Gotha</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,4</td><td>hart</td><td class="cpa-num">29</td></tr>
+<tr><td>Greiz</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,9</td><td>hart</td><td class="cpa-num">42</td></tr>
+<tr><td>Hildburghausen</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,5</td><td>hart</td><td class="cpa-num">32</td></tr>
+<tr><td>Ilm-Kreis</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,9</td><td>mittel</td><td class="cpa-num">16</td></tr>
+<tr><td>Jena</td><td>Stadt</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Kyffhäuserkreis</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>26,5</td><td>hart</td><td class="cpa-num">28</td></tr>
+<tr><td>Nordhausen</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>21,1</td><td>hart</td><td class="cpa-num">15</td></tr>
+<tr><td>Saale-Holzland-Kreis</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,2</td><td>hart</td><td class="cpa-num">91</td></tr>
+<tr><td>Saale-Orla-Kreis</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,5</td><td>hart</td><td class="cpa-num">59</td></tr>
+<tr><td>Saalfeld-Rudolstadt</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k4"></span>11,5</td><td>mittel</td><td class="cpa-num">26</td></tr>
+<tr><td>Schmalkalden-Meiningen</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>15,2</td><td>hart</td><td class="cpa-num">38</td></tr>
+<tr><td>Sömmerda</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>24,8</td><td>hart</td><td class="cpa-num">37</td></tr>
+<tr><td>Sonneberg</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k3"></span>9,4</td><td>mittel</td><td class="cpa-num">8</td></tr>
+<tr><td>Suhl</td><td>Stadt</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k1"></span>2,0</td><td>weich</td><td class="cpa-num">1</td></tr>
+<tr><td>Unstrut-Hainich-Kreis</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k7"></span>30,4</td><td>hart</td><td class="cpa-num">25</td></tr>
+<tr><td>Wartburgkreis</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k5"></span>18,0</td><td>hart</td><td class="cpa-num">30</td></tr>
+<tr><td>Weimar</td><td>Stadt</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>18,9</td><td>hart</td><td class="cpa-num">1</td></tr>
+<tr><td>Weimarer Land</td><td>Landkreis</td><td>Thüringen</td><td class="cpa-num"><span class="cpa-gh-sw cpa-gh-k6"></span>19,0</td><td>hart</td><td class="cpa-num">38</td></tr>
+</tbody></table></div>
+  </div>
+  <p class="cpa-note">Die Werte sind Durchschnitte je Kreis aus GH.xlsx (399 Zeilen) und gelten unabhängig vom gewählten Zeitraum; sie stammen nicht aus den Aquariendaten der App. Innerhalb eines Kreises kann die Härte je Gemeinde und Versorgungszone deutlich abweichen. Härtebereiche: weich unter 8,4 °dH, mittel 8,4–14 °dH, hart über 14 °dH. Ohne Angabe: Bremerhaven. Kreisgrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0.</p>
+</div>
+<!-- GH-KARTE:END -->
       </div>
     </div>
 
@@ -256,7 +1189,7 @@ body.cpa-page > #nav-mobile-menu { display: none !important; }
 // der Support-Seite geteilt (gleicher Speicherschlüssel): Wer dort angemeldet ist, ist es hier auch.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var AUSWERTUNG_JS = 'auswertung/auswertung.js?v=3';
+  var AUSWERTUNG_JS = 'auswertung/auswertung.js?v=4';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
