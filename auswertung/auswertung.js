@@ -362,6 +362,201 @@
     renderDownloads(sec.files || []);
   }
 
+  /* ── GH-Karte: Orts- und PLZ-Suche ──────────────────────────────────────────────── */
+
+  var GH_MAX_TREFFER = 8;
+  var ghKreise = null;     // [{ ags, name, art, land, gh }]
+  var ghOrte = null;       // [{ name, key, kreis }] - Gemeinden, die Kreise selbst und Postleitzahlen
+  var ghPlz = null;        // PLZ -> [Index des Kreises, …]; der erste ist der mit dem größten Flächenanteil
+  var ghTreffer = [];      // aktuell angebotene Einträge aus ghOrte
+  var ghAktiv = -1;        // markierter Vorschlag (Pfeiltasten)
+
+  /** Suchschlüssel: klein, Umlaute ausgeschrieben, ohne Leer- und Sonderzeichen ("Bad Tölz" -> "badtoelz"). */
+  function ghKey(s) {
+    return String(s).toLowerCase()
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  /** Liest die Kreis-, Gemeinde- und PLZ-Liste aus auswertung.html (einmal je Seitenaufruf). */
+  function ghLoad() {
+    if (ghOrte) return true;
+    var el = $('ghOrte');
+    if (!el) return false;
+    var raw;
+    try { raw = JSON.parse(el.textContent); } catch (e) { return false; }
+    ghKreise = [];
+    ghOrte = [];
+    ghPlz = {};
+    var teil = [];
+    raw.forEach(function (k, i) {
+      ghKreise.push({ ags: k[0], name: k[1], art: k[2], land: k[3], gh: k[4] });
+      var seen = {};
+      (k[5] ? k[5].split('|') : []).forEach(function (name) {
+        seen[name] = true;
+        ghOrte.push({ name: name, key: ghKey(name), kreis: i });
+      });
+      // der Kreis selbst ist auch suchbar (kreisfreie Städte stehen schon als Gemeinde in der Liste)
+      if (!seen[k[1]]) ghOrte.push({ name: k[1], key: ghKey(k[1]), kreis: i, istKreis: true });
+      (k[6] ? k[6].split('|') : []).forEach(function (plz) {
+        ghPlz[plz] = [i];
+        ghOrte.push({ name: plz, key: plz, kreis: i, plz: true });
+      });
+      (k[7] ? k[7].split('|') : []).forEach(function (plz) { teil.push([plz, i]); });
+    });
+    // PLZ, die in weitere Kreise reichen: eigener Eintrag je Kreis
+    teil.forEach(function (t) {
+      (ghPlz[t[0]] = ghPlz[t[0]] || []).push(t[1]);
+      ghOrte.push({ name: t[0], key: t[0], kreis: t[1], plz: true, teil: true });
+    });
+    return true;
+  }
+
+  /** "Landkreis Harz", "Kreisfreie Stadt Kiel" - ohne Vorsatz, wenn der Name schon "Kreis" enthält (Vogtlandkreis). */
+  function ghKreisText(k) {
+    if (k.art === 'Stadt') return 'Kreisfreie Stadt ' + k.name;
+    return /kreis/i.test(k.name) ? k.name : 'Landkreis ' + k.name;
+  }
+
+  function ghBereich(gh) { return gh < 8.4 ? 'weich' : gh <= 14 ? 'mittel' : 'hart'; }
+
+  function ghWert(k) {
+    return k.gh === null ? 'keine Angabe' : k.gh.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' °dH (' + ghBereich(k.gh) + ')';
+  }
+
+  /** Treffer: erst Namen, die mit der Eingabe beginnen, dann solche, die sie enthalten; je alphabetisch.
+   *  Besteht die Eingabe nur aus Ziffern, wird nach Postleitzahlen gesucht (nur am Anfang). */
+  function ghFind(text) {
+    var q = ghKey(text);
+    if (q.length < 2) return [];
+    var nurPlz = /^[0-9]+$/.test(q);
+    var start = [], inside = [];
+    for (var i = 0; i < ghOrte.length; i++) {
+      if (!!ghOrte[i].plz !== nurPlz) continue;
+      var pos = ghOrte[i].key.indexOf(q);
+      if (pos === 0) start.push(ghOrte[i]);
+      else if (pos > 0 && !nurPlz) inside.push(ghOrte[i]);
+    }
+    var byName = function (a, b) {
+      if (nurPlz) return a.key < b.key ? -1 : a.key > b.key ? 1 : (a.teil ? 1 : 0) - (b.teil ? 1 : 0) || a.kreis - b.kreis;
+      return a.key.length - b.key.length || a.name.localeCompare(b.name, 'de') || a.kreis - b.kreis;
+    };
+    return start.sort(byName).concat(inside.sort(byName));
+  }
+
+  function ghCloseList() {
+    ghTreffer = [];
+    ghAktiv = -1;
+    clear($('ghSuggest'));
+    $('ghSuggest').classList.add('cpa-hidden');
+    $('ghSearch').setAttribute('aria-expanded', 'false');
+    $('ghSearch').removeAttribute('aria-activedescendant');
+  }
+
+  function ghMark(i) {
+    ghAktiv = i;
+    var items = $('ghSuggest').children;
+    for (var j = 0; j < items.length; j++) items[j].setAttribute('aria-selected', j === i ? 'true' : 'false');
+    if (i >= 0 && items[i]) $('ghSearch').setAttribute('aria-activedescendant', items[i].id);
+    else $('ghSearch').removeAttribute('aria-activedescendant');
+  }
+
+  /** Hebt den Kreis auf der Karte hervor (nach vorn holen, damit der Rand nicht überdeckt wird). */
+  function ghHighlight(ags) {
+    var old = document.querySelectorAll('#cpa-ghkarte .cpa-gh-kreise path.cpa-gh-sel');
+    for (var i = 0; i < old.length; i++) old[i].classList.remove('cpa-gh-sel');
+    var path = ags ? document.querySelector('#cpa-ghkarte .cpa-gh-kreise path[data-k="' + ags + '"]') : null;
+    if (!path) return;
+    path.classList.add('cpa-gh-sel');
+    path.parentNode.appendChild(path);
+  }
+
+  function ghTitel(ort, k) { return ort.plz ? 'PLZ ' + ort.name : ort.istKreis ? ghKreisText(k) : ort.name; }
+
+  /** Bei einer PLZ, die in mehrere Kreise reicht: die übrigen Kreise mit ihrem Wert. */
+  function ghAndereKreise(ort) {
+    if (!ort.plz) return [];
+    return (ghPlz[ort.name] || []).filter(function (i) { return i !== ort.kreis; }).map(function (i) {
+      return ghKreisText(ghKreise[i]) + ': ' + ghWert(ghKreise[i]);
+    });
+  }
+
+  function ghShowHit(ort) {
+    var k = ghKreise[ort.kreis];
+    var andere = ghAndereKreise(ort);
+    var box = $('ghHit');
+    clear(box);
+    box.appendChild(h('div', { class: 'cpa-gh-hit-ort', text: ghTitel(ort, k) }));
+    box.appendChild(h('dl', { class: 'cpa-kv' },
+      h('dt', { text: k.art === 'Stadt' ? 'Kreisfreie Stadt' : 'Landkreis' }),
+      h('dd', { text: k.name + (ort.teil ? ' (Teilgebiet der PLZ)' : andere.length ? ' (größter Teil der PLZ)' : '') }),
+      h('dt', { text: 'Bundesland' }), h('dd', { text: k.land }),
+      h('dt', { text: 'Gesamthärte im Kreis' }), h('dd', { class: 'cpa-gh-hit-wert', text: ghWert(k) }),
+      andere.length ? [h('dt', { text: 'PLZ reicht auch in' }), h('dd', { text: andere.join('\n') })] : null));
+    box.classList.remove('cpa-hidden');
+    ghHighlight(k.ags);
+  }
+
+  function ghPick(ort) {
+    $('ghSearch').value = ort.name;
+    ghCloseList();
+    ghShowHit(ort);
+  }
+
+  function ghRenderList(text) {
+    var list = $('ghSuggest');
+    clear(list);
+    var alle = ghFind(text);
+    ghTreffer = alle.slice(0, GH_MAX_TREFFER);
+    ghAktiv = -1;
+    if (ghKey(text).length < 2) { ghCloseList(); return; }
+    if (!ghTreffer.length) {
+      list.appendChild(h('li', {
+        class: 'cpa-gh-leer',
+        text: /^[0-9 ]+$/.test(text) ? 'Keine Postleitzahl gefunden, die so beginnt.' : 'Kein Ort gefunden. Die Suche kennt Gemeinden, Städte und Postleitzahlen, keine Ortsteile.',
+      }));
+    }
+    ghTreffer.forEach(function (ort, i) {
+      var k = ghKreise[ort.kreis];
+      list.appendChild(h('li', {
+        role: 'option', id: 'cpa-ghOpt-' + i, 'aria-selected': 'false',
+        // mousedown statt click: sonst schließt das blur des Eingabefelds die Liste vor der Auswahl
+        onmousedown: function (ev) { ev.preventDefault(); ghPick(ort); },
+      },
+        h('span', { class: 'cpa-gh-opt-ort', text: ghTitel(ort, k) }),
+        h('span', { class: 'cpa-sub', text: (ort.istKreis ? '' : ghKreisText(k) + (ort.teil ? ' (Teilgebiet)' : '') + ' · ') + k.land + ' · ' + ghWert(k) })));
+    });
+    if (alle.length > ghTreffer.length) {
+      list.appendChild(h('li', { class: 'cpa-gh-leer', text: (alle.length - ghTreffer.length) + ' weitere Treffer – bitte genauer eingeben.' }));
+    }
+    list.classList.remove('cpa-hidden');
+    $('ghSearch').setAttribute('aria-expanded', 'true');
+  }
+
+  function onGhInput() {
+    if (!ghLoad()) return;
+    var text = $('ghSearch').value;
+    if (!text) { $('ghHit').classList.add('cpa-hidden'); ghHighlight(null); }
+    ghRenderList(text);
+  }
+
+  function onGhKey(ev) {
+    if (ev.key === 'Escape') { ghCloseList(); return; }
+    if (!ghTreffer.length) return;
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); ghMark((ghAktiv + 1) % ghTreffer.length); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); ghMark((ghAktiv + ghTreffer.length - 1) % ghTreffer.length); }
+    else if (ev.key === 'Enter') { ev.preventDefault(); ghPick(ghTreffer[ghAktiv >= 0 ? ghAktiv : 0]); }
+  }
+
+  /** Klick auf einen Kreis in der Karte zeigt ihn wie einen Suchtreffer. */
+  function onGhMapClick(ev) {
+    var ags = ev.target && ev.target.getAttribute ? ev.target.getAttribute('data-k') : null;
+    if (!ags || !ghLoad()) return;
+    for (var i = 0; i < ghKreise.length; i++) {
+      if (ghKreise[i].ags === ags) { ghCloseList(); ghShowHit({ name: ghKreise[i].name, kreis: i, istKreis: true }); return; }
+    }
+  }
+
   function onTabKey(ev) {
     if (!current || !current.sections) return;
     var ids = current.sections.map(function (x) { return x.id; });
@@ -546,6 +741,18 @@
     $('bis').addEventListener('change', onManualDate);
     var presets = document.querySelectorAll('#cpa-presets .cpa-preset');
     for (var i = 0; i < presets.length; i++) presets[i].addEventListener('click', onPreset);
+    // Orts- und PLZ-Suche der GH-Karte (die Seite wird bei jedem Öffnen neu eingefügt: Daten neu lesen)
+    ghKreise = null;
+    ghOrte = null;
+    ghPlz = null;
+    if ($('ghSearch')) {
+      $('ghSearch').addEventListener('input', onGhInput);
+      $('ghSearch').addEventListener('focus', onGhInput);
+      $('ghSearch').addEventListener('keydown', onGhKey);
+      $('ghSearch').addEventListener('blur', ghCloseList);
+      var ghMap = document.querySelector('#cpa-ghkarte .cpa-gh-kreise');
+      if (ghMap) ghMap.addEventListener('click', onGhMapClick);
+    }
 
     var sub = client.auth.onAuthStateChange(function (event) {
       if (!alive()) return;
