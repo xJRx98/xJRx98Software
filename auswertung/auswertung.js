@@ -378,13 +378,16 @@
       .replace(/[^a-z0-9]/g, '');
   }
 
-  /** Liest die Kreis-, Gemeinde- und PLZ-Liste aus auswertung.html (einmal je Seitenaufruf). */
+  /** Liest die Kreis-, Gemeinde- und PLZ-Liste aus auswertung.html (einmal je Seitenaufruf).
+   *  Die Liste steht in einem <template>: ein <script type="application/json"> überlebt den Router
+   *  von index.html nicht (runPageScripts legt jedes <script> ohne id und type neu an). */
   function ghLoad() {
     if (ghOrte) return true;
     var el = $('ghOrte');
     if (!el) return false;
     var raw;
-    try { raw = JSON.parse(el.textContent); } catch (e) { return false; }
+    try { raw = JSON.parse(el.content ? el.content.textContent : el.textContent); } catch (e) { return false; }
+    if (!Array.isArray(raw)) return false;
     ghKreise = [];
     ghOrte = [];
     ghPlz = {};
@@ -534,7 +537,13 @@
   }
 
   function onGhInput() {
-    if (!ghLoad()) return;
+    if (!ghLoad()) {
+      var list = $('ghSuggest');
+      clear(list);
+      list.appendChild(h('li', { class: 'cpa-gh-leer', text: 'Die Ortsliste konnte nicht geladen werden. Bitte die Seite neu laden.' }));
+      list.classList.remove('cpa-hidden');
+      return;
+    }
     var text = $('ghSearch').value;
     if (!text) { $('ghHit').classList.add('cpa-hidden'); ghHighlight(null); }
     ghRenderList(text);
@@ -786,5 +795,6 @@
     });
   }
 
-  window.CPAuswertung = { mount: mount, _periodFor: periodFor };
+  // version muss zum ?v= in auswertung.html passen: Der Loader lädt das Skript neu, wenn im Tab noch eine ältere Fassung läuft.
+  window.CPAuswertung = { version: 7, mount: mount, _periodFor: periodFor };
 })();
