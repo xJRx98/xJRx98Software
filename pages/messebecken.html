@@ -199,12 +199,6 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 @media (max-width: 700px) {
   #cps-root .cps-only-wide { display: none !important; }
   #cps-root .cps-only-narrow { display: block; }
-  /* Handy: erst die Messreihen, dann die Diagramme */
-  #cps-root .cps-panel.cps-mess { display: flex; flex-direction: column; }
-  #cps-root .cps-mess > .cps-p-list-h { order: 1; margin-top: 4px; }
-  #cps-root .cps-mess > .cps-p-list { order: 2; }
-  #cps-root .cps-mess > .cps-p-charts-h { order: 3; margin-top: 30px; }
-  #cps-root .cps-mess > .cps-p-charts { order: 4; }
   #cps-root .cps-mess .cps-section { padding: 14px 14px 10px; }
   /* Tabs: volle Breite, gleichmäßig verteilt, große Tippflächen */
   #cps-root .cps-tabs { gap: 0; }
@@ -271,7 +265,7 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 // wird nur nachgeladen, was noch fehlt. Pfade sind relativ zur index.html.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var PAGE_JS     = 'messebecken/messebecken.js?v=3';
+  var PAGE_JS     = 'messebecken/messebecken.js?v=4';
 
   function load(src) {
     return new Promise(function (resolve, reject) {

@@ -595,7 +595,7 @@
     if (!data) return;
     if (tab === 'messwerte') {
       if (Array.isArray(data.messwerte) && data.messwerte.length) {
-        panel.classList.add('cps-mess');
+        panel.classList.add('cps-mess');   // (Diagramme stehen auf allen Bildschirmen oben)
         panel.appendChild(h('h2', { class: 'cps-h2 cps-p-charts-h', text: 'Verlauf der Nährstoffe' }));
         var charts = renderCharts(data); charts.classList.add('cps-p-charts');
         panel.appendChild(charts);
