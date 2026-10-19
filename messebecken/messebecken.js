@@ -329,9 +329,53 @@
       body.appendChild(tr);
     }
 
-    return h('div', null,
-      h('div', { class: 'cps-table-wrap' }, h('table', { class: 'cps-table' }, h('thead', null, head), body)),
-      h('p', { class: 'cps-note', text: reihen.length + ' Messreihe' + (reihen.length === 1 ? '' : 'n') + ', neueste links.' }));
+    return h('div', { class: 'cps-p-list' },
+      // Desktop/Tablet: Tabelle (Parameter untereinander, Messreihen nebeneinander)
+      h('div', { class: 'cps-table-wrap cps-only-wide' }, h('table', { class: 'cps-table' }, h('thead', null, head), body)),
+      // Handy: eine Karte je Messreihe, neueste oben - kein seitliches Wischen nötig
+      renderMesswerteKarten(reihen, keys),
+      h('p', { class: 'cps-note cps-only-wide', text: reihen.length + ' Messreihe' + (reihen.length === 1 ? '' : 'n') + ', neueste links.' }));
+  }
+
+  var KARTEN_ERST = 8;    // so viele Karten sind zunächst sichtbar; der Rest per Knopf
+
+  function renderMesswerteKarten(reihen, keys) {
+    var box = h('div', { class: 'cps-only-narrow' });
+    var list = h('div', { class: 'cps-mcards' });
+    var shown = 0;
+    var more = h('button', { type: 'button', class: 'cps-btn cps-more' });
+
+    function addCard(r) {
+      var chips = h('dl', { class: 'cps-mvals' });
+      var n = 0;
+      keys.forEach(function (k) {
+        var v = r && r.werte ? r.werte[k] : undefined;
+        if (isEmpty(v) || String(v).trim() === '-') return;     // leere Werte gar nicht erst zeigen
+        n++;
+        chips.appendChild(h('div', { class: 'cps-mval' },
+          h('dt', { text: PARAM_LABEL[k] || k.replace(/_/g, ' ') }),
+          h('dd', null, valueCell(v), PARAM_UNIT[k] && !isTooHighLow(v) ? h('span', { class: 'cps-unit', text: PARAM_UNIT[k] }) : null)));
+      });
+      list.appendChild(h('article', { class: 'cps-mcard' },
+        h('header', null,
+          h('time', { text: fmtDateTime(r.zeit_iso) || String(r.zeit || '') }),
+          h('span', { class: 'cps-sub', text: n + ' Wert' + (n === 1 ? '' : 'e') })),
+        n ? chips : h('p', { class: 'cps-muted', text: 'Keine Werte.' }),
+        isEmpty(r.kommentar) ? null : h('p', { class: 'cps-mcomment', text: r.kommentar })));
+    }
+    function showMore() {
+      var upto = Math.min(reihen.length, shown + KARTEN_ERST);
+      for (; shown < upto; shown++) addCard(reihen[shown]);
+      var rest = reihen.length - shown;
+      more.textContent = 'Ältere Messungen anzeigen (' + rest + ')';
+      more.classList.toggle('cps-hidden', rest <= 0);
+    }
+    more.addEventListener('click', showMore);
+    showMore();
+    box.appendChild(list);
+    box.appendChild(more);
+    box.appendChild(h('p', { class: 'cps-note', text: reihen.length + ' Messreihe' + (reihen.length === 1 ? '' : 'n') + ', neueste oben.' }));
+    return box;
   }
 
   function isTooHighLow(v) { return /^zu\s/i.test(String(v).trim()); }
@@ -547,12 +591,15 @@
   function renderPanel() {
     var panel = $('panel');
     clear(panel);
+    panel.classList.remove('cps-mess');
     if (!data) return;
     if (tab === 'messwerte') {
       if (Array.isArray(data.messwerte) && data.messwerte.length) {
-        panel.appendChild(h('h2', { class: 'cps-h2', text: 'Verlauf der Nährstoffe' }));
-        panel.appendChild(renderCharts(data));
-        panel.appendChild(h('h2', { class: 'cps-h2', text: 'Alle Messreihen' }));
+        panel.classList.add('cps-mess');
+        panel.appendChild(h('h2', { class: 'cps-h2 cps-p-charts-h', text: 'Verlauf der Nährstoffe' }));
+        var charts = renderCharts(data); charts.classList.add('cps-p-charts');
+        panel.appendChild(charts);
+        panel.appendChild(h('h2', { class: 'cps-h2 cps-p-list-h', text: 'Alle Messreihen' }));
       }
       panel.appendChild(renderMesswerte(data));
     } else if (tab === 'duengung') {

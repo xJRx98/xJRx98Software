@@ -182,6 +182,39 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 #cps-root .cps-tank-body { padding: 14px 16px 16px; }
 #cps-root .cps-tank-title { font-family: var(--mono, monospace); font-size: 17px; color: var(--cps-accent); margin: 0 0 6px; overflow-wrap: anywhere; }
 #cps-root .cps-tank-info { font-size: 14px; color: var(--cps-soft); margin: 0 0 4px; }
+/* Messwerte als Karten (Handy) bzw. Tabelle (breite Bildschirme) */
+#cps-root .cps-only-narrow { display: none; }
+#cps-root .cps-mcards { display: grid; gap: 12px; }
+#cps-root .cps-mcard { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; padding: 14px 14px 12px; }
+#cps-root .cps-mcard header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--cps-line); }
+#cps-root .cps-mcard time { font-family: var(--mono, monospace); font-size: 13px; font-weight: 700; color: var(--cps-accent); }
+#cps-root .cps-mvals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
+#cps-root .cps-mval { background: var(--cps-card-2); border: 1px solid var(--cps-line); border-radius: 8px; padding: 8px 10px; min-width: 0; }
+#cps-root .cps-mval dt { font-size: 11px; letter-spacing: .04em; color: var(--cps-faint); margin: 0 0 2px; overflow-wrap: anywhere; }
+#cps-root .cps-mval dd { margin: 0; font-size: 18px; font-weight: 700; color: var(--cps-ink); display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; }
+#cps-root .cps-mval .cps-unit { font-size: 11px; font-weight: 400; color: var(--cps-faint); }
+#cps-root .cps-mval .cps-pill { font-size: 13px; font-weight: 700; }
+#cps-root .cps-mcomment { margin: 10px 0 0; font-size: 13px; color: var(--cps-soft); white-space: pre-wrap; overflow-wrap: anywhere; }
+#cps-root .cps-more { width: 100%; margin-top: 12px; padding: 12px; font-size: 14px; }
+@media (max-width: 700px) {
+  #cps-root .cps-only-wide { display: none !important; }
+  #cps-root .cps-only-narrow { display: block; }
+  /* Handy: erst die Messreihen, dann die Diagramme */
+  #cps-root .cps-panel.cps-mess { display: flex; flex-direction: column; }
+  #cps-root .cps-mess > .cps-p-list-h { order: 1; margin-top: 4px; }
+  #cps-root .cps-mess > .cps-p-list { order: 2; }
+  #cps-root .cps-mess > .cps-p-charts-h { order: 3; margin-top: 30px; }
+  #cps-root .cps-mess > .cps-p-charts { order: 4; }
+  #cps-root .cps-mess .cps-section { padding: 14px 14px 10px; }
+  /* Tabs: volle Breite, gleichmäßig verteilt, große Tippflächen */
+  #cps-root .cps-tabs { gap: 0; }
+  #cps-root .cps-tab { flex: 1 1 0; padding: 13px 6px; text-align: center; font-size: 15px; }
+  #cps-root .wrap { padding-left: 14px; padding-right: 14px; }
+  #cps-root .cps-head-tools .cps-btn { padding: 10px 14px; }
+}
+@media (max-width: 340px) {
+  #cps-root .cps-mvals { grid-template-columns: 1fr; }
+}
 @media (prefers-reduced-motion: reduce) { #cps-root * { transition: none !important; } }
 </style>
 
@@ -238,7 +271,7 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 // wird nur nachgeladen, was noch fehlt. Pfade sind relativ zur index.html.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var PAGE_JS     = 'messebecken/messebecken.js?v=2';
+  var PAGE_JS     = 'messebecken/messebecken.js?v=3';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
