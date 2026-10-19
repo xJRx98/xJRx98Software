@@ -170,7 +170,18 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 #cps-root .cps-cross { stroke: var(--cps-line-hi); stroke-width: 1; }
 #cps-root .cps-mark { fill: var(--cps-accent); stroke: var(--cps-card); stroke-width: 2; }
 #cps-root .cps-tip { position: absolute; top: 0; right: 0; padding: 4px 10px; font-size: 12px; font-family: var(--mono, monospace); color: var(--cps-ink); background: var(--cps-card-2); border: 1px solid var(--cps-line-hi); border-radius: 8px; pointer-events: none; }
-#cps-root .cps-head-tools { display: flex; gap: 8px; }
+#cps-root .cps-head-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+#cps-root a.cps-btn { text-decoration: none; display: inline-block; }
+
+/* Übersicht: Kacheln mit Foto */
+#cps-root .cps-tanks { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+#cps-root .cps-tank { display: block; text-decoration: none; color: inherit; background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; overflow: hidden; transition: border-color .2s, transform .2s; }
+#cps-root .cps-tank:hover, #cps-root .cps-tank:focus-visible { border-color: var(--cps-accent); transform: translateY(-2px); outline: none; }
+#cps-root .cps-thumb { aspect-ratio: 4 / 3; background: #000 url('email-assets/cp-logo-email.png') center / 40% no-repeat; }
+#cps-root .cps-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; background: #000; }
+#cps-root .cps-tank-body { padding: 14px 16px 16px; }
+#cps-root .cps-tank-title { font-family: var(--mono, monospace); font-size: 17px; color: var(--cps-accent); margin: 0 0 6px; overflow-wrap: anywhere; }
+#cps-root .cps-tank-info { font-size: 14px; color: var(--cps-soft); margin: 0 0 4px; }
 @media (prefers-reduced-motion: reduce) { #cps-root * { transition: none !important; } }
 </style>
 
@@ -183,6 +194,7 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
         <span class="cps-brand-name">C&amp;P Aquaplants<span class="cps-brand-sub">Messebecken</span></span>
       </div>
       <div class="cps-head-tools">
+        <a class="cps-btn cps-hidden" id="cps-btnBack" href="#messebecken">← Alle Messebecken</a>
         <button type="button" class="cps-btn" id="cps-btnRefresh">Aktualisieren</button>
       </div>
     </div>
@@ -192,6 +204,14 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
       <h2 id="cps-messageTitle">Lade …</h2>
       <p class="cps-muted" id="cps-messageText"></p>
       <button type="button" class="cps-btn cps-hidden" id="cps-btnRetry">Erneut versuchen</button>
+    </div>
+
+    <!-- Übersicht aller freigegebenen Messebecken -->
+    <div class="cps-hidden" id="cps-viewList">
+      <h1 class="cps-title">Messebecken</h1>
+      <p class="cps-desc cps-muted">Alle freigegebenen Becken – live aus der C&amp;P Aquaplants App. Becken antippen für Details, Messwerte und Düngung.</p>
+      <div class="cps-tanks" id="cps-listGrid"></div>
+      <p class="cps-muted cps-hidden" id="cps-listEmpty">Zurzeit ist kein Messebecken freigegeben.</p>
     </div>
 
     <!-- Ansicht -->
@@ -218,7 +238,7 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 // wird nur nachgeladen, was noch fehlt. Pfade sind relativ zur index.html.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var PAGE_JS     = 'messebecken/messebecken.js?v=1';
+  var PAGE_JS     = 'messebecken/messebecken.js?v=2';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
