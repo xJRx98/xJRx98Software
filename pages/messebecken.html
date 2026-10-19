@@ -1,0 +1,247 @@
+<!-- Messebecken-Seite (Unterseite von xjrx98software.de) im Farbschema der C&P-Aquaplants-App -->
+<!-- Wird wie `support` vom Router in index.html als Fragment geladen:
+       Adresse:  https://xjrx98software.de/#messebecken/<slug>     (Inhalt des QR-Codes)
+     Öffentlich, ohne Anmeldung. Die Daten kommen live aus der Datenbank über die
+     Funktion get_messebecken(slug) - siehe supabase/schema_messebecken.sql.
+     Das gesamte CSS ist auf #cps-root begrenzt (Klassen beginnen mit "cps-"). -->
+<style>
+/* Navigationsleiste der Webseite ausblenden, solange die Support-Seite angezeigt wird.
+   Zwei getrennte Regeln (eine ungültige Selektorliste würde sonst die ganze Regel verwerfen):
+   - `:has()` greift sofort mit dem Einfügen der Seite (kein Aufblitzen der Leiste),
+   - die Klasse `cps-support-page` setzt messebecken.js (auch für ältere Browser ohne `:has`)
+     und entfernt sie wieder, sobald die Seite verlassen wird. */
+body:has(#cps-root) > nav { display: none !important; }
+body:has(#cps-root) > #nav-mobile-menu { display: none !important; }
+body.cps-support-page > nav { display: none !important; }
+body.cps-support-page > #nav-mobile-menu { display: none !important; }
+
+#cps-root {
+  /* Farbschema der C&P-Aquaplants-App: Schwarz, Dunkelgrau und Neon-Grün. */
+  --cps-accent: #60F81D;
+  --cps-accent-dark: #47C012;
+  --cps-bg: #0A0A0A;
+  --cps-card: #1A1A1A;
+  --cps-card-2: #141414;
+  --cps-line: #2A2A2A;
+  --cps-line-hi: #4A4A4A;
+  --cps-ink: #FFFFFF;
+  --cps-soft: #CCCCCC;
+  --cps-faint: #8A8A8A;
+  --cps-err: #FF6B5A;
+  --cps-err-bg: #2A1512;
+  --cps-warn: #FFC857;
+  background: var(--cps-bg);
+  color: var(--cps-ink);
+  min-height: 100vh;
+}
+#cps-root .wrap { max-width: 1100px; padding-top: 40px; padding-bottom: 80px; }
+#cps-root .cps-hidden { display: none !important; }
+#cps-root .cps-muted { color: var(--cps-faint); }
+#cps-root .cps-dash { color: var(--cps-faint); }
+
+/* Kopfzeile: Logo/Name links, Anmeldung rechts */
+#cps-root .cps-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid var(--cps-line); }
+#cps-root .cps-brand { display: flex; align-items: center; gap: 12px; }
+#cps-root .cps-brand-logo { height: 40px; width: auto; display: block; }
+#cps-root .cps-brand-name { font-family: var(--mono, monospace); font-size: 18px; font-weight: 700; color: var(--cps-accent); letter-spacing: .02em; }
+#cps-root .cps-brand-sub { font-weight: 400; color: var(--cps-soft); margin-left: 6px; }
+#cps-root .cps-session { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#cps-root .cps-session-mail { color: var(--cps-faint); font-size: 13px; font-family: var(--mono, monospace); }
+
+/* Überschriften */
+#cps-root .cps-title { font-family: var(--mono, monospace); font-size: clamp(22px, 3vw, 32px); font-weight: 700; line-height: 1.15; color: var(--cps-accent); margin-bottom: 8px; overflow-wrap: anywhere; }
+#cps-root .cps-desc { font-size: 15px; margin-bottom: 22px; }
+
+/* Karten, Formular */
+#cps-root .cps-card { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; padding: 28px; }
+#cps-root .cps-narrow { max-width: 420px; margin: 24px auto; }
+#cps-root .cps-center { text-align: center; max-width: 560px; margin: 40px auto; }
+#cps-root .cps-card h2 { font-family: var(--mono, monospace); font-size: 20px; margin-bottom: 6px; color: var(--cps-accent); }
+#cps-root label { display: block; margin: 16px 0 8px; font-family: var(--mono, monospace); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--cps-faint); }
+#cps-root input { width: 100%; padding: 12px 16px; font-size: 16px; font-family: var(--sans, sans-serif); color: var(--cps-ink); background: var(--cps-bg); border: 1px solid var(--cps-line); border-radius: 8px; outline: none; }
+#cps-root input:focus { border-color: var(--cps-accent); box-shadow: 0 0 0 3px rgba(96,248,29,.18); }
+#cps-root .cps-error { margin-top: 16px; padding: 10px 14px; font-size: 14px; color: var(--cps-err); background: var(--cps-err-bg); border: 1px solid var(--cps-err); border-radius: 8px; }
+
+/* Buttons */
+#cps-root .cps-btn { font: inherit; font-size: 13px; cursor: pointer; padding: 8px 14px; color: var(--cps-soft); background: transparent; border: 1px solid var(--cps-line); border-radius: 8px; transition: color .2s, border-color .2s, background .2s; }
+#cps-root .cps-btn:hover { color: var(--cps-accent); border-color: var(--cps-accent); background: rgba(96,248,29,.06); }
+#cps-root .cps-btn-primary { width: 100%; margin-top: 20px; padding: 13px; font-size: 15px; font-weight: 700; color: #000; background: var(--cps-accent); border-color: var(--cps-accent); }
+#cps-root .cps-btn-primary:hover { color: #000; background: var(--cps-accent-dark); border-color: var(--cps-accent-dark); }
+#cps-root .cps-btn-primary:disabled { opacity: .55; cursor: default; }
+#cps-root .cps-link { font: inherit; color: var(--cps-accent); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
+
+/* Detail-Kopf & Tabs */
+#cps-root .cps-detail-head { margin-bottom: 18px; }
+#cps-root .cps-detail-head p { font-size: 13px; color: var(--cps-faint); font-family: var(--mono, monospace); line-height: 1.7; }
+#cps-root .cps-tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--cps-line); }
+#cps-root .cps-tab { font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; padding: 12px 22px; color: var(--cps-soft); background: transparent; border: none; border-bottom: 3px solid transparent; transition: color .2s; }
+#cps-root .cps-tab:hover { color: var(--cps-ink); }
+#cps-root .cps-tab[aria-selected="true"] { color: var(--cps-accent); border-bottom-color: var(--cps-accent); font-weight: 700; }
+#cps-root .cps-panel { padding-top: 22px; outline: none; }
+
+/* Abschnitte, Schlüssel/Wert-Listen */
+#cps-root .cps-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+#cps-root .cps-wide { grid-column: 1 / -1; }
+#cps-root .cps-section { background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; padding: 20px 22px; min-width: 0; }
+#cps-root .cps-section h2 { font-family: var(--mono, monospace); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cps-accent); margin-bottom: 14px; }
+#cps-root .cps-kv { display: grid; grid-template-columns: minmax(120px, 42%) 1fr; gap: 8px 16px; margin: 0; font-size: 14px; }
+#cps-root .cps-kv dt { color: var(--cps-faint); }
+#cps-root .cps-kv dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; color: var(--cps-ink); }
+#cps-root .cps-list { margin: 0; padding: 0; list-style: none; font-size: 14px; }
+#cps-root .cps-list li { padding: 8px 0; border-bottom: 1px solid var(--cps-line); display: flex; justify-content: space-between; gap: 12px; }
+#cps-root .cps-list li:last-child { border-bottom: none; }
+#cps-root .cps-sub { color: var(--cps-faint); font-size: 12px; }
+
+/* Fall-Verwaltung: Status, Team, Aktionen */
+#cps-root .cps-flash { margin: 0 0 16px; padding: 10px 14px; font-size: 14px; border: 1px solid var(--cps-accent); border-radius: 8px; color: var(--cps-accent); background: rgba(96,248,29,.08); }
+#cps-root .cps-flash.cps-flash-err { border-color: var(--cps-err); color: var(--cps-err); background: var(--cps-err-bg); }
+#cps-root .cps-list-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+#cps-root .cps-list-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+#cps-root .cps-team { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 18px; font-size: 13px; color: var(--cps-soft); }
+#cps-root .cps-chip { display: inline-flex; gap: 6px; align-items: center; padding: 4px 11px; border: 1px solid var(--cps-line); border-radius: 999px; background: var(--cps-card); font-size: 13px; color: var(--cps-ink); }
+#cps-root .cps-chip b { color: var(--cps-accent); }
+#cps-root .cps-chip-me { border-color: var(--cps-accent); }
+#cps-root .cps-status { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+#cps-root .cps-status-ausstehend { background: #3a2f12; color: var(--cps-warn); }
+#cps-root .cps-status-in_bearbeitung { background: rgba(96,248,29,.14); color: var(--cps-accent); }
+#cps-root .cps-status-abgeschlossen { background: rgba(255,255,255,.08); color: var(--cps-soft); }
+#cps-root .cps-casebar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin: 0 0 18px; padding: 14px 16px; background: var(--cps-card); border: 1px solid var(--cps-line); border-radius: 12px; }
+#cps-root .cps-casebar-info { flex: 1 1 260px; font-size: 14px; line-height: 1.7; }
+#cps-root .cps-casebar-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#cps-root select { font: inherit; font-size: 13px; padding: 8px 10px; color: var(--cps-ink); background: var(--cps-bg); border: 1px solid var(--cps-line); border-radius: 8px; max-width: 100%; }
+#cps-root select:focus { outline: none; border-color: var(--cps-accent); }
+#cps-root .cps-btn-accent { color: #000; background: var(--cps-accent); border-color: var(--cps-accent); font-weight: 700; }
+#cps-root .cps-btn-accent:hover { color: #000; background: var(--cps-accent-dark); border-color: var(--cps-accent-dark); }
+#cps-root .cps-btn:disabled { opacity: .55; cursor: default; }
+#cps-root .cps-btn-small { padding: 4px 10px; font-size: 12px; }
+#cps-root .cps-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; white-space: nowrap; }
+
+/* Fotos */
+#cps-root .cps-photos { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+#cps-root .cps-photo { margin: 0; background: #000; border: 1px solid var(--cps-line); border-radius: 10px; overflow: hidden; }
+#cps-root .cps-photo a { display: block; }
+#cps-root .cps-photo img { display: block; width: 100%; max-height: 460px; object-fit: contain; background: #000; }
+#cps-root .cps-photo figcaption { padding: 8px 12px; font-size: 13px; color: var(--cps-soft); border-top: 1px solid var(--cps-line); }
+#cps-root .cps-photo-missing { padding: 36px 16px; text-align: center; color: var(--cps-faint); font-size: 14px; }
+
+/* Tabellen */
+#cps-root .cps-table-wrap { overflow-x: auto; border: 1px solid var(--cps-line); border-radius: 12px; background: var(--cps-card); }
+#cps-root .cps-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+#cps-root .cps-table th, #cps-root .cps-table td { padding: 9px 14px; border-bottom: 1px solid var(--cps-line); text-align: left; vertical-align: top; }
+#cps-root .cps-table th { color: var(--cps-accent); font-family: var(--mono, monospace); font-size: 12px; font-weight: 700; background: var(--cps-card-2); white-space: nowrap; }
+#cps-root .cps-table tr:last-child td { border-bottom: none; }
+#cps-root .cps-table-fit th { white-space: normal; }
+#cps-root .cps-table-fit th, #cps-root .cps-table-fit td { padding: 9px 10px; }
+#cps-root .cps-table .cps-sticky { position: sticky; left: 0; background: var(--cps-card-2); z-index: 1; white-space: nowrap; }
+#cps-root .cps-table td.cps-sticky { color: var(--cps-soft); }
+#cps-root .cps-table .cps-comment { white-space: pre-wrap; min-width: 160px; }
+#cps-root .cps-pill { white-space: nowrap; display: inline-block; padding: 1px 9px; border-radius: 10px; font-size: 12px; background: rgba(255,255,255,.08); color: var(--cps-soft); }
+#cps-root .cps-pill.cps-warn { background: #3a2f12; color: var(--cps-warn); }
+#cps-root .cps-note { color: var(--cps-faint); font-size: 12px; margin: 10px 2px 0; font-family: var(--mono, monospace); }
+#cps-root .cps-foot { margin-top: 40px; font-size: 12px; color: var(--cps-faint); font-family: var(--mono, monospace); }
+
+@media (max-width: 768px) {
+  #cps-root .wrap { padding-top: 28px; padding-bottom: 56px; }
+  #cps-root .cps-card { padding: 22px 18px; }
+}
+@media (max-width: 600px) {
+  #cps-root .cps-table-fit { font-size: 13px; }
+  #cps-root .cps-table-fit th, #cps-root .cps-table-fit td { padding: 8px 6px; }
+  #cps-root .cps-section { padding: 18px 16px; }
+  #cps-root .cps-kv { grid-template-columns: 1fr; gap: 0; }
+  #cps-root .cps-kv dd { margin-bottom: 10px; }
+  #cps-root .cps-tab { padding: 11px 14px; }
+}
+
+/* Messebecken: Diagramme, Tooltip, Überschriften */
+#cps-root .cps-h2 { font-family: var(--mono, monospace); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--cps-soft); margin: 4px 0 14px; }
+#cps-root .cps-panel > .cps-h2:not(:first-child) { margin-top: 30px; }
+#cps-root .cps-charts { margin-bottom: 6px; }
+#cps-root .cps-chart { position: relative; }
+#cps-root .cps-chart-now { font-size: 13px; color: var(--cps-soft); margin: 0 0 6px; }
+#cps-root .cps-chart-now b { color: var(--cps-ink); }
+#cps-root .cps-svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+#cps-root .cps-grid-line { stroke: var(--cps-line); stroke-width: 1; }
+#cps-root .cps-axis { fill: var(--cps-faint); font-size: 10px; font-family: var(--mono, monospace); }
+#cps-root .cps-axis-target { fill: var(--cps-soft); }
+#cps-root .cps-target { stroke: var(--cps-faint); stroke-width: 1.5; stroke-dasharray: 5 4; }
+#cps-root .cps-line { fill: none; stroke: var(--cps-accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+#cps-root .cps-dot { fill: var(--cps-accent); stroke: var(--cps-card); stroke-width: 2; }
+#cps-root .cps-cross { stroke: var(--cps-line-hi); stroke-width: 1; }
+#cps-root .cps-mark { fill: var(--cps-accent); stroke: var(--cps-card); stroke-width: 2; }
+#cps-root .cps-tip { position: absolute; top: 0; right: 0; padding: 4px 10px; font-size: 12px; font-family: var(--mono, monospace); color: var(--cps-ink); background: var(--cps-card-2); border: 1px solid var(--cps-line-hi); border-radius: 8px; pointer-events: none; }
+#cps-root .cps-head-tools { display: flex; gap: 8px; }
+@media (prefers-reduced-motion: reduce) { #cps-root * { transition: none !important; } }
+</style>
+
+<section id="cps-root" class="cps">
+  <div class="wrap">
+
+    <div class="cps-head">
+      <div class="cps-brand">
+        <img class="cps-brand-logo" src="email-assets/cp-logo-email.png" alt="" onerror="this.style.display='none'">
+        <span class="cps-brand-name">C&amp;P Aquaplants<span class="cps-brand-sub">Messebecken</span></span>
+      </div>
+      <div class="cps-head-tools">
+        <button type="button" class="cps-btn" id="cps-btnRefresh">Aktualisieren</button>
+      </div>
+    </div>
+
+    <!-- Lädt / Meldungen -->
+    <div class="cps-card cps-center" id="cps-viewMessage">
+      <h2 id="cps-messageTitle">Lade …</h2>
+      <p class="cps-muted" id="cps-messageText"></p>
+      <button type="button" class="cps-btn cps-hidden" id="cps-btnRetry">Erneut versuchen</button>
+    </div>
+
+    <!-- Ansicht -->
+    <div class="cps-hidden" id="cps-viewDetail">
+      <div class="cps-detail-head">
+        <h1 class="cps-title" id="cps-detailTitle"></h1>
+        <p id="cps-detailMeta"></p>
+      </div>
+      <div class="cps-tabs" role="tablist" aria-label="Bereiche" id="cps-tabs">
+        <button type="button" role="tab" class="cps-tab" data-tab="aquarium" id="cps-tab-aquarium" aria-controls="cps-panel">Aquarium</button>
+        <button type="button" role="tab" class="cps-tab" data-tab="messwerte" id="cps-tab-messwerte" aria-controls="cps-panel">Messwerte</button>
+        <button type="button" role="tab" class="cps-tab" data-tab="duengung" id="cps-tab-duengung" aria-controls="cps-panel">Düngung</button>
+      </div>
+      <div class="cps-panel" role="tabpanel" id="cps-panel" tabindex="0"></div>
+    </div>
+
+    <p class="cps-foot">Die Angaben stammen aus einem Aquarium, das mit der C&amp;P Aquaplants App geführt wird. Sie dienen nur zur Anschauung.</p>
+  </div>
+</section>
+
+<script>
+// Lädt supabase-js und die Seitenlogik nacheinander und startet die Seite.
+// Der Router führt Skripte aus Fragmenten bei jedem Öffnen erneut aus - darum
+// wird nur nachgeladen, was noch fehlt. Pfade sind relativ zur index.html.
+(function () {
+  var SUPABASE_JS = 'support/supabase.js';
+  var PAGE_JS     = 'messebecken/messebecken.js?v=1';
+
+  function load(src) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.async = false;
+      s.onload = resolve;
+      s.onerror = function () { reject(new Error('Konnte ' + src + ' nicht laden')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  var chain = Promise.resolve();
+  if (!(window.supabase && window.supabase.createClient)) chain = chain.then(function () { return load(SUPABASE_JS); });
+  if (!window.CPMesse) chain = chain.then(function () { return load(PAGE_JS); });
+
+  chain.then(function () {
+    window.CPMesse.mount();
+  }).catch(function () {
+    var t = document.getElementById('cps-messageTitle');
+    var x = document.getElementById('cps-messageText');
+    if (t) t.textContent = 'Fehler';
+    if (x) x.textContent = 'Die Seite konnte nicht geladen werden. Bitte später erneut versuchen.';
+  });
+})();
+</script>
