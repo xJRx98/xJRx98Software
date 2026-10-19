@@ -7,7 +7,7 @@
   var SUPABASE_URL = 'https://eznesbcyjduxqhkpcyny.supabase.co';
   var SUPABASE_KEY = 'sb_publishable_JfIZ0nyrSoGcC19Yw_L-Yw_gpMtHn9Y';
   var SLUG_RE = /^[a-z0-9][a-z0-9-]{2,39}$/;
-  var DEFAULT_SLUG = 'messe';
+  var FUNCTIONS_URL = SUPABASE_URL + '/functions/v1';   // Edge Function `messebecken-bild` liefert die Fotos
   var PAGE_TITLE = 'Messebecken';
   var REFRESH_MS = 60000;     // aktualisiert sich bei offener Seite jede Minute selbst
   var FAVICON_URL = 'data:image/png;base64,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';
@@ -15,6 +15,7 @@
   var metaObserver = null;
   var client = null;
   var data = null;
+  var list = null;      // Übersicht (ohne Slug in der Adresse)
   var tab = 'aquarium';
   var timer = null;
   var cleanup = null;
@@ -48,6 +49,9 @@
   function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
 
   /* ── Formatierung ─────────────────────────────────────────────────────── */
+
+  /** Anzeigename: Unterstriche (aus der App, z. B. "Neues_Layout") werden zu Leerzeichen. */
+  function cleanName(v) { return isEmpty(v) ? v : String(v).replace(/_/g, ' '); }
 
   function isEmpty(v) { return v === null || v === undefined || v === ''; }
   function dash() { return h('span', { class: 'cps-dash', text: '–' }); }
@@ -166,7 +170,10 @@
     var a = p.aquarium || {};
     var grid = h('div', { class: 'cps-grid' });
 
-    var allgemein = [['Name', show(a.name)], ['Netto-Volumen', num(a.nettovolumen, 'L')]];
+    var fotos = photosBlock(p, a);
+    if (fotos) grid.appendChild(section('Fotos', fotos, true));
+
+    var allgemein = [['Name', show(cleanName(a.name))], ['Netto-Volumen', num(a.nettovolumen, 'L')]];
     if (a.auto === false) {
       allgemein.push(['Volumen', 'Manuell eingegeben']);
     } else {
@@ -239,6 +246,31 @@
     })));
 
     return grid;
+  }
+
+  /** Foto-URL (Edge Function); der Kurz-Hash ändert sich mit dem Bild und umgeht so alte Zwischenspeicher. */
+  function photoUrl(slug, nr, hash) {
+    return FUNCTIONS_URL + '/messebecken-bild?slug=' + encodeURIComponent(slug) + '&bild=' + nr
+      + '&v=' + encodeURIComponent(hash || '');
+  }
+
+  /** Ein Foto als Bild mit Link auf die Originalgröße; fehlt es doch, verschwindet die Karte. */
+  function photoFigure(slug, nr, hash, caption) {
+    var url = photoUrl(slug, nr, hash);
+    var fig = h('figure', { class: 'cps-photo' });
+    var img = h('img', { src: url, alt: caption, loading: 'lazy' });
+    img.addEventListener('error', function () { if (fig.parentNode) fig.parentNode.removeChild(fig); });
+    fig.appendChild(h('a', { href: url, target: '_blank', rel: 'noopener' }, img));
+    fig.appendChild(h('figcaption', { text: caption }));
+    return fig;
+  }
+
+  function photosBlock(p, a) {
+    var slug = currentSlug;
+    var figs = [];
+    if (a.bild_1) figs.push(photoFigure(slug, 1, a.bild_1, 'Aquarium'));
+    if (a.bild_2) figs.push(photoFigure(slug, 2, a.bild_2, 'Beleuchtung'));
+    return figs.length ? h('div', { class: 'cps-photos' }, figs) : null;
   }
 
   function listOrEmpty(items, renderItem) {
@@ -491,9 +523,12 @@
 
   /* ── Seite ────────────────────────────────────────────────────────────── */
 
+  var currentSlug = '';
+
+  /** Slug aus #messebecken/<slug>; leer = Übersicht aller freigegebenen Becken. */
   function slugFromHash() {
     var parts = location.hash.replace('#', '').split('/');
-    var s = (parts[1] || DEFAULT_SLUG).toLowerCase();
+    var s = (parts[1] || '').trim().toLowerCase();
     try { s = decodeURIComponent(s); } catch (e) { /* unverändert lassen */ }
     return s;
   }
@@ -505,6 +540,8 @@
     $('btnRetry').classList.toggle('cps-hidden', !retry);
     $('viewMessage').classList.remove('cps-hidden');
     $('viewDetail').classList.add('cps-hidden');
+    $('viewList').classList.add('cps-hidden');
+    $('btnBack').classList.toggle('cps-hidden', !currentSlug);
   }
 
   function renderPanel() {
@@ -532,19 +569,54 @@
   function renderAll() {
     if (!alive() || !data) return;
     var a = data.aquarium || {};
-    $('detailTitle').textContent = data.titel || a.name || 'Messebecken';
+    $('detailTitle').textContent = cleanName(data.titel || a.name) || 'Messebecken';
     var reihen = Array.isArray(data.messwerte) ? data.messwerte : [];
     var latest = reihen.length ? fmtDate(reihen[0].zeit_iso) : null;
     $('detailMeta').textContent = 'Live aus der C&P Aquaplants App'
       + (latest ? ' · letzte Messung: ' + latest : '')
       + ' · Stand der Seite: ' + new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
     $('viewMessage').classList.add('cps-hidden');
+    $('viewList').classList.add('cps-hidden');
     $('viewDetail').classList.remove('cps-hidden');
+    $('btnBack').classList.remove('cps-hidden');
     renderPanel();
+  }
+
+  /** Übersicht: eine Karte je freigegebenem Becken (Foto, Name, Maße, letzte Messung). */
+  function renderList() {
+    if (!alive() || !list) return;
+    var box = $('listGrid');
+    clear(box);
+    $('listEmpty').classList.toggle('cps-hidden', list.length > 0);
+    list.forEach(function (b) {
+      var maße = (b.auto === false || [b.breite, b.hoehe, b.tiefe].every(isEmpty)) ? null :
+        [b.breite, b.hoehe, b.tiefe].map(function (x) { return numStr(x); }).join(' × ') + '\u00a0cm';
+      var info = [];
+      if (!isEmpty(b.nettovolumen)) info.push(numStr(b.nettovolumen, 'L'));
+      if (maße) info.push(maße);
+      var thumb = h('div', { class: 'cps-thumb' });
+      if (b.bild_1) {
+        var img = h('img', { src: photoUrl(b.slug, 1, b.bild_1), alt: '', loading: 'lazy' });
+        img.addEventListener('error', function () { if (img.parentNode) img.parentNode.removeChild(img); });
+        thumb.appendChild(img);
+      }
+      box.appendChild(h('a', { class: 'cps-tank', href: '#messebecken/' + b.slug },
+        thumb,
+        h('div', { class: 'cps-tank-body' },
+          h('h2', { class: 'cps-tank-title', text: cleanName(b.titel) || b.slug }),
+          info.length ? h('p', { class: 'cps-tank-info', text: info.join(' · ') }) : null,
+          b.letzte_messung ? h('p', { class: 'cps-sub', text: 'Letzte Messung: ' + fmtDate(b.letzte_messung) }) : null)));
+    });
+    $('viewMessage').classList.add('cps-hidden');
+    $('viewDetail').classList.add('cps-hidden');
+    $('btnBack').classList.add('cps-hidden');
+    $('viewList').classList.remove('cps-hidden');
   }
 
   function load(silent) {
     var slug = slugFromHash();
+    currentSlug = slug;
+    if (!slug) { loadList(silent); return; }
     if (!SLUG_RE.test(slug)) { showMessage('Seite nicht gefunden', 'Der Link ist ungültig.'); return; }
     if (!silent && !data) showMessage('Lade …', '');
     client.rpc('get_messebecken', { p_slug: slug }).then(function (res) {
@@ -564,10 +636,26 @@
     });
   }
 
+  function loadList(silent) {
+    data = null;
+    if (!silent && !list) showMessage('Lade …', '');
+    client.rpc('get_messebecken_liste').then(function (res) {
+      if (!alive()) return;
+      if (res.error) throw res.error;
+      list = Array.isArray(res.data) ? res.data : [];
+      renderList();
+    }).catch(function () {
+      if (!alive()) return;
+      if (!list) showMessage('Keine Verbindung', 'Die Daten konnten nicht geladen werden. Bitte Internetverbindung prüfen.', true);
+    });
+  }
+
   function onHashChange() {
     if (!alive()) return;
     if (location.hash.replace('#', '').split('/')[0] !== 'messebecken') return;
     data = null;
+    list = null;
+    tab = 'aquarium';
     load(false);
   }
 
@@ -586,6 +674,7 @@
     applyPageMeta();
     client = getClient();
     data = null;
+    list = null;
     tab = 'aquarium';
 
     var tabs = document.querySelectorAll('#cps-tabs .cps-tab');
