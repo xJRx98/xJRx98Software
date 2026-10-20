@@ -44,7 +44,7 @@
 
   // ── Fall-Verwaltung ──────────────────────────────────────────────────────
   var STATUS_LABEL = { ausstehend: 'Ausstehend', in_bearbeitung: 'In Bearbeitung', abgeschlossen: 'Abgeschlossen' };
-  var CASE_COLS = 'id,aquarium_name,created_at,expires_at,app_version,status,assigned_to,assigned_at,closed_at,closed_by';
+  var CASE_COLS = 'id,aquarium_id,created_by,aquarium_name,created_at,expires_at,app_version,status,assigned_to,assigned_at,closed_at,closed_by';
   var CASE_RET = 'id,expires_at,status,assigned_to,assigned_at,closed_at,closed_by';
   var POLL_MS = 30000;   // Übersicht lädt so oft automatisch neu
   var me = null;         // { id, email } der angemeldeten Person
@@ -472,6 +472,9 @@
   function renderList() {
     var groups = { ausstehend: [], in_bearbeitung: [], abgeschlossen: [] };
     listCases.forEach(function (c) { groups[statusOf(c)].push(c); });
+    // Dasselbe Aquarium kann mehrfach eingereicht worden sein: je Reiter nur der
+    // neueste Eintrag (die älteren bleiben in der Datenbank und laufen normal ab).
+    Object.keys(groups).forEach(function (k) { groups[k] = dedupeCases(groups[k]); });
 
     ['ausstehend', 'in_bearbeitung', 'abgeschlossen'].forEach(function (k) {
       var b = $('ltab-' + k);
@@ -511,6 +514,26 @@
     $('listUpdated').textContent = listUpdated
       ? 'Aktualisiert ' + listUpdated.toLocaleTimeString('de-DE') + ' · lädt automatisch alle ' + Math.round(POLL_MS / 1000) + ' Sekunden neu.'
       : '';
+  }
+
+  /** Pro Aquarium nur den neuesten Fall behalten (`older` = Anzahl ausgeblendeter älterer Fälle).
+   *  Gleiches Aquarium = gleiche Aquarium-ID und gleicher Einreicher (ohne ID: gleicher Name);
+   *  in Bearbeitung zusätzlich je Bearbeiter, damit niemandem ein Fall verschwindet. */
+  function dedupeCases(list) {
+    var byKey = {};
+    var order = [];
+    list.forEach(function (c) {
+      var key = (c.created_by || '') + '|' + (c.aquarium_id ? 'id:' + c.aquarium_id : 'name:' + (c.aquarium_name || '')) +
+        (statusOf(c) === 'in_bearbeitung' ? '|' + (c.assigned_to || '') : '');
+      var cur = byKey[key];
+      if (!cur) { byKey[key] = { keep: c, older: 0 }; order.push(key); return; }
+      cur.older++;
+      if (String(c.created_at) > String(cur.keep.created_at)) cur.keep = c;
+    });
+    return order.map(function (k) {
+      var e = byKey[k];
+      return e.older ? Object.assign({}, e.keep, { older: e.older }) : e.keep;
+    });
   }
 
   /** Wer bearbeitet gerade wie viele Fälle? (Übersicht für das ganze Team) */
@@ -553,6 +576,7 @@
   function caseRow(c) {
     var st = statusOf(c);
     var nameCell = td(c.aquarium_name || '(ohne Namen)');
+    if (c.older) nameCell.appendChild(h('div', { class: 'cps-sub', text: '+ ' + c.older + (c.older === 1 ? ' älterer Eintrag' : ' ältere Einträge') + ' ausgeblendet' }));
     var open = h('button', { type: 'button', class: 'cps-link', text: 'Öffnen', onclick: function () { navigate(c.id); } });
     var actions = h('div', { class: 'cps-actions' });
     var cells;
