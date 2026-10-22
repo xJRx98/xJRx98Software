@@ -225,6 +225,7 @@ nav {
 
 /* --- PAGE CONTAINER --- */
 #page-container { min-height: 100vh; }
+#page-container:focus { outline: none; }
 
 /* --- PAGE LOADING --- */
 .page-loading {
@@ -455,6 +456,19 @@ section { position: relative; z-index: 1; }
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
+}
+/* Feste Spalten statt auto-fit: so kann die letzte Kachel eine Lücke in der
+   letzten Zeile schließen (5 Leistungen → sonst leeres Feld). */
+@media (min-width: 901px) {
+  .services-grid { grid-template-columns: repeat(3, 1fr); }
+  .services-grid > .service-item:last-child:nth-child(3n+2) { grid-column: span 2; }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid > .service-item:last-child:nth-child(odd) { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+  .services-grid { grid-template-columns: 1fr; }
 }
 
 .service-item {
@@ -782,7 +796,7 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 </head>
 <body>
 
-<a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+<a href="#page-container" class="skip-link" onclick="document.getElementById('page-container').focus(); return false;">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav role="navigation" aria-label="Hauptnavigation">
@@ -809,7 +823,7 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 </div>
 
 <!-- PAGE CONTAINER -->
-<div id="page-container" id="main-content">
+<div id="page-container" tabindex="-1">
   <div class="page-loading">Lädt</div>
 </div>
 
@@ -823,7 +837,7 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 //  PAGE ROUTER
 // ==========================================
 const pageCache = {};
-const VALID_PAGES = ['home','cp-app','wasserpantscher','patientenaufruf','impressum','datenschutz','ueber-mich', 'cp-translation', 'cp-datenschutz', 'reset-password', 'support', 'auswertung', 'messebecken'];
+const VALID_PAGES = ['home','cp-app','wasserpantscher','patientenaufruf','impressum','datenschutz','ueber-mich', 'cp-translation', 'cp-datenschutz', 'support', 'auswertung', 'messebecken'];
 
 function tryHistory(fn) { try { fn(); } catch(e) {} }
 
