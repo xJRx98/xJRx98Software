@@ -1,3 +1,10 @@
+<style>
+.um-kurz { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.um-kurz > div { background: var(--surface); padding: 20px 24px; min-width: 0; }
+.um-kurz-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+.um-kurz-wert { font-size: 14px; color: var(--text); overflow-wrap: anywhere; }
+@media (max-width: 600px) { .um-kurz { grid-template-columns: 1fr; } }
+</style>
 <div class="impressum-page">
   <div class="impressum-content" style="max-width:860px;">
     <button class="back-btn" onclick="showPage('home')" style="margin-bottom:48px;">
@@ -42,11 +49,11 @@
 
     <div class="impressum-block" style="border-bottom:none;padding-bottom:0;">
       <h2>Kurz &amp; Knapp</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Hauptberuf</p><p style="font-size:14px;color:var(--text);">Versicherungsmathematiker</p></div>
-        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Selbständig seit</p><p style="font-size:14px;color:var(--text);">2025</p></div>
-        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Spezialisierung</p><p style="font-size:14px;color:var(--text);">Flutter / Cross-Platform Apps</p></div>
-        <div style="background:var(--surface);padding:20px 24px;"><p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Standort</p><p style="font-size:14px;color:var(--text);">München, Deutschland</p></div>
+      <div class="um-kurz">
+        <div><p class="um-kurz-label">Hauptberuf</p><p class="um-kurz-wert">Versicherungsmathematiker</p></div>
+        <div><p class="um-kurz-label">Selbständig seit</p><p class="um-kurz-wert">2025</p></div>
+        <div><p class="um-kurz-label">Spezialisierung</p><p class="um-kurz-wert">Flutter / Cross-Platform Apps</p></div>
+        <div><p class="um-kurz-label">Standort</p><p class="um-kurz-wert">München, Deutschland</p></div>
       </div>
     </div>
   </div>
