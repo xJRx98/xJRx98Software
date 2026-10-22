@@ -2,31 +2,35 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="favicon.png">
+<base href="/">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preload" href="fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/SpaceMono-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="xJRx98 Software - Individuelle Softwareentwicklung, Apps und Automatisierung. Maßgeschneiderte Lösungen für Web, Desktop und Mobile.">
 <meta name="author" content="Jonas Ruhland - xJRx98 Software">
 <meta name="robots" content="index, follow">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0d1117">
-<link rel="canonical" href="https://xjrx98software.de">
+<link rel="canonical" href="https://www.xjrx98software.de/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="xJRx98 Software - Custom Development">
 <meta property="og:description" content="Individuelle Softwareentwicklung, Apps und Automatisierung. Maßgeschneiderte Lösungen für Web, Desktop und Mobile.">
-<meta property="og:url" content="https://xjrx98software.de">
+<meta property="og:url" content="https://www.xjrx98software.de/">
 <meta property="og:locale" content="de_DE">
-<meta property="og:image" content="https://xjrx98software.de/xJRx98_Software_logo.png">
+<meta property="og:image" content="https://www.xjrx98software.de/xJRx98_Software_logo.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="xJRx98 Software - Custom Development">
 <meta name="twitter:description" content="Individuelle Softwareentwicklung, Apps und Automatisierung. Maßgeschneiderte Lösungen für Web, Desktop und Mobile.">
-<meta name="twitter:image" content="https://xjrx98software.de/xJRx98_Software_logo.png">
+<meta name="twitter:image" content="https://www.xjrx98software.de/xJRx98_Software_logo.png">
 <title>xJRx98 Software - Custom Development</title>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "xJRx98 Software",
-  "url": "https://xjrx98software.de"
+  "url": "https://www.xjrx98software.de/"
 }
 </script>
 <script type="application/ld+json">
@@ -35,7 +39,7 @@
   "@type": "LocalBusiness",
   "name": "xJRx98 Software",
   "description": "Individuelle Softwareentwicklung, Apps und Automatisierung.",
-  "url": "https://xjrx98software.de",
+  "url": "https://www.xjrx98software.de/",
   "founder": { "@type": "Person", "name": "Jonas Ruhland" },
   "address": {
     "@type": "PostalAddress",
@@ -53,49 +57,49 @@
 
   @font-face {
   font-family: 'Space Mono';
-  src: url('fonts/SpaceMono-Regular.ttf') format('truetype');
+  src: url('fonts/SpaceMono-Regular.woff2') format('woff2'), url('fonts/SpaceMono-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Space Mono';
-  src: url('fonts/SpaceMono-Italic.ttf') format('truetype');
+  src: url('fonts/SpaceMono-Italic.woff2') format('woff2'), url('fonts/SpaceMono-Italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'Space Mono';
-  src: url('fonts/SpaceMono-Bold.ttf') format('truetype');
+  src: url('fonts/SpaceMono-Bold.woff2') format('woff2'), url('fonts/SpaceMono-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'DM Sans';
-  src: url('fonts/DMSans-Light.ttf') format('truetype');
+  src: url('fonts/DMSans-Light.woff2') format('woff2'), url('fonts/DMSans-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'DM Sans';
-  src: url('fonts/DMSans-Regular.ttf') format('truetype');
+  src: url('fonts/DMSans-Regular.woff2') format('woff2'), url('fonts/DMSans-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'DM Sans';
-  src: url('fonts/DMSans-Medium.ttf') format('truetype');
+  src: url('fonts/DMSans-Medium.woff2') format('woff2'), url('fonts/DMSans-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'DM Sans';
-  src: url('fonts/DMSans-SemiBold.ttf') format('truetype');
+  src: url('fonts/DMSans-SemiBold.woff2') format('woff2'), url('fonts/DMSans-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -114,7 +118,7 @@
   --accent3:   #6ddad2;
   --red:       #c94b6d;
   --text:      #e8edf4;
-  --muted:     #556070;
+  --muted:     #7d8a9c;   /* vorher #556070 – nur 2,5:1 Kontrast, jetzt ≥ 4,5:1 (WCAG AA) */
   --muted2:    #8a9ab0;
   --mono:      'Space Mono', monospace;
   --sans:      'DM Sans', sans-serif;
@@ -800,15 +804,15 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 
 <!-- NAV -->
 <nav role="navigation" aria-label="Hauptnavigation">
-  <a onclick="showPage('home')" class="nav-logo" aria-label="xJRx98 Software – Startseite">
-    <img src="xJRx98_Software_logo.png" alt="xJRx98 Software" class="nav-logo-img" loading="eager" fetchpriority="high">
+  <a href="/" onclick="showPage('home'); return false;" class="nav-logo" aria-label="xJRx98 Software – Startseite">
+    <picture><source srcset="img/logo-nav.webp" type="image/webp"><img src="img/logo-nav.png" alt="xJRx98 Software" class="nav-logo-img" width="107" height="36" loading="eager" fetchpriority="high"></picture>
   </a>
   <div class="nav-links">
-    <a onclick="showPage('home'); scrollToSection('services')">Services</a>
-    <a onclick="showPage('home'); scrollToSection('projekte')">Projekte</a>
-    <a onclick="showPage('home'); scrollToSection('kontakt')">Kontakt</a>
+    <a href="/" onclick="showPage('home'); scrollToSection('services')">Services</a>
+    <a href="/" onclick="showPage('home'); scrollToSection('projekte')">Projekte</a>
+    <a href="/" onclick="showPage('home'); scrollToSection('kontakt')">Kontakt</a>
   </div>
-  <a onclick="showPage('home'); scrollToSection('kontakt')" class="nav-cta">Projekt starten -></a>
+  <a href="/" onclick="showPage('home'); scrollToSection('kontakt')" class="nav-cta">Projekt starten -></a>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false" onclick="toggleMobileMenu()">
     <span></span><span></span><span></span>
   </button>
@@ -816,10 +820,10 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
 
 <!-- Mobile Navigation -->
 <div class="nav-mobile-menu" id="nav-mobile-menu" role="navigation" aria-label="Mobile Navigation">
-  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('services')">Services</a>
-  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('projekte')">Projekte</a>
-  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('kontakt')">Kontakt</a>
-  <a onclick="closeMobileMenu(); showPage('home'); scrollToSection('kontakt')" class="nav-mobile-cta">Projekt starten -></a>
+  <a href="/" onclick="closeMobileMenu(); showPage('home'); scrollToSection('services')">Services</a>
+  <a href="/" onclick="closeMobileMenu(); showPage('home'); scrollToSection('projekte')">Projekte</a>
+  <a href="/" onclick="closeMobileMenu(); showPage('home'); scrollToSection('kontakt')">Kontakt</a>
+  <a href="/" onclick="closeMobileMenu(); showPage('home'); scrollToSection('kontakt')" class="nav-mobile-cta">Projekt starten -></a>
 </div>
 
 <!-- PAGE CONTAINER -->
@@ -832,14 +836,117 @@ footer p { font-family: var(--mono); font-size: 11px; color: var(--muted); lette
   <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
+<script type="application/json" id="seiten-daten">
+{
+ "home": {
+  "pfad": "/",
+  "titel": "xJRx98 Software – Softwareentwicklung, Apps & Automatisierung aus München",
+  "beschreibung": "Individuelle Softwareentwicklung, Apps und Automatisierung: maßgeschneiderte Lösungen für Web, Desktop und Mobile – präzise gebaut, termingerecht geliefert."
+ },
+ "cp-app": {
+  "pfad": "/cp-app/",
+  "titel": "C&P Aquaplants App – Düngerrechner & Photometer-Auswertung | xJRx98 Software",
+  "beschreibung": "Die offizielle App von C&P Aquaplants: Düngerrechner, Photometer-Auswertung und Dosierungsempfehlungen für Aquarien – kostenlos für Android, iOS und Windows."
+ },
+ "wasserpantscher": {
+  "pfad": "/wasserpantscher/",
+  "titel": "Wasserpantscher App – Photometer-Werte in Sekunden auswerten | xJRx98 Software",
+  "beschreibung": "Die offizielle App von wasserpantscher.at: Millivolt-Messwerte des Photometers eingeben und sofort mg/l ablesen – ohne Kurven und Tabellen. Kostenlos für Android, iOS und Windows."
+ },
+ "patientenaufruf": {
+  "pfad": "/patientenaufruf/",
+  "titel": "Patientenaufruf für Arztpraxen – digitaler Wartezimmer-Aufruf | xJRx98 Software",
+  "beschreibung": "Patienten diskret per Knopfdruck aufrufen: Anzeige im Wartezimmer, mehrere Behandlungszimmer, Statistik – komplett lokal ohne Cloud. 30 Tage kostenlos testen."
+ },
+ "ueber-mich": {
+  "pfad": "/ueber-mich/",
+  "titel": "Über mich – Jonas Ruhland | xJRx98 Software",
+  "beschreibung": "Jonas Ruhland, Mathematiker aus München: individuelle Apps, Tools und Automatisierungslösungen – direkte Zusammenarbeit mit dem Entwickler, ohne Agentur."
+ },
+ "cp-translation": {
+  "pfad": "/cp-translation/",
+  "titel": "C&P Aquaplants App übersetzen | xJRx98 Software",
+  "beschreibung": "Hilf mit, die C&P Aquaplants App in deine Sprache zu übersetzen – ohne technisches Wissen, direkt im Browser."
+ },
+ "cp-datenschutz": {
+  "pfad": "/cp-datenschutz/",
+  "titel": "Datenschutzerklärung C&P Aquaplants App | xJRx98 Software",
+  "beschreibung": "Datenschutzinformationen zur C&P Aquaplants App: welche Daten verarbeitet werden, wofür und welche Rechte du hast."
+ },
+ "impressum": {
+  "pfad": "/impressum/",
+  "titel": "Impressum | xJRx98 Software",
+  "beschreibung": "Impressum von xJRx98 Software – Jonas Ruhland, München."
+ },
+ "datenschutz": {
+  "pfad": "/datenschutz/",
+  "titel": "Datenschutzerklärung | xJRx98 Software",
+  "beschreibung": "Datenschutzerklärung der Webseite von xJRx98 Software."
+ }
+}
+</script>
 <script>
 // ==========================================
 //  PAGE ROUTER
 // ==========================================
 const pageCache = {};
-const VALID_PAGES = ['home','cp-app','wasserpantscher','patientenaufruf','impressum','datenschutz','ueber-mich', 'cp-translation', 'cp-datenschutz', 'support', 'auswertung', 'messebecken'];
+
+// Öffentliche Seiten haben eigene Adressen (/cp-app/ …) mit eigenem Titel und eigener
+// Beschreibung – das Build-Skript (tools/seiten_bauen.py) erzeugt daraus fertige
+// HTML-Dateien, die Suchmaschinen direkt lesen können.
+const SEITEN = JSON.parse(document.getElementById('seiten-daten').textContent);
+// Nur per direktem Link erreichbar, Adresse bleibt #… (QR-Codes, Daten-Links, Support).
+const HASH_SEITEN = ['support', 'auswertung', 'messebecken'];
+const VALID_PAGES = [...Object.keys(SEITEN), ...HASH_SEITEN];
+// Nur in der gebauten Seite gibt es /cp-app/ usw. als echte Dateien – ohne Build
+// (z.B. direkt aus dem Repo ausgeliefert) bleibt es bei #-Adressen.
+const ECHTE_ADRESSEN = document.documentElement.hasAttribute('data-gebaut');
 
 function tryHistory(fn) { try { fn(); } catch(e) {} }
+
+function adresseFuer(pageId) {
+  if (ECHTE_ADRESSEN && SEITEN[pageId]) return SEITEN[pageId].pfad;
+  return pageId === 'home' ? '/' : '/#' + pageId;
+}
+
+function hashSeite() {
+  const id = location.hash.replace('#', '').split('/')[0];
+  return VALID_PAGES.includes(id) ? id : null;
+}
+
+function seiteAusAdresse() {
+  const ausHash = hashSeite();
+  if (ausHash) return ausHash;
+  const pfad = location.pathname.endsWith('/') ? location.pathname : location.pathname + '/';
+  for (const [id, seite] of Object.entries(SEITEN)) if (seite.pfad === pfad) return id;
+  return 'home';
+}
+
+function metaSetzen(pageId) {
+  const seite = SEITEN[pageId];
+  if (!seite) return;
+  // Domain aus der vom Build gesetzten Canonical-Adresse (www.…), nicht aus location
+  const canonical = document.querySelector('link[rel="canonical"]');
+  const url = (canonical ? new URL(canonical.href).origin : location.origin) + seite.pfad;
+  document.title = seite.titel;
+  const setze = (sel, attr, wert) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, wert); };
+  setze('meta[name="description"]', 'content', seite.beschreibung);
+  setze('meta[property="og:title"]', 'content', seite.titel);
+  setze('meta[property="og:description"]', 'content', seite.beschreibung);
+  setze('meta[name="twitter:title"]', 'content', seite.titel);
+  setze('meta[name="twitter:description"]', 'content', seite.beschreibung);
+  if (ECHTE_ADRESSEN) {
+    setze('link[rel="canonical"]', 'href', url);
+    setze('meta[property="og:url"]', 'content', url);
+  }
+}
+
+function seiteEinsetzen(pageId, html) {
+  document.getElementById('page-container').innerHTML = html;
+  initReveal();
+  runPageScripts();
+  metaSetzen(pageId);
+}
 
 async function showPage(pageId, pushState = true) {
   if (!VALID_PAGES.includes(pageId)) pageId = 'home';
@@ -855,11 +962,9 @@ async function showPage(pageId, pushState = true) {
       if (!res.ok) throw new Error('Page not found');
       pageCache[pageId] = await res.text();
     }
-    document.getElementById('page-container').innerHTML = pageCache[pageId];
+    seiteEinsetzen(pageId, pageCache[pageId]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    initReveal();
-    runPageScripts();
-    if (pushState) tryHistory(() => history.pushState({ page: pageId }, '', '#' + pageId));
+    if (pushState) tryHistory(() => history.pushState({ page: pageId }, '', adresseFuer(pageId)));
   } catch(e) {
     document.getElementById('page-container').innerHTML = '<div class="page-loading">Seite nicht gefunden</div>';
   }
@@ -892,26 +997,47 @@ function runPageScripts() {
   });
 }
 
-// Seiten-ID aus dem Hash. Alles hinter dem ersten "/" ist ein Parameter der
-// Seite (z.B. #support/<ID>) und bleibt in der URL erhalten.
-function pageFromHash() {
-  const base = location.hash.replace('#', '').split('/')[0];
-  return VALID_PAGES.includes(base) ? base : null;
-}
+// Interne Links mit echter Adresse (<a href="/cp-app/">) ohne Neuladen öffnen.
+// Strg/⌘/Mittelklick öffnet weiterhin einen neuen Tab mit der richtigen Adresse.
+document.addEventListener('click', e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const link = e.target.closest('a[href^="/"]');
+  if (!link || link.target) return;
+  const pfad = link.getAttribute('href').split('#')[0];
+  const ziel = Object.keys(SEITEN).find(id => SEITEN[id].pfad === pfad);
+  if (!ziel) return;
+  e.preventDefault();
+  // Hat der Link (oder z.B. die umgebende Projektkarte) ein eigenes onclick, navigiert das bereits
+  if (!link.closest('[onclick]')) showPage(ziel);
+});
 
-window.addEventListener('popstate', e => showPage(e.state?.page || pageFromHash() || 'home', false));
+window.addEventListener('popstate', e => {
+  const ziel = e.state?.page || seiteAusAdresse();
+  // Von Hand eingegebener alter Link (#cp-app) → saubere Adresse (/cp-app/)
+  if (ECHTE_ADRESSEN && SEITEN[ziel] && hashSeite() === ziel) {
+    tryHistory(() => history.replaceState({ page: ziel }, '', SEITEN[ziel].pfad));
+  }
+  showPage(ziel, false);
+});
 
 window.addEventListener('DOMContentLoaded', () => {
-  let start = 'home';
-  try {
-    const fromHash = pageFromHash();
-    if (fromHash) start = fromHash;
+  const start = seiteAusAdresse();
+  // Alte Links wie /#cp-datenschutz (z.B. aus App-Stores) auf die neue Adresse umstellen
+  if (ECHTE_ADRESSEN && SEITEN[start] && hashSeite() === start) {
+    tryHistory(() => history.replaceState({ page: start }, '', SEITEN[start].pfad));
+  } else {
     // Den vollständigen Hash behalten (inkl. Parameter wie #support/<ID>)
-    tryHistory(() => history.replaceState({ page: start }, '', start === 'home' ? location.pathname : location.hash));
-  } catch(e) {}
-  showPage(start, false);
-
- });
+    tryHistory(() => history.replaceState({ page: start }, '', location.pathname + location.hash));
+  }
+  const container = document.getElementById('page-container');
+  if (container.dataset.vorgeladen === start) {
+    // Vom Build-Skript bereits eingesetzt: nicht erneut laden, nur Skripte starten
+    pageCache[start] = container.innerHTML;
+    seiteEinsetzen(start, container.innerHTML);
+  } else {
+    showPage(start, false);
+  }
+});
 
 // ==========================================
 //  REVEAL OBSERVER
@@ -969,12 +1095,38 @@ window.addEventListener('scroll', () => {
 // ==========================================
 //  MODAL HELPERS
 // ==========================================
-function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+let fokusVorModal = null;
+const FOKUSSIERBAR = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
+
+function openModal(id) {
+  const modal = document.getElementById(id);
+  fokusVorModal = document.activeElement;
+  modal.style.display = 'flex';
+  const erstes = modal.querySelector(FOKUSSIERBAR);
+  if (erstes) erstes.focus();
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+  if (fokusVorModal && document.contains(fokusVorModal)) fokusVorModal.focus();
+  fokusVorModal = null;
+}
+
+function offenesModal() {
+  return [...document.querySelectorAll('.modal-overlay')].find(m => m.style.display === 'flex');
+}
 
 document.addEventListener('keydown', e => {
+  const modal = offenesModal();
+  if (!modal) return;
   if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+    closeModal(modal.id);
+  } else if (e.key === 'Tab') {
+    // Tastatur-Fokus im offenen Fenster halten
+    const elemente = [...modal.querySelectorAll(FOKUSSIERBAR)].filter(el => el.offsetParent !== null);
+    if (!elemente.length) return;
+    const erstes = elemente[0], letztes = elemente[elemente.length - 1];
+    if (e.shiftKey && document.activeElement === erstes) { e.preventDefault(); letztes.focus(); }
+    else if (!e.shiftKey && document.activeElement === letztes) { e.preventDefault(); erstes.focus(); }
   }
 });
 </script>
