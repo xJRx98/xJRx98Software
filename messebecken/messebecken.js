@@ -205,15 +205,17 @@
       ['Abstand Lampe – Wasser', num(a.lampenabstand, 'cm')],
     ])));
 
-    grid.appendChild(section('CO₂ & Filter', kv([
+    grid.appendChild(section('CO₂, Filter & Dosierung', kv([
       ['CO₂-Anlage', yn(a.co2)],
       ['CO₂-Details', show(a.co2detail)],
       ['Filter', show(a.filter)],
       ['Filter-Details', show(a.filterdetail)],
+      ['Dosieranlage', show(a.dosieranlage)],
     ])));
 
     grid.appendChild(section('Boden & Hardscape', kv([
       ['Bodengrund', show(a.bodengrund)],
+      ['Marke/Bezeichnung', show(a.bodengrunddetail)],
       ['Hardscape', show(a.hardscapetyp)],
     ])));
 
@@ -281,13 +283,13 @@
   /* ── Tab 2: Messwerte ─────────────────────────────────────────────────── */
 
   var PARAM_ORDER = ['Nitrat', 'Phosphat', 'Kalium', 'Magnesium', 'Eisen_sensitiv', 'Calcium',
-    'pH', 'pH_45_565', 'pH_566_8', 'KH', 'GH', 'Silikat', 'Nitrit'];
+    'pH', 'pH_45_565', 'pH_566_8', 'KH', 'GH', 'CO2', 'Silikat', 'Nitrit'];
   var PARAM_LABEL = {
     Eisen_sensitiv: 'Eisen sensitiv', pH_45_565: 'pH 4,5 – 5,65', pH_566_8: 'pH 5,66 – 8',
   };
   var PARAM_UNIT = {
     Nitrat: 'mg/l', Phosphat: 'mg/l', Kalium: 'mg/l', Magnesium: 'mg/l',
-    Eisen_sensitiv: 'mg/l', Calcium: 'mg/l', Silikat: 'mg/l', Nitrit: 'mg/l',
+    Eisen_sensitiv: 'mg/l', Calcium: 'mg/l', CO2: 'mg/l', Silikat: 'mg/l', Nitrit: 'mg/l',
   };
 
   function paramLabel(key) {
