@@ -1147,11 +1147,70 @@
     });
   }
 
+  /* ── Ein Tab für alle Fälle ───────────────────────────────────────────────
+   * Links aus WhatsApp öffnen immer einen neuen Tab. Ist die Support-Seite schon
+   * in einem anderen Tab offen, übernimmt dieser den Fall (BroadcastChannel), und
+   * der neue Tab schließt sich, soweit der Browser das erlaubt. Den alten Tab
+   * nach vorn holen darf eine Webseite nicht immer - dann zeigt der neue Tab
+   * einen Hinweis. Ohne BroadcastChannel (alte Browser) öffnet der Fall wie
+   * bisher im neuen Tab. */
+  var channel = null;
+  var tabId = Math.random().toString(36).slice(2);
+  var handedOff = false; // dieser Tab hat seinen Fall abgegeben oder wartet noch
+
+  function getChannel() {
+    if (!channel && typeof BroadcastChannel === 'function') {
+      channel = new BroadcastChannel('cp-support');
+      channel.onmessage = onChannelMessage;
+    }
+    return channel;
+  }
+
+  function onChannelMessage(ev) {
+    var m = ev.data || {};
+    if (!alive() || handedOff) return;
+    if (m.t === 'ping') {
+      channel.postMessage({ t: 'pong', to: m.from, from: tabId });
+    } else if (m.t === 'open' && m.to === tabId && ID_RE.test(String(m.id))) {
+      try { window.focus(); } catch (e) { /* nicht erlaubt */ }
+      if (me) navigate(m.id);
+      else history.pushState({ page: 'support' }, '', '#support/' + m.id);
+      flash('Neuer Fall aus WhatsApp geöffnet.');
+    }
+  }
+
+  /** Gibt den Fall [id] an einen offenen Support-Tab ab; gibt es keinen, [fallback]. */
+  function handOff(id, fallback) {
+    var ch = getChannel();
+    if (!ch) { fallback(); return; }
+    handedOff = true;
+    var done = false;
+    var listener = function (ev) {
+      var m = ev.data || {};
+      if (done || m.t !== 'pong' || m.to !== tabId) return;
+      done = true;
+      ch.removeEventListener('message', listener);
+      ch.postMessage({ t: 'open', to: m.from, id: id });
+      showMessage('Im anderen Tab geöffnet',
+        'Der Fall wurde in deinem bereits offenen Support-Tab geöffnet. Diesen Tab kannst du schließen.');
+      try { window.close(); } catch (e) { /* nicht erlaubt */ }
+    };
+    ch.addEventListener('message', listener);
+    ch.postMessage({ t: 'ping', from: tabId });
+    setTimeout(function () {
+      if (done) return;
+      done = true;
+      ch.removeEventListener('message', listener);
+      fallback();
+    }, 400);
+  }
+
   /** Verdrahtet die frisch eingeblendete Seite. Darf mehrfach aufgerufen werden. */
   function mount() {
     if (cleanup) { cleanup(); cleanup = null; }
     if (!alive()) return;
     applyPageMeta();
+    getChannel();
     client = getClient();
     current = null;
     me = null;
@@ -1198,6 +1257,14 @@
       if (subscription && subscription.unsubscribe) subscription.unsubscribe();
     };
 
+    var id = currentId();
+    if (id && ID_RE.test(id)) handOff(id, start); else start();
+  }
+
+  /** Normaler Start: Sitzung prüfen, dann Übersicht oder Fall anzeigen. */
+  function start() {
+    if (!alive()) return;
+    handedOff = false;
     showMessage('Lade …');
     client.auth.getSession().then(function (res) {
       if (!alive()) return null;
