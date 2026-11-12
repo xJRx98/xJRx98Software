@@ -16,8 +16,8 @@
 (function () {
   'use strict';
 
-  var SUPABASE_URL = 'https://eznesbcyjduxqhkpcyny.supabase.co';
-  var SUPABASE_KEY = 'sb_publishable_JfIZ0nyrSoGcC19Yw_L-Yw_gpMtHn9Y';
+  var B = window.CPBasis;
+  var SUPABASE_URL = B.SUPABASE_URL;
   var FUNCTION_NAME = 'weekly-report';
   var START_DATE = '2020-01-01';   // "Seit Beginn"
   var DEFAULT_PRESET = '7';
@@ -30,119 +30,17 @@
 
   // ── Tab-Titel, Icon und Navigation der Webseite (wie bei der Support-Seite) ──
   var PAGE_TITLE = 'Auswertung';
-  var FAVICON_URL = 'data:image/png;base64,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';
-  var savedMeta = null;
-  var metaObserver = null;
 
   function alive() { return !!document.getElementById('cpa-root'); }
   function $(id) { return document.getElementById('cpa-' + id); }
 
-  /* ── DOM-Helfer (kein innerHTML) ──────────────────────────────────────── */
+  /* ── Gemeinsame Grundlage (support/basis.js): DOM-Helfer ohne innerHTML ── */
 
-  function appendChild(el, c) {
-    if (c === null || c === undefined || c === false) return;
-    if (Array.isArray(c)) { c.forEach(function (x) { appendChild(el, x); }); return; }
-    if (c.nodeType) { el.appendChild(c); return; }
-    el.appendChild(document.createTextNode(String(c)));
-  }
-
-  function h(tag, props) {
-    var el = document.createElement(tag);
-    if (props) {
-      Object.keys(props).forEach(function (k) {
-        var v = props[k];
-        if (v === null || v === undefined || v === false) return;
-        if (k === 'class') el.className = v;
-        else if (k === 'text') el.textContent = String(v);
-        else if (k.slice(0, 2) === 'on') el.addEventListener(k.slice(2), v);
-        else el.setAttribute(k, v === true ? '' : String(v));
-      });
-    }
-    for (var i = 2; i < arguments.length; i++) appendChild(el, arguments[i]);
-    return el;
-  }
-
-  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
-
-  /* ── Supabase-Client (geteilt mit der Support-Seite) ──────────────────── */
-
-  function safeStorage() {
-    try {
-      var s = window.sessionStorage;
-      s.setItem('__cpa_test', '1');
-      s.removeItem('__cpa_test');
-      return s;
-    } catch (e) {
-      var mem = {};
-      return {
-        getItem: function (k) { return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null; },
-        setItem: function (k, v) { mem[k] = String(v); },
-        removeItem: function (k) { delete mem[k]; },
-      };
-    }
-  }
-
-  /** Gleiche Einstellungen und gleicher Speicherschlüssel wie die Support-Seite - so gilt eine
-   *  Anmeldung für beide Seiten (der Client liegt in `window.__cpsClient`, egal wer ihn zuerst anlegt). */
-  function getClient() {
-    if (!window.__cpsClient) {
-      window.__cpsClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: false,
-          storage: safeStorage(),
-          storageKey: 'cp-support-auth',
-        },
-      });
-    }
-    return window.__cpsClient;
-  }
-
-  /* ── Tab-Titel & Icon ─────────────────────────────────────────────────── */
-
-  function applyPageMeta() {
-    var root = $('root');
-    if (!root) return;
-    if (!savedMeta) {
-      var olds = Array.prototype.slice.call(document.querySelectorAll('link[rel~="icon"]'));
-      savedMeta = {
-        title: document.title,
-        links: olds.map(function (l) { return { el: l, parent: l.parentNode, next: l.nextSibling }; }),
-        ours: null,
-      };
-      olds.forEach(function (l) { if (l.parentNode) l.parentNode.removeChild(l); });
-    }
-    document.title = PAGE_TITLE;
-    if (savedMeta.ours && savedMeta.ours.parentNode) savedMeta.ours.parentNode.removeChild(savedMeta.ours);
-    var ours = document.createElement('link');
-    ours.setAttribute('rel', 'icon');
-    ours.setAttribute('type', 'image/png');
-    ours.setAttribute('href', FAVICON_URL);
-    document.head.appendChild(ours);
-    savedMeta.ours = ours;
-    document.body.classList.add('cpa-page');
-    if (metaObserver) metaObserver.disconnect();
-    if (root.parentNode && window.MutationObserver) {
-      metaObserver = new MutationObserver(function () { if (!alive()) restorePageMeta(); });
-      metaObserver.observe(root.parentNode, { childList: true });
-    }
-  }
-
-  function restorePageMeta() {
-    if (metaObserver) { metaObserver.disconnect(); metaObserver = null; }
-    document.body.classList.remove('cpa-page');
-    if (!savedMeta) return;
-    var m = savedMeta;
-    savedMeta = null;
-    document.title = m.title;
-    if (m.ours && m.ours.parentNode) m.ours.parentNode.removeChild(m.ours);
-    m.links.forEach(function (x) {
-      var parent = x.parent && x.parent.isConnected !== false ? x.parent : document.head;
-      var next = x.next && x.next.parentNode === parent ? x.next : null;
-      parent.insertBefore(x.el, next);
-    });
-  }
+  var h = B.h;
+  var clear = B.clear;
+  var getClient = B.getClient;
+  var meta = B.pageMeta('cpa-root', PAGE_TITLE, 'cpa-page');
+  function applyPageMeta() { meta.apply(); }
 
   /* ── Ansichten ────────────────────────────────────────────────────────── */
 
@@ -358,11 +256,52 @@
       tabs[i].setAttribute('tabindex', on ? '0' : '-1');
     }
     showPanel(sec.panel || null);
+    if (sec.panel === 'ghkarte') ghEnsure();
     if (!sec.panel) showDoc(sec.html);
     renderDownloads(sec.files || []);
   }
 
   /* ── GH-Karte: Orts- und PLZ-Suche ──────────────────────────────────────────────── */
+
+  // Die Karte (rund 390 KB) steht in auswertung/gh-karte.html und wird erst geladen, wenn
+  // ihr Tab geöffnet wird; der Browser hält sie danach im Cache.
+  var GH_URL = 'auswertung/gh-karte.html?v=1';
+  var ghHtml = null;       // geladener Inhalt (bleibt über Seitenwechsel erhalten)
+  var ghReady = null;      // Promise: Karte in dieser Einblendung eingesetzt
+
+  /** Setzt die Karte ein (lädt sie beim ersten Mal) und verdrahtet Suche und Klicks. */
+  function ghEnsure() {
+    if (ghReady) return ghReady;
+    var load = ghHtml ? Promise.resolve(ghHtml) : fetch(GH_URL).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    });
+    ghReady = load.then(function (text) {
+      ghHtml = text;
+      var slot = $('ghkarte');
+      if (!alive() || !slot) return;
+      // Eigener, statischer Inhalt vom selben Server (keine Nutzerdaten): innerHTML ist hier unbedenklich.
+      var tpl = document.createElement('template');
+      tpl.innerHTML = text;
+      var neu = tpl.content.querySelector('#cpa-ghkarte');
+      if (!neu) throw new Error('Inhalt fehlt');
+      neu.classList.toggle('cpa-hidden', slot.classList.contains('cpa-hidden'));
+      slot.parentNode.replaceChild(neu, slot);
+      var orte = tpl.content.querySelector('#cpa-ghOrte');
+      if (orte && !$('ghOrte')) neu.appendChild(orte);
+      $('ghSearch').addEventListener('input', onGhInput);
+      $('ghSearch').addEventListener('focus', onGhInput);
+      $('ghSearch').addEventListener('keydown', onGhKey);
+      $('ghSearch').addEventListener('blur', ghCloseList);
+      var ghMap = document.querySelector('#cpa-ghkarte .cpa-gh-kreise');
+      if (ghMap) ghMap.addEventListener('click', onGhMapClick);
+    }).catch(function () {
+      ghReady = null;
+      var slot = $('ghkarte');
+      if (slot) { clear(slot); slot.appendChild(h('p', { class: 'cpa-muted', text: 'Die Karte konnte nicht geladen werden. Bitte den Tab erneut öffnen.' })); }
+    });
+    return ghReady;
+  }
 
   var GH_MAX_TREFFER = 8;
   var ghKreise = null;     // [{ ags, name, art, land, gh }]
@@ -663,10 +602,41 @@
     $('von').value = p.von;
     $('bis').value = p.bis;
     markPreset(preset);
+    savePrefs(preset);
     onRun();
   }
 
-  function onManualDate() { markPreset(''); }
+  function onManualDate() { markPreset(''); savePrefs(''); }
+
+  /* Zuletzt gewählter Zeitraum (Schnellauswahl) und Häkchen bleiben auf diesem Gerät
+   * gespeichert. Eigene Datumsangaben nicht: Sie wären beim nächsten Besuch veraltet. */
+  var PREFS_KEY = 'cp-auswertung';
+
+  function loadPrefs() {
+    try { return JSON.parse(window.localStorage.getItem(PREFS_KEY)) || {}; } catch (e) { return {}; }
+  }
+
+  function savePrefs(preset) {
+    try {
+      window.localStorage.setItem(PREFS_KEY, JSON.stringify({ preset: preset, nur: $('nur').checked }));
+    } catch (e) { /* Speicher gesperrt: Standard beim nächsten Mal */ }
+  }
+
+  function currentPreset() {
+    var on = document.querySelector('#cpa-presets .cpa-preset[aria-pressed="true"]');
+    return on ? on.getAttribute('data-preset') : '';
+  }
+
+  /** Häkchen geändert: speichern und, wenn schon ein Ergebnis da ist, neu auswerten. */
+  function onNurChange() {
+    savePrefs(currentPreset());
+    if (current) onRun();
+  }
+
+  /** Enter in einem Datumsfeld wertet aus. */
+  function onDateKey(ev) {
+    if (ev.key === 'Enter') { ev.preventDefault(); onRun(); }
+  }
 
   /* ── Anmeldung ────────────────────────────────────────────────────────── */
 
@@ -684,11 +654,15 @@
     $('bis').min = START_DATE;
     showView('viewMain');
     if (!$('von').value) {
-      var p = periodFor(DEFAULT_PRESET);
+      // Beim Öffnen gleich auswerten: mit der zuletzt gewählten Schnellauswahl, sonst 7 Tage.
+      var prefs = loadPrefs();
+      var preset = prefs.preset && periodFor(prefs.preset) ? prefs.preset : DEFAULT_PRESET;
+      var p = periodFor(preset);
       $('von').value = p.von;
       $('bis').value = p.bis;
-      markPreset(DEFAULT_PRESET);
-      onRun();   // beim Öffnen gleich die letzten 7 Tage zeigen
+      $('nur').checked = prefs.nur === true;
+      markPreset(preset);
+      onRun();
     }
   }
 
@@ -748,20 +722,16 @@
     $('btnMail').addEventListener('click', onMail);
     $('von').addEventListener('change', onManualDate);
     $('bis').addEventListener('change', onManualDate);
+    $('von').addEventListener('keydown', onDateKey);
+    $('bis').addEventListener('keydown', onDateKey);
+    $('nur').addEventListener('change', onNurChange);
     var presets = document.querySelectorAll('#cpa-presets .cpa-preset');
     for (var i = 0; i < presets.length; i++) presets[i].addEventListener('click', onPreset);
-    // Orts- und PLZ-Suche der GH-Karte (die Seite wird bei jedem Öffnen neu eingefügt: Daten neu lesen)
+    // GH-Karte: die Seite wird bei jedem Öffnen neu eingefügt, die Karte also neu eingesetzt.
     ghKreise = null;
     ghOrte = null;
     ghPlz = null;
-    if ($('ghSearch')) {
-      $('ghSearch').addEventListener('input', onGhInput);
-      $('ghSearch').addEventListener('focus', onGhInput);
-      $('ghSearch').addEventListener('keydown', onGhKey);
-      $('ghSearch').addEventListener('blur', ghCloseList);
-      var ghMap = document.querySelector('#cpa-ghkarte .cpa-gh-kreise');
-      if (ghMap) ghMap.addEventListener('click', onGhMapClick);
-    }
+    ghReady = null;
 
     var sub = client.auth.onAuthStateChange(function (event) {
       if (!alive()) return;
@@ -796,5 +766,5 @@
   }
 
   // version muss zum ?v= in auswertung.html passen: Der Loader lädt das Skript neu, wenn im Tab noch eine ältere Fassung läuft.
-  window.CPAuswertung = { version: 7, mount: mount, _periodFor: periodFor };
+  window.CPAuswertung = { version: 8, mount: mount, _periodFor: periodFor };
 })();

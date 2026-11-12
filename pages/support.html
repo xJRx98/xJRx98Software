@@ -96,8 +96,13 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 /* Fall-Verwaltung: Status, Team, Aktionen */
 #cps-root .cps-flash { margin: 0 0 16px; padding: 10px 14px; font-size: 14px; border: 1px solid var(--cps-accent); border-radius: 8px; color: var(--cps-accent); background: rgba(96,248,29,.08); }
 #cps-root .cps-flash.cps-flash-err { border-color: var(--cps-err); color: var(--cps-err); background: var(--cps-err-bg); }
-#cps-root .cps-list-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
-#cps-root .cps-list-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+#cps-root .cps-list-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+#cps-root .cps-list-head > div:first-child { flex: 1 1 420px; }
+#cps-root .cps-list-head .cps-desc { margin-bottom: 0; }
+#cps-root .cps-list-tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+#cps-root .cps-list-tools .cps-search { width: 240px; padding: 9px 14px; font-size: 14px; }
+#cps-root .cps-table tr.cps-row-open { cursor: pointer; }
+#cps-root .cps-table tr.cps-row-open:hover td { background: rgba(96,248,29,.05); }
 #cps-root .cps-team { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 18px; font-size: 13px; color: var(--cps-soft); }
 #cps-root .cps-chip { display: inline-flex; gap: 6px; align-items: center; padding: 4px 11px; border: 1px solid var(--cps-line); border-radius: 999px; background: var(--cps-card); font-size: 13px; color: var(--cps-ink); }
 #cps-root .cps-chip b { color: var(--cps-accent); }
@@ -199,6 +204,7 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
           <p class="cps-muted cps-desc">Neue Fälle erscheinen unter „Ausstehend“. Abgeschlossene Fälle werden bis zur automatischen Löschung (7 Tage nach Eingang) unter „Abgeschlossen“ aufbewahrt.</p>
         </div>
         <div class="cps-list-tools">
+          <input type="search" class="cps-search" id="cps-search" placeholder="Aquarium suchen …" aria-label="Aquarium suchen" title="Tastenkürzel: /" autocomplete="off">
           <button type="button" class="cps-btn cps-hidden" id="cps-btnMine">Nur meine Fälle</button>
           <button type="button" class="cps-btn" id="cps-btnRefresh">Aktualisieren</button>
         </div>
@@ -247,7 +253,8 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 // Reset-Seite), hier SUPABASE_JS entsprechend anpassen.
 (function () {
   var SUPABASE_JS = 'support/supabase.js';
-  var SUPPORT_JS  = 'support/support.js?v=12';
+  var BASIS_JS    = 'support/basis.js?v=1';
+  var SUPPORT_JS  = 'support/support.js?v=13';
 
   function load(src) {
     return new Promise(function (resolve, reject) {
@@ -262,6 +269,7 @@ body.cps-support-page > #nav-mobile-menu { display: none !important; }
 
   var chain = Promise.resolve();
   if (!(window.supabase && window.supabase.createClient)) chain = chain.then(function () { return load(SUPABASE_JS); });
+  if (!window.CPBasis) chain = chain.then(function () { return load(BASIS_JS); });
   if (!window.CPSupport) chain = chain.then(function () { return load(SUPPORT_JS); });
 
   chain.then(function () {
