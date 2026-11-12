@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Foto-Link abgelaufen – C&amp;P Aquaplants</title>
+<link rel="icon" type="image/png" href="email-assets/cp_logo_email.png">
+<!-- Ziel der Edge Function `img` (C&P-Aquaplants-App, supabase/functions/img), wenn ein
+     geteilter Foto-Link abgelaufen ist. Gleiches Aussehen wie reset-password.html. -->
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --card: #1A1A1A;
+    --line: #2A2A2A;
+    --ink: #FFFFFF;
+    --ink-soft: #CCCCCC;
+    --ink-faint: #888888;
+    --accent: #60F81D;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(96,248,29,0.06), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(96,248,29,0.05), transparent 40%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand img { height: 52px; width: auto; }
+  .brand-name { font-size: 20px; font-weight: bold; letter-spacing: 0.5px; color: var(--accent); }
+  .body-pad { padding: 32px; }
+  .icon {
+    width: 56px; height: 56px; margin: 0 auto 20px;
+    border-radius: 50%; border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  h1 { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 12px; text-align: center; }
+  p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 14px; text-align: center; }
+  .hint { font-size: 13px; color: var(--ink-faint); margin: 0; }
+  @media (max-width: 420px) { .body-pad { padding: 26px 22px; } }
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="brand">
+    <img src="email-assets/cp_logo_email.png" alt="C&amp;P Aquaplants">
+    <div class="brand-name">C&amp;P Aquaplants</div>
+  </div>
+  <div class="body-pad">
+    <div class="icon" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60F81D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+      </svg>
+    </div>
+    <h1>Dieser Foto-Link ist abgelaufen</h1>
+    <p>Fotos aus einer Support-Anfrage sind aus Datenschutzgründen nur 7&nbsp;Tage abrufbar.</p>
+    <p class="hint">Wird das Foto noch gebraucht, kann es in der App über den WhatsApp-Button erneut gesendet werden.</p>
+  </div>
+</main>
+</body>
+</html>
